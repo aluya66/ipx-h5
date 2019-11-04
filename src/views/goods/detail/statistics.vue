@@ -5,15 +5,15 @@
 <script>
 
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
-  created(){
+  created () {
 
   },
 
   methods: {
-    getDetail(){
+    getDetail () {
       this.$api.goods.getStatistics().then(res => {
 
       })
@@ -23,7 +23,7 @@ export default {
 
   components: {
   }
-};
+}
 </script>
 
 <style lang='less' scoped>

@@ -10,7 +10,7 @@ const path = require('path')
 const vConsolePlugin = require('vconsole-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin') // Gzip
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 // const pkg = require('./package.json')
 
 const autoprefixer = require('autoprefixer')
@@ -126,7 +126,7 @@ module.exports = {
         minRatio: 0.8
       }),
       // Webpack包文件分析器(https://github.com/webpack-contrib/webpack-bundle-analyzer)
-      new BundleAnalyzerPlugin()
+      // new BundleAnalyzerPlugin()
     ]
     // 开发环境
     const mobileDev = process.env.VUE_APP_isMobile ? [new vConsolePlugin({

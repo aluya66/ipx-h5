@@ -8,11 +8,11 @@
 
 <script>
 import components from 'components'
-const { CTabs, CHeader } = components
 
 import Detail from './detail.vue'
 import Statistics from './statistics.vue'
 import Visitor from './visitor.vue'
+const { CTabs, CHeader } = components
 
 export default {
   data () {
@@ -34,7 +34,7 @@ export default {
   methods: {
     changeActive (val) {
       this.curType = val
-    },
+    }
   },
 
   components: {
