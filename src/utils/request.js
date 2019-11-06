@@ -57,10 +57,12 @@ instance.interceptors.response.use((response) => {
  * @returns {Object} 返回请求方式和header的contentType设置
  */
 const setHeaderMethod = mtd => {
-  let method = 'get'
+  let method = mtd
   let contentType = 'application/json'
   switch (method) {
     case 'post':
+      contentType = 'application/json'
+      break
     case 'put':
       method = mtd
       contentType = 'application/x-www-form-urlencoded'
@@ -165,7 +167,7 @@ export default {
         resolve(utils.getStore(opt.cache))
       } else {
         instance(options).then((res) => {
-          if (res.code !== 200 && res.retcode !== 0) {
+          if (res.retcode !== 0) {
             if (opt.hasErrMsg) {
               resolve(res)
             } else {

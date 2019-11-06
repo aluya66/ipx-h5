@@ -1,4 +1,5 @@
 export function fomartDate (time, cFormat) {
+  // alert(time, 'time')
   if (arguments.length === 0) {
     return null
   }
@@ -9,12 +10,15 @@ export function fomartDate (time, cFormat) {
   } else {
     if (typeof time === 'string' && /^[0-9]+$/.test(time)) {
       time = parseInt(time)
-    }
-    if (typeof time === 'number' && time.toString().length === 10) {
+    } else if (typeof time === 'number' && time.toString().length === 10) {
       time = time * 1000
+    } else {
+      time = time.replace(/-/g, '/').replace(/T/g, ' ').split('.')[0]
     }
+    // console.log(time, 'time15')
     date = new Date(time)
   }
+
   const formatObj = {
     y: date.getFullYear(),
     m: date.getMonth() + 1,
@@ -35,6 +39,7 @@ export function fomartDate (time, cFormat) {
     }
     return value || 0
   })
+
   return timeStr
 }
 
@@ -96,6 +101,11 @@ export const getCurMonthDays = (y, m) => {
   }
   return new Date(y, m, 0).getDate()
 }
+
+/**
+ *  将特殊的时间格式转为正常格式
+ *  2019-07-05T03:56:21.000+0000变为2019-07-05
+ */
 
 export default {
   fomartDate,
