@@ -36,17 +36,17 @@ export default {
   props: {
     productList: {
       type: Array,
-      default() {
-        return [];
+      default () {
+        return []
       }
     }
   },
   methods: {
-    selected(product) {
-      this.$emit("selectClick", product);
+    selected (product) {
+      this.$emit('selectClick', product)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

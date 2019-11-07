@@ -15,7 +15,7 @@
     <button @click="routerLink(`/testStyle/report`)">查看测款报告</button>
     <button @click="routerLink(`/testStyle/vote`)">测款投票</button>
     <button @click="routerLink(`/testStyle/share`)">测款分享</button>
-    
+
   </layout-view>
 </template>
 

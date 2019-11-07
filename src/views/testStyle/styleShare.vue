@@ -37,63 +37,63 @@
 </template>
 
 <script>
-import shareList from "@/views/common/shareList";
+import shareList from '@/views/common/shareList'
 export default {
   components: {
     shareList
   },
-  data() {
+  data () {
     return {
       list: [
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "发发发斤斤计较京津冀",
+          mainPic: '',
+          title: '发发发斤斤计较京津冀',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "韩版毛领连帽大衣冒烟哈哈哈",
+          mainPic: '',
+          title: '韩版毛领连帽大衣冒烟哈哈哈',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "发发发斤斤计较京津冀",
+          mainPic: '',
+          title: '发发发斤斤计较京津冀',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "韩版毛领连帽大衣冒烟哈哈哈",
+          mainPic: '',
+          title: '韩版毛领连帽大衣冒烟哈哈哈',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "韩版毛领连帽大衣冒烟哈哈哈",
+          mainPic: '',
+          title: '韩版毛领连帽大衣冒烟哈哈哈',
           isSelect: false
         }
       ]
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

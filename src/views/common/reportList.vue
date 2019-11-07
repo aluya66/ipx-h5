@@ -31,34 +31,36 @@ export default {
   props: {
     list: {
       type: Array,
-      default: []
+      default () {
+        return []
+      }
     }
   },
-  data() {
+  data () {
     return {
-      topNumUrl: ""
-    };
+      topNumUrl: ''
+    }
   },
-  created() {
+  created () {
     for (const key in this.list) {
-        if(key == 0){
-            this.list[key].topNumUrl = "url(" + require("../../themes/images/app/rank01@2x.png") + ")"
-        }
-        if(key == 1){
-            this.list[key].topNumUrl = "url(" + require("../../themes/images/app/rank02@2x.png") + ")"
-        }
-        if(key == 2){
-            this.list[key].topNumUrl = "url(" + require("../../themes/images/app/rank03@2x.png") + ")"
-        }
+      if (key === 0) {
+        this.list[key].topNumUrl = 'url(' + require('../../themes/images/app/rank01@2x.png') + ')'
+      }
+      if (key === 1) {
+        this.list[key].topNumUrl = 'url(' + require('../../themes/images/app/rank02@2x.png') + ')'
+      }
+      if (key === 2) {
+        this.list[key].topNumUrl = 'url(' + require('../../themes/images/app/rank03@2x.png') + ')'
+      }
     }
   },
   filters: {
-    numStr(val) {
-      let num = val + 1;
-      return num < 10 ? "0" + num.toString() : num;
+    numStr (val) {
+      let num = val + 1
+      return num < 10 ? '0' + num.toString() : num
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

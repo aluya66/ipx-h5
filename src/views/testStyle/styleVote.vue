@@ -18,104 +18,104 @@
 </template>
 
 <script>
-import shareList from "@/views/common/shareList";
-import components from "components";
-import { Dialog } from "vant";
-const { CHeader } = components;
+import shareList from '@/views/common/shareList'
+import components from 'components'
+import { Dialog } from 'vant'
+const { CHeader } = components
 export default {
   components: {
     CHeader,
     shareList
   },
-  data() {
+  data () {
     return {
       list: [
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "发发发斤斤计较京津冀",
+          mainPic: '',
+          title: '发发发斤斤计较京津冀',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "韩版毛领连帽大衣冒烟哈哈哈",
+          mainPic: '',
+          title: '韩版毛领连帽大衣冒烟哈哈哈',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "发发发斤斤计较京津冀",
+          mainPic: '',
+          title: '发发发斤斤计较京津冀',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "韩版毛领连帽大衣冒烟哈哈哈",
+          mainPic: '',
+          title: '韩版毛领连帽大衣冒烟哈哈哈',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "针织拼接外套",
+          mainPic: '',
+          title: '针织拼接外套',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "发发发斤斤计较京津冀",
+          mainPic: '',
+          title: '发发发斤斤计较京津冀',
           isSelect: false
         },
         {
-          mainPic: "",
-          title: "韩版毛领连帽大衣冒烟哈哈哈",
+          mainPic: '',
+          title: '韩版毛领连帽大衣冒烟哈哈哈',
           isSelect: false
         }
       ],
       selectedNum: 0
-    };
+    }
   },
   methods: {
-    selected(product) {
+    selected (product) {
       if (!product.isSelect && this.selectedNum > 2) {
         Dialog.alert({
-          title: "提示",
-          message: "每人限投3票"
-        });
-        return;
+          title: '提示',
+          message: '每人限投3票'
+        })
+        return
       }
-      product.isSelect = !product.isSelect;
+      product.isSelect = !product.isSelect
       if (product.isSelect) {
-        this.selectedNum += 1;
+        this.selectedNum += 1
       } else {
-        this.selectedNum -= 1;
+        this.selectedNum -= 1
       }
     },
-    commit() {
+    commit () {
       if (this.selectedNum > 3) {
         Dialog.alert({
-          title: "提示",
-          message: "每人限投3票"
-        });
+          title: '提示',
+          message: '每人限投3票'
+        })
       } else {
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
