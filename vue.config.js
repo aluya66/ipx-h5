@@ -195,7 +195,7 @@ module.exports = {
         target: process.env.VUE_APP_serverUrl,
         ws: false,
         pathRewrite: {
-          // '^/openApi': '/'
+          '^/api-ipx': '/'
         }
       },
       [process.env.VUE_APP_WXPATH]: {
