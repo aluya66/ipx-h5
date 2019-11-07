@@ -126,7 +126,16 @@ const setParams = (url, params = {}, opt = {}) => {
     url,
     headers: {
       'Content-Type': contentType,
-      'xg-token': utils.getStore('token') || opt.token || 'ac7232af1afebd5f0ea64c2f5616263b'
+      'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaODzfKoX83D6PwLTNyaPcTvIVaudh6PyYYCGrGXgA+SQ1IxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLkjTd2QCWiQV5Nl6YidQH/Jcdrza43Faor/InsY+l/X8fh2ChRgK/0hYh6SycThPDD+bRGh43DLnbYPH5Tp45QR+fcFd4n5i9o+D2viZss6h5ebVi6arcZwaqyTQas7Eh+CMiuZI6CDn1BdnQ5ylxj4Z61erWafefdYYbK175C/MELjYl0NgVwe9nGXVyHN63StP/BRM1gfZFCbTEdlPOW/74RamsgpJDOiasX1Io9LEm1F6QkniSvBcwE0PL+v7/ZYE1ZWO0AvE0ZVcZspi/HyfvMTph2MhzpDuze6HmBDu05KIdeirGrO3193QADD8V99M9mCLazPQg==',
+      'channel': 'WEB',
+      'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
+      'app_version':'1.2.0',
+      'platform': 'android',
+      'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
+      'mobile_model': 'ELE-AL00',
+      'os_version': '9',
+      'lat': '100.156161',
+      'lng': '100.156161'
     },
     method
   }
