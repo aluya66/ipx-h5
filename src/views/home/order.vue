@@ -23,7 +23,7 @@ export default {
   },
   data () {
     return {
-      topImage: require('@/themes/images/app/invalid-name@2x.png')
+      topImage: require('@/themes/images/app/main-name@2x.png')
     }
   },
   methods: {

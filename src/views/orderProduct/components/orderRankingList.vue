@@ -55,7 +55,7 @@ export default {
     for (let i = 0; i < 10; i++) {
       let self = this;
       (function (index) {
-        let obj = { rank: index, image: require('@/themes/images/app/invalid-name@2x.png'), title: '这是名字', count: 1000 }
+        let obj = { rank: index, image: require('@/themes/images/app/main-name@2x.png'), title: '这是名字', count: 1000 }
         self.lists.push(obj)
       })(i)
     }

@@ -59,11 +59,11 @@ export default {
       oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
       showPopup: false,
-      topImage: require('@/themes/images/app/invalid-name@2x.png'),
-      imageList: [{ title: '极简撞色翻边牛仔裤', image: require('@/themes/images/app/invalid-name@2x.png') },
-        { title: '极简撞色翻边牛仔裤2', image: require('@/themes/images/app/invalid-name@2x.png') },
-        { title: '极简撞色翻边牛仔裤3', image: require('@/themes/images/app/invalid-name@2x.png') },
-        { title: '极简撞色翻边牛仔裤4', image: require('@/themes/images/app/invalid-name@2x.png') }]
+      topImage: require('@/themes/images/app/main-name@2x.png'),
+      imageList: [{ title: '极简撞色翻边牛仔裤', image: require('@/themes/images/app/main-name@2x.png') },
+        { title: '极简撞色翻边牛仔裤2', image: require('@/themes/images/app/main-name@2x.png') },
+        { title: '极简撞色翻边牛仔裤3', image: require('@/themes/images/app/main-name@2x.png') },
+        { title: '极简撞色翻边牛仔裤4', image: require('@/themes/images/app/main-name@2x.png') }]
     }
   },
   watch: {

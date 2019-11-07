@@ -51,7 +51,7 @@ export default {
     products: {
       type: Array,
       default () {
-        return [require('@/themes/images/app/invalid-name@2x.png'), require('@/themes/images/app/invalid-name@2x.png'), require('@/themes/images/app/invalid-name@2x.png')]
+        return [require('@/themes/images/app/main-name@2x.png'), require('@/themes/images/app/main-name@2x.png'), require('@/themes/images/app/main-name@2x.png')]
       }
     }
   },
