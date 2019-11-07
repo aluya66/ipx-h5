@@ -92,6 +92,24 @@ export default {
         }
       ]
     }
+  },
+  created(){
+    this.getTestStyleList();
+  },
+  methods:{
+    getTestStyleList(){
+      const params = {
+        bannerCode: '1000A01',
+        bookDataQueryType: 1,
+        bookRankDispalyNum: 9
+      }
+      this.$api.book.bookMainInfo(params).then(res => {
+        console.log(res);
+        debugger
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>
