@@ -2,7 +2,7 @@
   <layout-view>
     <!-- <router-view></router-view> -->
     <div class="op-contain">
-      <c-header :pageOutStatus="true" slot="header">
+      <c-header :pageOutStatus="false" slot="header">
         <template v-slot:title>
           <span>订购会</span>
         </template>
