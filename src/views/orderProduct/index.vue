@@ -159,7 +159,7 @@ export default {
     }
     .applyBtn {
       bottom: 46px;
-      transition: width 1s;
+      transition: width 0.3s;
     }
     .applyScroll {
       width: 40px;
@@ -169,7 +169,7 @@ export default {
     }
     .testBtn {
       bottom: 102px;
-      transition: width 1s;
+      transition: width 0.3s;
     }
   }
 
