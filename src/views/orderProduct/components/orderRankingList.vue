@@ -2,14 +2,14 @@
   <div class="allContain">
     <tabs v-model="active" class="customTab">
       <tab :title="item" v-for="(item ,index) in menuTitles" :key="index">
-        <div class="r-contain" v-for="(listItem ,index) in lists" :key="index">
+        <div class="r-contain" v-for="(listItem ,index) in getLists" :key="index">
           <div class="r-leftContain">
-            <section :class="handleRankIcon(listItem.rank)" >{{listItem.rank > 2 ? listItem.rank :''}}</section>
-            <img :src="listItem.image" alt="">
-            <h3>{{listItem.title}}</h3>
+            <section :class="handleRankIcon(index)" >{{index > 2 ? index :''}}</section>
+            <img :src="listItem.mainPic" alt="">
+            <h3>{{listItem.productName}}</h3>
           </div>
           <div class="r-rightContain">
-            <p>{{listItem.count}}</p><span>件</span>
+            <p>{{listItem.categorySalesVolume || 0}}</p><span>件</span>
           </div>
 
         </div>
@@ -27,6 +27,12 @@ export default {
     Tabs
   },
   props: {
+    allList: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
     lists: {
       type: Array,
       default () {
@@ -36,8 +42,20 @@ export default {
   },
   data () {
     return {
-      active: 1,
+      active: 0,
       menuTitles: ['单品排行榜', '品类排行榜', '测款排行榜']
+    }
+  },
+  computed: {
+    getLists () {
+      switch (this.active) {
+        case 1 :
+          return this.allList.categorySalesRankList
+        case 2:
+          return this.allList.singleMeasureRankList
+        default:
+          return this.allList.singleSalesRankList
+      }
     }
   },
   methods: {
@@ -52,13 +70,7 @@ export default {
     }
   },
   mounted () {
-    for (let i = 0; i < 10; i++) {
-      let self = this;
-      (function (index) {
-        let obj = { rank: index, image: require('@/themes/images/app/main-name@2x.png'), title: '这是名字', count: 1000 }
-        self.lists.push(obj)
-      })(i)
-    }
+
   }
 }
 </script>

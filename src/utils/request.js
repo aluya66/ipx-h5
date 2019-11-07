@@ -42,9 +42,7 @@ instance.interceptors.response.use((response) => {
   if (data.code === 0) {
     // 正常返回数据，指返回data;
     return response.data
-  }
-  // 异常返回数据，返回
-  if (!promiseArr.isGlobalErr) {
+  } else {
     errFun && errFun(data)
   }
   return data

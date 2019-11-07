@@ -10,10 +10,10 @@
       <div class="content">
         <img class="op-topImage" :src="topImage" alt="">
         <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" />
-        <swiper :imageData="imageList" />
+        <swiper :imageData="products" />
         <check @onCheck="handleCheck" />
         <section-header class="newHeader" title="上周订货会快报" subTitle="订货会热销行情，最新市场风向标" />
-        <list />
+        <list :allList="listsObject"/>
         <store-address />
         <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply">
           <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
@@ -61,6 +61,7 @@ export default {
       showPopup: false,
       topImage: require('@/themes/images/app/main-name@2x.png'),
       products: [],
+      listsObject: {},
       imageList: [{ title: '极简撞色翻边牛仔裤', image: require('@/themes/images/app/main-name@2x.png') },
         { title: '极简撞色翻边牛仔裤2', image: require('@/themes/images/app/main-name@2x.png') },
         { title: '极简撞色翻边牛仔裤3', image: require('@/themes/images/app/main-name@2x.png') },
@@ -104,7 +105,12 @@ export default {
       bookRankDispalyNum: '10'
     }
     this.$api.book.bookMainInfo(params).then((response) => {
-      debugger
+      if (response.bookMeasureProds instanceof Array) {
+        this.products = response.bookMeasureProds
+      }
+      if (response.bookProductRank instanceof Object) {
+        this.listsObject = response.bookProductRank
+      }
     }).catch(() => {
 
     })

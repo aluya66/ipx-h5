@@ -3,10 +3,10 @@
   <swiper class="o-swiperClass"  :options="swiperOption">
     <swiper-slide id='index' :class="index === currentPage ? 'o-swiper-slide currPage':'o-swiper-slide'" v-for="(item, index) in imageData" :key="index">
       <!-- <c-image class="o-image" :poster-url="item.image" img-view="?imageView2/1/w/320/h/426"></c-image> -->
-      <img class="o-image" :src="item.image" alt="">
+      <img class="o-image" :src="item.mainPic" alt="">
     </swiper-slide>
   </swiper>
-  <p class="swiper-title">{{123123}}</p>
+  <p class="swiper-title">{{productTitle}}</p>
 </div>
 </template>
 
@@ -51,6 +51,11 @@ export default {
           }
         }
       }
+    }
+  },
+  computed: {
+    productTitle () {
+      return this.imageData.length > 0 ? this.imageData[this.currentPage].productName : ''
     }
   }
 }
