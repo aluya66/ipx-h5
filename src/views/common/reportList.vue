@@ -14,10 +14,10 @@
             <p v-if="index > 2"> {{index | numStr}} </p>
           </div>
           <img :src="item.mainPic">
-          <span>{{item.title}}</span>
+          <span>{{item.productName}}</span>
         </div>
         <div class="price">
-          <span>{{item.num}}</span>&nbsp;票
+          <span>{{item.singleSalesVolume}}</span>&nbsp;票
         </div>
       </div>
     </div>
@@ -41,19 +41,11 @@ export default {
       topNumUrl: ''
     }
   },
-  created () {
-    for (const key in this.list) {
-      if (key === 0) {
-        this.list[key].topNumUrl = 'url(' + require('../../themes/images/app/rank01@2x.png') + ')'
-      }
-      if (key === 1) {
-        this.list[key].topNumUrl = 'url(' + require('../../themes/images/app/rank02@2x.png') + ')'
-      }
-      if (key === 2) {
-        this.list[key].topNumUrl = 'url(' + require('../../themes/images/app/rank03@2x.png') + ')'
-      }
-    }
-  },
+  // created () {
+  //   this.list = this.list.map((item,index) =>{
+  //       item.topNumUrl = 'url(' + require('../../themes/images/app/rank'+index+'@2x.png') + ')'
+  //   })
+  // },
   filters: {
     numStr (val) {
       let num = val + 1

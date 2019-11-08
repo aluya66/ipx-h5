@@ -7,20 +7,21 @@
     <c-list class="list-scroll">
       <share-list
         :productList="list"
+        :disableClick="isCommit"
         @selectClick="selected"
       ></share-list>
     </c-list>
     <button
       class="submit"
       @click="commit"
-    >提交投票</button>
+    >{{isCommit?'分享好友':'提交投票'}}</button>
   </layout-view>
 </template>
 
 <script>
 import shareList from '@/views/common/shareList'
 import components from 'components'
-import { Dialog } from 'vant'
+import { Dialog, Toast } from 'vant'
 const { CHeader } = components
 export default {
   components: {
@@ -30,7 +31,8 @@ export default {
   data () {
     return {
       list: [],
-      selectedNum: 0
+      selectedNum: 0,
+      isCommit: false
     }
   },
   created () {
@@ -46,11 +48,11 @@ export default {
       this.$api.book
         .bookMainInfo(params)
         .then(res => {
-          console.log(res)
-          this.list = res.bookMeasureProds
-          this.list.forEach((item, index) => {
+          let data = res.selfMeasureData.selfMeasureProds
+          data.forEach((item, index) => {
             item.isSelect = false
           })
+          this.list = data
         })
         .catch(err => {
           console.log(err)
@@ -72,12 +74,38 @@ export default {
       }
     },
     commit () {
-      if (this.selectedNum > 3) {
+      if (this.isCommit) {
+        /// 分享
+        Toast('点击右上角分享给好友');
+        return
+      }
+      if (this.selectedNum === 0) {
         Dialog.alert({
           title: '提示',
-          message: '每人限投3票'
+          message: '请选择投票商品'
         })
       } else {
+        const arr = []
+        this.list.map(item => {
+          if (item.isSelect === true) {
+            arr.push(item.productCode)
+          }
+        })
+        const params = {
+          bookActivityCode: '1000A01',
+          voteProductCodes: arr
+        }
+        this.$api.book
+          .bookGoodsVote(params)
+          .then(res => {
+            if (res.code === 0) {
+              Toast.success('投票成功')
+              this.isCommit = true
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     }
   }

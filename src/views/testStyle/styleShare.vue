@@ -57,12 +57,18 @@ export default {
         bookDataQueryType: 1,
         bookRankDispalyNum: 9
       }
-      this.$api.book.bookMainInfo(params).then(res => {
-        console.log(res)
-        this.list = res.bookMeasureProds
-      }).catch((err) => {
-        console.log(err)
-      })
+      this.$api.book
+        .bookMainInfo(params)
+        .then(res => {
+          console.log(res)
+          this.list = res.selfMeasureData.selfMeasureProds
+          if (this.list.length > 9) {
+            this.list = this.list.splice(0, 9)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
