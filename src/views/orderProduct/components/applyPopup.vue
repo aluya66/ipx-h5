@@ -1,6 +1,6 @@
 <template>
   <popup
-  v-model="showPopup"
+  v-model="isShow"
   closeable
   round
   position="bottom"
@@ -12,19 +12,20 @@
     <div class="content">
       <p>订货会为私享定向邀请制，需提交报名审核通过方可入场</p>
       <field class="input" v-model="userName" :border='false' placeholder="请输入姓名" />
-      <field class="input" v-model="userPhone" :border='false' placeholder="请输入手机号" />
+      <field class="input" v-model="userPhone"  maxlength='11' :border='false' placeholder="请输入手机号" :error='showPhoneError' @blur='handleVerifyPhone'/>
       <field class="input" v-model="userCity" :border='false' placeholder="请输入您所在城市" />
       <p class="secHeader">经营类型:</p>
       <div class="manage">
-        <section :class="handleContainItem(item) ? 'manageItem itemSelect' :'manageItem itemDefault' " v-for="(item ,index) in manageList" :key="index" @click="handleSelect(item)">{{item}}</section>
+        <section :class="handleContainItem(item.tradeCode) ? 'manageItem itemSelect' :'manageItem itemDefault' " v-for="(item ,index) in manageTypes" :key="index" @click="handleSelect(item.tradeCode)">{{item.tradeDesc}}</section>
       </div>
-      <div :class="['submit',submitState?'enable':'disable']">提交报名</div>
+      <div :class="['submit',submitState?'enable':'disable']" @click="handleApply">提交报名</div>
     </div>
   </popup>
 </template>
 
 <script>
 import { Popup, Field } from 'vant'
+import utils from 'utils'
 
 export default {
   components: {
@@ -35,41 +36,91 @@ export default {
     showPopup: {
       type: Boolean,
       default: false
+    },
+    manageTypes: {
+      type: Array,
+      default () {
+        return []
+      }
     }
-
   },
   data () {
     return {
+      isShow: false,
+      phoneFormartResult: false,
+      showPhoneError: false,
       userName: '',
       userPhone: '',
       userCity: '',
-      manageList: ['连锁', '批发', '买手', '私营业主'],
-      selectItems: []
+      selectCode: ''
+      // selectItems: []
+    }
+  },
+  watch: {
+    showPopup (val) {
+      this.isShow = val
+    },
+    userPhone (val) {
+      let phoneResult = utils.isMobile(this.userPhone)
+      this.phoneFormartResult = phoneResult
+      if (val.length === 11) {
+        if (!phoneResult) {
+          this.showPhoneError = true
+          this.$toast('手机格式有误')
+        } else {
+          this.showPhoneError = false
+        }
+      } else {
+        this.phoneFormartResult = false
+        this.showPhoneError = false
+      }
     }
   },
   computed: {
     submitState () {
-      if (this.userName.length && this.userPhone.length && this.userCity.length && this.selectItems.length) {
+      if (this.userName.length && this.userCity.length && this.selectCode.length && this.phoneFormartResult) {
         return true
       }
       return false
     }
   },
   methods: {
-    handleSelect (item) {
-      let result = this.selectItems.indexOf(item)
-      if (result > -1) {
-        this.selectItems.splice(result, 1)
-      } else {
-        this.selectItems.push(item)
+
+    handleVerifyPhone () {
+      if (this.userPhone.length < 11) {
+        this.$toast('手机格式有误')
+        this.showPhoneError = true
       }
     },
-    handleContainItem (item) {
-      let result = this.selectItems.indexOf(item)
-      return (result > -1)
+    // 处理选择经营类型
+    handleSelect (itemCode) {
+      this.selectCode = itemCode
+      // this.selectItems = []
+      // let result = this.selectItems.indexOf(itemCode)
+      // if (result > -1) {
+      //   this.selectItems.splice(result, 1)
+      // } else {
+      //   this.selectItems.push(itemCode)
+      // }
+    },
+    // 判断是否选中
+    handleContainItem (itemCode) {
+      // let result = this.selectItems.indexOf(itemCode)
+      return this.selectCode === itemCode
     },
     handleClose () {
       this.$emit('onClose')
+    },
+    handleApply () {
+      if (this.submitState) {
+        let info = {
+          userName: this.userName,
+          userPhone: this.userPhone,
+          userCity: this.userCity,
+          manageCode: this.selectCode
+        }
+        this.$emit('submit', info)
+      }
     }
   }
 }

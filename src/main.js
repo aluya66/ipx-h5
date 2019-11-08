@@ -8,7 +8,8 @@ import Layout from './layout'
 import route from './routes'
 // 需要用到vuex时，打开
 import store from './store'
-
+// 添加全局提示框
+import { Toast } from 'vant'
 // 入口文件
 import App from './App.vue'
 // 将接口挂载vue上，全局使用
@@ -23,7 +24,7 @@ Vue.mixin(mixin)
 Vue.use(VueRouter)
 Vue.use(Layout)
 Vue.config.productionTip = false
-
+Vue.prototype.$toast = Toast
 // 全局注册自定义组件
 registerComponent(Vue)
 

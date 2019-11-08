@@ -85,3 +85,7 @@ export const isMobileEnv = () => {
   }
   return false
 }
+
+export default {
+  isMobile
+}

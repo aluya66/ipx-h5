@@ -21,11 +21,13 @@
         <h3>我的测款</h3>
         <div class="infoContent">
           <section class="infoHeader">
-            <h3>共8种测款款式</h3>
-            <p>查看测款页<img src="@/themes/images/app/icon-next@2x.png" alt=""></p>
+            <h3>共{{products.length}}种测款款式</h3>
+            <p @click="handleCheckDetail">查看测款页<img src="@/themes/images/app/icon-next@2x.png" alt=""></p>
           </section>
           <div class="imageContent">
-            <img v-for="(item ,index) in products" :key="index" :src="item" alt="">
+            <section v-for="item in products.slice(0,3)" :key="item.productCode">
+              <img :src="item.mainPic" alt="">
+            </section>
           </div>
         </div>
         <p class="proptTitle">分享给越多顾客测款，数据越准哦～</p>
@@ -44,31 +46,39 @@ export default {
 
   },
   props: {
-    isTest: {
-      type: Boolean,
-      default: true
-    },
     products: {
       type: Array,
       default () {
-        return [require('@/themes/images/app/main-name@2x.png'), require('@/themes/images/app/main-name@2x.png'), require('@/themes/images/app/main-name@2x.png')]
+        return []
       }
     }
   },
   data () {
     return {
-
+      isTest: false
+    }
+  },
+  watch: {
+    products (val) {
+      this.isTest = val.length > 0
     }
   },
   methods: {
+    // 发起测款
     handleCheck () {
       this.$emit('onCheck')
     },
+    // 测款报告
     handleCheckTestResult () {
-
+      this.$emit('onResult')
     },
+    // 分享测款
     handleShare () {
-
+      this.$emit('onShare')
+    },
+    // 查看测款详情页
+    handleCheckDetail () {
+      this.$emit('onDetail')
     }
   }
 }
@@ -134,14 +144,19 @@ export default {
       display: flex;
       flex-direction: row;
       padding: 0 12px 12px;
-      img {
-        height: 119px;
+      section {
+
         margin-right: 10px;
         border-radius: 4px;
         object-fit: cover;
         flex: 1;
         &:last-child {
           margin-right: 0;
+        }
+        img {
+          height: 119px;
+          width: 100%;
+          object-fit: cover
         }
       }
     }
