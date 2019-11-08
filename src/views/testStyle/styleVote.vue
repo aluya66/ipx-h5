@@ -29,67 +29,33 @@ export default {
   },
   data () {
     return {
-      list: [
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '发发发斤斤计较京津冀',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '韩版毛领连帽大衣冒烟哈哈哈',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '发发发斤斤计较京津冀',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '韩版毛领连帽大衣冒烟哈哈哈',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '发发发斤斤计较京津冀',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '韩版毛领连帽大衣冒烟哈哈哈',
-          isSelect: false
-        }
-      ],
+      list: [],
       selectedNum: 0
     }
   },
+  created () {
+    this.getTestStyleList()
+  },
   methods: {
+    getTestStyleList () {
+      const params = {
+        bannerCode: '1000A01',
+        bookDataQueryType: 1,
+        bookRankDispalyNum: 9
+      }
+      this.$api.book
+        .bookMainInfo(params)
+        .then(res => {
+          console.log(res)
+          this.list = res.bookMeasureProds
+          this.list.forEach((item, index) => {
+            item.isSelect = false
+          })
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     selected (product) {
       if (!product.isSelect && this.selectedNum > 2) {
         Dialog.alert({
