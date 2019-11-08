@@ -1,7 +1,7 @@
 <template>
   <div class="allContain">
-    <tabs v-model="active" class="customTab">
-      <tab :title="item" v-for="(item ,index) in menuTitles" :key="index">
+    <tabs v-model="active" title-active-color='#3c5cf6' :line-width='getLineWidth' title-inactive-color='#8a8c99' class="customTab">
+      <tab :title="item" v-for="(item ,index) in getMenuItems" :key="index">
         <div class="r-contain" v-for="(listItem ,index) in getLists" :key="index">
           <div class="r-leftContain">
             <section :class="handleRankIcon(index)" >{{index > 2 ? index :''}}</section>
@@ -9,7 +9,7 @@
             <h3>{{listItem.productName}}</h3>
           </div>
           <div class="r-rightContain">
-            <p>{{listItem.categorySalesVolume || 0}}</p><span>件</span>
+            <p>{{listItem.categorySalesVolume || 0}}</p><span>{{getMenuItems[active] === '测款排行榜' ? '票' : '件'}}</span>
           </div>
 
         </div>
@@ -42,20 +42,37 @@ export default {
   },
   data () {
     return {
-      active: 0,
-      menuTitles: ['单品排行榜', '品类排行榜', '测款排行榜']
+      active: 0
     }
   },
   computed: {
+    getLineWidth () {
+      let arr = this.getMenuItems
+      if (arr.length <= 1) {
+        return 0
+      }
+      return 84 * window.devicePixelRatio
+    },
     getLists () {
       switch (this.active) {
         case 1 :
-          return this.allList.categorySalesRankList
-        case 2:
-          return this.allList.singleMeasureRankList
-        default:
           return this.allList.singleSalesRankList
+        case 2:
+          return this.allList.categorySalesRankList
+        default:
+          return this.allList.singleMeasureRankList
       }
+    },
+    getMenuItems () {
+      let menuItems = []
+      if (this.allList.singleSalesRankList instanceof Array && this.allList.singleSalesRankList.length > 0) {
+        menuItems.push('单品排行榜')
+      } else if (this.allList.categorySalesRankList instanceof Array && this.allList.categorySalesRankList.length > 0) {
+        menuItems.push('品类排行榜')
+      } else if (this.allList.singleMeasureRankList instanceof Array && this.allList.singleMeasureRankList.length > 0) {
+        menuItems.push('测款排行榜')
+      }
+      return menuItems
     }
   },
   methods: {
@@ -188,7 +205,10 @@ export default {
       font-size: 14px;
       font-weight: 500;
       color: @color-c1;
-
+      max-width: 200px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 }

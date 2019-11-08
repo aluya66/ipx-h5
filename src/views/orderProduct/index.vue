@@ -11,7 +11,7 @@
         <img class="op-topImage" :src="topImage" alt="">
         <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" />
         <swiper :imageData="products" />
-        <check @onCheck="handleCheck" />
+        <check @onCheck="handleCheck" @onResult='handleCheckResult' @onDetail='handleTestDetail' @onShare='handleShareTest' :products='testProducts'/>
         <section-header class="newHeader" title="上周订货会快报" subTitle="订货会热销行情，最新市场风向标" />
         <list :allList="listsObject"/>
         <store-address />
@@ -24,7 +24,7 @@
           <p v-if="!inScroll">免费测款</p>
         </div>
       </div>
-      <apply-popup :showPopup='showPopup' @onClose="()=>{ this.showPopup = false }" />
+      <apply-popup :showPopup='showPopup' :manageTypes='managerTypes' @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
     </div>
   </layout-view>
 </template>
@@ -55,12 +55,15 @@ export default {
   },
   data () {
     return {
+      bannerCode: '1000A01',
       inScroll: false,
       oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
       showPopup: false,
       topImage: require('@/themes/images/app/main-name@2x.png'),
       products: [],
+      testProducts: [],
+      managerTypes: [],
       listsObject: {},
       imageList: [{ title: '极简撞色翻边牛仔裤', image: require('@/themes/images/app/main-name@2x.png') },
         { title: '极简撞色翻边牛仔裤2', image: require('@/themes/images/app/main-name@2x.png') },
@@ -82,38 +85,87 @@ export default {
     }
   },
   methods: {
-    handleToOrder () {
-      this.$router.push({ name: 'orderProduct' })
+    // 查看测款报告
+    handleCheckResult () {
+
     },
-    handleApply () {
-      this.showPopup = !this.showPopup
+    // 查看测款页
+    handleTestDetail () {
+
     },
+    // 分享测款
+    handleShareTest () {
+
+    },
+    // 免费测款
     handleCheck () {
 
     },
+    // 报名参加
+    handleApplySubmit (info) {
+      const params = {
+        participantCity: info.userCity,
+        participantName: info.userName,
+        participantPhone: info.userPhone,
+        tradeCode: info.manageCode
+      }
+      this.handleRequestApply(params)
+    },
+    // 点击报名弹框
+    handleApply () {
+      this.showPopup = !this.showPopup
+    },
+    // 监听滚动
     handleScroll () {
       window.addEventListener('scroll', () => {
         this.scrollTop = document.querySelector('.content').scrollTop
       }, true)
+    },
+    // 请求订购会主页
+    handleRequestMain () {
+      this.bannerCode = this.$route.query.bannerCode || '1000A01'
+      const params = {
+        bannerCode: this.bannerCode,
+        bookDataQueryType: '0',
+        bookRankQueryType: '0',
+        bookRankDispalyNum: '10'
+      }
+      this.$api.book.bookMainInfo(params).then((response) => {
+        if (response.bookMeasureProds instanceof Array) {
+          this.products = response.bookMeasureProds
+        }
+        if (response.lastPeriodRank instanceof Object) {
+          this.listsObject = response.lastPeriodRank
+        }
+        if (response.selfMeasureData.selfMeasureProds instanceof Array) {
+          this.testProducts = response.selfMeasureData.selfMeasureProds
+        }
+      }).catch(() => {
+
+      })
+    },
+    // 提交报名
+    handleRequestApply (params) {
+      this.$api.book.bookApply(params).then((response) => {
+        this.$toast.success('报名成功')
+      }).catch(() => {
+
+      })
+    },
+    // 请求经营类型
+    handleRequestUserManagers () {
+      this.$api.book.bookApplyManagers().then((response) => {
+        if (response instanceof Array) {
+          this.managerTypes = response
+        }
+      }).catch(() => {
+
+      })
     }
   },
   activated () {
-    const params = {
-      bannerCode: '1000A01',
-      bookDataQueryType: '0',
-      bookRankQueryType: '0',
-      bookRankDispalyNum: '10'
-    }
-    this.$api.book.bookMainInfo(params).then((response) => {
-      if (response.bookMeasureProds instanceof Array) {
-        this.products = response.bookMeasureProds
-      }
-      if (response.bookProductRank instanceof Object) {
-        this.listsObject = response.bookProductRank
-      }
-    }).catch(() => {
-
-    })
+    this.handleRequestMain()
+    this.handleRequestUserManagers()
   },
   mounted () {
     this.handleScroll()
