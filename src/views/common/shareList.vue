@@ -17,10 +17,9 @@
           :key="index"
         >
           <img
-            src="../../themes/images/app/vote_banner@2x.png"
-            alt=""
+            :src="product.mainPic"
           >
-          <p>{{product.title}}</p>
+          <p>{{product.productName}}</p>
           <button
             :class="[product.isSelect? 'select-actived':'']"
             @click="selected(product)"

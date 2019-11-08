@@ -44,53 +44,7 @@ export default {
   },
   data () {
     return {
-      list: [
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '发发发斤斤计较京津冀',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '韩版毛领连帽大衣冒烟哈哈哈',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '针织拼接外套',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '发发发斤斤计较京津冀',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '韩版毛领连帽大衣冒烟哈哈哈',
-          isSelect: false
-        },
-        {
-          mainPic: '',
-          title: '韩版毛领连帽大衣冒烟哈哈哈',
-          isSelect: false
-        }
-      ]
+      list: []
     }
   },
   created () {
@@ -105,7 +59,7 @@ export default {
       }
       this.$api.book.bookMainInfo(params).then(res => {
         console.log(res)
-        debugger
+        this.list = res.bookMeasureProds
       }).catch((err) => {
         console.log(err)
       })
