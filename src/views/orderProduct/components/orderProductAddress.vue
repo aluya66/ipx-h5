@@ -4,12 +4,11 @@
     <img src="" alt="">
     <div class="address">
       <section>
-        <h3>地址:</h3>
-        <p>武汉市硚口区中山大道388号武汉国际时尚中心D馆
-8楼YFD孵化器</p>
+        <p>地址:</p>
+        <p style="width:calc(100vw - 0.82rem)">武汉市硚口区中山大道388号武汉国际时尚中心D馆8楼YFD孵化器</p>
       </section>
       <section>
-        <h3>联系人:</h3>
+        <p>联系人:</p>
         <p>张经理  15323428080</p>
       </section>
     </div>
@@ -58,24 +57,29 @@ export default {
       align-items: flex-start;
       margin-top: 4px;
       margin-bottom: 40px;
-      &:first-child {
-        margin-top: 12px;
-        margin-bottom: 0;
-      }
-      h3 {
-        font-size: 12px;
-        color: #585b66;
-        margin: 0;
-        line-height:20px;
-        display: inline-block;
-        width: 60px;
-      }
       p {
         font-size: 12px;
         color: #585b66;
         margin: 0;
         line-height:20px;
       }
+      &:first-child {
+        margin-top: 12px;
+        margin-bottom: 0;
+        p:nth-child(1) {
+          display: block;
+          width: 50px;
+          height:20px;
+        }
+      }
+      &:last-child {
+        p:nth-child(1){
+          display: block;
+          width: 50px;
+          height:20px;
+        }
+      }
+
     }
   }
 }
