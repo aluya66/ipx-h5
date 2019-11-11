@@ -76,7 +76,7 @@ export default {
     commit () {
       if (this.isCommit) {
         /// 分享
-        Toast('点击右上角分享给好友');
+        Toast('点击右上角分享给好友')
         return
       }
       if (this.selectedNum === 0) {

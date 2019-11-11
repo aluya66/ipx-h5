@@ -34,62 +34,62 @@
 </template>
 
 <script>
-import reportList from "@/views/common/reportList.vue";
-import components from "components";
-const { CTabs } = components;
+import reportList from '@/views/common/reportList.vue'
+import components from 'components'
+const { CTabs } = components
 export default {
   components: {
     CTabs,
     reportList
   },
-  data() {
+  data () {
     return {
       tabs: [
         {
           name: 0,
-          title: "我的测款数据"
+          title: '我的测款数据'
         },
         {
           name: 1,
-          title: "平台测款数据"
+          title: '平台测款数据'
         }
       ],
       curType: 0,
       testStyleList: []
-    };
+    }
   },
-  created() {
-    this.getRankList();
+  created () {
+    this.getRankList()
   },
   methods: {
-    getRankList() {
+    getRankList () {
       const params = {
         bookRankDispalyNum: 10,
         bookVoteSearchType: this.curType
-      };
+      }
       this.$api.book
         .bookRankList(params)
         .then(res => {
           res.map((item, index) => {
             if (index < 3) {
               item.topNumUrl =
-                "url(" +
-                require("../../themes/images/app/rank" + index + "@2x.png") +
-                ")";
+                'url(' +
+                require('../../themes/images/app/rank' + index + '@2x.png') +
+                ')'
             }
-          });
-          this.testStyleList = res;
+          })
+          this.testStyleList = res
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
-    changeActive(val) {
-      this.curType = val;
-      this.getRankList();
+    changeActive (val) {
+      this.curType = val
+      this.getRankList()
     }
   }
-};
+}
 </script>
 
 <style lang="less">
