@@ -93,7 +93,7 @@ export default {
         })
         const params = {
           bookActivityCode: '1000A01',
-          voteProductCodes: arr,
+          voteProductCodes: arr
         //   participantCode: openid
         }
         this.$api.book

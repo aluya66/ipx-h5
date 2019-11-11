@@ -76,6 +76,7 @@ export default {
 
 <style lang="less" scoped>
 .panel {
+  background-color: @color-c8;
   .top-title {
     width: 100%;
     background-color: white;
