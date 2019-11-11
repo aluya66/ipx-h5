@@ -53,7 +53,7 @@ export default {
   methods: {
     getTestStyleList () {
       const params = {
-        bannerCode: '1000A01',
+        bannerCode: this.$route.query.bannerCode,
         bookDataQueryType: 1,
         bookRankDispalyNum: 9
       }
