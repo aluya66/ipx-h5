@@ -22,6 +22,7 @@
           <p>{{product.productName}}</p>
           <button
             :class="[product.isSelect? 'select-actived':'']"
+            :disabled="disableClick"
             @click="selected(product)"
           >{{product.isSelect?"已选":"选TA"}}</button>
         </div>
@@ -37,6 +38,12 @@ export default {
       type: Array,
       default () {
         return []
+      }
+    },
+    disableClick: {
+      type: Boolean,
+      default () {
+        return true
       }
     }
   },

@@ -27,7 +27,7 @@
             @change="changeActive"
           ></c-tabs>
         </div>
-        <reportList :list="testStyleList"/>
+        <reportList :list="testStyleList" />
       </div>
     </c-list>
   </layout-view>
@@ -46,57 +46,47 @@ export default {
     return {
       tabs: [
         {
-          name: 1,
+          name: 0,
           title: '我的测款数据'
         },
         {
-          name: 2,
+          name: 1,
           title: '平台测款数据'
         }
       ],
-      curType: 1,
-      testStyleList: [
-        {
-          mainPic: require('../../themes/images/img_default_photo.png'),
-          title: '针织拼接外套',
-          num: 1000
-        },
-        {
-          mainPic: require('../../themes/images/img_default_photo.png'),
-          title: '波点圆领短袖白色',
-          num: 998
-        },
-        {
-          mainPic: require('../../themes/images/img_default_photo.png'),
-          title: '好的和匡扶汉室地方',
-          num: 672
-        },
-        {
-          mainPic: require('../../themes/images/img_default_photo.png'),
-          title: '地方舒服舒服艾弗森地方',
-          num: 444
-        },
-        {
-          mainPic: require('../../themes/images/img_default_photo.png'),
-          title: '针织拼接外套nvnb',
-          num: 321
-        },
-        {
-          mainPic: require('../../themes/images/img_default_photo.png'),
-          title: '针织拼接外套bcbvn',
-          num: 250
-        },
-        {
-          mainPic: require('../../themes/images/img_default_photo.png'),
-          title: '斤斤计较爽肤水',
-          num: 20
-        }
-      ]
+      curType: 0,
+      testStyleList: []
     }
   },
+  created () {
+    this.getRankList()
+  },
   methods: {
+    getRankList () {
+      const params = {
+        bookRankDispalyNum: 10,
+        bookVoteSearchType: this.curType
+      }
+      this.$api.book
+        .bookRankList(params)
+        .then(res => {
+          res.map((item, index) => {
+            if (index < 3) {
+              item.topNumUrl =
+                'url(' +
+                require('../../themes/images/app/rank' + index + '@2x.png') +
+                ')'
+            }
+          })
+          this.testStyleList = res
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     changeActive (val) {
       this.curType = val
+      this.getRankList()
     }
   }
 }

@@ -124,7 +124,7 @@ const setParams = (url, params = {}, opt = {}) => {
     url,
     headers: {
       'Content-Type': contentType,
-      'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNEeT1uWPlXKhPPoVaGSSdkYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCl6Y2wSxIl7B28bXB8N2cTKH6tCkuTek+J1it9pA7d+LrvyYPEFvEsP3FRU2Zp/2hd+pPLAA/B/ojI9SMfXOI5UdghotWQsVWIjfuuKQFkGOjedkmUdI4diAEdbtrxUlREsM3T4iQI1vxh9irerptrTzridi5DwLdgPovfRBl3D/KeeFthJ9Fn5AzfnlaEYRYagnzahnBcpulOwuoH+L/MMbWNHeW1SreGv57RE/Tt2bA3NJz0JeWZhEeT1uWPlXKnMds/Ia88vsYPHcrSe8pbEAsWa1a4MPb/+XEwnXTkQFj5gYp8kpvviKYV79kxh7kA==',
+      'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaMOUKxn/Nr+TPPpLUrJy2fRIVaudh6PyYYCGrGXgA+SQ1IxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLkjTd2QCWiQV5Nl6YidQH/Jcdrza43Faor/InsY+l/X8fh2ChRgK/0hYh6SycThPDD+bRGh43DLnbYPH5Tp45QR+fcFd4n5i9o+D2viZss6h5ebVi6arcZwaqyTQas7Eh+CMiuZI6CDn1BdnQ5ylxj4Z61erWafefdYYbK175C/MELjYl0NgVwe9nGXVyHN63StP/BRM1gfZO0C2hISdoDaK0fRK/GtHdiiasX1Io9LEm1F6QkniSvBv5MN6vFAuhhTClRPRlPYBzJkz3lG8WYxLM4aF1KuN70cQoXZQ+pf2zzAwu8bqKClxyAXzROCIQ868okob2RxLw==',
       'channel': 'WEB',
       'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
       'app_version': '1.2.0',
@@ -178,7 +178,7 @@ export default {
             if (opt.hasErrMsg) {
               resolve(res)
             } else {
-              reject(res.msg || res.retmsg)
+              reject(res.message || res.retmsg)
             }
           } else {
             opt.cache && utils.setStore(opt.cache, res.data || res)
