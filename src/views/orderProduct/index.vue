@@ -64,11 +64,7 @@ export default {
       products: [],
       testProducts: [],
       managerTypes: [],
-      listsObject: {},
-      imageList: [{ title: '极简撞色翻边牛仔裤', image: require('@/themes/images/app/main-name@2x.png') },
-        { title: '极简撞色翻边牛仔裤2', image: require('@/themes/images/app/main-name@2x.png') },
-        { title: '极简撞色翻边牛仔裤3', image: require('@/themes/images/app/main-name@2x.png') },
-        { title: '极简撞色翻边牛仔裤4', image: require('@/themes/images/app/main-name@2x.png') }]
+      listsObject: {}
     }
   },
   watch: {
@@ -87,19 +83,19 @@ export default {
   methods: {
     // 查看测款报告
     handleCheckResult () {
-
+      this.$router.push({ path: '/testStyle/report' })
     },
     // 查看测款页
     handleTestDetail () {
-
+      this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
     },
     // 分享测款
     handleShareTest () {
-
+      this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
     },
     // 免费测款
     handleCheck () {
-
+      this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
     },
     // 报名参加
     handleApplySubmit (info) {
@@ -123,7 +119,7 @@ export default {
     },
     // 请求订购会主页
     handleRequestMain () {
-      this.bannerCode = this.$route.query.bannerCode || '1000A01'
+      this.bannerCode = this.$route.query.bannerCode
       const params = {
         bannerCode: this.bannerCode,
         bookDataQueryType: '0',

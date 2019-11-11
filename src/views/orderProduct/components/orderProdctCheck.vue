@@ -156,6 +156,7 @@ export default {
         img {
           height: 119px;
           width: 100%;
+          border-radius: 4px;
           object-fit: cover
         }
       }

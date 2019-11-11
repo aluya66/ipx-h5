@@ -24,7 +24,6 @@ Vue.mixin(mixin)
 Vue.use(VueRouter)
 Vue.use(Layout)
 Vue.config.productionTip = false
-Vue.prototype.$toast = Toast
 // 全局注册自定义组件
 registerComponent(Vue)
 
@@ -39,6 +38,7 @@ const globalVue = new Vue({
   render: h => h(App),
   beforeCreate () {
     Vue.prototype.$api = serviceApi
+    Vue.prototype.$toast = Toast
     Vue.prototype.$defaultImg = require('images/img_default_photo.png')
     Vue.prototype.$staticFile =
       process.env.NODE_ENV === 'production'
