@@ -7,7 +7,7 @@
 
     <div class="panel">
       <div class="top-title">
-        <p>已为您生成以下测款页面，测款商品为本次订货会的9款主打商品：</p>
+        <p>已为您生成以下测款页面，测款商品为本次订货会的{{totalNum}}款主打商品：</p>
       </div>
       <c-list class="list-scroll">
         <div class="scale-content">
@@ -44,11 +44,15 @@ export default {
   },
   data () {
     return {
+      totalNum: '',
       list: []
     }
   },
   created () {
     this.getTestStyleList()
+  },
+  mounted() {
+
   },
   methods: {
     getTestStyleList () {
@@ -64,6 +68,7 @@ export default {
           this.list = res.selfMeasureData.selfMeasureProds
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
+            this.totalNum = this.list.length || 0
           }
         })
         .catch(err => {

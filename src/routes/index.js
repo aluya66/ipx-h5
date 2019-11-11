@@ -10,7 +10,8 @@ const demos = utils.isDebug ? require('./demos').modules : {}
 const Route = (VueRouter) => {
   const router = new VueRouter({
     routes: [...Object.values(routes), ...Object.values(demos)],
-    mode: !utils.isDebug ? process.env.VUE_APP_ROUTEMODEL : 'hash',
+    // mode: !utils.isDebug ? process.env.VUE_APP_ROUTEMODEL : 'hash',
+    mode: !utils.isDebug ? process.env.VUE_APP_ROUTEMODEL : 'history',
     base: !utils.isDebug ? process.env.VUE_APP_BASEURLPATH : '',
     strict: utils.isDebug,
     scrollBehavior (to, from, savedPosition) {
