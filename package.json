@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
+		"build:dev": "npm run lint --fix && vue-cli-service build --mode dev",
 		"build": "npm run lint --fix && vue-cli-service build",
 		"build:pre": "npm run lint --fix && vue-cli-service build --mode pre",
 		"build:test": "npm run lint --fix && vue-cli-service build --mode test",
