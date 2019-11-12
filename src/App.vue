@@ -33,16 +33,16 @@ export default {
       }
 
       let testData = {
-        'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOcOmQoK4innS9aNwMdykxgYPg862IwoZm3WL6uAdjs4vP7finKFoc9BpX3OeZ8mk0RdGvFcEDCCoLmVEAeos4BRBDPgsoJQzcOd726A+FG6Ifq0KS5N6T4DCJ1g7s774oLZijnZ2IBpLY0jioQkTxR88pl9JNmUS4FHB4U9QIHbsDw9AmGHm1xwXnRgN7XA+UnjPynb+gxgS0Yxm+ZGpuKt+qE8xiMHosxHaWzajqfg1Ex+a543OBS1IllQtWpwTLs0vRGU5iFkMoT4fJxXhgJ',
-        'channel': 'WEB',
-        'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
-        'app_version': '1.2.0',
-        'platform': 'android',
-        'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
-        'mobile_model': 'ELE-AL00',
-        'os_version': '9',
-        'lat': '100.156161',
-        'lng': '100.156161'
+        token: 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOcOmQoK4innS9aNwMdykxgYPg862IwoZm3WL6uAdjs4vP7finKFoc9BpX3OeZ8mk0RdGvFcEDCCoLmVEAeos4BRBDPgsoJQzcOd726A+FG6Ifq0KS5N6T4DCJ1g7s774oLZijnZ2IBpLY0jioQkTxR88pl9JNmUS4FHB4U9QIHbsDw9AmGHm1xwXnRgN7XA+UnjPynb+gxgS0Yxm+ZGpuKt+qE8xiMHosxHaWzajqfg1Ex+a543OBS1IllQtWpwTLs0vRGU5iFkMoT4fJxXhgJ',
+        channel: 'WEB',
+        app_id: '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
+        app_version: '1.2.0',
+        platform: 'android',
+        device_id: '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
+        mobile_model: 'ELE-AL00',
+        os_version: '9',
+        lat: '100.156161',
+        lng: '100.156161'
       }
 
       let results = {}
@@ -53,17 +53,15 @@ export default {
       } else {
         results = window.nativeInjectData
       }
-
-      this.baseParams = results.data || testData
-
-      this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 24
-
-      utils.setStore('baseParams', JSON.stringify(this.baseParams))
-      utils.setStore('token', this.baseParams.token)
+      if (results) {
+        this.baseParams = results.data || testData
+        this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 24
+        utils.setStore('baseParams', JSON.stringify(this.baseParams))
+        utils.setStore('token', this.baseParams.token)
+      }
     }
   }
 }
-
 </script>
 <style lang='less'>
 @import "~themes/styles/base.less";

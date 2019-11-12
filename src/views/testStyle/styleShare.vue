@@ -51,7 +51,7 @@ export default {
   created () {
     this.getTestStyleList()
   },
-  mounted() {
+  mounted () {
 
   },
   methods: {

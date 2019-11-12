@@ -58,7 +58,9 @@ export default {
 <style lang="less" scoped>
 .panel {
   .report-list {
+    height: calc(100vh - 240px);
     padding-bottom: 2px;
+    overflow: auto;
     .report {
       display: flex;
       justify-content: space-between;

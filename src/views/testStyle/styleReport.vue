@@ -1,35 +1,28 @@
 <template>
   <layout-view>
-    <c-list class="list-scroll">
-      <div class="panel">
-        <div class="head">
-          <img
-            src="../../themes/images/app/invalid-name@2x.png"
-            alt=""
-          >
-          <c-header
-            slot="header"
-            :left-arrow="true"
-          >
-          </c-header>
-          <div class="content">
-            <p>测款数据</p>
-            <span>数据持续更新中</span>
-          </div>
+    <!-- <c-list class="list-scroll"> -->
+    <div class="panel">
+      <div class="head">
+        <img src="../../themes/images/app/invalid-name@2x.png" alt />
+        <c-header slot="header" :left-arrow="true"></c-header>
+        <div class="content">
+          <p>测款数据</p>
+          <span>数据持续更新中</span>
         </div>
-        <div class="tab-raduis">
-          <c-tabs
-            :tabs="tabs"
-            :line-width="8/100+'rem'"
-            :title-active-color="'#2a2b33'"
-            :title-inactive-color="'#8a8c99'"
-            :border="false"
-            @change="changeActive"
-          ></c-tabs>
-        </div>
-        <reportList :list="testStyleList" />
       </div>
-    </c-list>
+      <div class="tab-raduis">
+        <c-tabs
+          :tabs="tabs"
+          :line-width="8/100+'rem'"
+          :title-active-color="'#2a2b33'"
+          :title-inactive-color="'#8a8c99'"
+          :border="false"
+          @change="changeActive"
+        ></c-tabs>
+      </div>
+      <reportList :list="testStyleList" />
+    </div>
+    <!-- </c-list> -->
   </layout-view>
 </template>
 

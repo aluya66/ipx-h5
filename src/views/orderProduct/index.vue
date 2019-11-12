@@ -2,7 +2,7 @@
   <layout-view>
     <!-- <router-view></router-view> -->
     <div class="op-contain">
-      <c-header :pageOutStatus="false" slot="header">
+      <c-header :pageOutStatus="true" slot="header">
         <template v-slot:title>
           <span>订购会</span>
         </template>
@@ -15,7 +15,7 @@
         <section-header class="newHeader" title="上周订货会快报" subTitle="订货会热销行情，最新市场风向标" />
         <list :allList="listsObject"/>
         <store-address />
-        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply">
+        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply" v-if="enableToTakePart === 1">
           <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
@@ -55,10 +55,11 @@ export default {
   },
   data () {
     return {
-      bannerCode: '1000A01',
+      bannerCode: '',
       inScroll: false,
       oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
+      enableToTakePart: '', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
       showPopup: false,
       topImage: require('@/themes/images/app/main-name@2x.png'),
       products: [],
@@ -87,7 +88,7 @@ export default {
     },
     // 查看测款页
     handleTestDetail () {
-      this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
+      this.$router.push({ path: '/testStyle/vote', query: { bannerCode: this.bannerCode } })
     },
     // 分享测款
     handleShareTest () {
@@ -127,6 +128,7 @@ export default {
         bookRankDispalyNum: '10'
       }
       this.$api.book.bookMainInfo(params).then((response) => {
+        this.enableToTakePart = response.enableToTakePart
         if (response.bookMeasureProds instanceof Array) {
           this.products = response.bookMeasureProds
         }
@@ -164,7 +166,7 @@ export default {
     this.handleRequestUserManagers()
   },
   mounted () {
-    this.handleScroll()
+    // this.handleScroll()
   },
   destroyed () {
     window.removeEventListener('scroll') // 离开当前组件别忘记移除事件监听哦
@@ -178,7 +180,7 @@ export default {
   background: @color-c8;
   // height: 100%;
   .content {
-    height: calc(100vh - 40px);
+    height: calc(100vh - 50px);
     overflow: auto;
     .bottomBtn {
       position: fixed;

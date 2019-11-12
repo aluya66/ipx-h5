@@ -39,7 +39,8 @@ instance.interceptors.response.use((response) => {
   const {
     data
   } = response
-  if (data.code === 0) {
+  console.log(data.code, 'data')
+  if (data.code === 0 || data.code === undefined) {
     // 正常返回数据，指返回data;
     return response.data
   } else {
