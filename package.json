@@ -1,6 +1,6 @@
 {
-	"name": "yosar-stargo-h5",
-	"version": "0.0.1",
+	"name": "ipx_current_hybrid_app",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"build:dev": "npm run lint --fix && vue-cli-service build --mode dev",
