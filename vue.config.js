@@ -124,7 +124,7 @@ module.exports = {
         test: new RegExp(`\\.(${['js', 'css'].join('|')})$`),
         threshold: 8192,
         minRatio: 0.8
-      }),
+      })
       // Webpack包文件分析器(https://github.com/webpack-contrib/webpack-bundle-analyzer)
       // new BundleAnalyzerPlugin()
     ]
@@ -195,7 +195,7 @@ module.exports = {
         target: process.env.VUE_APP_serverUrl,
         ws: false,
         pathRewrite: {
-          // '^/openApi': '/'
+          '^/api-ipx': '/'
         }
       },
       [process.env.VUE_APP_WXPATH]: {

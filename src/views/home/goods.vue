@@ -11,18 +11,22 @@
         <c-svg class-name="icon-scan" name="scan"></c-svg>
       </template>
     </c-search>
-    <goods-list :searchObj="searchObj" :type="curType"></goods-list>
+    <!-- <goods-list :searchObj="searchObj" :type="curType"></goods-list> -->
+    <button @click="routerLink(`/testStyle/report`)">查看测款报告</button>
+    <button @click="routerLink(`/testStyle/vote`)">测款投票</button>
+    <button @click="routerLink(`/testStyle/share`)">测款分享</button>
+
   </layout-view>
 </template>
 
 <script>
-import GoodsList from '../goods/list.vue'
+// import GoodsList from '../goods/list.vue'
 import components from 'components'
 const { CTabs, CSvg } = components
 
 export default {
   components: {
-    GoodsList,
+    // GoodsList,
     CTabs,
     CSvg
   },
