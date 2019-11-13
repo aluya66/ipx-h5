@@ -80,7 +80,7 @@ export default create({
         // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
         // alert(this.paddingTop)
       }
-    } else {
+    } else if (this.baseParams.platform === 'android') {
       this.paddingTop = statusBarHeight + 'rem'
     }
   },

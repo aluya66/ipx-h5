@@ -402,7 +402,9 @@ export default {
         .then(res => {
           this.slide = []
           this.feed = res.data
-          if (res.data.keywords) { this.feed.keywords = res.data.keywords.split(',') }
+          if (res.data.keywords) {
+            this.feed.keywords = res.data.keywords.split(',')
+          }
           this.activeName = res.data.csort_id
           // this.feed.release_time = this.$formatTime(this.feed.release_time)
           if (this.activeName === 12) {
@@ -569,10 +571,11 @@ export default {
 }
 
 .display-share-img {
+  width: 100% !important;
   img {
     object-fit: cover;
     object-position: top;
-    width: 100%;
+    width: 100% !important;
     height: 190px;
     cursor: pointer;
   }
@@ -583,7 +586,7 @@ export default {
   // font-size: 16px;
   // line-height: 24px;
   position: relative;
-  width: 100%;
+  width: 100% !important;
   height: 100%;
   text-align: left;
   // background: url("../assets/img/iphoneX.png") no-repeat center 0;
@@ -781,7 +784,7 @@ export default {
     right: 26px;
     bottom: 40px;
     overflow: auto;
-    height: calc(100vh - 50px);
+    height: calc(100vh);
     // border-radius: 0 0 35px 35px;
     // border: 1px solid #edf0f4;
     border-top: none;
@@ -958,8 +961,9 @@ export default {
   }
   .video-content {
     font-size: 14px;
+    width: 100%;
     padding: 16px;
-    line-height: 30px;
+    line-height: 24px;
     p {
       text-align: left;
       background: none !important;
@@ -972,8 +976,9 @@ export default {
     img {
       margin: 0 auto;
       display: block;
-      max-width: 100% !important;
-      height: auto;
+      width: 100%;
+      max-width: 100%;
+      height: auto !important;
     }
     .img_loading {
       background-color: #ebebeb;
@@ -1052,7 +1057,8 @@ export default {
   }
   .video-tags {
     // margin: 0 0 32px 0;
-    margin: 0 0 32px 16px;
+    // margin: 0 0 70px 16px;
+    padding: 0 0 70px 16px;
     .tag {
       display: inline-block;
       padding: 8px 5px;
@@ -1063,6 +1069,7 @@ export default {
   }
   .display-img {
     position: relative;
+    padding: 0 12px!important;
     .ul {
       max-width: 100%;
       overflow: hidden;
@@ -1070,12 +1077,17 @@ export default {
       list-style: none;
       margin: 0;
       padding: 0;
+      // margin: 0  -16px;
       .li {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 33.33%;
-        padding: 0 0.3125rem 0.3125rem 0;
+        width: 31%;
+        // height: 111px;
+        margin: 0 10px 10px 0;
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
         .div {
           padding-bottom: 100%;
           background-color: #e6e6e6;
@@ -1083,6 +1095,7 @@ export default {
           position: relative;
           // display: inline-block;
           width: 100%;
+          // height: 111px;
           .img {
             background-size: cover;
             background-repeat: no-repeat;
@@ -1090,6 +1103,7 @@ export default {
             position: absolute;
             width: 100%;
             height: 100%;
+            // height: 111px;
           }
         }
       }

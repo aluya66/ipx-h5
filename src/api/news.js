@@ -1,7 +1,7 @@
 import Http from '../utils/request'
 
 const context = process.env.VUE_APP_CMS_serverPath
-//const context = 'https://portal.meirishanglai.com'
+// const context = 'https://portal.meirishanglai.com'
 /**
  * 订购会主页接口
  * @param {*} params params数据对象

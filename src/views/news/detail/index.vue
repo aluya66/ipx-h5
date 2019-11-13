@@ -18,7 +18,8 @@ export default {
       loading: true
     }
   },
-  mounted: function () {},
+  mounted: function () {
+  },
   methods: {
     getImg () {
       this.imagList = []
@@ -234,22 +235,19 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-
-</style>
-
-<style  lang="less" scoped>
+<style  lang="less">
 .video-content {
   color: #000000;
   font-size: 14px;
-  width: 100%;
-  // line-height: 24px;
+  width: 100% !important;
+  line-height: 24px;
   text-align: left;
   display: inline-block;
-  background-color: #f7f7f7;
-  height: calc(100vh);
-  overflow: auto;
+  // background-color: #f7f7f7;
+  padding-bottom: 30px !important;
+  background-color: #fff;
+  // height: calc(100vh);
+  // overflow: auto;
   p {
     text-align: left;
     background: none !important;
@@ -258,12 +256,14 @@ export default {
     margin-block-end: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
+    padding: 0 16px!important;
   }
   img {
     margin: 0 auto;
     display: block;
+    width: 100% !important;
     max-width: 100% !important;
-    height: auto;
+    height: auto !important;
   }
   .img_loading {
     background-color: #ebebeb;

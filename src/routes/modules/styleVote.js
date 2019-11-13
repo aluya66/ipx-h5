@@ -1,5 +1,5 @@
 export default {
-  path: '/testStyle/vote',
+  path: '/',
   name: 'styleVote',
   meta: {
     title: '选择偏爱款式',

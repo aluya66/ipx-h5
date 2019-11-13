@@ -1,35 +1,33 @@
 <template>
-  <layout-view>
-    <div class="flex install-bottom">
-      <div class="flex-left">
-        <div class="logo">
-          <!-- <img src="" alt="" srcset=""> -->
-        </div>
-        <div class="name">
-          <h5>IPX</h5>
-          <em>·</em>
-          <span>原创设计师服装集中地</span>
-        </div>
+  <div class="flex install-bottom">
+    <div class="flex-left">
+      <div class="logo">
+        <!-- <img src="" alt="" srcset=""> -->
       </div>
-      <div class="flex-right flex-btn" @click="download">
-        <span>立即下载</span>
-        <i class="icon icon-next"></i>
+      <div class="name">
+        <h5>IPX</h5>
+        <em>·</em>
+        <span>原创设计师服装集中地</span>
       </div>
     </div>
-  </layout-view>
+    <div class="flex-right flex-btn" @click="download">
+      <span>立即下载</span>
+      <i class="icon icon-next"></i>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {};
+  data () {
+    return {}
   },
   methods: {
-    download() {
+    download () {
       window.location.href = 'https://h5.yosar.com/pages/downLoad/'
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -45,7 +43,7 @@ export default {
   padding: 0 16px;
   .flex-left {
     display: flex;
-      align-items: center;
+    align-items: center;
     .logo {
       width: 26px;
       height: 26px;
@@ -106,5 +104,3 @@ export default {
 // https://openapi.yosar.com/oauth   获取授权
 // https://openapi.yosar.com/oauth?code=011rLV0G0ft89d2DlX3G0ugK0G0rLV0q&state=12
 </style>
-
-

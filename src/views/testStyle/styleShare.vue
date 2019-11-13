@@ -21,11 +21,11 @@
         <h4>分享给您的顾客，开始收集测款数据吧～</h4>
         <p>(测款数据在订货会页面查看)</p>
         <div class="share-logo">
-          <div class="left">
+          <div class="left" @click="shareWechat(1)">
             <img src="../../themes/images/app/share-wechat@2x.png">
             <p>微信群</p>
           </div>
-          <div class="left">
+          <div class="left" @click="shareWechat(2)">
             <img src="../../themes/images/app/share-wefriends@2x.png">
             <p>朋友圈</p>
           </div>
@@ -38,6 +38,7 @@
 
 <script>
 import shareList from '@/views/common/shareList'
+import utils from 'utils'
 export default {
   components: {
     shareList
@@ -58,14 +59,14 @@ export default {
     getTestStyleList () {
       const params = {
         bannerCode: this.$route.query.bannerCode,
-        bookDataQueryType: 1,
+        bookDataQueryType: 0,
         bookRankDispalyNum: 9
       }
       this.$api.book
         .bookMainInfo(params)
         .then(res => {
           console.log(res)
-          this.list = res.selfMeasureData.selfMeasureProds
+          this.list = res.bookMeasureProds
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
             this.totalNum = this.list.length || 0
@@ -74,6 +75,20 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    shareWechat (type) {
+      // type 1=好友 2=朋友圈
+      alert(type)
+      let method = 'one_key_share'
+      let params = {
+        type: String(type),
+        title: '我想邀请你一起做时尚买手',
+        url: 'http://192.168.52.9:6099/oauth',
+        shareImage: '../../themes/images/app/logo.png',
+        description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
+      }
+
+      utils.postMessage(method, params)
     }
   }
 }
@@ -96,7 +111,7 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(150vh - 150px);
+    height: calc(100vh - 130px);
   }
   .scale-content {
     width: 120%;

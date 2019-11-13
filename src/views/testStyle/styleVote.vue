@@ -30,25 +30,37 @@ export default {
   },
   data () {
     return {
+      code: '', // 微信授权code
+      openId: '', // 微信openId
+      bannerCode: '', //banner图片code
       list: [],
       selectedNum: 0,
       isCommit: false
     }
   },
   created () {
+    this.code = this.$route.query.code
+    this.bannerCode = this.$route.query.bannerCode
+    if (this.code) {
+      this.getOauth()
+    }
     this.getTestStyleList()
   },
   methods: {
     getTestStyleList () {
       const params = {
-        bannerCode: '1000A01',
-        bookDataQueryType: 1,
+        bannerCode: this.bannerCode,
+        bookDataQueryType: 0,
         bookRankDispalyNum: 9
       }
+
+      //http://ipx-hybrid.yosar.develop/api-ipx/v1/bookactivity/list?bannerCode=BN6971899666906500&bookDataQueryType=1&bookRankDispalyNum=9
+      //http://ipx-hybrid.yosar.develop/api-ipx/v1/bookactivity/list?bannerCode=BN6971899666906500&bookDataQueryType=0&bookRankQueryType=0&bookRankDispalyNum=10
       this.$api.book
         .bookMainInfo(params)
         .then(res => {
-          let data = res.selfMeasureData.selfMeasureProds
+          console.log(res)
+          let data = res.bookMeasureProds
           data.forEach((item, index) => {
             item.isSelect = false
           })
@@ -93,8 +105,8 @@ export default {
         })
         const params = {
           bookActivityCode: '1000A01',
-          voteProductCodes: arr
-        //   participantCode: openid
+          voteProductCodes: arr,
+          participantCode: this.openid
         }
         this.$api.book
           .bookGoodsVote(params)
@@ -102,13 +114,34 @@ export default {
             if (res.code === 0) {
               Toast.success('投票成功')
               this.isCommit = true
+            } else {
+
             }
           })
           .catch(err => {
             console.log(err)
           })
       }
+    },
+    getOauth () {
+      // alert(123213)
+      let params = {
+        code: this.code
+      }
+      // alert(JSON.stringify(params))
+      this.$api.oauth
+        .getOauth(params)
+        .then(res => {
+          this.openId = res.data
+          // alert(JSON.stringify(res))
+          // oQB0T1bPzZ6M33fHozD19bxAUA4s
+        })
+        .catch(err => {
+          // alert(JSON.stringify(err))
+          console.log(err)
+        })
     }
+    // https://openapi.yosar.com/oauth
   }
 }
 </script>
