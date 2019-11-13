@@ -47,12 +47,15 @@ export default {
 
       let results = {}
       let data = {}
-      if (!isIos) {
-        data = window.IPX.postMessage(JSON.stringify(params))
-        results = JSON.parse(data).results
-      } else {
-        results = window.nativeInjectData
+      if(statusBarHeight) {
+        if (!isIos) {
+          data = window.IPX.postMessage(JSON.stringify(params))
+          results = JSON.parse(data).results
+        } else {
+          results = window.nativeInjectData
+        }
       }
+      
       if (results) {
         this.baseParams = results.data || testData
         this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 24

@@ -207,7 +207,6 @@
         </span>
       </el-dialog>-->
     </div>
-
     <v-share-footer></v-share-footer>
   </layout-view>
 </template>
@@ -216,7 +215,7 @@
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
-import vShareFooter from '../common/footer';
+import vShareFooter from '../common/footer'
 
 import { Icon } from 'vant'
 export default {
@@ -405,7 +404,7 @@ export default {
           this.feed = res.data
           if (res.data.keywords) { this.feed.keywords = res.data.keywords.split(',') }
           this.activeName = res.data.csort_id
-          this.feed.release_time = this.$formatTime(this.feed.release_time)
+          // this.feed.release_time = this.$formatTime(this.feed.release_time)
           if (this.activeName === 12) {
             document.title = res.data.content
             this.feed.summary = this.feed.content.replace(
@@ -465,17 +464,6 @@ export default {
         })
         .catch(err => {
           console.log(err)
-          // if (err.response && err.response.data && err.response.data.message) {
-          //     this.$message({
-          //     message: err.response.data.message,
-          //     type: "error"
-          //     });
-          // } else {
-          //     this.$message({
-          //     message: "评论加载失败",
-          //     type: "error"
-          //     });
-          // }
         })
     },
     getComments (id) {
@@ -508,7 +496,7 @@ export default {
     },
     showFeed () {
       this.activeName = this.feed.activeName
-      this.feed.release_time = this.$formatTime(this.feed.release_time)
+      // this.feed.release_time = this.$formatTime(this.feed.release_time)
       if (this.activeName === 12) {
         this.feed.summary = this.feed.content.replace(
           /(\r\n|\n|\r)/gm,
@@ -793,7 +781,7 @@ export default {
     right: 26px;
     bottom: 40px;
     overflow: auto;
-    height: calc(100vh);
+    height: calc(100vh - 50px);
     // border-radius: 0 0 35px 35px;
     // border: 1px solid #edf0f4;
     border-top: none;

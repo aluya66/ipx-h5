@@ -1,36 +1,20 @@
 <template>
   <layout-view>
-    <div
-      class="-openinstall-banner openinstall-banner"
-      style="position: fixed; left: 0; bottom: 0; width: 100%; background: rgba(9, 9, 9, 0.5)"
-    >
-      <table style="table-layout: fixed; width: 100%;" border="0" cellspacing="0" cellpadding="0">
-        <tbody>
-          <tr>
-            <td style class="logo">
-              <img
-                class="-openinstall-banner-icon"
-                src="https://res.cdn.openinstall.io/app_icon/bj5q9y/6642324794889720759-1565679966853.png"
-                alt
-                style="vertical-align: middle;  "
-              />
-            </td>
-            <td style="vertical-align: middle;  text-align: left">
-              <p
-                class="-openinstall-banner-title"
-                style=" margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: rgb(255, 255, 255)"
-              >每日尚来</p>
-              <p
-                class="-openinstall-banner-desc"
-                style=" margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: rgb(255, 255, 255)"
-              >欢迎进入每日尚来</p>
-            </td>
-            <td class="openinstall-btn" style="vertical-align: middle; ">
-              <a class="-openinstall-banner-button" href="javascript:void;" style>进入App</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="flex install-bottom">
+      <div class="flex-left">
+        <div class="logo">
+          <!-- <img src="" alt="" srcset=""> -->
+        </div>
+        <div class="name">
+          <h5>IPX</h5>
+          <em>·</em>
+          <span>原创设计师服装集中地</span>
+        </div>
+      </div>
+      <div class="flex-right flex-btn" @click="download">
+        <span>立即下载</span>
+        <i class="icon icon-next"></i>
+      </div>
     </div>
   </layout-view>
 </template>
@@ -39,53 +23,88 @@
 export default {
   data() {
     return {};
+  },
+  methods: {
+    download() {
+      window.location.href = 'https://h5.yosar.com/pages/downLoad/'
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
-.openinstall-banner {
-  td {
+.install-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-family: PingFangSC-Regular, PingFang SC;
+  height: 56px;
+  background: rgba(255, 255, 255, 1);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  .flex-left {
+    display: flex;
+      align-items: center;
+    .logo {
+      width: 26px;
+      height: 26px;
+      background: rgba(0, 0, 0, 1);
+      border-radius: 50%;
+    }
+    .name {
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      h5 {
+        font-size: 16px;
+        color: rgba(42, 43, 51, 1);
+        line-height: 22px;
+        margin: 0;
+        padding: 0;
+      }
+      em {
+        color: rgba(42, 43, 51, 1);
+        line-height: 20px;
+        margin: 0 4px;
+      }
+      span {
+        font-size: 12px;
+        color: rgba(138, 140, 153, 1);
+        line-height: 16px;
+      }
+    }
   }
-  img {
-    width: 41px;
-    height: 41px;
-    margin: 0 5px;
-  }
-  .logo {
-    width: 50px;
-    height: 60px;
-    vertical-align: middle;
-    text-align: center;
-  }
-  .-openinstall-banner-title {
-    font-size: 18px;
-    line-height: 25px;
-  }
-  .-openinstall-banner-desc {
-    font-size: 14px;
-  }
-
-  .openinstall-btn {
-    height: 60px;
-    text-align: center;
-    width: 100px;
-    .-openinstall-banner-button {
-      display: inline-block;
-      text-decoration: none;
-      cursor: pointer;
-      font-size: 14px;
-      margin: 0;
-      border-radius: 15px;
-      padding: 12px 20px;
-      max-width: 120px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      border: rgb(224, 14, 14) solid 1px;
-      background: rgb(224, 14, 14);
-      color: rgb(255, 255, 255);
+  .flex-right {
+    &.flex-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 82px;
+      height: 24px;
+      background: rgba(228, 233, 255, 1);
+      border-radius: 12px;
+      padding: 0 6px;
+      span {
+        color: rgba(6, 48, 254, 1);
+        line-height: 20px;
+      }
+      .icon {
+        &.icon-next {
+          width: 12px;
+          height: 12px;
+          background: url("../../../themes/images/app/icon_next_12＊12_blue@2x.png")
+            no-repeat center;
+          background-size: cover;
+        }
+      }
     }
   }
 }
+//https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx91c95befdc3e2166&redirect_uri=http%3a%2f%2f27684m4p64.wicp.vip%2ftestStyle%2fvote&response_type=code&scope=snsapi_userinfo&state=12&uin=MTMwODk0NDc4Mg%3D%3D&key=9d288677f073f000f76c3b9ad78250a6503c432017ceb524057f3aa85377706d845400c8462afc59ec8b988f0431f2e0&pass_ticket=rap/90AY4bb/Y5c9bX57dQvF5VgyflUIt/+dYHUmBziUmA9ie2gG0VO8ixl+uPDsZYmh2YrSxUOE31X8l5yjQA==
+// https://openapi.yosar.com/ticket  获取appid信息
+// https://openapi.yosar.com/oauth   获取授权
+// https://openapi.yosar.com/oauth?code=011rLV0G0ft89d2DlX3G0ugK0G0rLV0q&state=12
 </style>
+
+
