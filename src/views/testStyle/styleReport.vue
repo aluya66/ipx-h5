@@ -47,18 +47,20 @@ export default {
           title: '平台测款数据'
         }
       ],
+      participantCode: '',
       curType: 0,
       testStyleList: []
     }
   },
   created () {
+    this.participantCode = this.$route.query.participantCode
     this.getRankList()
   },
   methods: {
     getRankList () {
       const params = {
-        bookRankDispalyNum: 10,
-        bookVoteSearchType: this.curType
+        bookVoteSearchType: this.curType,
+        participantCode: this.participantCode
       }
       this.$api.book
         .bookRankList(params)

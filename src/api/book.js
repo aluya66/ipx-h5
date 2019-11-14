@@ -44,3 +44,12 @@ export const bookApply = params => Http.fetch(`${context}/v1/bookactivity/partic
 export const bookApplyManagers = params => Http.fetch(`${context}/v1/bookactivity/tradeconfig`, params, {
   method: 'get'
 })
+
+/**
+ * 我的测款分享，分享测款商品列表，查询
+ * @param {*} params params数据对象
+ * @param {Object} mockFile 接口名称对应的mock数据文件
+ */
+export const getSharemeasuresList = params => Http.fetch(`${context}/v1/bookactivity/sharemeasures`, params, {
+  method: 'get'
+})

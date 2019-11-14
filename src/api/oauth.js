@@ -11,3 +11,13 @@ export const getOauth = params => Http.fetch(`${context}/oauth`, params, {
   method: 'get',
   hasErrMsg: true
 })
+
+/**
+ * 获取appid
+ * @param {*} params params数据对象
+ * @param {Object} mockFile 接口名称对应的mock数据文件
+ */
+export const getTicket = params => Http.fetch(`${context}/ticket`, params, {
+  method: 'get',
+  hasErrMsg: true
+})

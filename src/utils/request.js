@@ -97,6 +97,7 @@ const setProxy = mockFile => `/mock/${mockFile}`
  */
 
 const setParams = (url, params = {}, opt = {}) => {
+  let baseParams = utils.getStore('baseParams') || {}
   promiseArr.isGlobalErr = !!opt.hasErrMsg
   // 所有接口统一参数
   params = {
@@ -125,16 +126,16 @@ const setParams = (url, params = {}, opt = {}) => {
     url,
     headers: {
       'Content-Type': contentType,
-      'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaMOUKxn/Nr+TPPpLUrJy2fRIVaudh6PyYYCGrGXgA+SQ1IxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLkjTd2QCWiQV5Nl6YidQH/Jcdrza43Faor/InsY+l/X8fh2ChRgK/0hYh6SycThPDD+bRGh43DLnbYPH5Tp45QR+fcFd4n5i9o+D2viZss6h5ebVi6arcZwaqyTQas7Eh+CMiuZI6CDn1BdnQ5ylxj4Z61erWafefdYYbK175C/MELjYl0NgVwe9nGXVyHN63StP/BRM1gfZO0C2hISdoDaK0fRK/GtHdiiasX1Io9LEm1F6QkniSvBv5MN6vFAuhhTClRPRlPYBzJkz3lG8WYxLM4aF1KuN70cQoXZQ+pf2zzAwu8bqKClxyAXzROCIQ868okob2RxLw==',
-      'channel': 'WEB',
-      'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
-      'app_version': '1.2.0',
-      'platform': 'android',
-      'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
-      'mobile_model': 'ELE-AL00',
-      'os_version': '9',
-      'lat': '100.156161',
-      'lng': '100.156161'
+      'token': utils.getStore('token') || opt.token || 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaMOUKxn/Nr+TPPpLUrJy2fRIVaudh6PyYYCGrGXgA+SQ1IxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLkjTd2QCWiQV5Nl6YidQH/Jcdrza43Faor/InsY+l/X8fh2ChRgK/0hYh6SycThPDD+bRGh43DLnbYPH5Tp45QR+fcFd4n5i9o+D2viZss6h5ebVi6arcZwaqyTQas7Eh+CMiuZI6CDn1BdnQ5ylxj4Z61erWafefdYYbK175C/MELjYl0NgVwe9nGXVyHN63StP/BRM1gfZO0C2hISdoDaK0fRK/GtHdiiasX1Io9LEm1F6QkniSvBv5MN6vFAuhhTClRPRlPYBzJkz3lG8WYxLM4aF1KuN70cQoXZQ+pf2zzAwu8bqKClxyAXzROCIQ868okob2RxLw==',
+      'channel': baseParams.channel || opt.channel || 'WEB',
+      'app_id': baseParams.app_id || opt.app_id || '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
+      'app_version': baseParams.app_version || opt.app_version || '1.2.0',
+      'platform': baseParams.platform || opt.platform || 'android',
+      'device_id': baseParams.device_id || opt.device_id || '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
+      'mobile_model': baseParams.mobile_model || opt.mobile_model || 'ELE-AL00',
+      'os_version': baseParams.os_version || opt.os_version || '9',
+      'lat': baseParams.lat || opt.lat || '100.156161',
+      'lng': baseParams.lng || opt.lng || '100.156161'
     },
     method
   }

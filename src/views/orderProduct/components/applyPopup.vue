@@ -1,22 +1,43 @@
 <template>
   <popup
-  v-model="isShow"
-  closeable
-  round
-  position="bottom"
-  class="contain"
-  @close='handleClose'
-  :style="{ height: '4.59rem' }"
+    v-model="isShow"
+    closeable
+    round
+    position="bottom"
+    class="contain"
+    @close="handleClose"
+    :style="{ height: '4.59rem' }"
   >
     <h3>报名参会</h3>
     <div class="content">
       <p>订货会为私享定向邀请制，需提交报名审核通过方可入场</p>
-      <field class="input" v-model="userName" :border='false' placeholder="请输入姓名" />
-      <field class="input" v-model="userPhone"  maxlength='11' :border='false' placeholder="请输入手机号" :error='showPhoneError' @blur='handleVerifyPhone'/>
-      <field class="input" v-model="userCity" :border='false' placeholder="请输入您所在城市" />
+      <field
+        class="input"
+        v-model="userName"
+        :border="false"
+        placeholder="请输入姓名"
+        maxlength="20"
+        :error="showUserNameError"
+        @blur="handleVerifyUserName"
+      />
+      <field
+        class="input"
+        v-model="userPhone"
+        maxlength="11"
+        :border="false"
+        placeholder="请输入手机号"
+        :error="showPhoneError"
+        @blur="handleVerifyPhone"
+      />
+      <field class="input" v-model="userCity" :border="false" placeholder="请输入您所在城市" />
       <p class="secHeader">经营类型:</p>
       <div class="manage">
-        <section :class="handleContainItem(item.tradeCode) ? 'manageItem itemSelect' :'manageItem itemDefault' " v-for="(item ,index) in manageTypes" :key="index" @click="handleSelect(item.tradeCode)">{{item.tradeDesc}}</section>
+        <section
+          :class="handleContainItem(item.tradeCode) ? 'manageItem itemSelect' :'manageItem itemDefault' "
+          v-for="(item ,index) in manageTypes"
+          :key="index"
+          @click="handleSelect(item.tradeCode)"
+        >{{item.tradeDesc}}</section>
       </div>
       <div :class="['submit',submitState?'enable':'disable']" @click="handleApply">提交报名</div>
     </div>
@@ -24,8 +45,8 @@
 </template>
 
 <script>
-import { Popup, Field } from 'vant'
-import utils from 'utils'
+import { Popup, Field } from "vant";
+import utils from "utils";
 
 export default {
   components: {
@@ -39,62 +60,81 @@ export default {
     },
     manageTypes: {
       type: Array,
-      default () {
-        return []
+      default() {
+        return [];
       }
     }
   },
-  data () {
+  data() {
     return {
       isShow: false,
       phoneFormartResult: false,
       showPhoneError: false,
-      userName: '',
-      userPhone: '',
-      userCity: '',
-      selectCode: ''
+      showUserNameError: false,
+      userName: "",
+      userPhone: "",
+      userCity: "",
+      selectCode: ""
       // selectItems: []
-    }
+    };
   },
   watch: {
-    showPopup (val) {
-      this.isShow = val
+    showPopup(val) {
+      this.isShow = val;
     },
-    userPhone (val) {
-      let phoneResult = utils.isMobile(this.userPhone)
-      this.phoneFormartResult = phoneResult
+    userPhone(val) {
+      let phoneResult = utils.isMobile(this.userPhone);
+      this.phoneFormartResult = phoneResult;
       if (val.length === 11) {
         if (!phoneResult) {
-          this.showPhoneError = true
-          this.$toast('手机格式有误')
+          this.showPhoneError = true;
+          this.$toast("手机格式有误");
         } else {
-          this.showPhoneError = false
+          this.showPhoneError = false;
         }
       } else {
-        this.phoneFormartResult = false
-        this.showPhoneError = false
+        this.phoneFormartResult = false;
+        this.showPhoneError = false;
+      }
+    },
+    userName(val) {
+      let reg = "/^[\u0391-\uFFE5A-Za-z]+$/";
+      let userNameResult = reg.test(val);
+      if (!userNameResult) {
+        this.showPhoneError = true;
+        this.$toast("请输入正确的姓名");
+      } else {
+        this.showPhoneError = false;
       }
     }
   },
+  created() {
+    console.log(this.bookActivityCode);
+  },
   computed: {
-    submitState () {
-      if (this.userName.length && this.userCity.length && this.selectCode.length && this.phoneFormartResult) {
-        return true
+    submitState() {
+      if (
+        this.userName.length &&
+        this.userCity.length &&
+        this.selectCode.length &&
+        this.phoneFormartResult
+      ) {
+        return true;
       }
-      return false
+      return false;
     }
   },
   methods: {
-
-    handleVerifyPhone () {
+    handleVerifyPhone() {
       if (this.userPhone.length < 11) {
-        this.$toast('手机格式有误')
-        this.showPhoneError = true
+        this.$toast("手机格式有误");
+        this.showPhoneError = true;
       }
     },
+    handleVerifyUserName() {},
     // 处理选择经营类型
-    handleSelect (itemCode) {
-      this.selectCode = itemCode
+    handleSelect(itemCode) {
+      this.selectCode = itemCode;
       // this.selectItems = []
       // let result = this.selectItems.indexOf(itemCode)
       // if (result > -1) {
@@ -104,26 +144,26 @@ export default {
       // }
     },
     // 判断是否选中
-    handleContainItem (itemCode) {
+    handleContainItem(itemCode) {
       // let result = this.selectItems.indexOf(itemCode)
-      return this.selectCode === itemCode
+      return this.selectCode === itemCode;
     },
-    handleClose () {
-      this.$emit('onClose')
+    handleClose() {
+      this.$emit("onClose");
     },
-    handleApply () {
+    handleApply() {
       if (this.submitState) {
         let info = {
           userName: this.userName,
           userPhone: this.userPhone,
           userCity: this.userCity,
           manageCode: this.selectCode
-        }
-        this.$emit('submit', info)
+        };
+        this.$emit("submit", info);
       }
     }
   }
-}
+};
 </script>
 
 <style lang='less' scoped>
@@ -141,9 +181,9 @@ export default {
   }
 
   .content {
-    border-top:1px solid #e3e2e6;
+    border-top: 1px solid #e3e2e6;
     padding: 0 16px;
-    >p {
+    > p {
       // height: 16px;
       font-family: PingFangSC;
       font-size: 12px;
@@ -155,7 +195,7 @@ export default {
     .input {
       height: 40px;
       border-radius: 4px;
-      background-color:@color-c8;
+      background-color: @color-c8;
       margin-top: 16px;
       font-size: 14px;
     }
@@ -178,9 +218,9 @@ export default {
         border-radius: 16px;
         background-color: #f4f5f7;
         line-height: 32px;
-        font-size:12px;
+        font-size: 12px;
         font-weight: 500;
-        margin-left:12px;
+        margin-left: 12px;
         text-align: center;
         &:first-child {
           margin-left: 0;
@@ -201,7 +241,7 @@ export default {
       line-height: 50px;
       border-radius: 25px;
       // box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
-      margin:32px 16px 38px;
+      margin: 32px 16px 38px;
       font-size: 18px;
       font-weight: 500;
       // line-height: 1.44;
@@ -212,7 +252,7 @@ export default {
       background-image: linear-gradient(to top, #557af4, #724fff);
     }
     .disable {
-      background-image: linear-gradient(to top,@color-c5, @color-c5);
+      background-image: linear-gradient(to top, @color-c5, @color-c5);
     }
   }
 }

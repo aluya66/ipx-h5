@@ -4,7 +4,7 @@
       slot="header"
       :left-arrow="true"
     ></c-header>
-    <c-list class="list-scroll">
+    <c-list class="list-scroll test-style-list">
       <share-list
         :productList="list"
         :disableClick="isCommit"
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import wx from 'weixin-js-sdk'
+
 import shareList from '@/views/common/shareList'
 import components from 'components'
 import { Dialog, Toast } from 'vant'
@@ -32,37 +34,55 @@ export default {
     return {
       code: '', // 微信授权code
       openId: '', // 微信openId
-      bannerCode: '', //banner图片code
+      participantCode: '', // banner图片code
+      bookActivityCode: '',
       list: [],
+      wxConig: {}, // 微信基本配置
       selectedNum: 0,
       isCommit: false
     }
   },
-  created () {
+  async created () {
     this.code = this.$route.query.code
-    this.bannerCode = this.$route.query.bannerCode
+    this.participantCode = this.$route.query.participantCode
+    this.bookActivityCode = this.$route.query.bookActivityCode
     if (this.code) {
-      this.getOauth()
+      await this.getOauth()
     }
-    this.getTestStyleList()
+    await this.getTestStyleList()
+  },
+  mounted () {
+    if (this.code) {
+      this.$nextTick(function () {
+        this.getTicket()
+      })
+    }
   },
   methods: {
-    getTestStyleList () {
-      const params = {
-        bannerCode: this.bannerCode,
-        bookDataQueryType: 0,
-        bookRankDispalyNum: 9
+    async getTestStyleList () {
+      let params = {}
+      if (this.code) {
+        params = {
+          participantCode: this.participantCode,
+          weChatOpenId: this.openId || 'oQB0T1bPzZ6M33fHozD19bxAUA4s'
+        }
+      } else {
+        params = {
+          participantCode: this.participantCode
+        }
       }
 
-      //http://ipx-hybrid.yosar.develop/api-ipx/v1/bookactivity/list?bannerCode=BN6971899666906500&bookDataQueryType=1&bookRankDispalyNum=9
-      //http://ipx-hybrid.yosar.develop/api-ipx/v1/bookactivity/list?bannerCode=BN6971899666906500&bookDataQueryType=0&bookRankQueryType=0&bookRankDispalyNum=10
       this.$api.book
-        .bookMainInfo(params)
+        .getSharemeasuresList(params)
         .then(res => {
-          console.log(res)
-          let data = res.bookMeasureProds
+          let data = res
           data.forEach((item, index) => {
-            item.isSelect = false
+            if (item.hasVotedFlag === 1) {
+              this.isCommit = true
+              item.isSelect = true
+            } else {
+              item.isSelect = false
+            }
           })
           this.list = data
         })
@@ -104,9 +124,10 @@ export default {
           }
         })
         const params = {
-          bookActivityCode: '1000A01',
+          bookActivityCode: this.bookActivityCode,
           voteProductCodes: arr,
-          participantCode: this.openid
+          participantCode: this.participantCode,
+          weChatOpenId: this.openId || 'oQB0T1bPzZ6M33fHozD19bxAUA4s'
         }
         this.$api.book
           .bookGoodsVote(params)
@@ -123,13 +144,13 @@ export default {
           })
       }
     },
-    getOauth () {
+    async getOauth () {
       // alert(123213)
       let params = {
         code: this.code
       }
       // alert(JSON.stringify(params))
-      this.$api.oauth
+      await this.$api.oauth
         .getOauth(params)
         .then(res => {
           this.openId = res.data
@@ -140,12 +161,76 @@ export default {
           // alert(JSON.stringify(err))
           console.log(err)
         })
+    },
+    async getTicket () {
+      // alert(JSON.stringify(params))
+      await this.$api.oauth
+        .getTicket('')
+        .then(res => {
+          this.wxConig = res.data
+          this.wxInit()
+        })
+        .catch(err => {
+          // alert(JSON.stringify(err))
+          console.log(err)
+        })
+    },
+    wxInit () {
+      let { appId, timestamp, nonceStr, signature } = this.wxConig
+      let params = {
+        title: '我想邀请你一起做时尚买手',
+        url: `/oauth?bannerCode=${this.bannerCode}`,
+        shareImage: '../../themes/images/app/logo.png',
+        description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
+      }
+      wx.config({
+        debug: false,
+        appId: appId,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+      })
+      wx.ready(function () {
+        wx.onMenuShareTimeline({
+          title: params.title, // 分享标题
+          desc: params.description,
+          link: params.url, // 分享链接
+          imgUrl: params.shareImage, // 分享图标
+          success: function () {
+            Toast.success('分享成功')
+          },
+          cancel: function () {
+            Toast.fail('取消分享')
+          }
+        })
+        wx.onMenuShareAppMessage({
+          title: params.title, // 分享标题
+          desc: params.description,
+          link: params.url, // 分享链接
+          imgUrl: params.shareImage, // 分享图标
+          success: function () {
+            Toast.success('分享成功')
+          },
+          cancel: function () {
+            Toast.fail('取消分享')
+          }
+        })
+      })
     }
-    // https://openapi.yosar.com/oauth
   }
 }
 </script>
 
+<style lang="less">
+.test-style-list{
+  .van-list__loading{
+    .van-loading__text{
+      display: none
+    }
+  }
+}
+</style>
 <style lang="less" scoped>
 .list-scroll {
   height: calc(100vh - 55px);

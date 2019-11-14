@@ -33,7 +33,7 @@ export default {
       }
 
       let testData = {
-        token: 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOcOmQoK4innS9aNwMdykxgYPg862IwoZm3WL6uAdjs4vP7finKFoc9BpX3OeZ8mk0RdGvFcEDCCoLmVEAeos4BRBDPgsoJQzcOd726A+FG6Ifq0KS5N6T4DCJ1g7s774oLZijnZ2IBpLY0jioQkTxR88pl9JNmUS4FHB4U9QIHbsDw9AmGHm1xwXnRgN7XA+UnjPynb+gxgS0Yxm+ZGpuKt+qE8xiMHosxHaWzajqfg1Ex+a543OBS1IllQtWpwTLs0vRGU5iFkMoT4fJxXhgJ',
+        token: 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOWJ6mkGafIOFzX1NNY5e0WYPg862IwoZm3WL6uAdjs4vP7finKFoc9BpX3OeZ8mk0RdGvFcEDCCoLmVEAeos4BRBDPgsoJQzcOd726A+FG6Ifq0KS5N6T4DCJ1g7s774oLZijnZ2IBpDdDONWozyIk6At7f4jfegkFHB4U9QIHbsDw9AmGHm1xwXnRgN7XA+XDTKe3t1rTIv87NXCuS/e8zXAv3r3unroqJICLzn+yfNeHdxdkU9HqUdBG48EeHzy9AghMDn6GVFc5L1koWMAf',
         channel: 'WEB',
         app_id: '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
         app_version: '1.2.0',
@@ -50,17 +50,22 @@ export default {
       if (statusBarHeight) {
         if (!isIos) {
           data = window.IPX.postMessage(JSON.stringify(params))
+          // alert(JSON.stringify(data))
           results = JSON.parse(data).results
         } else {
           results = window.nativeInjectData
         }
       }
 
+      // this.baseParams = testData
+      // this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 24
+      // utils.setStore('baseParams', JSON.stringify(this.baseParams) || {})
+      // utils.setStore('token', this.baseParams.token || '')
       if (results) {
         this.baseParams = results.data || testData
         this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 24
-        utils.setStore('baseParams', JSON.stringify(this.baseParams))
-        utils.setStore('token', this.baseParams.token)
+        utils.setStore('baseParams', JSON.stringify(this.baseParams) || {})
+        utils.setStore('token', this.baseParams.token || '')
       }
     }
   }

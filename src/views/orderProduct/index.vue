@@ -12,19 +12,19 @@
         <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" />
         <swiper :imageData="products" />
         <check @onCheck="handleCheck" @onResult='handleCheckResult' @onDetail='handleTestDetail' @onShare='handleShareTest' :products='testProducts'/>
-        <section-header class="newHeader" title="上周订货会快报" subTitle="订货会热销行情，最新市场风向标" />
+        <section-header class="newHeader" title="上期订货会快报" subTitle="订货会热销行情，最新市场风向标" />
         <list :allList="listsObject"/>
         <store-address />
         <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply" v-if="enableToTakePart === 1">
           <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
-        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck">
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck" v-if="testProductsStatus">
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
       </div>
-      <apply-popup :showPopup='showPopup' :manageTypes='managerTypes' @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
+      <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
     </div>
   </layout-view>
 </template>
@@ -38,6 +38,7 @@ import Check from './components/orderProdctCheck.vue'
 import List from './components/orderRankingList.vue'
 import StoreAddress from './components/orderProductAddress.vue'
 import ApplyPopup from './components/applyPopup.vue'
+import utils from 'utils'
 
 const { CHeader } = components
 export default {
@@ -55,17 +56,23 @@ export default {
   },
   data () {
     return {
+      token: '',
+      baseParams: '', // 基础配置
+
       bannerCode: '',
+      participantCode: '', // 参会编号
       inScroll: false,
       oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
-      enableToTakePart: '', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
+      enableToTakePart: '1', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
       showPopup: false,
+      testProductsStatus: true,
       topImage: require('@/themes/images/app/main-name@2x.png'),
       products: [],
       testProducts: [],
       managerTypes: [],
-      listsObject: {}
+      listsObject: {},
+      bookActivityCode: '' // 订货会数据编码
     }
   },
   watch: {
@@ -84,19 +91,24 @@ export default {
   methods: {
     // 查看测款报告
     handleCheckResult () {
-      this.$router.push({ path: '/testStyle/report' })
+      this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode } })
     },
     // 查看测款页
     handleTestDetail () {
-      this.$router.push({ path: '/testStyle/vote', query: { bannerCode: this.bannerCode } })
+      this.$router.push({ path: '/', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
     },
     // 分享测款
     handleShareTest () {
-      this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
+      this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
     },
     // 免费测款
     handleCheck () {
-      this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
+      if (this.token) {
+        this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+      } else {
+        let method = 'user_authentication'
+        utils.postMessage(method, '')
+      }
     },
     // 报名参加
     handleApplySubmit (info) {
@@ -104,13 +116,21 @@ export default {
         participantCity: info.userCity,
         participantName: info.userName,
         participantPhone: info.userPhone,
-        tradeCode: info.manageCode
+        tradeCode: info.manageCode,
+        bookActivityCode: this.bookActivityCode
       }
+
+      console.log(params, 'params')
       this.handleRequestApply(params)
     },
     // 点击报名弹框
     handleApply () {
-      this.showPopup = !this.showPopup
+      if (this.token) {
+        this.showPopup = !this.showPopup
+      } else {
+        let method = 'user_authentication'
+        utils.postMessage(method, '')
+      }
     },
     // 监听滚动
     handleScroll () {
@@ -124,19 +144,27 @@ export default {
       const params = {
         bannerCode: this.bannerCode,
         bookDataQueryType: '0',
-        bookRankQueryType: '0',
-        bookRankDispalyNum: '10'
+        bookRankQueryType: '0'
       }
       this.$api.book.bookMainInfo(params).then((response) => {
+        console.log(response, 'response')
+        this.participantCode = response.participantCode
         this.enableToTakePart = response.enableToTakePart
+        this.bookActivityCode = response.bookActivityCode
+        console.log(this.bookActivityCode, 'this.bookActivityCode')
+        console.log(response.bookMeasureProds)
         if (response.bookMeasureProds instanceof Array) {
           this.products = response.bookMeasureProds
         }
         if (response.lastPeriodRank instanceof Object) {
           this.listsObject = response.lastPeriodRank
+          console.log(this.listsObject)
         }
-        if (response.selfMeasureData.selfMeasureProds instanceof Array) {
-          this.testProducts = response.selfMeasureData.selfMeasureProds
+        if (response.mySharedProds instanceof Array) {
+          this.testProducts = response.mySharedProds
+          if (this.testProducts && this.testProducts.length > 0) {
+            this.testProductsStatus = false
+          }
         }
       }).catch(() => {
 
@@ -146,6 +174,8 @@ export default {
     handleRequestApply (params) {
       this.$api.book.bookApply(params).then((response) => {
         this.$toast.success('报名成功')
+        this.handleRequestMain()
+        this.showPopup = false
       }).catch(() => {
 
       })
@@ -162,6 +192,8 @@ export default {
     }
   },
   activated () {
+    this.baseParams = utils.getStore('baseParams') || {}
+    this.token = utils.getStore('token') || ''
     this.handleRequestMain()
     this.handleRequestUserManagers()
   },

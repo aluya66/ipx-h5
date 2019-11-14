@@ -45,28 +45,31 @@ export default {
   },
   data () {
     return {
+      bannerCode: '',
+      participantCode: '',
+      bookActivityCode: '',
       totalNum: '',
       list: []
     }
   },
   created () {
-    this.getTestStyleList()
+    this.participantCode = this.$route.query.participantCode
+    this.bookActivityCode = this.$route.query.bookActivityCode
+    this.getSharemeasuresList()
   },
   mounted () {
 
   },
   methods: {
-    getTestStyleList () {
+    getSharemeasuresList () {
       const params = {
-        bannerCode: this.$route.query.bannerCode,
-        bookDataQueryType: 0,
-        bookRankDispalyNum: 9
+        participantCode: this.participantCode
       }
       this.$api.book
-        .bookMainInfo(params)
+        .getSharemeasuresList(params)
         .then(res => {
           console.log(res)
-          this.list = res.bookMeasureProds
+          this.list = res
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
             this.totalNum = this.list.length || 0
@@ -78,15 +81,16 @@ export default {
     },
     shareWechat (type) {
       // type 1=好友 2=朋友圈
-      alert(type)
       let method = 'one_key_share'
       let params = {
         type: String(type),
         title: '我想邀请你一起做时尚买手',
-        url: 'http://192.168.52.9:6099/oauth',
+        url: `/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
         shareImage: '../../themes/images/app/logo.png',
         description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
+
+      console.log(JSON.stringify(params) + 'params')
 
       utils.postMessage(method, params)
     }
@@ -111,7 +115,7 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(100vh - 130px);
+    height: calc(100vh - 100px);
   }
   .scale-content {
     width: 120%;
