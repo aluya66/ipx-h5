@@ -232,7 +232,8 @@ export default {
         font-size: 14px;
         font-weight: 500;
         color: @color-c1;
-        max-width: 200px;
+        width: 120px;
+        // max-width: 200px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
