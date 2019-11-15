@@ -102,11 +102,11 @@ export default {
       let reg = /^[\u0391-\uFFE5A-Za-z]+$/
       let userNameResult = reg.test(val)
       if (!userNameResult) {
-        this.userNameFormartResult = true
+        this.userNameFormartResult = false
         this.showUserNameError = true
         this.$toast('请输入正确的姓名')
       } else {
-        this.userNameFormartResult = false
+        this.userNameFormartResult = true
         this.showUserNameError = false
       }
     }
