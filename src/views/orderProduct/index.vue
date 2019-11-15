@@ -9,9 +9,9 @@
       </c-header>
       <div class="content">
         <img class="op-topImage" :src="topImage" alt="">
-        <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" />
-        <swiper :imageData="products" />
-        <check @onCheck="handleCheck" @onResult='handleCheckResult' @onDetail='handleTestDetail' @onShare='handleShareTest' :products='testProducts'/>
+        <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" v-if="products && products.length > 0"/>
+        <swiper :imageData="products" v-if="products && products.length > 0"/>
+        <check @onCheck="handleCheck" @onResult='handleCheckResult' @onDetail='handleTestDetail' @onShare='handleShareTest' :products='testProducts' v-if="products && products.length > 0"/>
         <section-header class="newHeader" title="上期订货会快报" subTitle="订货会热销行情，最新市场风向标" />
         <list :allList="listsObject"/>
         <store-address />
@@ -19,7 +19,7 @@
           <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
-        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck" v-if="testProductsStatus">
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck" v-if="testProductsStatus && products && products.length > 0">
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
@@ -72,8 +72,8 @@ export default {
       showPopup: false,
       testProductsStatus: true,
       topImage: require('@/themes/images/app/main-name@2x.png'),
-      products: [],
-      testProducts: [],
+      products: [], //测款商品数据
+      testProducts: [],  //一键测款后的数据列表
       managerTypes: [],
       listsObject: {},
       bookActivityCode: '' // 订货会数据编码
