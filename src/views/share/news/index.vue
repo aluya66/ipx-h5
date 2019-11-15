@@ -468,34 +468,6 @@ export default {
           console.log(err)
         })
     },
-    getComments (id) {
-      let params = {
-        entity_type: 'feed',
-        entity_id: id,
-        reply_limit: 3,
-        page: 1,
-        limit: 3,
-        orderBy: 'hot'
-      }
-      this.$api.news
-        .getComments(params)
-        .then(response => {
-          this.comments = response.data.data
-        })
-        .catch(err => {
-          if (err.response && err.response.data && err.response.data.message) {
-            this.$message({
-              message: err.response.data.message,
-              type: 'error'
-            })
-          } else {
-            this.$message({
-              message: '评论加载失败',
-              type: 'error'
-            })
-          }
-        })
-    },
     showFeed () {
       this.activeName = this.feed.activeName
       // this.feed.release_time = this.$formatTime(this.feed.release_time)

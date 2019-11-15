@@ -30,7 +30,7 @@ export default {
       let imgTag = wrap.getElementsByTagName('img')
       let jointImgs = wrap.getElementsByClassName('joint-img-margin')
       var u = navigator.userAgent
-      // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
+      var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
       var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
       if (jointImgs && jointImgs.length > 0) {
         for (let j = 0; j < jointImgs.length; j++) {
@@ -45,7 +45,7 @@ export default {
         imgs[i].setAttribute('width', '')
         imgs[i].setAttribute('class', 'imgClass img_loading')
         let id = imgs[i].getAttribute('data-id')
-        // let newItem = document.createElement('img')
+        let newItem = document.createElement('img')
         let width = parseFloat(imgs[i].getAttribute('data-w'))
         // let parentDom = null
         // parentDom = imgs[i].parentElement
@@ -59,15 +59,12 @@ export default {
         if (imgs[i].getAttribute('src')) {
           slef.imagList.push(img)
           imgs[i].setAttribute('data-src', imgs[i].getAttribute('src'))
-          imgs[i].setAttribute(
-            'src',
-            'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=='
-          )
+          imgs[i].setAttribute('src', 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==')
           // imgs[i].setAttribute("style", "width:" + width + "px;height:" + (width * ratio) + "px")
           // 表情包样式
           if (imgs[i].style.maxWidth !== '40%') {
             imgs[i].style.width = width + 'px'
-            imgs[i].style.height = width * ratio + 'px'
+            imgs[i].style.height = (width * ratio) + 'px'
           }
         }
         let bridgesData = {
@@ -84,45 +81,37 @@ export default {
         if (isiOS) {
           // wrap.setAttribute("style", "margin-bottom:2rem")
           /* 与OC交互的所有JS方法都要放在此处注册，才能调用通过JS调用OC或者让OC调用这里的JS */
-          // setupWebViewJavascriptBridge(function (bridge) {
-          //   /* Initialize your app here */
+          setupWebViewJavascriptBridge(function (bridge) {
+            /* Initialize your app here */
 
-          //   /* 我们在这注册一个js调用OC的方法，不带参数，且不用ObjC端反馈结果给JS：打开本demo对应的博文 */
-          //   bridge.registerHandler('openWebviewBridgeArticle', function () {
-          //     console.log('openWebviewBridgeArticle was called with by ObjC')
-          //   })
-          //   /* JS给ObjC提供公开的API，在ObjC端可以手动调用JS的这个API。接收ObjC传过来的参数，且可以回调ObjC */
-          //   bridge.registerHandler('getUserInfos', function (
-          //     data,
-          //     responseCallback
-          //   ) {
-          //     console.log('Get user information from ObjC: ', data)
-          //     responseCallback({ userId: '123456', blog: '' })
-          //   })
+            /* 我们在这注册一个js调用OC的方法，不带参数，且不用ObjC端反馈结果给JS：打开本demo对应的博文 */
+            bridge.registerHandler('openWebviewBridgeArticle', function () {
+              console.log('openWebviewBridgeArticle was called with by ObjC')
+            })
+            /* JS给ObjC提供公开的API，在ObjC端可以手动调用JS的这个API。接收ObjC传过来的参数，且可以回调ObjC */
+            bridge.registerHandler('getUserInfos', function (data, responseCallback) {
+              console.log('Get user information from ObjC: ', data)
+              responseCallback({ 'userId': '123456', 'blog': '' })
+            })
 
-          //   /* JS给ObjC提供公开的API，ObjC端通过注册，就可以在JS端调用此API时，得到回调。ObjC端可以在处理完成后，反馈给JS，这样写就是在载入页面完成时就先调用 */
-          //   bridge.callHandler('getUserIdFromObjC', function (responseData) {
-          //     console.log(
-          //       "JS call ObjC's getUserIdFromObjC function, and js received response:",
-          //       responseData
-          //     )
-          //   })
+            /* JS给ObjC提供公开的API，ObjC端通过注册，就可以在JS端调用此API时，得到回调。ObjC端可以在处理完成后，反馈给JS，这样写就是在载入页面完成时就先调用 */
+            bridge.callHandler('getUserIdFromObjC', function (responseData) {
+              console.log("JS call ObjC's getUserIdFromObjC function, and js received response:", responseData)
+            })
 
-          //   imgs[i].onclick = function (e) {
-          //     console.log('------callBackData', bridgesData)
-          //     bridge.callHandler('BridgeCallHandler', bridgesData, function (
-          //       response
-          //     ) {
-          //       console.log('JS got response', response)
-          //     })
-          //   }
-          //   console.log('------callBackData', bridgesData)
-          // })
+            imgs[i].onclick = function (e) {
+              console.log('------callBackData', bridgesData)
+              bridge.callHandler('BridgeCallHandler', bridgesData, function (response) {
+                console.log('JS got response', response)
+              })
+            }
+            console.log('------callBackData', bridgesData)
+          })
         } else {
           console.log('------callBackData', bridgesData)
           imgs[i].onclick = function () {
             // jsClick(slef.imagList, i, id)
-            bridgeS.send(JSON.stringify(bridgesData), callBackData => {
+            bridgeS.send(JSON.stringify(bridgesData), (callBackData) => {
               // 处理返回数据
               console.log('------callBackData', callBackData)
             })
@@ -130,10 +119,7 @@ export default {
             // window.location.href='http://www.baidu.com?id=11111111111111';
           }
         }
-        if (
-          imgs[i].style.margin === '0px' &&
-          imgs[i].style.display === 'inline-block'
-        ) {
+        if (imgs[i].style.margin === '0px' && imgs[i].style.display === 'inline-block') {
           imgs[i].onload = function () {
             imgs[i].style.backgroundImage = 'none'
           }
@@ -144,31 +130,27 @@ export default {
         // }
       }
       if (isiOS) {
-        if (window.screen.height === 812 || window.screen.height === 896) { wrap.setAttribute('style', 'padding-bottom:34px') } else wrap.setAttribute('style', 'padding-bottom:8px')
+        if (window.screen.height === 812 || window.screen.height === 896) wrap.setAttribute('style', 'padding-bottom:34px')
+        else wrap.setAttribute('style', 'padding-bottom:8px')
         // let num = document.getElementsByTagName('img').length;
         // let img = document.getElementsByTagName("img");
-        // let num = document.getElementsByClassName('imgClass').length
-        // let img = document.getElementsByClassName('imgClass')
-        // let n = 0
-        // lazyload() // 页面载入完毕加载可是区域内的图片
-        // window.onscroll = lazyload
-        // function lazyload () {
-        //   // 监听页面滚动事件
-        //   let seeHeight = document.documentElement.clientHeight // 可见区域高度
-        //   let scrollTop =
-        //     document.documentElement.scrollTop || document.body.scrollTop // 滚动条距离顶部高度
-        //   for (let i = n; i < num; i++) {
-        //     if (img[i].offsetTop < seeHeight + scrollTop) {
-        //       if (
-        //         img[i].getAttribute('src') ===
-        //         'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=='
-        //       ) {
-        //         img[i].src = img[i].getAttribute('data-src')
-        //       }
-        //       n = i + 1
-        //     }
-        //   }
-        // }
+        let num = document.getElementsByClassName('imgClass').length
+        let img = document.getElementsByClassName('imgClass')
+        let n = 0
+        lazyload() // 页面载入完毕加载可是区域内的图片
+        window.onscroll = lazyload
+        function lazyload () { // 监听页面滚动事件
+          let seeHeight = document.documentElement.clientHeight // 可见区域高度
+          let scrollTop = document.documentElement.scrollTop || document.body.scrollTop // 滚动条距离顶部高度
+          for (let i = n; i < num; i++) {
+            if (img[i].offsetTop < seeHeight + scrollTop) {
+              if (img[i].getAttribute('src') == 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==') {
+                img[i].src = img[i].getAttribute('data-src')
+              }
+              n = i + 1
+            }
+          }
+        }
       } else {
         // const io = new IntersectionObserver(callback);
         // let imgsRc = document.querySelectorAll('[data-src]');
@@ -178,6 +160,7 @@ export default {
         //       item.target.src = item.target.dataset.src
         //       io.unobserve(item.target)
         //     }
+
         //   })
         // }
         // imgsRc.forEach((item) => {
@@ -188,9 +171,7 @@ export default {
       let img = document.getElementsByTagName('img')
       let n = 0
       for (let i = n; i < num; i++) {
-        if (
-          img[i].getAttribute('src') === 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=='
-        ) {
+        if (img[i].getAttribute('src') == 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==') {
           img[i].src = img[i].getAttribute('data-src')
         }
         n = i + 1
