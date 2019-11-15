@@ -63,6 +63,10 @@ export default {
       default () {
         return []
       }
+    },
+    phoneNumber: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -112,7 +116,7 @@ export default {
     }
   },
   created () {
-    console.log(this.bookActivityCode)
+    this.userPhone = this.phoneNumber || ''
   },
   computed: {
     submitState () {

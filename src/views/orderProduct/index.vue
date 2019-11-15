@@ -4,7 +4,7 @@
     <div class="op-contain">
       <c-header :pageOutStatus="true" slot="header">
         <template v-slot:title>
-          <span>订购会</span>
+          <span>订货会</span>
         </template>
       </c-header>
       <div class="content">
@@ -28,7 +28,7 @@
           <p v-if="!inScroll">测款报告</p>
         </div>
       </div>
-      <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
+      <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' :phoneNumber="this.baseParams.phoneNumber" @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
     </div>
   </layout-view>
 </template>
@@ -72,8 +72,8 @@ export default {
       showPopup: false,
       testProductsStatus: true,
       topImage: require('@/themes/images/app/main-name@2x.png'),
-      products: [], //测款商品数据
-      testProducts: [],  //一键测款后的数据列表
+      products: [], // 测款商品数据
+      testProducts: [], // 一键测款后的数据列表
       managerTypes: [],
       listsObject: {},
       bookActivityCode: '' // 订货会数据编码
@@ -202,7 +202,7 @@ export default {
     this.handleRequestUserManagers()
   },
   mounted () {
-    // this.handleScroll()
+    this.handleScroll()
   },
   destroyed () {
     window.removeEventListener('scroll') // 离开当前组件别忘记移除事件监听哦
