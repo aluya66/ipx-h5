@@ -42,7 +42,8 @@ export default {
         mobile_model: 'ELE-AL00',
         os_version: '9',
         lat: '100.156161',
-        lng: '100.156161'
+        lng: '100.156161',
+        phoneNumber: '18681587662'
       }
 
       let results = {}

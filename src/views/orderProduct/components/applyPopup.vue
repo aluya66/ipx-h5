@@ -88,7 +88,7 @@ export default {
       this.isShow = val
     },
     userPhone (val) {
-      let phoneResult = utils.isMobile(this.userPhone)
+      let phoneResult = utils.isPhone(this.userPhone)
       this.phoneFormartResult = phoneResult
       if (val.length === 11) {
         if (!phoneResult) {

@@ -80,12 +80,13 @@ export default {
         })
     },
     shareWechat (type) {
+      let url = 'http://ipx-hybrid.yosar.test'
       // type 1=好友 2=朋友圈
       let method = 'one_key_share'
       let params = {
         type: String(type),
         title: '我想邀请你一起做时尚买手',
-        url: `/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+        url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
         shareImage: '../../themes/images/app/logo.png',
         description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }

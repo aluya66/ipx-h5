@@ -145,7 +145,6 @@ export default {
       }
     },
     async getOauth () {
-      // alert(123213)
       let params = {
         code: this.code
       }
@@ -163,11 +162,11 @@ export default {
         })
     },
     async getTicket () {
-      // alert(JSON.stringify(params))
       await this.$api.oauth
         .getTicket('')
         .then(res => {
           this.wxConig = res.data
+          // alert(JSON.stringify(this.wxConig))
           this.wxInit()
         })
         .catch(err => {
@@ -177,12 +176,15 @@ export default {
     },
     wxInit () {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
+      // alert(JSON.stringify(this.wxConig))
       let params = {
         title: '我想邀请你一起做时尚买手',
         url: `/oauth?bannerCode=${this.bannerCode}`,
         shareImage: '../../themes/images/app/logo.png',
         description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
+
+      // alert(JSON.stringify(params) + 'params')
       wx.config({
         debug: false,
         appId: appId,
