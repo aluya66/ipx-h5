@@ -16,31 +16,31 @@
 
 <script>
 export default {
-  data () {
-    return {
-      iphone: '',
-      isShow: true,
-      count: 60,
-      verify: ''
-    }
-  },
-  methods: {
-    inputHandle () {
-      this.$emit('input-right-handle')
-    },
-    verifyHandle () {
-      this.isShow = false
-      setTimeout(() => {
-        this.count -= 1
-        if (this.count === -1) {
-          this.isShow = true
-          this.count = 60
-        } else {
-          this.verifyHandle()
+    data () {
+        return {
+            iphone: '',
+            isShow: true,
+            count: 60,
+            verify: ''
         }
-      }, 1000)
+    },
+    methods: {
+        inputHandle () {
+            this.$emit('input-right-handle')
+        },
+        verifyHandle () {
+            this.isShow = false
+            setTimeout(() => {
+                this.count -= 1
+                if (this.count === -1) {
+                    this.isShow = true
+                    this.count = 60
+                } else {
+                    this.verifyHandle()
+                }
+            }, 1000)
+        }
     }
-  }
 }
 </script>
 

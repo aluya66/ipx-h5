@@ -7,7 +7,7 @@ const context = process.env.VUE_APP_serverPath
  * @param {*} params params数据对象
  */
 export const getUserShop = params => Http.fetch(`${context}/shop/getUserShop`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -15,7 +15,7 @@ export const getUserShop = params => Http.fetch(`${context}/shop/getUserShop`, p
  * @param {*} params params数据对象 {shop_id: 2}
  */
 export const showById = params => Http.fetch(`${context}/shop/shop`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -23,5 +23,5 @@ export const showById = params => Http.fetch(`${context}/shop/shop`, params, {
  * @param {*} params params数据对象 {shop_id: 2}
  */
 export const getStaffById = params => Http.fetch(`${context}/shop/staff`, params, {
-  method: 'get'
+    method: 'get'
 })

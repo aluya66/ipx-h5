@@ -43,28 +43,28 @@
 import CImage from 'components/c-image'
 
 export default {
-  name: 'v-goods-card',
-  data () {
-    return {}
-  },
-  props: {
-    item: {
-      type: Object,
-      default () {
+    name: 'v-goods-card',
+    data () {
         return {}
-      }
+    },
+    props: {
+        item: {
+            type: Object,
+            default () {
+                return {}
+            }
+        }
+    },
+
+    methods: {
+        wechatShare (val) {
+
+        }
+    },
+
+    components: {
+        CImage
     }
-  },
-
-  methods: {
-    wechatShare (val) {
-
-    }
-  },
-
-  components: {
-    CImage
-  }
 }
 </script>
 

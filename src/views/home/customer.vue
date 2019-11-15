@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  mounted () {
-    console.log(222)
-  }
+    mounted () {
+        console.log(222)
+    }
 }
 </script>

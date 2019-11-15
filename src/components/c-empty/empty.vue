@@ -9,16 +9,16 @@
 import create from 'utils/create'
 
 export default create({
-  name: 'empty',
-  props: {
-    className: [String, Object, Array],
-    name: {
-      type: String,
-      default () {
-        return this.$t('tip.empty')
-      }
+    name: 'empty',
+    props: {
+        className: [String, Object, Array],
+        name: {
+            type: String,
+            default () {
+                return this.$t('tip.empty')
+            }
+        }
     }
-  }
 })
 </script>
 

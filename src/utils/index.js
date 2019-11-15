@@ -5,9 +5,9 @@ import base from './base'
 import validate from './validate'
 
 export default {
-  create,
-  transModules,
-  ...base,
-  ...libs,
-  ...validate
+    create,
+    transModules,
+    ...base,
+    ...libs,
+    ...validate
 }

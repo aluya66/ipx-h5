@@ -28,30 +28,30 @@
 
 <script>
 export default {
-  props: {
-    list: {
-      type: Array,
-      default () {
-        return []
-      }
+    props: {
+        list: {
+            type: Array,
+            default () {
+                return []
+            }
+        }
+    },
+    data () {
+        return {
+            topNumUrl: ''
+        }
+    },
+    // created () {
+    //   this.list = this.list.map((item,index) =>{
+    //       item.topNumUrl = 'url(' + require('../../themes/images/app/rank'+index+'@2x.png') + ')'
+    //   })
+    // },
+    filters: {
+        numStr (val) {
+            let num = val + 1
+            return num < 10 ? '0' + num.toString() : num
+        }
     }
-  },
-  data () {
-    return {
-      topNumUrl: ''
-    }
-  },
-  // created () {
-  //   this.list = this.list.map((item,index) =>{
-  //       item.topNumUrl = 'url(' + require('../../themes/images/app/rank'+index+'@2x.png') + ')'
-  //   })
-  // },
-  filters: {
-    numStr (val) {
-      let num = val + 1
-      return num < 10 ? '0' + num.toString() : num
-    }
-  }
 }
 </script>
 

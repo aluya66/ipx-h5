@@ -4,10 +4,10 @@
  */
 const modulesDir = require.context('./', true, /^\.\/c-.*\.vue$/)
 const curModules = modulesDir.keys().reduce((module, key) => {
-  const moduleKey = key.split('/')[1]
-  // console.log('====', key, '====>', moduleKey, '<====>', modulesDir(key).default);
-  module[moduleKey.replace(/-[a-z]/g, $1 => $1.split('-')[1].toUpperCase()).replace(/^c/, $1 => $1.toUpperCase())] = modulesDir(key).default
-  return module
+    const moduleKey = key.split('/')[1]
+    // console.log('====', key, '====>', moduleKey, '<====>', modulesDir(key).default);
+    module[moduleKey.replace(/-[a-z]/g, $1 => $1.split('-')[1].toUpperCase()).replace(/^c/, $1 => $1.toUpperCase())] = modulesDir(key).default
+    return module
 }, {})
 
 export default curModules

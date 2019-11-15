@@ -30,83 +30,83 @@ import { NavBar } from 'vant'
 import utils from 'utils'
 
 export default create({
-  name: 'header',
-  inheritAttrs: false,
-  components: {
-    [NavBar.name]: NavBar
-  },
-  props: {
-    fixed: {
-      type: Boolean,
-      default: false
+    name: 'header',
+    inheritAttrs: false,
+    components: {
+        [NavBar.name]: NavBar
     },
-    title: {
-      type: String,
-      default: ''
-    },
-    leftText: {
-      type: String,
-      default: ''
-    },
-    rightText: {
-      type: String,
-      default: ''
-    },
-    leftArrow: {
-      type: Boolean,
-      default: true
-    },
-    showBorderBottom: {
-      type: Boolean,
-      default: false
-    },
-    pageOutStatus: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data () {
-    return {
-      baseParams: {},
-      paddingTop: 0
-    }
-  },
-  activated () {
-    this.baseParams = utils.getStore('baseParams')
-    // this.baseParams.statusBarHeight = 44;
-    let statusBarHeight = Number(this.baseParams.statusBarHeight) / 100
-    if (this.baseParams.platform === 'ios') {
-      if (Number(this.baseParams.statusBarHeight) > 20) {
-        // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
-        // alert(this.paddingTop)
-      }
-    } else {
-      this.paddingTop = statusBarHeight + 'rem'
-    }
-  },
-  computed: {
-    curTitle () {
-      if (this.$route.meta) {
-        const { title } = this.$route.meta
-        if (title) {
-          return this.translate(title, 'route')
+    props: {
+        fixed: {
+            type: Boolean,
+            default: false
+        },
+        title: {
+            type: String,
+            default: ''
+        },
+        leftText: {
+            type: String,
+            default: ''
+        },
+        rightText: {
+            type: String,
+            default: ''
+        },
+        leftArrow: {
+            type: Boolean,
+            default: true
+        },
+        showBorderBottom: {
+            type: Boolean,
+            default: false
+        },
+        pageOutStatus: {
+            type: Boolean,
+            default: false
         }
-      }
-      return this.title
+    },
+    data () {
+        return {
+            baseParams: {},
+            paddingTop: 0
+        }
+    },
+    activated () {
+        this.baseParams = utils.getStore('baseParams')
+        // this.baseParams.statusBarHeight = 44;
+        let statusBarHeight = Number(this.baseParams.statusBarHeight) / 100
+        if (this.baseParams.platform === 'ios') {
+            if (Number(this.baseParams.statusBarHeight) > 20) {
+                // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
+                // alert(this.paddingTop)
+            }
+        } else {
+            this.paddingTop = statusBarHeight + 'rem'
+        }
+    },
+    computed: {
+        curTitle () {
+            if (this.$route.meta) {
+                const { title } = this.$route.meta
+                if (title) {
+                    return this.translate(title, 'route')
+                }
+            }
+            return this.title
+        }
+    },
+    mounted () {
+    },
+    methods: {
+        onClickLeft () {
+            let method = 'page_out'
+            if (this.pageOutStatus) {
+                utils.postMessage(method, '')
+            } else {
+                this.$router.go(-1)
+            }
+        }
     }
-  },
-  mounted () {
-  },
-  methods: {
-    onClickLeft () {
-      let method = 'page_out'
-      if (this.pageOutStatus) {
-        utils.postMessage(method, '')
-      } else {
-        this.$router.go(-1)
-      }
-    }
-  }
 })
 </script>
 

@@ -7,8 +7,8 @@
  * @param {*} value
  */
 export const isEmail = (value) => {
-  const reg = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i
-  return reg.test(value)
+    const reg = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i
+    return reg.test(value)
 }
 
 /**
@@ -16,8 +16,8 @@ export const isEmail = (value) => {
  * @param {*} value
  */
 export const isMobile = (value) => {
-  value = value.replace(/[^-|\d]/g, '')
-  return /^((\+86)|(86))?(1)\d{10}$/.test(value) || /^0[0-9-]{10,13}$/.test(value)
+    value = value.replace(/[^-|\d]/g, '')
+    return /^((\+86)|(86))?(1)\d{10}$/.test(value) || /^0[0-9-]{10,13}$/.test(value)
 }
 
 /**
@@ -43,8 +43,8 @@ export const isVal = value => value !== undefined && value !== null
  * @param {*} x
  */
 export const isObj = (x) => {
-  const type = typeof x
-  return x !== null && (type === 'object' || type === 'function')
+    const type = typeof x
+    return x !== null && (type === 'object' || type === 'function')
 }
 
 /**
@@ -52,10 +52,10 @@ export const isObj = (x) => {
  * @param {*} str
  */
 export const isString = str => {
-  if (typeof str === 'string' || str instanceof String) {
-    return true
-  }
-  return false
+    if (typeof str === 'string' || str instanceof String) {
+        return true
+    }
+    return false
 }
 
 /**
@@ -63,10 +63,10 @@ export const isString = str => {
  * @param {*} arg
  */
 export const isArray = arg => {
-  if (typeof Array.isArray === 'undefined') {
-    return Object.prototype.toString.call(arg) === '[object Array]'
-  }
-  return Array.isArray(arg)
+    if (typeof Array.isArray === 'undefined') {
+        return Object.prototype.toString.call(arg) === '[object Array]'
+    }
+    return Array.isArray(arg)
 }
 
 /**
@@ -75,17 +75,17 @@ export const isArray = arg => {
  * @returns
  */
 export const isMobileEnv = () => {
-  const u = navigator.userAgent
-  if (/(iPhone|iPad|iPod|iOS)/i.test(u)) {
-    return 'Ios'
-  } if (/(Android)/i.test(u)) {
-    return 'Android'
-  } if (/(MicroMessenger)/i.test(u)) {
-    return 'Weixin'
-  }
-  return false
+    const u = navigator.userAgent
+    if (/(iPhone|iPad|iPod|iOS)/i.test(u)) {
+        return 'Ios'
+    } if (/(Android)/i.test(u)) {
+        return 'Android'
+    } if (/(MicroMessenger)/i.test(u)) {
+        return 'Weixin'
+    }
+    return false
 }
 
 export default {
-  isMobile
+    isMobile
 }

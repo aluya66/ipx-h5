@@ -9,15 +9,15 @@
 </template>
 <script>
 export default {
-  name: 'layout-view',
-  props: {
-    id: String
-  },
-  data () {
-    return {
-      appId: this.id || this.$route.path.replace(/\//g, '_') || new Date().getTime()
+    name: 'layout-view',
+    props: {
+        id: String
+    },
+    data () {
+        return {
+            appId: this.id || this.$route.path.replace(/\//g, '_') || new Date().getTime()
+        }
     }
-  }
 }
 </script>
 

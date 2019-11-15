@@ -39,43 +39,43 @@
 <script>
 import shareList from '@/views/common/shareList'
 export default {
-  components: {
-    shareList
-  },
-  data () {
-    return {
-      totalNum: '',
-      list: []
-    }
-  },
-  created () {
-    this.getTestStyleList()
-  },
-  mounted () {
+    components: {
+        shareList
+    },
+    data () {
+        return {
+            totalNum: '',
+            list: []
+        }
+    },
+    created () {
+        this.getTestStyleList()
+    },
+    mounted () {
 
-  },
-  methods: {
-    getTestStyleList () {
-      const params = {
-        bannerCode: this.$route.query.bannerCode,
-        bookDataQueryType: 1,
-        bookRankDispalyNum: 9
-      }
-      this.$api.book
-        .bookMainInfo(params)
-        .then(res => {
-          console.log(res)
-          this.list = res.selfMeasureData.selfMeasureProds
-          if (this.list.length > 9) {
-            this.list = this.list.splice(0, 9)
-            this.totalNum = this.list.length || 0
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    },
+    methods: {
+        getTestStyleList () {
+            const params = {
+                bannerCode: this.$route.query.bannerCode,
+                bookDataQueryType: 1,
+                bookRankDispalyNum: 9
+            }
+            this.$api.book
+                .bookMainInfo(params)
+                .then(res => {
+                    console.log(res)
+                    this.list = res.selfMeasureData.selfMeasureProds
+                    if (this.list.length > 9) {
+                        this.list = this.list.splice(0, 9)
+                        this.totalNum = this.list.length || 0
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     }
-  }
 }
 </script>
 

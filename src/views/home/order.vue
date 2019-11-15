@@ -15,22 +15,22 @@ import components from 'components'
 
 const { CHeader } = components
 export default {
-  components: {
-    CHeader
-  },
-  props: {
+    components: {
+        CHeader
+    },
+    props: {
 
-  },
-  data () {
-    return {
-      topImage: require('@/themes/images/app/main-name@2x.png')
+    },
+    data () {
+        return {
+            topImage: require('@/themes/images/app/main-name@2x.png')
+        }
+    },
+    methods: {
+        handleToOrder () {
+            this.$router.push({ name: 'orderProduct' })
+        }
     }
-  },
-  methods: {
-    handleToOrder () {
-      this.$router.push({ name: 'orderProduct' })
-    }
-  }
 }
 </script>
 

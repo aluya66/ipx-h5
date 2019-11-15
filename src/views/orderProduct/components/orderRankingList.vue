@@ -22,73 +22,73 @@
 import { Tab, Tabs } from 'vant'
 
 export default {
-  components: {
-    Tab,
-    Tabs
-  },
-  props: {
-    allList: {
-      type: Object,
-      default () {
-        return {}
-      }
+    components: {
+        Tab,
+        Tabs
     },
-    lists: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
-  data () {
-    return {
-      active: 0
-    }
-  },
-  computed: {
-    getLineWidth () {
-      let arr = this.getMenuItems
-      if (arr.length <= 1) {
-        return 0
-      }
-      return 84 * window.devicePixelRatio
+    props: {
+        allList: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
+        lists: {
+            type: Array,
+            default () {
+                return []
+            }
+        }
     },
-    getLists () {
-      switch (this.active) {
-        case 1 :
-          return this.allList.singleSalesRankList
-        case 2:
-          return this.allList.categorySalesRankList
-        default:
-          return this.allList.singleMeasureRankList
-      }
+    data () {
+        return {
+            active: 0
+        }
     },
-    getMenuItems () {
-      let menuItems = []
-      if (this.allList.singleSalesRankList instanceof Array && this.allList.singleSalesRankList.length > 0) {
-        menuItems.push('单品排行榜')
-      } else if (this.allList.categorySalesRankList instanceof Array && this.allList.categorySalesRankList.length > 0) {
-        menuItems.push('品类排行榜')
-      } else if (this.allList.singleMeasureRankList instanceof Array && this.allList.singleMeasureRankList.length > 0) {
-        menuItems.push('测款排行榜')
-      }
-      return menuItems
-    }
-  },
-  methods: {
-    handleRankIcon (index) {
-      if (index === 0) {
-        return 'firstClass'
-      } else if (index === 1) {
-        return 'secondClass'
-      } else if (index === 2) {
-        return 'thridClass'
-      }
-    }
-  },
-  mounted () {
+    computed: {
+        getLineWidth () {
+            let arr = this.getMenuItems
+            if (arr.length <= 1) {
+                return 0
+            }
+            return 84 * window.devicePixelRatio
+        },
+        getLists () {
+            switch (this.active) {
+            case 1 :
+                return this.allList.singleSalesRankList
+            case 2:
+                return this.allList.categorySalesRankList
+            default:
+                return this.allList.singleMeasureRankList
+            }
+        },
+        getMenuItems () {
+            let menuItems = []
+            if (this.allList.singleSalesRankList instanceof Array && this.allList.singleSalesRankList.length > 0) {
+                menuItems.push('单品排行榜')
+            } else if (this.allList.categorySalesRankList instanceof Array && this.allList.categorySalesRankList.length > 0) {
+                menuItems.push('品类排行榜')
+            } else if (this.allList.singleMeasureRankList instanceof Array && this.allList.singleMeasureRankList.length > 0) {
+                menuItems.push('测款排行榜')
+            }
+            return menuItems
+        }
+    },
+    methods: {
+        handleRankIcon (index) {
+            if (index === 0) {
+                return 'firstClass'
+            } else if (index === 1) {
+                return 'secondClass'
+            } else if (index === 2) {
+                return 'thridClass'
+            }
+        }
+    },
+    mounted () {
 
-  }
+    }
 }
 </script>
 

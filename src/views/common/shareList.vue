@@ -33,25 +33,25 @@
 
 <script>
 export default {
-  props: {
-    productList: {
-      type: Array,
-      default () {
-        return []
-      }
+    props: {
+        productList: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        disableClick: {
+            type: Boolean,
+            default () {
+                return true
+            }
+        }
     },
-    disableClick: {
-      type: Boolean,
-      default () {
-        return true
-      }
+    methods: {
+        selected (product) {
+            this.$emit('selectClick', product)
+        }
     }
-  },
-  methods: {
-    selected (product) {
-      this.$emit('selectClick', product)
-    }
-  }
 }
 </script>
 

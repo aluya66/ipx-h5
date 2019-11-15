@@ -28,101 +28,101 @@ import { Popup, Field } from 'vant'
 import utils from 'utils'
 
 export default {
-  components: {
-    Popup,
-    Field
-  },
-  props: {
-    showPopup: {
-      type: Boolean,
-      default: false
+    components: {
+        Popup,
+        Field
     },
-    manageTypes: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
-  data () {
-    return {
-      isShow: false,
-      phoneFormartResult: false,
-      showPhoneError: false,
-      userName: '',
-      userPhone: '',
-      userCity: '',
-      selectCode: ''
-      // selectItems: []
-    }
-  },
-  watch: {
-    showPopup (val) {
-      this.isShow = val
-    },
-    userPhone (val) {
-      let phoneResult = utils.isMobile(this.userPhone)
-      this.phoneFormartResult = phoneResult
-      if (val.length === 11) {
-        if (!phoneResult) {
-          this.showPhoneError = true
-          this.$toast('手机格式有误')
-        } else {
-          this.showPhoneError = false
+    props: {
+        showPopup: {
+            type: Boolean,
+            default: false
+        },
+        manageTypes: {
+            type: Array,
+            default () {
+                return []
+            }
         }
-      } else {
-        this.phoneFormartResult = false
-        this.showPhoneError = false
-      }
-    }
-  },
-  computed: {
-    submitState () {
-      if (this.userName.length && this.userCity.length && this.selectCode.length && this.phoneFormartResult) {
-        return true
-      }
-      return false
-    }
-  },
-  methods: {
+    },
+    data () {
+        return {
+            isShow: false,
+            phoneFormartResult: false,
+            showPhoneError: false,
+            userName: '',
+            userPhone: '',
+            userCity: '',
+            selectCode: ''
+            // selectItems: []
+        }
+    },
+    watch: {
+        showPopup (val) {
+            this.isShow = val
+        },
+        userPhone (val) {
+            let phoneResult = utils.isMobile(this.userPhone)
+            this.phoneFormartResult = phoneResult
+            if (val.length === 11) {
+                if (!phoneResult) {
+                    this.showPhoneError = true
+                    this.$toast('手机格式有误')
+                } else {
+                    this.showPhoneError = false
+                }
+            } else {
+                this.phoneFormartResult = false
+                this.showPhoneError = false
+            }
+        }
+    },
+    computed: {
+        submitState () {
+            if (this.userName.length && this.userCity.length && this.selectCode.length && this.phoneFormartResult) {
+                return true
+            }
+            return false
+        }
+    },
+    methods: {
 
-    handleVerifyPhone () {
-      if (this.userPhone.length < 11) {
-        this.$toast('手机格式有误')
-        this.showPhoneError = true
-      }
-    },
-    // 处理选择经营类型
-    handleSelect (itemCode) {
-      this.selectCode = itemCode
-      // this.selectItems = []
-      // let result = this.selectItems.indexOf(itemCode)
-      // if (result > -1) {
-      //   this.selectItems.splice(result, 1)
-      // } else {
-      //   this.selectItems.push(itemCode)
-      // }
-    },
-    // 判断是否选中
-    handleContainItem (itemCode) {
-      // let result = this.selectItems.indexOf(itemCode)
-      return this.selectCode === itemCode
-    },
-    handleClose () {
-      this.$emit('onClose')
-    },
-    handleApply () {
-      if (this.submitState) {
-        let info = {
-          userName: this.userName,
-          userPhone: this.userPhone,
-          userCity: this.userCity,
-          manageCode: this.selectCode
+        handleVerifyPhone () {
+            if (this.userPhone.length < 11) {
+                this.$toast('手机格式有误')
+                this.showPhoneError = true
+            }
+        },
+        // 处理选择经营类型
+        handleSelect (itemCode) {
+            this.selectCode = itemCode
+            // this.selectItems = []
+            // let result = this.selectItems.indexOf(itemCode)
+            // if (result > -1) {
+            //   this.selectItems.splice(result, 1)
+            // } else {
+            //   this.selectItems.push(itemCode)
+            // }
+        },
+        // 判断是否选中
+        handleContainItem (itemCode) {
+            // let result = this.selectItems.indexOf(itemCode)
+            return this.selectCode === itemCode
+        },
+        handleClose () {
+            this.$emit('onClose')
+        },
+        handleApply () {
+            if (this.submitState) {
+                let info = {
+                    userName: this.userName,
+                    userPhone: this.userPhone,
+                    userCity: this.userCity,
+                    manageCode: this.selectCode
+                }
+                this.$emit('submit', info)
+            }
         }
-        this.$emit('submit', info)
-      }
     }
-  }
 }
 </script>
 

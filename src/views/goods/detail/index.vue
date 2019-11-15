@@ -15,35 +15,35 @@ import Visitor from './visitor.vue'
 const { CTabs, CHeader } = components
 
 export default {
-  data () {
-    return {
-      tabs: [{
-        name: 'statistics',
-        title: '数据统计'
-      }, {
-        name: 'visitor',
-        title: '访客'
-      }, {
-        name: 'detail',
-        title: '货品详情'
-      }],
-      curType: 'statistics'
-    }
-  },
+    data () {
+        return {
+            tabs: [{
+                name: 'statistics',
+                title: '数据统计'
+            }, {
+                name: 'visitor',
+                title: '访客'
+            }, {
+                name: 'detail',
+                title: '货品详情'
+            }],
+            curType: 'statistics'
+        }
+    },
 
-  methods: {
-    changeActive (val) {
-      this.curType = val
-    }
-  },
+    methods: {
+        changeActive (val) {
+            this.curType = val
+        }
+    },
 
-  components: {
-    CHeader,
-    CTabs,
-    Detail,
-    Statistics,
-    Visitor
-  }
+    components: {
+        CHeader,
+        CTabs,
+        Detail,
+        Statistics,
+        Visitor
+    }
 }
 </script>
 

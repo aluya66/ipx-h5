@@ -5,24 +5,24 @@
 <script>
 
 export default {
-  data () {
-    return {}
-  },
-  created () {
+    data () {
+        return {}
+    },
+    created () {
 
-  },
+    },
 
-  methods: {
-    getDetail () {
-      this.$api.goods.getStatistics().then(res => {
+    methods: {
+        getDetail () {
+            this.$api.goods.getStatistics().then(res => {
 
-      })
+            })
+        }
+
+    },
+
+    components: {
     }
-
-  },
-
-  components: {
-  }
 }
 </script>
 

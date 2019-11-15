@@ -8,29 +8,29 @@
 import create from 'utils/create'
 
 export default create({
-  name: 'svg',
-  props: {
-    name: {
-      type: String,
-      required: true
+    name: 'svg',
+    props: {
+        name: {
+            type: String,
+            required: true
+        },
+        className: {
+            type: String,
+            default: ''
+        }
     },
-    className: {
-      type: String,
-      default: ''
+    computed: {
+        iconName () {
+            return `#icon-${this.name}`
+        },
+        svgClass () {
+            if (this.className) {
+                return 'c-svg ' + this.className
+            } else {
+                return ''
+            }
+        }
     }
-  },
-  computed: {
-    iconName () {
-      return `#icon-${this.name}`
-    },
-    svgClass () {
-      if (this.className) {
-        return 'c-svg ' + this.className
-      } else {
-        return ''
-      }
-    }
-  }
 })
 </script>
 

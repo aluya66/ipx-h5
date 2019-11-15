@@ -1,5 +1,5 @@
 export default {
-  path: '/demo',
-  name: 'demo',
-  component: () => import('@/demos/demo.vue')
+    path: '/demo',
+    name: 'demo',
+    component: () => import('@/demos/demo.vue')
 }

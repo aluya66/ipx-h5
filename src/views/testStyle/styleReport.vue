@@ -38,57 +38,57 @@ import reportList from '@/views/common/reportList.vue'
 import components from 'components'
 const { CTabs } = components
 export default {
-  components: {
-    CTabs,
-    reportList
-  },
-  data () {
-    return {
-      tabs: [
-        {
-          name: 0,
-          title: '我的测款数据'
-        },
-        {
-          name: 1,
-          title: '平台测款数据'
+    components: {
+        CTabs,
+        reportList
+    },
+    data () {
+        return {
+            tabs: [
+                {
+                    name: 0,
+                    title: '我的测款数据'
+                },
+                {
+                    name: 1,
+                    title: '平台测款数据'
+                }
+            ],
+            curType: 0,
+            testStyleList: []
         }
-      ],
-      curType: 0,
-      testStyleList: []
-    }
-  },
-  created () {
-    this.getRankList()
-  },
-  methods: {
-    getRankList () {
-      const params = {
-        bookRankDispalyNum: 10,
-        bookVoteSearchType: this.curType
-      }
-      this.$api.book
-        .bookRankList(params)
-        .then(res => {
-          res.map((item, index) => {
-            if (index < 3) {
-              item.topNumUrl =
+    },
+    created () {
+        this.getRankList()
+    },
+    methods: {
+        getRankList () {
+            const params = {
+                bookRankDispalyNum: 10,
+                bookVoteSearchType: this.curType
+            }
+            this.$api.book
+                .bookRankList(params)
+                .then(res => {
+                    res.map((item, index) => {
+                        if (index < 3) {
+                            item.topNumUrl =
                 'url(' +
                 require('../../themes/images/app/rank' + index + '@2x.png') +
                 ')'
-            }
-          })
-          this.testStyleList = res
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    changeActive (val) {
-      this.curType = val
-      this.getRankList()
+                        }
+                    })
+                    this.testStyleList = res
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        changeActive (val) {
+            this.curType = val
+            this.getRankList()
+        }
     }
-  }
 }
 </script>
 

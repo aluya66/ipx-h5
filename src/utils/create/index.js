@@ -9,9 +9,9 @@
 import createBasic from './basic'
 
 export default function (cm) {
-  cm.components = Object.assign(cm.components || {}, {
+    cm.components = Object.assign(cm.components || {}, {
     // CIcon,
     // CLoading
-  })
-  return createBasic(cm)
+    })
+    return createBasic(cm)
 }

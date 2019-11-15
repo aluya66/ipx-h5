@@ -42,45 +42,45 @@
 
 <script>
 export default {
-  components: {
+    components: {
 
-  },
-  props: {
-    products: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
-  data () {
-    return {
-      isTest: false
-    }
-  },
-  watch: {
-    products (val) {
-      this.isTest = val.length > 0
-    }
-  },
-  methods: {
+    },
+    props: {
+        products: {
+            type: Array,
+            default () {
+                return []
+            }
+        }
+    },
+    data () {
+        return {
+            isTest: false
+        }
+    },
+    watch: {
+        products (val) {
+            this.isTest = val.length > 0
+        }
+    },
+    methods: {
     // 发起测款
-    handleCheck () {
-      this.$emit('onCheck')
-    },
-    // 测款报告
-    handleCheckTestResult () {
-      this.$emit('onResult')
-    },
-    // 分享测款
-    handleShare () {
-      this.$emit('onShare')
-    },
-    // 查看测款详情页
-    handleCheckDetail () {
-      this.$emit('onDetail')
+        handleCheck () {
+            this.$emit('onCheck')
+        },
+        // 测款报告
+        handleCheckTestResult () {
+            this.$emit('onResult')
+        },
+        // 分享测款
+        handleShare () {
+            this.$emit('onShare')
+        },
+        // 查看测款详情页
+        handleCheckDetail () {
+            this.$emit('onDetail')
+        }
     }
-  }
 }
 </script>
 

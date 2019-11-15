@@ -4,8 +4,8 @@ import encrypt from './encrypt'
 import store from './store'
 
 export default {
-  ...dateTime,
-  ...dom,
-  ...encrypt,
-  ...store
+    ...dateTime,
+    ...dom,
+    ...encrypt,
+    ...store
 }

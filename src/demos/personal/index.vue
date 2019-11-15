@@ -38,30 +38,30 @@
 
 <script>
 export default {
-  data () {
-    return {
-      listItems: [
-        {
-          name: '李梓淇1',
-          phone: '1882131331'
-        },
-        {
-          name: '李梓淇2',
-          phone: '1882131332'
-        },
-        {
-          name: '李梓淇3',
-          phone: '1882131333'
+    data () {
+        return {
+            listItems: [
+                {
+                    name: '李梓淇1',
+                    phone: '1882131331'
+                },
+                {
+                    name: '李梓淇2',
+                    phone: '1882131332'
+                },
+                {
+                    name: '李梓淇3',
+                    phone: '1882131333'
+                }
+            ]
         }
-      ]
+    },
+    methods: {
+        showPhone (num) {
+            console.log(num)
+            return num.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+        }
     }
-  },
-  methods: {
-    showPhone (num) {
-      console.log(num)
-      return num.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
-    }
-  }
 }
 </script>
 

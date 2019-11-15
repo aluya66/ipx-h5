@@ -13,15 +13,15 @@
 import routes from '../routes/modules'
 
 export default {
-  name: 'links',
-  data () {
-    return {
-      items: []
+    name: 'links',
+    data () {
+        return {
+            items: []
+        }
+    },
+    created () {
+        this.items = Object.keys(routes)
     }
-  },
-  created () {
-    this.items = Object.keys(routes)
-  }
 }
 </script>
 

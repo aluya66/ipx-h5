@@ -10,28 +10,28 @@
 
 <script>
 export default {
-  data () {
-    return {
-      delayTime: null,
-      count: 5
-    }
-  },
-  created () {
-    this.setTime()
-  },
-  methods: {
-    setTime () {
-      const that = this
-      setTimeout(() => {
-        that.count -= 1
-        if (that.count === 0) {
-          this.$router.replace('/login')
-        } else {
-          that.setTime()
+    data () {
+        return {
+            delayTime: null,
+            count: 5
         }
-      }, 1000)
+    },
+    created () {
+        this.setTime()
+    },
+    methods: {
+        setTime () {
+            const that = this
+            setTimeout(() => {
+                that.count -= 1
+                if (that.count === 0) {
+                    this.$router.replace('/login')
+                } else {
+                    that.setTime()
+                }
+            }, 1000)
+        }
     }
-  }
 }
 </script>
 
