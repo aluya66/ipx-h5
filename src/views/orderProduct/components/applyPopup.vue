@@ -69,6 +69,7 @@ export default {
     return {
       isShow: false,
       phoneFormartResult: false,
+      userNameFormartResult: false,
       showPhoneError: false,
       showUserNameError: false,
       userName: '',
@@ -98,13 +99,15 @@ export default {
       }
     },
     userName (val) {
-      let reg = '/^[\u0391-\uFFE5A-Za-z]+$/'
+      let reg = /^[\u0391-\uFFE5A-Za-z]+$/
       let userNameResult = reg.test(val)
       if (!userNameResult) {
-        this.showPhoneError = true
+        this.userNameFormartResult = true
+        this.showUserNameError = true
         this.$toast('请输入正确的姓名')
       } else {
-        this.showPhoneError = false
+        this.userNameFormartResult = false
+        this.showUserNameError = false
       }
     }
   },
@@ -117,7 +120,8 @@ export default {
         this.userName.length &&
         this.userCity.length &&
         this.selectCode.length &&
-        this.phoneFormartResult
+        this.phoneFormartResult &&
+        this.userNameFormartResult
       ) {
         return true
       }
@@ -131,7 +135,9 @@ export default {
         this.showPhoneError = true
       }
     },
-    handleVerifyUserName () {},
+    handleVerifyUserName () {
+
+    },
     // 处理选择经营类型
     handleSelect (itemCode) {
       this.selectCode = itemCode
