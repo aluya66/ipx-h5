@@ -45,8 +45,8 @@
 </template>
 
 <script>
-import { Popup, Field } from "vant";
-import utils from "utils";
+import { Popup, Field } from 'vant'
+import utils from 'utils'
 
 export default {
   components: {
@@ -60,81 +60,81 @@ export default {
     },
     manageTypes: {
       type: Array,
-      default() {
-        return [];
+      default () {
+        return []
       }
     }
   },
-  data() {
+  data () {
     return {
       isShow: false,
       phoneFormartResult: false,
       showPhoneError: false,
       showUserNameError: false,
-      userName: "",
-      userPhone: "",
-      userCity: "",
-      selectCode: ""
+      userName: '',
+      userPhone: '',
+      userCity: '',
+      selectCode: ''
       // selectItems: []
-    };
+    }
   },
   watch: {
-    showPopup(val) {
-      this.isShow = val;
+    showPopup (val) {
+      this.isShow = val
     },
-    userPhone(val) {
-      let phoneResult = utils.isMobile(this.userPhone);
-      this.phoneFormartResult = phoneResult;
+    userPhone (val) {
+      let phoneResult = utils.isMobile(this.userPhone)
+      this.phoneFormartResult = phoneResult
       if (val.length === 11) {
         if (!phoneResult) {
-          this.showPhoneError = true;
-          this.$toast("手机格式有误");
+          this.showPhoneError = true
+          this.$toast('手机格式有误')
         } else {
-          this.showPhoneError = false;
+          this.showPhoneError = false
         }
       } else {
-        this.phoneFormartResult = false;
-        this.showPhoneError = false;
+        this.phoneFormartResult = false
+        this.showPhoneError = false
       }
     },
-    userName(val) {
-      let reg = "/^[\u0391-\uFFE5A-Za-z]+$/";
-      let userNameResult = reg.test(val);
+    userName (val) {
+      let reg = '/^[\u0391-\uFFE5A-Za-z]+$/'
+      let userNameResult = reg.test(val)
       if (!userNameResult) {
-        this.showPhoneError = true;
-        this.$toast("请输入正确的姓名");
+        this.showPhoneError = true
+        this.$toast('请输入正确的姓名')
       } else {
-        this.showPhoneError = false;
+        this.showPhoneError = false
       }
     }
   },
-  created() {
-    console.log(this.bookActivityCode);
+  created () {
+    console.log(this.bookActivityCode)
   },
   computed: {
-    submitState() {
+    submitState () {
       if (
         this.userName.length &&
         this.userCity.length &&
         this.selectCode.length &&
         this.phoneFormartResult
       ) {
-        return true;
+        return true
       }
-      return false;
+      return false
     }
   },
   methods: {
-    handleVerifyPhone() {
+    handleVerifyPhone () {
       if (this.userPhone.length < 11) {
-        this.$toast("手机格式有误");
-        this.showPhoneError = true;
+        this.$toast('手机格式有误')
+        this.showPhoneError = true
       }
     },
-    handleVerifyUserName() {},
+    handleVerifyUserName () {},
     // 处理选择经营类型
-    handleSelect(itemCode) {
-      this.selectCode = itemCode;
+    handleSelect (itemCode) {
+      this.selectCode = itemCode
       // this.selectItems = []
       // let result = this.selectItems.indexOf(itemCode)
       // if (result > -1) {
@@ -144,26 +144,26 @@ export default {
       // }
     },
     // 判断是否选中
-    handleContainItem(itemCode) {
+    handleContainItem (itemCode) {
       // let result = this.selectItems.indexOf(itemCode)
-      return this.selectCode === itemCode;
+      return this.selectCode === itemCode
     },
-    handleClose() {
-      this.$emit("onClose");
+    handleClose () {
+      this.$emit('onClose')
     },
-    handleApply() {
+    handleApply () {
       if (this.submitState) {
         let info = {
           userName: this.userName,
           userPhone: this.userPhone,
           userCity: this.userCity,
           manageCode: this.selectCode
-        };
-        this.$emit("submit", info);
+        }
+        this.$emit('submit', info)
       }
     }
   }
-};
+}
 </script>
 
 <style lang='less' scoped>

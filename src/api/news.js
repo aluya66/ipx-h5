@@ -9,5 +9,6 @@ const context = process.env.VUE_APP_CMS_serverPath
  */
 export const getNewsDetail = params => Http.fetch(`${context}/v1/cms/news/${params.id}`, '', {
   method: 'get',
+  hasToken: true, // 不要token
   hasErrMsg: true
 })

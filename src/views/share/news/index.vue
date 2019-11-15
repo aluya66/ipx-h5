@@ -118,7 +118,7 @@
           <div v-if="feed.summary" class="video-summary" v-html="feed.summary"></div>
           <div class="video-content" v-html="feed.content" id="content-html"></div>
           <div class="video-tags">
-            <div class="tag" v-for="keyword in (feed.keywords)" :key="keyword">{{keyword}}</div>
+            <div class="tag" v-for="(keyword, index) in (feed.keywords)" :key="index">{{keyword}}</div>
           </div>
           <!-- <comments :show-dialog="showDialog" :comments="comments"></comments> -->
         </div>
@@ -187,7 +187,7 @@
           </div>
           <div class="video-content" v-html="feed.summary"></div>
           <div class="video-tags">
-            <div class="tag" v-for="keyword in (feed.keywords)" :key="keyword">{{keyword}}</div>
+            <div class="tag" v-for="(keyword, index) in (feed.keywords)" :key="index">{{keyword}}</div>
           </div>
           <!-- <comments :show-dialog="showDialog" :comments="comments"></comments> -->
         </div>
@@ -249,9 +249,9 @@ export default {
     //   this.$previewRefresh()
     // }, 2000);
     // 图片查看器打开后，打印本次查看器的实例（事件、方法、属性的示例）
-    // this.$preview.on("imageLoadComplete", (e, item) => {
-    //   console.log("222222222222", this.$preview.self);
-    // });
+    this.$preview.on('imageLoadComplete', (e, item) => {
+      console.log('222222222222', this.$preview.self)
+    })
   },
   methods: {
     download () {
@@ -322,6 +322,7 @@ export default {
             )
             // imgs[i].setAttribute("style", "width:" + width + "px;height:" + (width * ratio) + "px")
             // 表情包样式
+            console.log()
             if (imgs[i].style.maxWidth !== '40%') {
               imgs[i].style.width = width + 'px'
               imgs[i].style.height = width * ratio + 'px'
@@ -360,9 +361,11 @@ export default {
       function lazyload () {
         // 监听页面滚动事件
         let seeHeight = document.documentElement.clientHeight // 可见区域高度
+
         let scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop // 滚动条距离顶部高度
         for (let i = n; i < num; i++) {
+          img[i].src = img[i].getAttribute('data-src')
           if (img[i].offsetTop < seeHeight + scrollTop) {
             if (
               img[i].getAttribute('src') ===
@@ -431,6 +434,7 @@ export default {
             }
             this.slide.push(list)
           })
+
           if (this.activeName === 10) {
             setTimeout(() => {
               this.getImg()
@@ -948,7 +952,7 @@ export default {
     img {
       margin: 0 auto;
       display: block;
-      width: 100%;
+      // width: 100%;
       max-width: 100%;
       height: auto !important;
     }
