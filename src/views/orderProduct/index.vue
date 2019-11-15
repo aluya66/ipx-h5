@@ -23,6 +23,10 @@
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheckResult" v-if="!testProductsStatus">
+          <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
+          <p v-if="!inScroll">测款报告</p>
+        </div>
       </div>
       <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
     </div>
