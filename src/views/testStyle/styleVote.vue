@@ -19,8 +19,7 @@
 </template>
 
 <script>
-import wx from 'weixin-js-sdk'
-
+import wx from 'weixin-jsapi'
 import shareList from '@/views/common/shareList'
 import components from 'components'
 import { Dialog, Toast } from 'vant'
@@ -53,8 +52,9 @@ export default {
   },
   mounted () {
     if (this.code) {
+      this.getTicket()
       this.$nextTick(function () {
-        this.getTicket()
+        
       })
     }
   },
@@ -175,23 +175,24 @@ export default {
         })
     },
     wxInit () {
-      let { appId, timestamp, nonceStr, signature } = this.wxConig
+      let { appId, timestamp, nonceStr, signature, jsApiList } = this.wxConig
       // alert(JSON.stringify(this.wxConig))
+      let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
-        url: `/oauth?bannerCode=${this.bannerCode}`,
+        url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
         shareImage: '../../themes/images/app/logo.png',
         description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
 
       // alert(JSON.stringify(params) + 'params')
       wx.config({
-        debug: false,
+        debug: true,
         appId: appId,
         timestamp: timestamp,
         nonceStr: nonceStr,
         signature: signature,
-        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+        jsApiList: jsApiList
       })
       wx.ready(function () {
         wx.onMenuShareTimeline({
@@ -219,6 +220,10 @@ export default {
           }
         })
       })
+      wx.error(function(res){
+        alert(JSON.stringify(res))
+          // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+      });
     }
   }
 }

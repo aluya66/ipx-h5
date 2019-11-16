@@ -52,7 +52,7 @@ export default {
       list: []
     }
   },
-  created () {
+  activated () {
     this.participantCode = this.$route.query.participantCode
     this.bookActivityCode = this.$route.query.bookActivityCode
     this.getSharemeasuresList()

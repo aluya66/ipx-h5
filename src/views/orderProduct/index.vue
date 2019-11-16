@@ -23,7 +23,7 @@
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
-        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheckResult" v-if="!testProductsStatus && testProducts.length > 0">
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheckResult" v-if="!testProductsStatus && testProducts && testProducts.length > 0">
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">测款报告</p>
         </div>
