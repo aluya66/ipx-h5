@@ -111,15 +111,26 @@ export default {
       }
     },
     userName (val) {
-      let reg = /^[\u0391-\uFFE5A-Za-z]+$/
-      let userNameResult = reg.test(val)
-      let rs = ''
-      for (let i = 0; i < val.length; i++) {
-        if (reg.test(val.substr(i, 1))) {
-          rs = rs + val.substr(i, 1)
+      // let reg = /^[\u0391-\uFFE5A-Za-z]+$/
+      // let reg = /^\[a-zA-Z\s\u4e00-\u9fa5]+$/
+      let reg = /^[\u0391-\uFFE5\s\A-Za-z]+$/
+
+      let spacingReg = /^[ ]+$/
+      if (spacingReg.test(val)) {
+        this.userName = ''
+      } else {
+        let rs = ''
+        for (let i = 0; i < val.length; i++) {
+          if (reg.test(val.substr(i, 1))) {
+            rs = rs + val.substr(i, 1)
+          }
         }
+        this.userName = rs
       }
-      this.userName = rs
+
+      // this.userName = val.replace(filterSpecharsReg, '')
+      let userNameResult = reg.test(val)
+      
       if (!userNameResult) {
         this.userNameFormartResult = false
         this.showUserNameError = true
@@ -130,15 +141,20 @@ export default {
       }
     },
     userCity (val) {
-      let reg = /^[\u0391-\uFFE5A-Za-z]+$/
-      let userCityResult = reg.test(val)
-      let rs = ''
-      for (let i = 0; i < val.length; i++) {
-        if (reg.test(val.substr(i, 1))) {
-          rs = rs + val.substr(i, 1)
+      let reg = /^\S[a-zA-Z\s\u4e00-\u9fa5]+\S$/
+      let spacingReg = /^[ ]+$/
+      if (spacingReg.test(val)) {
+        this.userName = ''
+      } else {
+        let rs = ''
+        for (let i = 0; i < val.length; i++) {
+          if (reg.test(val.substr(i, 1))) {
+            rs = rs + val.substr(i, 1)
+          }
         }
+        this.userName = rs
       }
-      this.userCity = rs
+      let userCityResult = reg.test(val)
       if (!userCityResult) {
         this.userCityFormartResult = false
         this.showUserCityError = true

@@ -1,20 +1,14 @@
 <template>
   <layout-view>
-    <c-header
-      slot="header"
-      :left-arrow="true"
-    ></c-header>
+    <c-header slot="header" :left-arrow="true"></c-header>
 
     <div class="panel">
       <div class="top-title">
         <p>已为您生成以下测款页面，测款商品为本次订货会的{{totalNum}}款主打商品：</p>
       </div>
       <c-list class="list-scroll">
-        <div class="scale-content">
-          <share-list
-            class="share-list"
-            :productList="list"
-          ></share-list>
+        <div class="scale-content" ref="shareList">
+          <share-list class="share-list" :productList="list"></share-list>
         </div>
       </c-list>
       <div class="bottom-dialog">
@@ -22,101 +16,107 @@
         <p>(测款数据在订货会页面查看)</p>
         <div class="share-logo">
           <div class="left" @click="shareWechat(1)">
-            <img src="../../themes/images/app/share-wechat@2x.png">
+            <img src="../../themes/images/app/share-wechat@2x.png" />
             <p>微信群</p>
           </div>
           <div class="left" @click="shareWechat(2)">
-            <img src="../../themes/images/app/share-wefriends@2x.png">
+            <img src="../../themes/images/app/share-wefriends@2x.png" />
             <p>朋友圈</p>
           </div>
         </div>
       </div>
     </div>
-
   </layout-view>
 </template>
 
 <script>
-import shareList from '@/views/common/shareList'
-import utils from 'utils'
+import shareList from "@/views/common/shareList";
+import utils from "utils";
 export default {
   components: {
     shareList
   },
-  data () {
+  data() {
     return {
-      bannerCode: '',
-      participantCode: '',
-      bookActivityCode: '',
-      totalNum: '',
-      list: [{
-        mainPic: '',
-        productAtrNumber: '124124',
-        productCode: '235235hu'
-
-      }]
-    }
+      bannerCode: "",
+      participantCode: "",
+      bookActivityCode: "",
+      totalNum: "",
+      list: [
+        {
+          mainPic: "",
+          productAtrNumber: "124124",
+          productCode: "235235hu"
+        }
+      ]
+    };
   },
-  activated () {
-    this.participantCode = this.$route.query.participantCode
-    this.bookActivityCode = this.$route.query.bookActivityCode
-    this.getSharemeasuresList()
+  activated() {
+    this.participantCode = this.$route.query.participantCode;
+    this.bookActivityCode = this.$route.query.bookActivityCode;
+    this.getSharemeasuresList();
   },
-  mounted () {
+  mounted() {
+    // setTimeout(() => {
+    //   console.log(document.querySelector(".van-pull-refresh"));
 
+    //   console.log(this.$refs.shareList.offsetHeight);
+    //   document.querySelector(".van-pull-refresh").style.height =
+    //     this.$refs.shareList.offsetHeight + "px";
+    // }, 1000);
   },
   methods: {
-    getSharemeasuresList () {
+    getSharemeasuresList() {
       const params = {
         participantCode: this.participantCode
-      }
+      };
       this.$api.book
         .getSharemeasuresList(params)
         .then(res => {
-          console.log(res)
-          this.list = res
+          console.log(res);
+          this.list = res;
           if (this.list.length > 9) {
-            this.list = this.list.splice(0, 9)
-            this.totalNum = this.list.length || 0
+            this.list = this.list.splice(0, 9);
+            this.totalNum = this.list.length || 0;
           }
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
-    async bookShared () {
+    async bookShared() {
       let params = {
         participantCode: this.participantCode
-      }
+      };
       await this.$api.book
         .bookShared(params)
         .then(res => {
-          console.log(res)
+          console.log(res);
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
-    async shareWechat (type) {
-      let url = 'http://ipx-hybrid.yosar.test'
+    async shareWechat(type) {
+      let url = "http://ipx-hybrid.yosar.test";
       // type 1=好友 2=朋友圈
-      let method = 'one_key_share'
+      let method = "one_key_share";
       let params = {
         type: String(type),
-        title: '我想邀请你一起做时尚买手',
+        title: "我想邀请你一起做时尚买手",
         url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-        shareImage: '../../themes/images/app/logo.png',
-        description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
-      }
+        shareImage: "../../themes/images/app/logo.png",
+        description: "这一季时尚选款，就听你的！为你偏爱的原创款式代言！"
+      };
 
-      await this.bookShared()
+      await this.bookShared();
 
-      console.log(JSON.stringify(params) + 'params')
+      console.log(JSON.stringify(params) + "params");
 
-      utils.postMessage(method, params)
+      utils.postMessage(method, params);
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -136,7 +136,8 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(100vh - 136px);
+    height: calc(100vh - 116px);
+    overflow: hidden;
   }
   .scale-content {
     width: 120%;
@@ -147,6 +148,8 @@ export default {
     transform: scale(0.5, 0.5) translateX(-15%);
     transform-origin: top;
     padding: 10px;
+    height: calc(120vh);
+    overflow: auto;
   }
   .bottom-dialog {
     position: fixed;
