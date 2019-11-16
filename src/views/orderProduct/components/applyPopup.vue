@@ -23,6 +23,7 @@
       <field
         class="input"
         v-model="userPhone"
+        type="number"
         maxlength="11"
         :border="false"
         placeholder="请输入手机号"
