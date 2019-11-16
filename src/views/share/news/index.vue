@@ -10,14 +10,14 @@
                @click="DialogVisible=true">打开APP</div>
         </div>
         </div>-->
-        <div class="display-num">{{feed.images.length}}</div>
+        <!-- <div class="display-num">{{feed.images.length}}</div>
         <div class="display-cover">
           <div class="display-cover-top" :style="{backgroundImage:'url(' + feed.user_avatar + ')'}"></div>
           <div class="display-cover-boom"></div>
         </div>
         <div class="display-xin">{{feed.collect_count}}</div>
         <div class="display-pinglun">{{feed.feed_comment_count}}</div>
-        <div class="display-zan">{{feed.like_count}}</div>
+        <div class="display-zan">{{feed.like_count}}</div> -->
         <div class="display-prompt" v-if="prompt">左右滑动可切换图片</div>
         <div class="display-demo" style="background: black">
           <swiper>
@@ -72,7 +72,7 @@
             </div>
             <div v-show="palyShow" @click="paly()" class="display-paly">
               <!-- <i class="el-icon-caret-right"></i> -->
-              <van-icon name="play-circle-o" />
+              <!-- <van-icon name="play-circle-o" /> -->
             </div>
           </div>
           <div class="img-video">
@@ -881,17 +881,18 @@ export default {
     }
   }
   .display-paly {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 1);
-    border-radius: 25px;
+    width: 68px;
+    height: 68px;
+    background: url('../../../themes/images/app/icon_play@2x.png') no-repeat center;
+    background-size: 68px; 
     text-align: center;
-    line-height: 50px;
+    line-height: 68px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+    
   }
   .video-title {
     font-size: 20px;
@@ -952,9 +953,9 @@ export default {
     img {
       margin: 0 auto;
       display: block;
-      // width: 100%;
-      max-width: 100%;
-      height: auto !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      // height: auto !important;
     }
     .img_loading {
       background-color: #ebebeb;
@@ -1088,7 +1089,7 @@ export default {
         vertical-align: top;
         box-sizing: border-box;
         width: 100%;
-        padding: 0 0.3125rem 0.3125rem 0;
+        // padding: 0 0.3125rem 0.3125rem 0;
         .div {
           padding-bottom: 100%;
           background-color: #e6e6e6;
@@ -1111,7 +1112,10 @@ export default {
         vertical-align: top;
         box-sizing: border-box;
         width: 50%;
-        padding: 0 0.3125rem 0.3125rem 0;
+        padding: 0 12px 12px 0;
+        &:nth-child(2n) {
+          padding: 0;
+        }
         .div {
           padding-bottom: 100%;
           background-color: #e6e6e6;

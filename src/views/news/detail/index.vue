@@ -253,7 +253,7 @@ export default {
   text-align: left;
   display: inline-block;
   // background-color: #f7f7f7;
-  padding-bottom: 30px !important;
+  // padding-bottom: 30px !important;
   background-color: #fff;
   // height: calc(100vh);
   // overflow: auto;
@@ -272,7 +272,7 @@ export default {
     display: block;
     width: 100% !important;
     max-width: 100% !important;
-    height: auto !important;
+    // height: auto !important;
   }
   .img_loading {
     background-color: #ebebeb;

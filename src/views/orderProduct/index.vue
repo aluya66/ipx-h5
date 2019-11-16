@@ -15,7 +15,7 @@
         <section-header class="newHeader" title="上期订货会快报" subTitle="订货会热销行情，最新市场风向标" />
         <list :allList="listsObject"/>
         <store-address />
-        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply">
+        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply" v-if="delayedStatus">
           <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
@@ -28,7 +28,7 @@
           <p v-if="!inScroll">测款报告</p>
         </div>
       </div>
-      <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' :phoneNumber="this.baseParams.phoneNumber" @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
+      <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' :phoneNumber="baseParams.phoneNumber" @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
     </div>
   </layout-view>
 </template>
@@ -71,6 +71,7 @@ export default {
       enableToTakePart: '1', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
       showPopup: false,
       testProductsStatus: true,
+      delayedStatus: false,
       topImage: require('@/themes/images/app/main-name@2x.png'),
       products: [], // 测款商品数据
       testProducts: [], // 一键测款后的数据列表
@@ -174,6 +175,8 @@ export default {
             this.testProductsStatus = false
           }
         }
+
+        this.delayedStatus = true
       }).catch(() => {
 
       })

@@ -89,6 +89,9 @@ export default {
     }
   },
   watch: {
+    phoneNumber(val) {
+      this.userPhone = val || ''
+    },
     showPopup (val) {
       this.isShow = val
     },
@@ -139,7 +142,7 @@ export default {
       if (!userCityResult) {
         this.userCityFormartResult = false
         this.showUserCityError = true
-        this.$toast('请输入正确的姓名')
+        this.$toast('请输入正确的城市')
       } else {
         this.userCityFormartResult = true
         this.showUserCityError = false
