@@ -15,7 +15,7 @@
         <section-header class="newHeader" title="上期订货会快报" subTitle="订货会热销行情，最新市场风向标" />
         <list :allList="listsObject"/>
         <store-address />
-        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply" v-if="enableToTakePart === 1">
+        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply">
           <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
@@ -130,7 +130,11 @@ export default {
     // 点击报名弹框
     handleApply () {
       if (this.token) {
-        this.showPopup = !this.showPopup
+        if (this.enableToTakePart === 0) {
+          this.$toast('已提交过报名信息，请勿重复提交')
+        } else {
+          this.showPopup = !this.showPopup
+        }
       } else {
         let method = 'user_authentication'
         utils.postMessage(method, '')

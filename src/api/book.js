@@ -54,7 +54,6 @@ export const getSharemeasuresList = params => Http.fetch(`${context}/v1/bookacti
   method: 'get'
 })
 
-
 /**
  * 订货会，参会人，分享微信测款，分享状态修改
  * @param {*} params params数据对象
@@ -63,5 +62,3 @@ export const getSharemeasuresList = params => Http.fetch(`${context}/v1/bookacti
 export const bookShared = params => Http.fetch(`${context}/v1/bookactivity/shared`, params, {
   method: 'get'
 })
-
-

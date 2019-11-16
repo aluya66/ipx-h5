@@ -52,7 +52,7 @@ export default {
       list: [{
         mainPic: '',
         productAtrNumber: '124124',
-        productCode: '235235hu',
+        productCode: '235235hu'
 
       }]
     }
@@ -74,7 +74,7 @@ export default {
         .getSharemeasuresList(params)
         .then(res => {
           console.log(res)
-          this.list = res 
+          this.list = res
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
             this.totalNum = this.list.length || 0
@@ -84,7 +84,7 @@ export default {
           console.log(err)
         })
     },
-    async bookShared() {
+    async bookShared () {
       let params = {
         participantCode: this.participantCode
       }
@@ -109,10 +109,10 @@ export default {
         description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
 
-      await this.bookShared();
+      await this.bookShared()
 
       console.log(JSON.stringify(params) + 'params')
-      
+
       utils.postMessage(method, params)
     }
   }

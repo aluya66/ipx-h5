@@ -52,7 +52,7 @@ export default {
       testStyleList: []
     }
   },
-  created () {
+  activated () {
     this.participantCode = this.$route.query.participantCode
     this.getRankList()
   },

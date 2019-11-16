@@ -29,7 +29,9 @@
         :error="showPhoneError"
         @blur="handleVerifyPhone"
       />
-      <field class="input" v-model="userCity" :border="false" placeholder="请输入您所在城市" />
+      <field class="input" v-model="userCity" :border="false" placeholder="请输入您所在城市" maxlength="20"
+      :error="showUserCityError"
+      @blur="handleVerifyUserCity"/>
       <p class="secHeader">经营类型:</p>
       <div class="manage">
         <section
@@ -74,8 +76,10 @@ export default {
       isShow: false,
       phoneFormartResult: false,
       userNameFormartResult: false,
+      userCityFormartResult: false,
       showPhoneError: false,
       showUserNameError: false,
+      showUserCityError: false,
       userName: '',
       userPhone: '',
       userCity: '',
@@ -105,6 +109,13 @@ export default {
     userName (val) {
       let reg = /^[\u0391-\uFFE5A-Za-z]+$/
       let userNameResult = reg.test(val)
+      let rs = ''
+      for (let i = 0; i < val.length; i++) {
+        if (reg.test(val.substr(i, 1))) {
+          rs = rs + val.substr(i, 1)
+        }
+      }
+      this.userName = rs
       if (!userNameResult) {
         this.userNameFormartResult = false
         this.showUserNameError = true
@@ -112,6 +123,25 @@ export default {
       } else {
         this.userNameFormartResult = true
         this.showUserNameError = false
+      }
+    },
+    userCity (val) {
+      let reg = /^[\u0391-\uFFE5A-Za-z]+$/
+      let userCityResult = reg.test(val)
+      let rs = ''
+      for (let i = 0; i < val.length; i++) {
+        if (reg.test(val.substr(i, 1))) {
+          rs = rs + val.substr(i, 1)
+        }
+      }
+      this.userCity = rs
+      if (!userCityResult) {
+        this.userCityFormartResult = false
+        this.showUserCityError = true
+        this.$toast('请输入正确的姓名')
+      } else {
+        this.userCityFormartResult = true
+        this.showUserCityError = false
       }
     }
   },
@@ -125,7 +155,8 @@ export default {
         this.userCity.length &&
         this.selectCode.length &&
         this.phoneFormartResult &&
-        this.userNameFormartResult
+        this.userNameFormartResult &&
+        this.userCityFormartResult
       ) {
         return true
       }
@@ -140,6 +171,9 @@ export default {
       }
     },
     handleVerifyUserName () {
+
+    },
+    handleVerifyUserCity () {
 
     },
     // 处理选择经营类型
