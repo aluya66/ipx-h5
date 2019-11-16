@@ -49,7 +49,12 @@ export default {
       participantCode: '',
       bookActivityCode: '',
       totalNum: '',
-      list: []
+      list: [{
+        mainPic: '',
+        productAtrNumber: '124124',
+        productCode: '235235hu',
+
+      }]
     }
   },
   activated () {
@@ -69,7 +74,7 @@ export default {
         .getSharemeasuresList(params)
         .then(res => {
           console.log(res)
-          this.list = res
+          this.list = res 
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
             this.totalNum = this.list.length || 0
@@ -79,7 +84,20 @@ export default {
           console.log(err)
         })
     },
-    shareWechat (type) {
+    async bookShared() {
+      let params = {
+        participantCode: this.participantCode
+      }
+      await this.$api.book
+        .bookShared(params)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async shareWechat (type) {
       let url = 'http://ipx-hybrid.yosar.test'
       // type 1=好友 2=朋友圈
       let method = 'one_key_share'
@@ -91,8 +109,10 @@ export default {
         description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
 
-      console.log(JSON.stringify(params) + 'params')
+      await this.bookShared();
 
+      console.log(JSON.stringify(params) + 'params')
+      
       utils.postMessage(method, params)
     }
   }
@@ -116,7 +136,7 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 136px);
   }
   .scale-content {
     width: 120%;
