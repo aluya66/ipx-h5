@@ -210,10 +210,10 @@ export default {
       document.body.scrollTop = document.body.scrollHeight
     },
     handleHeight () {
-      console.log(document.body.scrollTop)
-      console.log(document.body.scrollHeight)
       this.timer = setInterval(() => {
         document.body.scrollTop = document.body.scrollHeight
+        console.log(document.body.scrollTop)
+        console.log(document.body.scrollHeight)
       }, 100)
     },
     // 处理选择经营类型

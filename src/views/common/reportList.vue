@@ -22,15 +22,15 @@ export default {
   props: {
     list: {
       type: Array,
-      default() {
-        return [];
+      default () {
+        return []
       }
     }
   },
-  data() {
+  data () {
     return {
-      topNumUrl: ""
-    };
+      topNumUrl: ''
+    }
   },
   // created () {
   //   this.list = this.list.map((item,index) =>{
@@ -38,12 +38,12 @@ export default {
   //   })
   // },
   filters: {
-    numStr(val) {
-      let num = val + 1;
-      return num < 10 ? "0" + num.toString() : num;
+    numStr (val) {
+      let num = val + 1
+      return num < 10 ? '0' + num.toString() : num
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

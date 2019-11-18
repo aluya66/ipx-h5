@@ -9,6 +9,7 @@
         :productList="list"
         :disableClick="isCommit"
         @selectClick="selected"
+        :isWxStatus="isWxStatus"
       ></share-list>
     </c-list>
     <button
@@ -35,26 +36,27 @@ export default {
       openId: '', // 微信openId
       participantCode: '', // banner图片code
       bookActivityCode: '',
+      isWxStatus: false,
       list: [],
       wxConig: {}, // 微信基本配置
       selectedNum: 0,
       isCommit: false
     }
   },
-  async created () {
+  async activated () {
     this.code = this.$route.query.code
     this.participantCode = this.$route.query.participantCode
     this.bookActivityCode = this.$route.query.bookActivityCode
     if (this.code) {
+      this.isWxStatus = true
       await this.getOauth()
     }
     await this.getTestStyleList()
   },
   mounted () {
     if (this.code) {
-      this.getTicket()
       this.$nextTick(function () {
-
+        this.getTicket()
       })
     }
   },
@@ -106,6 +108,10 @@ export default {
       }
     },
     commit () {
+      if (!this.isWxStatus) {
+        this.$toast('仅支持分享后在微信中投票哦')
+        return
+      }
       if (this.isCommit) {
         /// 分享
         Toast('点击右上角分享给好友')
