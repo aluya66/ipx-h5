@@ -189,8 +189,7 @@ export default {
         })
     },
     wxInit () {
-      
-      // let { appId, timestamp, nonceStr, signature } = this.wxConig
+      let { appId, timestamp, nonceStr, signature } = this.wxConig
       // alert(JSON.stringify(this.wxConig))
       // let url = 'http://ipx-hybrid.yosar.test'
       // let params = {
@@ -204,10 +203,10 @@ export default {
       // alert(JSON.stringify(params) + 'params')
       wx.config({
         debug: true,
-        appId: 'wxc2d190b40fb12b9d',
-        timestamp: '1574084855',
-        nonceStr: 'aea6292f-7df0-4f87-b4dc-3accc62042cc',
-        signature: '06772ec88cb0cc54933d7b27ed358f19b696c21a',
+        appId: appId,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
       })
       wx.ready(function () {
