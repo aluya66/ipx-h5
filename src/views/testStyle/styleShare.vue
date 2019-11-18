@@ -73,7 +73,6 @@ export default {
       this.$api.book
         .getSharemeasuresList(params)
         .then(res => {
-          console.log(res)
           this.list = res
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
