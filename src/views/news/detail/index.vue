@@ -54,7 +54,9 @@ export default {
         }
       }
       for (let j = 0; j < imgTag.length; j++) {
-        imgTag[j].setAttribute('class', 'imgClass')
+        if(imgTag[j].src !== '') {
+          imgTag[j].setAttribute('class', 'imgClass')
+        }
       }
       let imgs = wrap.getElementsByClassName('imgClass')
       for (let i = 0; i < imgs.length; i++) {
@@ -272,7 +274,8 @@ export default {
     display: block;
     width: 100% !important;
     max-width: 100% !important;
-    // height: auto !important;
+    height: auto !important;
+    max-height: initial !important;
   }
   .img_loading {
     background-color: #ebebeb;

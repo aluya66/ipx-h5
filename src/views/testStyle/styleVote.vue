@@ -14,7 +14,7 @@
     <button
       class="submit"
       @click="commit"
-    >{{isCommit?'分享好友':'提交投票'}}</button>
+    >{{isCommit?'邀请好友投票':'提交投票'}}</button>
   </layout-view>
 </template>
 
@@ -176,7 +176,7 @@ export default {
     },
     wxInit () {
       let { appId, timestamp, nonceStr, signature, jsApiList } = this.wxConig
-      // alert(JSON.stringify(this.wxConig))
+      alert(JSON.stringify(this.wxConig))
       let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
