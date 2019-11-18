@@ -884,7 +884,7 @@ export default {
     width: 68px;
     height: 68px;
     background: url('../../../themes/images/app/icon_play@2x.png') no-repeat center;
-    background-size: 68px; 
+    background-size: 68px;
     text-align: center;
     line-height: 68px;
     position: absolute;
@@ -892,7 +892,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    
+
   }
   .video-title {
     font-size: 20px;

@@ -30,33 +30,33 @@
 </template>
 
 <script>
-import shareList from "@/views/common/shareList";
-import utils from "utils";
+import shareList from '@/views/common/shareList'
+import utils from 'utils'
 export default {
   components: {
     shareList
   },
-  data() {
+  data () {
     return {
-      bannerCode: "",
-      participantCode: "",
-      bookActivityCode: "",
-      totalNum: "",
+      bannerCode: '',
+      participantCode: '',
+      bookActivityCode: '',
+      totalNum: '',
       list: [
         {
-          mainPic: "",
-          productAtrNumber: "124124",
-          productCode: "235235hu"
+          mainPic: '',
+          productAtrNumber: '124124',
+          productCode: '235235hu'
         }
       ]
-    };
+    }
   },
-  activated() {
-    this.participantCode = this.$route.query.participantCode;
-    this.bookActivityCode = this.$route.query.bookActivityCode;
-    this.getSharemeasuresList();
+  activated () {
+    this.participantCode = this.$route.query.participantCode
+    this.bookActivityCode = this.$route.query.bookActivityCode
+    this.getSharemeasuresList()
   },
-  mounted() {
+  mounted () {
     // setTimeout(() => {
     //   console.log(document.querySelector(".van-pull-refresh"));
 
@@ -66,57 +66,57 @@ export default {
     // }, 1000);
   },
   methods: {
-    getSharemeasuresList() {
+    getSharemeasuresList () {
       const params = {
         participantCode: this.participantCode
-      };
+      }
       this.$api.book
         .getSharemeasuresList(params)
         .then(res => {
-          console.log(res);
-          this.list = res;
+          console.log(res)
+          this.list = res
           if (this.list.length > 9) {
-            this.list = this.list.splice(0, 9);
-            this.totalNum = this.list.length || 0;
+            this.list = this.list.splice(0, 9)
+            this.totalNum = this.list.length || 0
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
-    async bookShared() {
+    async bookShared () {
       let params = {
         participantCode: this.participantCode
-      };
+      }
       await this.$api.book
         .bookShared(params)
         .then(res => {
-          console.log(res);
+          console.log(res)
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
-    async shareWechat(type) {
-      let url = "http://ipx-hybrid.yosar.test";
+    async shareWechat (type) {
+      let url = 'http://ipx-hybrid.yosar.test'
       // type 1=好友 2=朋友圈
-      let method = "one_key_share";
+      let method = 'one_key_share'
       let params = {
         type: String(type),
-        title: "我想邀请你一起做时尚买手",
+        title: '我想邀请你一起做时尚买手',
         url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-        shareImage: "../../themes/images/app/logo.png",
-        description: "这一季时尚选款，就听你的！为你偏爱的原创款式代言！"
-      };
+        shareImage: '../../themes/images/app/logo.png',
+        description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
+      }
 
-      await this.bookShared();
+      await this.bookShared()
 
-      console.log(JSON.stringify(params) + "params");
+      console.log(JSON.stringify(params) + 'params')
 
-      utils.postMessage(method, params);
+      utils.postMessage(method, params)
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
