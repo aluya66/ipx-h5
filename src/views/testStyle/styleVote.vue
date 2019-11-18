@@ -175,8 +175,11 @@ export default {
         })
     },
     getTicket () {
+      let params = {
+        url: location.href
+      }
       this.$api.oauth
-        .getTicket('')
+        .getTicket(params)
         .then(res => {
           alert(12313)
           this.wxConig = res.data
@@ -191,7 +194,7 @@ export default {
     wxInit () {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
       // alert(JSON.stringify(this.wxConig))
-      let url = 'http://ipx-hybrid.yosar.test'
+      let url = 'http://h5.yosar.com'
       let params = {
         title: '我想邀请你一起做时尚买手',
         link: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
