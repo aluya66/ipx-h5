@@ -184,9 +184,13 @@ export default {
     // 提交报名
     handleRequestApply (params) {
       this.$api.book.bookApply(params).then((response) => {
-        this.$toast.success('报名成功')
-        this.handleRequestMain()
-        this.showPopup = false
+        if (response.code === 0) {
+          this.$toast.success('报名成功')
+          this.handleRequestMain()
+          this.showPopup = false
+        } else {
+          this.$toast(response.message)
+        }
       }).catch(() => {
 
       })

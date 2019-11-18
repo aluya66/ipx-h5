@@ -54,7 +54,7 @@ export default {
         }
       }
       for (let j = 0; j < imgTag.length; j++) {
-        if(imgTag[j].src !== '') {
+        if (imgTag[j].src !== '') {
           imgTag[j].setAttribute('class', 'imgClass')
         }
       }

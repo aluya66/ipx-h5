@@ -19,6 +19,7 @@
         maxlength="20"
         :error="showUserNameError"
         @blur="handleVerifyUserName"
+        @focus="handleHeight"
       />
       <field
         class="input"
@@ -30,9 +31,15 @@
         :error="showPhoneError"
         @blur="handleVerifyPhone"
       />
-      <field class="input" v-model="userCity" :border="false" placeholder="请输入您所在城市" maxlength="20"
-      :error="showUserCityError"
-      @blur="handleVerifyUserCity"/>
+      <field
+        class="input"
+        v-model="userCity"
+        :border="false"
+        placeholder="请输入您所在城市"
+        maxlength="20"
+        :error="showUserCityError"
+        @blur="handleVerifyUserCity"
+      />
       <p class="secHeader">经营类型:</p>
       <div class="manage">
         <section
@@ -74,7 +81,9 @@ export default {
   },
   data () {
     return {
+      timer: null,
       isShow: false,
+      safeAreaInsetStatus: true,
       phoneFormartResult: false,
       userNameFormartResult: false,
       userCityFormartResult: false,
@@ -193,10 +202,19 @@ export default {
       }
     },
     handleVerifyUserName () {
-
+      clearInterval(this.timer)
+      document.body.scrollTop = document.body.scrollHeight
     },
     handleVerifyUserCity () {
-
+      clearInterval(this.timer)
+      document.body.scrollTop = document.body.scrollHeight
+    },
+    handleHeight () {
+      console.log(document.body.scrollTop)
+      console.log(document.body.scrollHeight)
+      this.timer = setInterval(() => {
+        document.body.scrollTop = document.body.scrollHeight
+      }, 100)
     },
     // 处理选择经营类型
     handleSelect (itemCode) {

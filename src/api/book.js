@@ -33,7 +33,8 @@ export const bookRankList = params => Http.fetch(`${context}/v1/bookactivity/vot
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const bookApply = params => Http.fetch(`${context}/v1/bookactivity/participate`, params, {
-  method: 'post'
+  method: 'post',
+  hasErrMsg: true
 })
 
 /**
