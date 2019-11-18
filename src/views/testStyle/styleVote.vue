@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import wx from 'weixin-jsapi'
+import wx from 'weixin-js-sdk'
 import shareList from '@/views/common/shareList'
 import components from 'components'
 import { Dialog, Toast } from 'vant'
@@ -56,7 +56,7 @@ export default {
   mounted () {
     setTimeout(() => {
       if (this.code) {
-
+        this.getTicket()
       }
     })
     // if (this.code) {
@@ -165,7 +165,7 @@ export default {
         .getOauth(params)
         .then(res => {
           this.openId = res.data
-          this.getTicket()
+
           alert(JSON.stringify(res) + 'getOauth')
           // oQB0T1bPzZ6M33fHozD19bxAUA4s
         })
@@ -191,13 +191,13 @@ export default {
     wxInit () {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
       // alert(JSON.stringify(this.wxConig))
-      // let url = 'http://ipx-hybrid.yosar.test'
-      // let params = {
-      //   title: '我想邀请你一起做时尚买手',
-      //   url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-      //   shareImage: '../../themes/images/app/logo.png',
-      //   description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
-      // }
+      let url = 'http://ipx-hybrid.yosar.test'
+      let params = {
+        title: '我想邀请你一起做时尚买手',
+        link: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+        imgUrl: '../../themes/images/app/logo.png',
+        desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
+      }
 
       // "appId":"wxc2d190b40fb12b9d","timestamp":"1574084855","nonceStr":"aea6292f-7df0-4f87-b4dc-3accc62042cc","signature":"06772ec88cb0cc54933d7b27ed358f19b696c21a
       // alert(JSON.stringify(params) + 'params')
@@ -211,10 +211,7 @@ export default {
       })
       wx.ready(function () {
         wx.onMenuShareTimeline({
-          title: '我想邀请你一起做时尚买手', // 分享标题
-          desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！',
-          link: '', // 分享链接
-          imgUrl: '', // 分享图标
+          params,
           success: function () {
             Toast.success('分享成功')
           },
@@ -223,10 +220,7 @@ export default {
           }
         })
         wx.onMenuShareAppMessage({
-          title: '我想邀请你一起做时尚买手', // 分享标题
-          desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！',
-          link: '', // 分享链接
-          imgUrl: '', // 分享图标
+          params,
           success: function () {
             Toast.success('分享成功')
           },
