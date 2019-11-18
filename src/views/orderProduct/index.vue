@@ -96,7 +96,7 @@ export default {
   methods: {
     // 查看测款报告
     handleCheckResult () {
-      this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode } })
+      this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
     },
     // 查看测款页
     handleTestDetail () {

@@ -55,6 +55,7 @@ export default {
   },
   mounted () {
     if (this.code) {
+      this.getTicket()
       this.$nextTick(function () {
         this.getTicket()
       })
@@ -77,6 +78,7 @@ export default {
       this.$api.book
         .getSharemeasuresList(params)
         .then(res => {
+          alert(JSON.stringify(res) + 'res')
           let data = res
           data.forEach((item, index) => {
             if (item.hasVotedFlag === 1) {
@@ -159,7 +161,7 @@ export default {
         .getOauth(params)
         .then(res => {
           this.openId = res.data
-          // alert(JSON.stringify(res))
+          alert(JSON.stringify(res) + 'getOauth')
           // oQB0T1bPzZ6M33fHozD19bxAUA4s
         })
         .catch(err => {
@@ -168,11 +170,13 @@ export default {
         })
     },
     async getTicket () {
+      alert(12312342343)
       await this.$api.oauth
         .getTicket('')
         .then(res => {
+          alert(12313)
           this.wxConig = res.data
-          // alert(JSON.stringify(this.wxConig))
+          alert(JSON.stringify(this.wxConig) + 'this.wxConig')
           this.wxInit()
         })
         .catch(err => {

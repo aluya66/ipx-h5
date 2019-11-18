@@ -48,19 +48,22 @@ export default {
         }
       ],
       participantCode: '',
+      bookActivityCode: '',
       curType: 0,
       testStyleList: []
     }
   },
   activated () {
     this.participantCode = this.$route.query.participantCode
+    this.bookActivityCode = this.$route.query.bookActivityCode
     this.getRankList()
   },
   methods: {
     getRankList () {
       const params = {
         bookVoteSearchType: this.curType,
-        participantCode: this.participantCode
+        participantCode: this.participantCode,
+        bookActivityCode: this.bookActivityCode
       }
       this.$api.book
         .bookRankList(params)

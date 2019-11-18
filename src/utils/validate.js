@@ -96,6 +96,7 @@ export const isMobileEnv = () => {
 }
 
 export default {
+  isMobileEnv,
   isMobile,
   isPhone
 }
