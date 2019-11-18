@@ -7,6 +7,7 @@
       </template>
     </c-header>
     <c-tabs
+      class="goods-group-tab"
       :tabs="tabs"
       :line-width="'0.08rem'"
       :line-height="'0.05rem'"
@@ -17,96 +18,31 @@
     ></c-tabs>
     <!-- 客户特征开始 -->
     <div class="container" v-show="currentTab === 1">
-      <div class="item-wrapper">
-        <div class="title">客户群体</div>
-        <div class="item-box image-box customer-box">
-          <div
-            class="image-item"
-            v-for="(item, index) in customerGroupList"
-            :key="index"
-            @click="selectLabels(item, index, 'customerGroupList')"
-          >
-            <img class="image-img" :src="item.icon" />
-            <p class="image-name">{{item.name}}</p>
-            <p class="image-infoo">{{item.age}}</p>
-            <img v-if="item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
-          </div>
-        </div>
-      </div>
-      <div class="item-wrapper">
-        <div class="title">购买频次</div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
-
-      <div class="item-wrapper">
-        <div class="title">
-          购买力
-          <span>(人均/次)</span>
-        </div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
-
-      <div class="item-wrapper">
-        <div class="title">消费偏好</div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
+      <select-box :items='customerGroupList' :isSlot='true' itemBoxClass="image-box customer-box" itemClass="image-item" sectionTitle="客户群体">
+        <template #selectItem='slotProps'>
+            <img class="image-img" :src="slotProps.item.icon" />
+            <p class="image-name">{{slotProps.item.name}}</p>
+            <p class="image-info">{{slotProps.item.age}}</p>
+            <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
+        </template>
+      </select-box>
+      <select-box :items='selectList' sectionTitle="购买频次" />
+      <select-box :items='selectList' sectionTitle="购买力" sectionSubTitle="(人均/次)" />
+      <select-box :items='selectList' sectionTitle="消费偏好" />
     </div>
     <!-- 客户特征结束 -->
 
     <!-- 商品特征开始 -->
     <div class="container" v-show="currentTab === 0">
-      <div class="item-wrapper category-wrapper">
-        <div class="title">品类</div>
-        <div class="item-box image-box category-box">
-          <div class="image-item" v-for="(item, index) in categoryList" :key="index">
-            <img class="image-img" :src="item.imageUrl" />
-            <p class="image-name">{{item.labelName}}</p>
-          </div>
-        </div>
-      </div>
-      <div class="item-wrapper">
-        <div class="title">季节</div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
-      <div class="item-wrapper">
-        <div class="title">风格</div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
+      <select-box :isSlot='true' :items='categoryList' itemBoxClass='image-box category-box' itemClass='image-item' sectionTitle="品类">
+        <template #selectItem="slotProps">
+              <img class="image-img" :src="slotProps.item.imageUrl" />
+              <p class="image-name">{{slotProps.item.labelName}}</p>
+        </template>
+      </select-box>
+      <select-box :items='selectList' sectionTitle="季节" />
+      <select-box :items='selectList' sectionTitle="风格" />
+
       <div class="item-wrapper">
         <div class="title">单款价格区间(元)</div>
         <div class="item-box price-box">
@@ -115,65 +51,33 @@
           <input type="text" placeholder="最高价" maxlength="7" v-model="maxPrice" @blur="setPriceSection('max')">
         </div>
       </div>
-      <div class="item-wrapper">
-        <div class="title">版型</div>
-        <div class="item-box image-box format-box">
-          <div class="image-item"
-            v-for="(item, index) in modelList"
-            :key="index"
-            @click="selectLabels(item, index, 'modelList')">
-            <img class="image-img" :src="item.icon" />
-            <p class="image-name">{{item.name}}</p>
-            <img v-if="item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
-          </div>
-        </div>
-      </div>
-      <div class="item-wrapper">
-        <div class="title">材质</div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
-      <div class="item-wrapper">
-        <div class="title">色系</div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
-      <div class="item-wrapper">
-        <div class="title">厚度</div>
-        <div class="item-box">
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-          <div class="item">123</div>
-        </div>
-      </div>
+
+      <select-box :items='modelList' :isSlot='true' itemBoxClass="image-box format-box" itemClass="image-item" sectionTitle="版型">
+      <template #selectItem='slotProps'>
+          <img class="image-img" :src="slotProps.item.icon" />
+          <p class="image-name">{{slotProps.item.name}}</p>
+          <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
+      </template>
+      </select-box>
+      <select-box :items='selectList' sectionTitle="材质" />
+      <select-box :items='selectList' sectionTitle="色系" />
+      <select-box :items='selectList' sectionTitle="厚度" />
     </div>
     <!-- 商品特征结束 -->
     <div class="bottom-box">
-      <div class="bottom-btn">一键开启 智能组货</div>
+      <div class="bottom-btn">{{currentTab === 1? '下一步':'一键开启 智能组货'}}</div>
     </div>
   </layout-view>
 </template>
 <script>
 import components from 'components'
+import SelectBox from '../common/selectBox.vue'
+
 const { CTabs } = components
 export default {
     components: {
-        CTabs
+        CTabs,
+        SelectBox
     },
     data () {
         return {
@@ -214,6 +118,24 @@ export default {
                 {
                     icon: require('@/themes/images/groupGoods/xiushen.png'),
                     name: '修身版',
+                    isSelected: false
+                }
+            ],
+            selectList: [
+                {
+                    name: '选项',
+                    isSelected: false
+                }, {
+                    name: '选项',
+                    isSelected: false
+                }, {
+                    name: '选项',
+                    isSelected: false
+                }, {
+                    name: '选项',
+                    isSelected: false
+                }, {
+                    name: '选项',
                     isSelected: false
                 }
             ],
@@ -273,7 +195,7 @@ export default {
             this.$set(target, 'isSelected', isSelected)
         },
         onChangeTab (val) {
-            console.log(val)
+            // console.log(val)
             if (val === 1) {
                 this.customerGroupList = this.customerGroupList.map((item) => {
                     return {
@@ -295,12 +217,20 @@ export default {
 }
 </script>
 <style lang="less">
-.van-tabs__line {
+.goods-group-tab {
+  .van-tabs__line {
   background-color: #3C5CF6;
+  margin-bottom:4px;
+  }
+  .van-tab {
+    font-weight: 700;
+  }
 }
-.van-tab {
-  font-weight: 700;
-}
+
+</style>
+
+<style lang="less" scoped>
+
 .header-img {
   display: inline-block;
   vertical-align: middle;
@@ -316,18 +246,11 @@ export default {
   .item-wrapper {
     position: relative;
     margin-bottom: 32px;
-    &:first-child {
-      .title {
-        padding-top: 20px;
-      }
-    }
     .title {
       padding-bottom: 13px;
-      color: #585b66;
       font-size: 14px;
-      font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
-      color: rgba(88, 91, 102, 1);
+      color: @color-c2;
       line-height: 20px;
       > span {
         margin-left: 4px;
@@ -339,23 +262,6 @@ export default {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
-      .item {
-        margin-bottom: 12px;
-        margin-right: 11px;
-        width: 77px;
-        height: 28px;
-        font-size: 12px;
-        font-family: PingFangSC-Medium, PingFang SC;
-        font-weight: 700;
-        text-align: center;
-        color: r gba(26, 26, 26, 1);
-        line-height: 28px;
-        background: rgba(249, 250, 252, 1);
-        border-radius: 14px;
-        &:nth-child(4) {
-          margin-right: 0;
-        }
-      }
     }
     .price-box {
       align-items: center;
@@ -370,87 +276,6 @@ export default {
         padding: 0 12px;
       }
     }
-    .image-box {
-      display: flex;
-      justify-content: space-between;
-      .image-item {
-        position: relative;
-        .image-img {
-          margin-bottom: 8px;
-          background: rgba(231, 235, 255, 1);
-        }
-        .image-name {
-          margin: 0;
-          font-family: PingFangSC-Regular, PingFang SC;
-          text-align: center;
-          font-weight: 700;
-          color: rgba(42, 43, 51, 1);
-          line-height: 22px;
-        }
-        .image-info {
-          margin: 0;
-          font-size: 11px;
-          font-family: P ingFangSC-Regular, PingFang SC;
-          font-weight: 400;
-          color: rgba(178, 181, 193, 1);
-          line-height: 16px;
-        }
-        .check-box {
-          position: absolute;
-          right: 0;
-          top: 0;
-          width: 20px;
-          height: 20px;
-        }
-      }
-    }
-    .customer-box {
-      padding: 16px 25px;
-      width: 343px;
-      height: 142px;
-      text-align: center;
-      background: rgba(255, 255, 255, 1);
-      box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
-      border-radius: 8px;
-      .image-item {
-        .image-img {
-          width: 64px;
-          height: 64px;
-          border-radius: 50%;
-        }
-        .image-name {
-          font-size: 16px;
-        }
-      }
-    }
-    .category-box {
-      justify-content: flex-start;
-      .image-item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        margin-bottom: 24px;
-        width: calc((100vw - 32px) / 4);
-        .image-img {
-          display: block;
-          margin-bottom: 11px;
-          width: 44px;
-          height: 44px;
-          background-color: red;
-          object-fit: cover;
-        }
-      }
-    }
-    .format-box {
-      .image-img {
-        width: 107px;
-        height: 66px;
-      }
-    }
-  }
-  .category-wrapper {
-    margin-bottom: 8px;
   }
 }
 .bottom-box {
