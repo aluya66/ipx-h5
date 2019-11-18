@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import wx from 'weixin-jsapi'
 import shareList from '@/views/common/shareList'
 import components from 'components'
 import { Dialog, Toast } from 'vant'
@@ -188,18 +189,18 @@ export default {
         })
     },
     wxInit () {
-      let { appId, timestamp, nonceStr, signature } = this.wxConig
-      alert(JSON.stringify(this.wxConig))
-      let url = 'http://ipx-hybrid.yosar.test'
-      let params = {
-        title: '我想邀请你一起做时尚买手',
-        url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-        shareImage: '../../themes/images/app/logo.png',
-        description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
-      }
+      
+      // let { appId, timestamp, nonceStr, signature } = this.wxConig
+      // alert(JSON.stringify(this.wxConig))
+      // let url = 'http://ipx-hybrid.yosar.test'
+      // let params = {
+      //   title: '我想邀请你一起做时尚买手',
+      //   url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+      //   shareImage: '../../themes/images/app/logo.png',
+      //   description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
+      // }
 
-
-    // "appId":"wxc2d190b40fb12b9d","timestamp":"1574084855","nonceStr":"aea6292f-7df0-4f87-b4dc-3accc62042cc","signature":"06772ec88cb0cc54933d7b27ed358f19b696c21a
+      // "appId":"wxc2d190b40fb12b9d","timestamp":"1574084855","nonceStr":"aea6292f-7df0-4f87-b4dc-3accc62042cc","signature":"06772ec88cb0cc54933d7b27ed358f19b696c21a
       // alert(JSON.stringify(params) + 'params')
       wx.config({
         debug: true,
