@@ -10,7 +10,7 @@
           <span>{{item.productName}}</span>
         </div>
         <div class="price">
-          <span>{{item.singleSalesVolume}}</span>&nbsp;票
+          <span>{{item.measureVoteNum}}</span>&nbsp;票
         </div>
       </div>
     </div>

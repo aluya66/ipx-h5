@@ -54,12 +54,16 @@ export default {
     await this.getTestStyleList()
   },
   mounted () {
-    if (this.code) {
-      this.getTicket()
-      this.$nextTick(function () {
-        this.getTicket()
-      })
-    }
+    setTimeout(() => {
+      if (this.code) {
+
+      }
+    })
+    // if (this.code) {
+    //   this.$nextTick(function () {
+    //     this.getTicket()
+    //   })
+    // }
   },
   methods: {
     async getTestStyleList () {
@@ -89,6 +93,7 @@ export default {
             }
           })
           this.list = data
+          this.getTicket()
         })
         .catch(err => {
           console.log(err)
@@ -169,9 +174,9 @@ export default {
           console.log(err)
         })
     },
-    async getTicket () {
-      alert(12312342343)
-      await this.$api.oauth
+    getTicket () {
+      alert(124124)
+      this.$api.oauth
         .getTicket('')
         .then(res => {
           alert(12313)
