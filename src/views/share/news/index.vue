@@ -1115,10 +1115,10 @@ export default {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 50%;
-        padding: 0 12px 12px 0;
+        width: 48.2%;
+        margin: 0 12px 12px 0;
         &:nth-child(2n) {
-          padding: 0;
+          margin: 0;
         }
         .div {
           padding-bottom: 100%;
