@@ -348,7 +348,7 @@ export default {
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 700;
         text-align: center;
-        color: r gba(26, 26, 26, 1);
+        color: rgba(26, 26, 26, 1);
         line-height: 28px;
         background: rgba(249, 250, 252, 1);
         border-radius: 14px;
