@@ -58,7 +58,7 @@ export default {
       if (this.code) {
         this.getTicket()
       }
-    })
+    }, 500)
     // if (this.code) {
     //   this.$nextTick(function () {
     //     this.getTicket()
