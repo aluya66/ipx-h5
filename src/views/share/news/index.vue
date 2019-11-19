@@ -2,25 +2,9 @@
   <layout-view>
     <div class="display-app">
       <div v-if="activeName === 13">
-        <!-- <div class="display-heard">
-        <div style="position: relative;height: 100%;">
-          <div class="display-left"></div>
-          <div class="display-text">从这里发现更多时尚</div>
-          <div class="display-right"
-               @click="DialogVisible=true">打开APP</div>
-        </div>
-        </div>-->
-        <!-- <div class="display-num">{{feed.images.length}}</div>
-        <div class="display-cover">
-          <div class="display-cover-top" :style="{backgroundImage:'url(' + feed.user_avatar + ')'}"></div>
-          <div class="display-cover-boom"></div>
-        </div>
-        <div class="display-xin">{{feed.collect_count}}</div>
-        <div class="display-pinglun">{{feed.feed_comment_count}}</div>
-        <div class="display-zan">{{feed.like_count}}</div> -->
         <div class="display-prompt" v-if="prompt">左右滑动可切换图片</div>
         <div class="display-demo" style="background: black">
-          <swiper>
+          <swiper :options="swiperOption">
             <swiper-slide
               style="height: 100vh;width: 100%;position: relative;"
               v-for="(image, index) in feed.images"
@@ -35,20 +19,13 @@
                 :src="image.image_src"
               />
             </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
           </swiper>
           <!-- <vue-preview :slides="slide" @close="handleClose"></vue-preview> -->
         </div>
       </div>
       <div v-if="activeName === 11">
         <div class="display-demo">
-          <!-- <div class="display-heard1">
-          <div style="position: relative;height: 100%;">
-            <div class="display-left"></div>
-            <div class="display-text">从这里发现更多时尚</div>
-            <div class="display-right"
-                 @click="DialogVisible=true">打开APP</div>
-          </div>
-          </div>-->
           <div class="display-img">
             <div class="display-video">
               <video
@@ -94,14 +71,6 @@
       </div>
       <div v-if="activeName === 10">
         <div class="display-demo">
-          <!-- <div class="display-heard1">
-          <div style="position: relative;height: 100%;">
-            <div class="display-left"></div>
-            <div class="display-text">从这里发现更多时尚</div>
-            <div class="display-right"
-                 @click="DialogVisible=true">打开APP</div>
-          </div>
-          </div>-->
           <div class="display-img display-share-img">
             <img style :src="feed.cover_src" />
             <div class="img-text">
@@ -125,14 +94,6 @@
       </div>
       <div v-if="activeName === 12">
         <div class="display-demo">
-          <!-- <div class="display-heard1">
-          <div style="position: relative;height: 100%;">
-            <div class="display-left"></div>
-            <div class="display-text">从这里发现更多时尚</div>
-            <div class="display-right"
-                 @click="DialogVisible=true">打开APP</div>
-          </div>
-          </div>-->
           <div class="display-img" style="padding: 0px 12px;">
             <ul
               class="ul"
@@ -189,23 +150,8 @@
           <div class="video-tags">
             <div class="tag" v-for="(keyword, index) in (feed.keywords)" :key="index">{{keyword}}</div>
           </div>
-          <!-- <comments :show-dialog="showDialog" :comments="comments"></comments> -->
         </div>
       </div>
-      <!-- <el-dialog
-        :visible.sync="DialogVisible"
-        width="320px"
-        top="70%"
-        :show-close="false"
-        :close-on-click-modal="false"
-        center
-      >
-        <span class="dialog-span">为了你有良好的体验，建议使用“每日尚来”APP进行浏览</span>
-        <span slot="footer" class="dialog-footer">
-          <span class="dialog-left" @click="DialogVisible = false">暂不</span>
-          <span class="dialog-right" type="primary" @click="download">好的</span>
-        </span>
-      </el-dialog>-->
     </div>
     <v-share-footer></v-share-footer>
   </layout-view>
@@ -237,7 +183,13 @@ export default {
       loading: false,
       palyShow: true,
       activeName: 10,
-      comments: []
+      comments: [],
+      swiperOption: {
+        pagination: {
+          el: '.swiper-pagination',
+          type: 'fraction'
+        }
+      }
 
       //   pageOutStatus:
     }
@@ -514,6 +466,23 @@ export default {
 </script>
 
 <style  lang="less">
+.swiper-pagination{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: inherit;
+    height: 0.44rem;
+    font-size: 0.13rem;
+    line-height: 0.44rem;
+    color: #fff;
+    opacity: .75;
+    padding: 0 0.1rem;
+    span{
+      color: #fff;
+    }
+}
+
+
 .el-dialog {
   border-radius: 0px;
 }
