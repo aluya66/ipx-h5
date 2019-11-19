@@ -53,7 +53,6 @@ export default {
       this.isWxStatus = true
       let openid = utils.getSessionStore('openId') || ''
       if (!openid) {
-        alert(JSON.stringify(124214))
         await this.getOauth()
       } else {
         this.openId = openid
@@ -90,7 +89,6 @@ export default {
       this.$api.book
         .getSharemeasuresList(params)
         .then(res => {
-          alert(JSON.stringify(res) + 'res')
           let data = res
           data.forEach((item, index) => {
             if (item.hasVotedFlag === 1) {
@@ -168,11 +166,9 @@ export default {
       let params = {
         code: this.code
       }
-      // alert(JSON.stringify(params))
       await this.$api.oauth
         .getOauth(params)
         .then(res => {
-          alert(JSON.stringify(res))
           if (res.code === 1) {
             let appid = 'wxc2d190b40fb12b9d'
             let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
@@ -181,11 +177,9 @@ export default {
             this.openId = res.data
             utils.setSessionStore('openId', this.openId)
           }
-          alert(JSON.stringify(res) + 'getOauth')
           // oQB0T1bPzZ6M33fHozD19bxAUA4s
         })
         .catch(err => {
-          // alert(JSON.stringify(err))
           console.log(err)
         })
     },
@@ -196,33 +190,30 @@ export default {
       this.$api.oauth
         .getTicket(params)
         .then(res => {
-          alert(12313)
           this.wxConig = res.data
-          alert(JSON.stringify(this.wxConig) + 'this.wxConig')
+          // alert(JSON.stringify(this.wxConig) + 'this.wxConig')
           this.wxInit()
         })
         .catch(err => {
-          // alert(JSON.stringify(err))
           console.log(err)
         })
     },
     wxInit () {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
-      // alert(JSON.stringify(this.wxConig))
       let url = 'http://h5.yosar.com'
       let isWx = 'wx'
       // let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
         link: `${url}/?isWx=${isWx}&bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-        imgUrl: '../../themes/images/app/logo.png',
+        imgUrl: '../../themes/images/app/frame.png',
         desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
 
       // "appId":"wxc2d190b40fb12b9d","timestamp":"1574084855","nonceStr":"aea6292f-7df0-4f87-b4dc-3accc62042cc","signature":"06772ec88cb0cc54933d7b27ed358f19b696c21a
       // alert(JSON.stringify(params) + 'params')
       wx.config({
-        debug: true,
+        debug: false,
         appId: appId,
         timestamp: timestamp,
         nonceStr: nonceStr,
@@ -231,9 +222,9 @@ export default {
       })
       wx.ready(function () {
         wx.onMenuShareTimeline({
-          title: '我想邀请你一起做时尚买手', // 分享标题
+          title: params.title, // 分享标题
           link: params.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: '', // 分享图标
+          imgUrl: params.imgUrl, // 分享图标
           success: function () {
             Toast.success('分享成功')
           },
@@ -242,10 +233,10 @@ export default {
           }
         })
         wx.onMenuShareAppMessage({
-          title: '我想邀请你一起做时尚买手', // 分享标题
-          desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！', // 分享描述
+          title: params.title, // 分享标题
+          desc: params.desc, // 分享描述
           link: params.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: '', // 分享图标,
+          imgUrl: params.imgUrl, // 分享图标,
           success: function () {
             Toast.success('分享成功')
           },
@@ -255,7 +246,7 @@ export default {
         })
       })
       wx.error(function (res) {
-        alert(JSON.stringify(res))
+        // alert(JSON.stringify(res))
         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
       })
     }
