@@ -46,10 +46,10 @@ export default {
   },
   async activated () {
     this.code = this.$route.query.code
+    let isWx = this.$route.query.isWx
     this.participantCode = this.$route.query.participantCode
     this.bookActivityCode = this.$route.query.bookActivityCode
-
-    if (this.code) {
+    if (this.code || isWx === 'wx') {
       this.isWxStatus = true
       let openid = utils.getSessionStore('openId') || ''
       if (!openid) {
@@ -208,10 +208,11 @@ export default {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
       // alert(JSON.stringify(this.wxConig))
       let url = 'http://h5.yosar.com'
+      let isWx = 'wx'
       // let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
-        link: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+        link: `${url}/oauth?isWx=${isWx}bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
         imgUrl: '../../themes/images/app/logo.png',
         desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
