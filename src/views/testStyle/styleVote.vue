@@ -53,6 +53,7 @@ export default {
       this.isWxStatus = true
       let openid = utils.getSessionStore('openId') || ''
       if (!openid) {
+        alert(JSON.stringify(124214))
         await this.getOauth()
       } else {
         this.openId = openid
@@ -171,6 +172,7 @@ export default {
       await this.$api.oauth
         .getOauth(params)
         .then(res => {
+          alert(JSON.stringify(res))
           if (res.code === 1) {
             let appid = 'wxc2d190b40fb12b9d'
             let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
@@ -212,7 +214,7 @@ export default {
       // let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
-        link: `${url}/oauth?isWx=${isWx}bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+        link: `${url}/?isWx=${isWx}&bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
         imgUrl: '../../themes/images/app/logo.png',
         desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
