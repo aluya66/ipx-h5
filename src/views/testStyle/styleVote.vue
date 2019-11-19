@@ -1,5 +1,5 @@
 <template>
-  <layout-view>
+  <layout-view v-if="isWxChat">
     <c-header
       slot="header"
       :left-arrow="true"
@@ -38,6 +38,7 @@ export default {
       participantCode: '', // banner图片code
       bookActivityCode: '',
       isWxStatus: false,
+      isWxChat: false,
       list: [],
       wxConig: {}, // 微信基本配置
       selectedNum: 0,
@@ -61,8 +62,12 @@ export default {
         }
         await this.getOauth()
       } else {
+        this.isWxChat = true
         this.openId = openid
       }
+    } else {
+      this.isWxChat = true
+      this.isWxStatus = true
     }
     await this.getTestStyleList()
   },
@@ -180,6 +185,7 @@ export default {
             let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
             window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
           } else {
+            this.isWxChat = true
             this.openId = res.data
             utils.setSessionStore('openId', this.openId)
           }
