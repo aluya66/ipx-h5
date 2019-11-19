@@ -24,6 +24,7 @@ import wx from 'weixin-js-sdk'
 import shareList from '@/views/common/shareList'
 import components from 'components'
 import { Dialog, Toast } from 'vant'
+import utils from 'utils'
 const { CHeader } = components
 export default {
   components: {
@@ -47,9 +48,15 @@ export default {
     this.code = this.$route.query.code
     this.participantCode = this.$route.query.participantCode
     this.bookActivityCode = this.$route.query.bookActivityCode
+
     if (this.code) {
       this.isWxStatus = true
-      await this.getOauth()
+      let openid = utils.getSessionStore('openId') || ''
+      if (!openid) {
+        await this.getOauth()
+      } else {
+        this.openId = openid
+      }
     }
     await this.getTestStyleList()
   },
@@ -71,7 +78,7 @@ export default {
       if (this.code) {
         params = {
           participantCode: this.participantCode,
-          weChatOpenId: this.openId || 'oQB0T1bPzZ6M33fHozD19bxAUA4s'
+          weChatOpenId: this.openId
         }
       } else {
         params = {
@@ -139,7 +146,7 @@ export default {
           bookActivityCode: this.bookActivityCode,
           voteProductCodes: arr,
           participantCode: this.participantCode,
-          weChatOpenId: this.openId || 'oQB0T1bPzZ6M33fHozD19bxAUA4s'
+          weChatOpenId: this.openId
         }
         this.$api.book
           .bookGoodsVote(params)
@@ -164,8 +171,14 @@ export default {
       await this.$api.oauth
         .getOauth(params)
         .then(res => {
-          this.openId = res.data
-
+          if (res.code === 1) {
+            let appid = 'wxc2d190b40fb12b9d'
+            let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
+            window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
+          } else {
+            this.openId = res.data
+            utils.setSessionStore('openId', this.openId)
+          }
           alert(JSON.stringify(res) + 'getOauth')
           // oQB0T1bPzZ6M33fHozD19bxAUA4s
         })
@@ -194,8 +207,8 @@ export default {
     wxInit () {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
       // alert(JSON.stringify(this.wxConig))
-      // let url = 'http://h5.yosar.com'
-      let url = 'http://ipx-hybrid.yosar.test'
+      let url = 'http://h5.yosar.com'
+      // let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
         link: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
