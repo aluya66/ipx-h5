@@ -482,7 +482,6 @@ export default {
     }
 }
 
-
 .el-dialog {
   border-radius: 0px;
 }

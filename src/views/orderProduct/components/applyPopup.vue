@@ -6,7 +6,8 @@
     position="bottom"
     class="contain"
     @close="handleClose"
-    :style="{ height: '4.59rem' }"
+    :style="{ height: '4.59rem', position: handlePosition }"
+    ref="popupContain"
   >
     <h3>报名参会</h3>
     <div class="content">
@@ -93,7 +94,8 @@ export default {
       userName: '',
       userPhone: '',
       userCity: '',
-      selectCode: ''
+      selectCode: '',
+      handlePosition: 'fixed'
       // selectItems: []
     }
   },
@@ -203,18 +205,25 @@ export default {
     },
     handleVerifyUserName () {
       clearInterval(this.timer)
+      // this.$refs.popupContain.style = 'position:fixed'
+      this.handlePosition = 'fixed'
       document.body.scrollTop = document.body.scrollHeight
     },
     handleVerifyUserCity () {
       clearInterval(this.timer)
+      // this.$refs.popupContain.style = 'position:fixed'
+      this.handlePosition = 'fixed'
       document.body.scrollTop = document.body.scrollHeight
     },
     handleHeight () {
-      this.timer = setInterval(() => {
-        document.body.scrollTop = document.body.scrollHeight
-        console.log(document.body.scrollTop)
-        console.log(document.body.scrollHeight)
-      }, 100)
+      // this.$refs.popupContain.style = 'position:absolute'
+      this.handlePosition = 'absolute'
+      console.log(this.$refs.popupContain)
+      // this.timer = setInterval(() => {
+      //   document.body.scrollTop = document.body.scrollHeight
+      //   console.log(document.body.scrollTop)
+      //   console.log(document.body.scrollHeight)
+      // }, 100)
     },
     // 处理选择经营类型
     handleSelect (itemCode) {
