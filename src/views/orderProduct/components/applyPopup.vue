@@ -213,7 +213,10 @@ export default {
       this.handleBottom = '0'
     },
     handleHeight () {
-      this.handleBottom = '300px'
+      let platform = utils.getStore('baseParams').platform
+      if (platform === 'android') {
+        this.handleBottom = '300px'
+      }
     },
     // 处理选择经营类型
     handleSelect (itemCode) {
