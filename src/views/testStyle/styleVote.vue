@@ -195,6 +195,7 @@ export default {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
       // alert(JSON.stringify(this.wxConig))
       let url = 'http://h5.yosar.com'
+      // let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
         link: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
@@ -214,7 +215,9 @@ export default {
       })
       wx.ready(function () {
         wx.onMenuShareTimeline({
-          params,
+          title: '我想邀请你一起做时尚买手', // 分享标题
+          link: params.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: '', // 分享图标
           success: function () {
             Toast.success('分享成功')
           },
@@ -223,7 +226,10 @@ export default {
           }
         })
         wx.onMenuShareAppMessage({
-          params,
+          title: '124124', // 分享标题
+          desc: '124124', // 分享描述
+          link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: '', // 分享图标,
           success: function () {
             Toast.success('分享成功')
           },
