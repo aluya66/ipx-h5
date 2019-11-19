@@ -131,15 +131,16 @@ export default {
       let spacingReg = /^[ ]+$/
       if (spacingReg.test(val)) {
         this.userName = ''
-      } else {
-        let rs = ''
-        for (let i = 0; i < val.length; i++) {
-          if (reg.test(val.substr(i, 1))) {
-            rs = rs + val.substr(i, 1)
-          }
-        }
-        this.userName = rs
       }
+      // else {
+      //   let rs = ''
+      //   for (let i = 0; i < val.length; i++) {
+      //     if (reg.test(val.substr(i, 1))) {
+      //       rs = rs + val.substr(i, 1)
+      //     }
+      //   }
+      //   this.userName = rs
+      // }
 
       // this.userName = val.replace(filterSpecharsReg, '')
       let userNameResult = reg.test(val)
@@ -147,7 +148,8 @@ export default {
       if (!userNameResult) {
         this.userNameFormartResult = false
         this.showUserNameError = true
-        this.$toast('请输入正确的姓名')
+        // this.$toast('请输入正确的姓名')
+        this.$toast('请输入中英文字符')
       } else {
         this.userNameFormartResult = true
         this.showUserNameError = false
@@ -160,20 +162,22 @@ export default {
       let spacingReg = /^[ ]+$/
       if (spacingReg.test(val)) {
         this.userCity = ''
-      } else {
-        let rs = ''
-        for (let i = 0; i < val.length; i++) {
-          if (reg.test(val.substr(i, 1))) {
-            rs = rs + val.substr(i, 1)
-          }
-        }
-        this.userCity = rs
       }
+      // else {
+      //   let rs = ''
+      //   for (let i = 0; i < val.length; i++) {
+      //     if (reg.test(val.substr(i, 1))) {
+      //       rs = rs + val.substr(i, 1)
+      //     }
+      //   }
+      //   this.userCity = rs
+      // }
       let userCityResult = reg.test(val)
       if (!userCityResult) {
         this.userCityFormartResult = false
         this.showUserCityError = true
-        this.$toast('请输入正确的城市')
+        // this.$toast('请输入正确的城市')
+        this.$toast('请输入中英文字符')
       } else {
         this.userCityFormartResult = true
         this.showUserCityError = false
