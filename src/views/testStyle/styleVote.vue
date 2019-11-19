@@ -53,6 +53,12 @@ export default {
       this.isWxStatus = true
       let openid = utils.getSessionStore('openId') || ''
       if (!openid) {
+        if(isWx === 'wx') {
+          let appid = 'wxc2d190b40fb12b9d'
+          let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
+          window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
+          return
+        }
         await this.getOauth()
       } else {
         this.openId = openid
@@ -206,7 +212,7 @@ export default {
       let params = {
         title: '我想邀请你一起做时尚买手',
         link: `${url}/?isWx=${isWx}&bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-        imgUrl: '../../themes/images/app/frame.png',
+        imgUrl: 'http://media.yosar.com/19/324/1574152045660',
         desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
 

@@ -6,8 +6,7 @@
     position="bottom"
     class="contain"
     @close="handleClose"
-    :style="{ height: '4.59rem', position: handlePosition }"
-    ref="popupContain"
+    :style="{ height: '4.59rem', bottom: handleBottom}"
   >
     <h3>报名参会</h3>
     <div class="content">
@@ -31,6 +30,7 @@
         placeholder="请输入手机号"
         :error="showPhoneError"
         @blur="handleVerifyPhone"
+        @focus="handleHeight"
       />
       <field
         class="input"
@@ -40,6 +40,7 @@
         maxlength="20"
         :error="showUserCityError"
         @blur="handleVerifyUserCity"
+        @focus="handleHeight"
       />
       <p class="secHeader">经营类型:</p>
       <div class="manage">
@@ -95,7 +96,8 @@ export default {
       userPhone: '',
       userCity: '',
       selectCode: '',
-      handlePosition: 'fixed'
+      handlePosition: 'fixed',
+      handleBottom: 0
       // selectItems: []
     }
   },
@@ -198,32 +200,20 @@ export default {
   },
   methods: {
     handleVerifyPhone () {
+      this.handleBottom = '0'
       if (this.userPhone.length < 11) {
         this.$toast('手机格式有误')
         this.showPhoneError = true
       }
     },
     handleVerifyUserName () {
-      clearInterval(this.timer)
-      // this.$refs.popupContain.style = 'position:fixed'
-      this.handlePosition = 'fixed'
-      document.body.scrollTop = document.body.scrollHeight
+      this.handleBottom = '0'
     },
     handleVerifyUserCity () {
-      clearInterval(this.timer)
-      // this.$refs.popupContain.style = 'position:fixed'
-      this.handlePosition = 'fixed'
-      document.body.scrollTop = document.body.scrollHeight
+      this.handleBottom = '0'
     },
     handleHeight () {
-      // this.$refs.popupContain.style = 'position:absolute'
-      this.handlePosition = 'absolute'
-      console.log(this.$refs.popupContain)
-      // this.timer = setInterval(() => {
-      //   document.body.scrollTop = document.body.scrollHeight
-      //   console.log(document.body.scrollTop)
-      //   console.log(document.body.scrollHeight)
-      // }, 100)
+      this.handleBottom = '300px'
     },
     // 处理选择经营类型
     handleSelect (itemCode) {
