@@ -1,10 +1,10 @@
 <template>
-  <layout-view v-if="isWxChat">
+  <layout-view>
     <c-header
       slot="header"
       :left-arrow="true"
     ></c-header>
-    <c-list class="list-scroll test-style-list">
+    <c-list class="list-scroll test-style-list" v-if="isWxChat">
       <share-list
         :productList="list"
         :disableClick="isCommit"
@@ -15,6 +15,7 @@
     <button
       class="submit"
       @click="commit"
+      v-if="isWxChat"
     >{{isCommit?'邀请好友投票':'提交投票'}}</button>
   </layout-view>
 </template>
