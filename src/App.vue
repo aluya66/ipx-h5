@@ -63,7 +63,8 @@ export default {
       // utils.setStore('baseParams', JSON.stringify(this.baseParams) || {})
       // utils.setStore('token', this.baseParams.token || '')
       if (results) {
-        this.baseParams = results.data || testData
+        // this.baseParams = results.data || testData
+        this.baseParams = results.data
         this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 0
         utils.setStore('baseParams', JSON.stringify(this.baseParams) || {})
         utils.setStore('token', this.baseParams.token || '')

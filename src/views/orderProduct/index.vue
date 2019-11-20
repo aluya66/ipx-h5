@@ -172,10 +172,9 @@ export default {
         if (response.lastPeriodRank instanceof Object) {
           this.listsObject = response.lastPeriodRank
 
-          if(this.listsObject.singleMeasureRankList.length > 0 || this.listsObject.categorySalesRankList.length > 0 || this.listsObject.singleSalesRankList.length > 0) {
+          if (this.listsObject.singleMeasureRankList.length > 0 || this.listsObject.categorySalesRankList.length > 0 || this.listsObject.singleSalesRankList.length > 0) {
             this.lastPeriodRankStatus = true
           }
-          
         }
         if (response.mySharedProds instanceof Array) {
           this.testProducts = response.mySharedProds
