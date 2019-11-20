@@ -74,9 +74,9 @@ export default {
         .getSharemeasuresList(params)
         .then(res => {
           this.list = res
+          this.totalNum = res.length || 0
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
-            this.totalNum = this.list.length || 0
           }
         })
         .catch(err => {
