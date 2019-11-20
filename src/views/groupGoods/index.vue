@@ -262,6 +262,23 @@ export default {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
+      .item {
+        margin-bottom: 12px;
+        margin-right: 11px;
+        width: 77px;
+        height: 28px;
+        font-size: 12px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 700;
+        text-align: center;
+        color: rgba(26, 26, 26, 1);
+        line-height: 28px;
+        background: rgba(249, 250, 252, 1);
+        border-radius: 14px;
+        &:nth-child(4) {
+          margin-right: 0;
+        }
+      }
     }
     .price-box {
       align-items: center;
