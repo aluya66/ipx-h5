@@ -12,8 +12,8 @@
         <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" v-if="products && products.length > 0"/>
         <swiper :imageData="products" v-if="products && products.length > 0"/>
         <check @onCheck="handleCheck" @onResult='handleCheckResult' @onDetail='handleTestDetail' @onShare='handleShareTest' :products='testProducts' v-if="products && products.length > 0"/>
-        <section-header class="newHeader" title="上期订货会快报" subTitle="订货会热销行情，最新市场风向标" />
-        <list :allList="listsObject"/>
+        <section-header class="newHeader" title="上期订货会快报" subTitle="订货会热销行情，最新市场风向标" v-if="lastPeriodRankStatus" />
+        <list :allList="listsObject" v-if="lastPeriodRankStatus"/>
         <store-address />
         <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply" v-if="delayedStatus">
           <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
@@ -72,6 +72,7 @@ export default {
       showPopup: false,
       testProductsStatus: true,
       delayedStatus: false,
+      lastPeriodRankStatus: false,
       topImage: require('@/themes/images/app/main-name@2x.png'),
       products: [], // 测款商品数据
       testProducts: [], // 一键测款后的数据列表
@@ -108,6 +109,7 @@ export default {
     },
     // 免费测款
     handleCheck () {
+      this.token = utils.getStore('token') || ''
       if (this.token) {
         this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
       } else {
@@ -169,6 +171,11 @@ export default {
         }
         if (response.lastPeriodRank instanceof Object) {
           this.listsObject = response.lastPeriodRank
+
+          if(this.listsObject.singleMeasureRankList.length > 0 || this.listsObject.categorySalesRankList.length > 0 || this.listsObject.singleSalesRankList.length > 0) {
+            this.lastPeriodRankStatus = true
+          }
+          
         }
         if (response.mySharedProds instanceof Array) {
           this.testProducts = response.mySharedProds

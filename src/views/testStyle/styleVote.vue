@@ -51,27 +51,21 @@ export default {
     this.participantCode = this.$route.query.participantCode
     this.bookActivityCode = this.$route.query.bookActivityCode
     if (this.code || isWx === 'wx') {
-      alert(this.code + 'this.code')
       this.isWxStatus = true
       let openid = utils.getSessionStore('openId') || ''
-      alert(openid)
       if (!openid) {
         if (isWx === 'wx') {
-          alert(isWx + 'isWx')
           let appid = 'wxc2d190b40fb12b9d'
           let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
           window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
           return
         }
-        alert(openid + 'openid')
         await this.getOauth()
       } else {
-        alert(this.isWxChat + 'isWxChat')
         this.isWxChat = true
         this.openId = openid
       }
     } else {
-      alert(this.isWxChat + 'this.isWxChat')
       this.isWxChat = true
     }
     await this.getTestStyleList()
@@ -183,11 +177,9 @@ export default {
         code: this.code
       }
 
-      alert(JSON.stringify(params) + 'getOauthparams')
       await this.$api.oauth
         .getOauth(params)
         .then(res => {
-          alert(JSON.stringify(res) + 'res')
           if (res.code === 1) {
             let appid = 'wxc2d190b40fb12b9d'
             let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
@@ -198,7 +190,6 @@ export default {
             utils.setSessionStore('openId', this.openId)
           }
 
-          alert(JSON.stringify(res) + 'getOauth')
           // oQB0T1bPzZ6M33fHozD19bxAUA4s
         })
         .catch(err => {
@@ -213,7 +204,6 @@ export default {
         .getTicket(params)
         .then(res => {
           this.wxConig = res.data
-          alert(JSON.stringify(this.wxConig) + 'this.wxConig')
           this.wxInit()
         })
         .catch(err => {
@@ -233,9 +223,8 @@ export default {
       }
 
       // "appId":"wxc2d190b40fb12b9d","timestamp":"1574084855","nonceStr":"aea6292f-7df0-4f87-b4dc-3accc62042cc","signature":"06772ec88cb0cc54933d7b27ed358f19b696c21a
-      alert(JSON.stringify(params) + 'params')
       wx.config({
-        debug: true,
+        debug: false,
         appId: appId,
         timestamp: timestamp,
         nonceStr: nonceStr,
