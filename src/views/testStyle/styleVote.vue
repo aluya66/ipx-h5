@@ -67,7 +67,6 @@ export default {
       }
     } else {
       this.isWxChat = true
-      this.isWxStatus = true
     }
     await this.getTestStyleList()
   },

@@ -156,14 +156,14 @@ export default {
         bookRankQueryType: '0'
       }
       this.$api.book.bookMainInfo(params).then((response) => {
-        console.log(response, 'response')
+        // console.log(response, 'response')
         this.participantCode = response.participantCode
         this.enableToTakePart = response.enableToTakePart
         this.bookActivityCode = response.bookActivityCode
-        console.log(this.bookActivityCode, 'this.bookActivityCode')
-        console.log(response.bookMeasureProds)
+        // console.log(this.bookActivityCode, 'this.bookActivityCode')
+        // console.log(response.bookMeasureProds)
         if (response.bookMeasureProds instanceof Array) {
-          this.products = response.bookMeasureProds
+          this.products = JSON.parse(JSON.stringify(response.bookMeasureProds))
         }
         if (response.lastPeriodRank instanceof Object) {
           this.listsObject = response.lastPeriodRank
