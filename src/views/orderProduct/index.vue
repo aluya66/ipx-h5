@@ -62,7 +62,6 @@ export default {
     return {
       token: '',
       baseParams: '', // 基础配置
-
       bannerCode: '',
       participantCode: '', // 参会编号
       inScroll: false,
@@ -156,18 +155,18 @@ export default {
         bookRankQueryType: '0'
       }
       this.$api.book.bookMainInfo(params).then((response) => {
-        // console.log(response, 'response')
         this.participantCode = response.participantCode
         this.enableToTakePart = response.enableToTakePart
         this.bookActivityCode = response.bookActivityCode
         // console.log(this.bookActivityCode, 'this.bookActivityCode')
         // console.log(response.bookMeasureProds)
         if (response.bookMeasureProds instanceof Array) {
-          this.products = JSON.parse(JSON.stringify(response.bookMeasureProds))
+          this.products = response.bookMeasureProds
+          console.log(this.products)
+          // this.products = JSON.parse(JSON.stringify(response.bookMeasureProds))
         }
         if (response.lastPeriodRank instanceof Object) {
           this.listsObject = response.lastPeriodRank
-          console.log(this.listsObject)
         }
         if (response.mySharedProds instanceof Array) {
           this.testProducts = response.mySharedProds

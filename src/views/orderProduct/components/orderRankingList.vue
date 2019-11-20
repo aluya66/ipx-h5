@@ -10,8 +10,8 @@
       <tab :title="item" v-for="(item ,index) in getMenuItems" :key="index">
         <div class="r-contain" v-for="(listItem ,index) in getLists" :key="index">
           <div class="r-leftContain">
-            <section :class="handleRankIcon(index)">{{index > 2 ? index :''}}</section>
-            <img :src="listItem.mainPic" alt />
+            <section :class="handleRankIcon(index)">{{index > 2 ? index + 1 :''}}</section>
+            <img :src="listItem.mainPic + '?imageView2/1/w/288/h/288'" alt />
             <h3>{{listItem.productName}}</h3>
           </div>
           <div class="r-rightContain">
