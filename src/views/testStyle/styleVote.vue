@@ -188,6 +188,8 @@ export default {
             this.openId = res.data
             utils.setSessionStore('openId', this.openId)
           }
+
+          alert(JSON.stringify(res) + 'getOauth');
           // oQB0T1bPzZ6M33fHozD19bxAUA4s
         })
         .catch(err => {
@@ -202,7 +204,7 @@ export default {
         .getTicket(params)
         .then(res => {
           this.wxConig = res.data
-          // alert(JSON.stringify(this.wxConig) + 'this.wxConig')
+          alert(JSON.stringify(this.wxConig) + 'this.wxConig')
           this.wxInit()
         })
         .catch(err => {
@@ -222,9 +224,9 @@ export default {
       }
 
       // "appId":"wxc2d190b40fb12b9d","timestamp":"1574084855","nonceStr":"aea6292f-7df0-4f87-b4dc-3accc62042cc","signature":"06772ec88cb0cc54933d7b27ed358f19b696c21a
-      // alert(JSON.stringify(params) + 'params')
+      alert(JSON.stringify(params) + 'params')
       wx.config({
-        debug: false,
+        debug: true,
         appId: appId,
         timestamp: timestamp,
         nonceStr: nonceStr,
