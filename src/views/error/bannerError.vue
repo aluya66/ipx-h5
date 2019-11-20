@@ -7,15 +7,15 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      errorImg: ""
-    };
+      errorImg: ''
+    }
   },
-  created() {
-    this.errorImg = require("../../themes/images/app/default_no search copy@2x.png");
+  created () {
+    this.errorImg = require('../../themes/images/app/default_no search copy@2x.png')
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -23,7 +23,7 @@
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
-        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheckResult" v-if="!testProductsStatus && testProducts && testProducts.length > 0">
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheckResult" v-if="!testProductsStatus && haveSharedStatus === 1">
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">测款报告</p>
         </div>
@@ -68,6 +68,7 @@ export default {
       oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
       enableToTakePart: '1', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
+      haveSharedStatus: 0,
       showPopup: false,
       testProductsStatus: true,
       delayedStatus: false,
@@ -158,6 +159,7 @@ export default {
         this.participantCode = response.participantCode
         this.enableToTakePart = response.enableToTakePart
         this.bookActivityCode = response.bookActivityCode
+        this.haveSharedStatus = response.haveSharedStatus
         // console.log(this.bookActivityCode, 'this.bookActivityCode')
         // console.log(response.bookMeasureProds)
         if (response.bookMeasureProds instanceof Array) {

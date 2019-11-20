@@ -60,8 +60,10 @@ export default {
           window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
           return
         }
+        alert(openid + 'openid')
         await this.getOauth()
       } else {
+        alert(this.isWxChat + 'isWxChat')
         this.isWxChat = true
         this.openId = openid
       }
@@ -189,7 +191,7 @@ export default {
             utils.setSessionStore('openId', this.openId)
           }
 
-          alert(JSON.stringify(res) + 'getOauth');
+          alert(JSON.stringify(res) + 'getOauth')
           // oQB0T1bPzZ6M33fHozD19bxAUA4s
         })
         .catch(err => {
