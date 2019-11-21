@@ -1026,6 +1026,9 @@ export default {
       list-style: none;
       margin: 0;
       padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      // justify-content: space-between;
       // margin: 0  -16px;
       .li {
         display: inline-block;
