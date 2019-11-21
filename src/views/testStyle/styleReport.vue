@@ -120,6 +120,8 @@ export default {
 .panel {
   position: relative;
   background-color: white;
+  height: calc(100vh);
+  overflow: hidden;
   .head {
     img {
       width: 100%;

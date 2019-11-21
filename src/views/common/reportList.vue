@@ -49,7 +49,7 @@ export default {
 <style lang="less" scoped>
 .panel {
   .report-list {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 260px);
     padding-bottom: 2px;
     overflow: auto;
     .report {
