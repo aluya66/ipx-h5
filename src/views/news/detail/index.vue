@@ -272,7 +272,7 @@ export default {
   img {
     margin: 0 auto;
     display: block;
-    width: 100% !important;
+    // width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
     max-height: initial !important;
