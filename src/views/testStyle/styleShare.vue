@@ -104,7 +104,7 @@ export default {
         type: String(type),
         title: '我想邀请你一起做时尚买手',
         url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-        shareImage: 'http://media.yosar.com/19/324/1574152045660',
+        // shareImage: 'http://media.yosar.com/19/324/1574152045660',
         description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
 
