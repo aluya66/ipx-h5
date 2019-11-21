@@ -97,7 +97,7 @@ export default {
         })
     },
     async shareWechat (type) {
-      let url = 'http://ipx-hybrid.yosar.test'
+      let url = window.location.host
       // type 1=好友 2=朋友圈
       let method = 'one_key_share'
       let params = {
