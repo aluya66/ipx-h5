@@ -1,79 +1,118 @@
 <template>
   <layout-view>
-    <c-header
-      slot="header"
-      :left-arrow="true"
-    ></c-header>
+    <c-header slot="header" :left-arrow="true"></c-header>
 
     <div class="panel">
       <div class="top-title">
         <p>已为您生成以下测款页面，测款商品为本次订货会的{{totalNum}}款主打商品：</p>
       </div>
       <c-list class="list-scroll">
-        <div class="scale-content">
-          <share-list
-            class="share-list"
-            :productList="list"
-          ></share-list>
+        <div class="scale-content" ref="shareList">
+          <share-list class="share-list" :productList="list"></share-list>
         </div>
       </c-list>
       <div class="bottom-dialog">
         <h4>分享给您的顾客，开始收集测款数据吧～</h4>
         <p>(测款数据在订货会页面查看)</p>
         <div class="share-logo">
-          <div class="left">
-            <img src="../../themes/images/app/share-wechat@2x.png">
+          <div class="left" @click="shareWechat(1)">
+            <img src="../../themes/images/app/share-wechat@2x.png" />
             <p>微信群</p>
           </div>
-          <div class="left">
-            <img src="../../themes/images/app/share-wefriends@2x.png">
+          <div class="left" @click="shareWechat(2)">
+            <img src="../../themes/images/app/share-wefriends@2x.png" />
             <p>朋友圈</p>
           </div>
         </div>
       </div>
     </div>
-
   </layout-view>
 </template>
 
 <script>
 import shareList from '@/views/common/shareList'
+import utils from 'utils'
 export default {
   components: {
     shareList
   },
   data () {
     return {
+      bannerCode: '',
+      participantCode: '',
+      bookActivityCode: '',
       totalNum: '',
-      list: []
+      list: [
+        {
+          mainPic: '',
+          productAtrNumber: '124124',
+          productCode: '235235hu'
+        }
+      ]
     }
   },
-  created () {
-    this.getTestStyleList()
+  activated () {
+    this.participantCode = this.$route.query.participantCode
+    this.bookActivityCode = this.$route.query.bookActivityCode
+    this.getSharemeasuresList()
   },
-  mounted() {
+  mounted () {
+    // setTimeout(() => {
+    //   console.log(document.querySelector(".van-pull-refresh"));
 
+    //   console.log(this.$refs.shareList.offsetHeight);
+    //   document.querySelector(".van-pull-refresh").style.height =
+    //     this.$refs.shareList.offsetHeight + "px";
+    // }, 1000);
   },
   methods: {
-    getTestStyleList () {
+    getSharemeasuresList () {
       const params = {
-        bannerCode: this.$route.query.bannerCode,
-        bookDataQueryType: 1,
-        bookRankDispalyNum: 9
+        participantCode: this.participantCode
       }
       this.$api.book
-        .bookMainInfo(params)
+        .getSharemeasuresList(params)
         .then(res => {
-          console.log(res)
-          this.list = res.selfMeasureData.selfMeasureProds
+          this.list = res
+          this.totalNum = res.length || 0
           if (this.list.length > 9) {
             this.list = this.list.splice(0, 9)
-            this.totalNum = this.list.length || 0
           }
         })
         .catch(err => {
           console.log(err)
         })
+    },
+    async bookShared () {
+      let params = {
+        participantCode: this.participantCode
+      }
+      await this.$api.book
+        .bookShared(params)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async shareWechat (type) {
+      let url = 'http://ipx-hybrid.yosar.test'
+      // type 1=好友 2=朋友圈
+      let method = 'one_key_share'
+      let params = {
+        type: String(type),
+        title: '我想邀请你一起做时尚买手',
+        url: `${url}/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+        // shareImage: 'http://media.yosar.com/19/324/1574152045660',
+        description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
+      }
+
+      await this.bookShared()
+
+      console.log(JSON.stringify(params) + 'params')
+
+      utils.postMessage(method, params)
     }
   }
 }
@@ -96,7 +135,8 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(150vh - 150px);
+    height: calc(100vh - 116px);
+    overflow: hidden;
   }
   .scale-content {
     width: 120%;
@@ -107,6 +147,8 @@ export default {
     transform: scale(0.5, 0.5) translateX(-15%);
     transform-origin: top;
     padding: 10px;
+    height: calc(120vh);
+    overflow: auto;
   }
   .bottom-dialog {
     position: fixed;

@@ -37,6 +37,29 @@ export const delCookie = name => {
 }
 
 /**
+ * 存储sessionStorage
+ */
+export const setSessionStore = (name, content, storeType = sessionStorage) => {
+  if (!name) return
+  if (typeof content !== 'string') {
+    content = JSON.stringify(content)
+  }
+  storeType.setItem(name, content)
+}
+
+/**
+ * 获取sessionStorage
+ */
+export const getSessionStore = (name, storeType = sessionStorage) => {
+  if (!name) return
+  let value = storeType.getItem(name)
+  if (value && value.indexOf('{') >= 0) {
+    value = JSON.parse(storeType.getItem(name))
+  }
+  return value
+}
+
+/**
  * 存储localStorage
  */
 export const setStore = (name, content, storeType = localStorage) => {
@@ -78,6 +101,8 @@ export default {
   setCookie,
   getCookie,
   delCookie,
+  setSessionStore,
+  getSessionStore,
   setStore,
   getStore,
   removeStore,

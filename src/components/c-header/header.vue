@@ -74,14 +74,15 @@ export default create({
   activated () {
     this.baseParams = utils.getStore('baseParams')
     // this.baseParams.statusBarHeight = 44;
-    let statusBarHeight = Number(this.baseParams.statusBarHeight) / 100
     if (this.baseParams.platform === 'ios') {
       if (Number(this.baseParams.statusBarHeight) > 20) {
         // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
         // alert(this.paddingTop)
       }
-    } else {
-      this.paddingTop = statusBarHeight + 'rem'
+    } else if (this.baseParams.platform === 'android') {
+      let statusBarHeight = this.baseParams.statusBarHeight || 0
+      let statusBarHeightSum = Number(statusBarHeight) / 100
+      this.paddingTop = statusBarHeightSum + 'rem'
     }
   },
   computed: {

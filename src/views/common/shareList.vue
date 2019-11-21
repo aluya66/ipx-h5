@@ -45,10 +45,20 @@ export default {
       default () {
         return true
       }
+    },
+    isWxStatus: {
+      type: Boolean,
+      default () {
+        return false
+      }
     }
   },
   methods: {
     selected (product) {
+      if (!this.isWxStatus) {
+        this.$toast('仅支持分享后在微信中投票哦')
+        return
+      }
       this.$emit('selectClick', product)
     }
   }

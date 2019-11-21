@@ -1,6 +1,6 @@
 <template>
   <div class="check-contain" >
-    <div class="check-content" v-if="!isTest">
+    <div class="check-content" v-if="!isTest ">
       <div class="check-topClass">
         <img src="@/themes/images/app/check-icon@2x.png" alt="">
         <div>
@@ -57,6 +57,9 @@ export default {
     return {
       isTest: false
     }
+  },
+  created () {
+    this.isTest = this.products.length > 0
   },
   watch: {
     products (val) {

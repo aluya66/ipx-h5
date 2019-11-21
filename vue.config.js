@@ -21,7 +21,7 @@ const env = {
   themes: process.env.VUE_APP_themes
 }
 
-console.log('======debug======', env.isDebug, '======themes======', env.themes)
+console.log('======debug======', env.isDebug, '======themes======', env.themes, process.env.VUE_CMS_serverPath)
 
 module.exports = {
   publicPath: !env.isDebug ? process.env.VUE_APP_BASEURLPATH : '/',
@@ -198,11 +198,11 @@ module.exports = {
           '^/api-ipx': '/'
         }
       },
-      [process.env.VUE_APP_WXPATH]: {
-        target: process.env.VUE_APP_WXSERVER,
+      [process.env.VUE_APP_CMS_serverPath]: {
+        target: process.env.VUE_APP_CMS_serverUrl,
         ws: false,
         pathRewrite: {
-          '^/weixin': '/'
+          '^/api-cms-ipx': '/'
         }
       }
     },
