@@ -1018,7 +1018,8 @@ export default {
   }
   .display-img {
     position: relative;
-    padding: 0 12px!important;
+    padding: 0!important;
+    padding-left:  10px !important;
     .ul {
       max-width: 100%;
       overflow: hidden;
@@ -1026,17 +1027,15 @@ export default {
       list-style: none;
       margin: 0;
       padding: 0;
-      // margin: 0  -16px;
+      display: flex;
+      flex-wrap: wrap;
       .li {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 31.4%;
+        width: 33.3%;
         // height: 111px;
-        margin: 0 10px 10px 0;
-        &:nth-child(3n) {
-          margin-right: 0;
-        }
+        padding: 0 10px 10px 0;
         .div {
           padding-bottom: 100%;
           background-color: #e6e6e6;
@@ -1083,7 +1082,7 @@ export default {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 48.2%;
+        width: 47.8%;
         margin: 0 12px 12px 0;
         &:nth-child(2n) {
           margin: 0;
