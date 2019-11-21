@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
     <h1>参会导航</h1>
-    <img src="" alt="">
+    <img src="@/themes/images/app/map@2x.png" alt="">
     <div class="address">
       <section>
         <p>地址:</p>
@@ -47,7 +47,8 @@ export default {
     margin-top: 24px;
     border-radius: 8px;
     background-color: #c4c4c4;
-    height: 153px;
+    // height: 153px;
+    width: 100%
   }
   .address {
     section {

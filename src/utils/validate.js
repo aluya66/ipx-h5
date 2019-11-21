@@ -12,12 +12,21 @@ export const isEmail = (value) => {
 }
 
 /**
- * 验证手机号
+ * 验证手机号、电话号
  * @param {*} value
  */
 export const isMobile = (value) => {
   value = value.replace(/[^-|\d]/g, '')
   return /^((\+86)|(86))?(1)\d{10}$/.test(value) || /^0[0-9-]{10,13}$/.test(value)
+}
+
+/**
+ * 验证手机号
+ * @param {*} value
+ */
+export const isPhone = (value) => {
+  value = value.replace(/[^-|\d]/g, '')
+  return /^[1][3,4,5,7,8][0-9]{9}$/.test(value)
 }
 
 /**
@@ -87,5 +96,7 @@ export const isMobileEnv = () => {
 }
 
 export default {
-  isMobile
+  isMobileEnv,
+  isMobile,
+  isPhone
 }

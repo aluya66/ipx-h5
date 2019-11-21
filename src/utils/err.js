@@ -10,7 +10,6 @@
 export default (err, callBackFun, time) => {
   const errCode = err.code
   let errMsg = ''
-  console.log('err', err)
   switch (errCode) {
     case 101:
       errMsg = '鉴权失败'
@@ -22,9 +21,7 @@ export default (err, callBackFun, time) => {
       errMsg = err.message
       break
   }
-  console.log(`${errCode}【${errMsg}】`)
-  // window.globalVue.$toast(`${errCode}【${errMsg}】`, time)
-  this.$toast(errMsg)
-
+  // console.log(`${errCode}【${errMsg}】`)
+  window.globalVue.$toast(`${errMsg}`, time)
   callBackFun && callBackFun(err)
 }
