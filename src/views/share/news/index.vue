@@ -1018,7 +1018,8 @@ export default {
   }
   .display-img {
     position: relative;
-    padding: 0 12px!important;
+    // padding: 0 12px!important;
+    padding-left:  10px !important;
     .ul {
       max-width: 100%;
       overflow: hidden;
@@ -1028,18 +1029,14 @@ export default {
       padding: 0;
       display: flex;
       flex-wrap: wrap;
-      // justify-content: space-between;
-      // margin: 0  -16px;
       .li {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 31%;
+        width: 33.3%;
         // height: 111px;
-        margin: 0 10px 10px 0;
-        &:nth-child(3n) {
-          margin-right: 0;
-        }
+        padding: 0 10px 10px 0;
+        
         .div {
           padding-bottom: 100%;
           background-color: #e6e6e6;
