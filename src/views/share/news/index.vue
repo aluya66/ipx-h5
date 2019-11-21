@@ -1083,7 +1083,7 @@ export default {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 48.2%;
+        width: 47.8%;
         margin: 0 12px 12px 0;
         &:nth-child(2n) {
           margin: 0;
