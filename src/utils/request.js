@@ -62,8 +62,8 @@ const setHeaderMethod = mtd => {
         contentType = 'application/json'
         break
     case 'put':
-        method = mtd
-        contentType = 'application/x-www-form-urlencoded'
+        // method = mtd
+        contentType = 'application/json'
         break
     case 'postJson':
         method = 'post'

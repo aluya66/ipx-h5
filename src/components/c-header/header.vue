@@ -1,6 +1,6 @@
 <template>
   <van-nav-bar
-    :class="bem()"
+    :class='bem()'
     :fixed="fixed"
     :title="curTitle"
     :left-text="leftText"
@@ -15,7 +15,7 @@
     <div slot="left" v-if="$slots.left">
       <slot name="left"></slot>
     </div>
-    <div slot="title" v-if="$slots.title">
+    <div :style='themeLight' slot="title" v-if="$slots.title">
       <slot name="title"></slot>
     </div>
     <div slot="right" v-if="$slots.right">
@@ -36,6 +36,10 @@ export default create({
         [NavBar.name]: NavBar
     },
     props: {
+        isLight: {
+            type: Boolean,
+            default: true
+        },
         fixed: {
             type: Boolean,
             default: false
@@ -93,6 +97,12 @@ export default create({
                 }
             }
             return this.title
+        },
+        themeLight () {
+            if (this.isLight) {
+                return 'color:#2a2b33'
+            }
+            return 'color:#fff'
         }
     },
     mounted () {
@@ -112,15 +122,21 @@ export default create({
 
 <style lang="less">
 .c-header {
-  height: auto;
-  margin-bottom: @f1;
-  .van-nav-bar__title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #2a2b33;
-    height: 46px;
-    line-height: 46px;
-  }
+    height: auto;
+    margin-bottom: @f1;
+    .van-nav-bar__title {
+        font-size: 18px;
+        font-weight: 600;
+        height: 46px;
+        line-height: 46px;
+        .title_light {
+            color: @color-c1;
+        }
+        .title_dart {
+            color: #fff
+        }
+    }
+
 }
 
 .van-icon-arrow-left {

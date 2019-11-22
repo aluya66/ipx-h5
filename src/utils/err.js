@@ -24,7 +24,7 @@ export default (err, callBackFun, time) => {
     }
     console.log(`${errCode}【${errMsg}】`)
     // window.globalVue.$toast(`${errCode}【${errMsg}】`, time)
-    this.$toast(errMsg)
+    // this.$toast(errMsg)
 
     callBackFun && callBackFun(err)
 }

@@ -3,8 +3,8 @@
     <div class="title">{{sectionTitle}}<span>{{sectionSubTitle}}</span></div>
     <div :class="['item-box', itemBoxClass]">
       <div :class="[itemClass?itemClass:'item-common',isSlot?'': item.isSelected? 'item-selected' : 'item-default']" v-for="(item,index) in items" :key="index" @click="handleSelect(item)" >
-        <slot name='selectItem' :item="item" ></slot>
-        {{isSlot  ?"":item.name}}
+        <slot v-if="isSlot" name='selectItem' :item="item" ></slot>
+        {{isSlot  ?"":item.labelName}}
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@ export default {
     },
     methods: {
         handleSelect(item) {
-            // item.isSelected = !item.isSelected
+            this.$set(item, 'isSelected', !item.isSelected)
             this.$emit('onSelect', item)
         }
     }
@@ -106,9 +106,11 @@ export default {
         color: @color-c1;
         background: @color-c8;
         border: 0;
+        line-height: 28px;
       }
       .item-selected {
         color: @color-ec;
+        line-height: 26px;
         background: @color-ec-gray;
         border: 1px solid @color-ec3;
       }
@@ -128,7 +130,7 @@ export default {
     }
     .image-box {
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       .image-item {
         position: relative;
         .image-img {
@@ -153,22 +155,31 @@ export default {
         }
         .check-box {
           position: absolute;
-          right: 0;
-          top: 0;
+          right: 20px;
+          top: 1px;
+          width: 20px;
+          height: 20px;
+        }
+        .check-box-img {
+          position: absolute;
+          right: 20px;
+          top: 12px;
           width: 20px;
           height: 20px;
         }
       }
     }
     .customer-box {
-      padding: 16px 25px;
-      width: 343px;
-      height: 142px;
-      text-align: center;
+      padding: 16px 0;
+      // width: 343px;
+      height: 236px;
+      // text-align: center;
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
       border-radius: 8px;
       .image-item {
+        width:calc(33vw - 10px);
+        text-align: center;
         .image-img {
           width: 64px;
           height: 64px;
@@ -181,19 +192,24 @@ export default {
     }
     .category-box {
       justify-content: flex-start;
+      box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
+      border-radius: 8px;
+
+      height: 114px;
       .image-item {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        margin-bottom: 24px;
+        margin-top: 12px;
         width: calc((100vw - 32px) / 4);
         .image-img {
           display: block;
           margin-bottom: 11px;
           width: 44px;
           height: 44px;
-          background-color: red;
+          // background-color: red;
+          border-radius: 22px;
           object-fit: cover;
         }
       }
