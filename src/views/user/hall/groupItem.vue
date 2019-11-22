@@ -58,6 +58,7 @@ export default {
     methods: {
         handleCheckDetail(e) {
             e.stopPropagation()
+            this.$router.push({ path: '/hall/groupListDetail', query: { groupId: this.groupGood.groupGoodsId } })
         },
         handleBuy(e) {
             e.stopPropagation()
