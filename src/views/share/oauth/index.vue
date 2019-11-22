@@ -10,7 +10,7 @@ export default {
     return {
       participantCode: '',
       bookActivityCode: '',
-      appid: 'wxa759fc75d9dc5657',
+      appid: 'wxc2d190b40fb12b9d',
       redirect_uri: 'http%3A%2F%2Fh5.yosar.top%2Fipx-hybrid%2F'
     //   appendUrl: '/testStyle/vote'
     }
@@ -25,3 +25,4 @@ export default {
 
 }
 </script>
+
