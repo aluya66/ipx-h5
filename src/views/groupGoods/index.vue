@@ -18,54 +18,43 @@
     ></c-tabs>
     <!-- 客户特征开始 -->
     <div class="container" v-show="currentTab === 1">
-      <select-box :items='customerGroupList' :isSlot='true' itemBoxClass="image-box customer-box" itemClass="image-item" sectionTitle="客户群体">
-        <template #selectItem='slotProps'>
-            <img class="image-img" :src="slotProps.item.icon" />
-            <p class="image-name">{{slotProps.item.name}}</p>
-            <p class="image-info">{{slotProps.item.age}}</p>
-            <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
-        </template>
-      </select-box>
-      <select-box :items='selectList' sectionTitle="购买频次" />
-      <select-box :items='selectList' sectionTitle="购买力" sectionSubTitle="(人均/次)" />
-      <select-box :items='selectList' sectionTitle="消费偏好" />
+        <!-- <select-box :items='customerGroupList' :isSlot='true' itemBoxClass="image-box customer-box" itemClass="image-item" sectionTitle="客户群体" sectionSubTitle="(可多选)">
+            <template #selectItem='slotProps'>
+                <img class="image-img" :src="slotProps.item.icon" />
+                <p class="image-info">{{slotProps.item.age}}</p>
+                <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
+            </template>
+        </select-box> -->
+        <select-box v-for="item in curCategory" :key="item.labelCategoryCode" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.imageUrl.length > 0?"image-item":""' sectionSubTitle="(可多选)" >
+            <template #selectItem='slotProps'>
+                <img class="image-img" :src="slotProps.item.imageUrl" />
+                <p class="image-info">{{slotProps.item.labelName}}</p>
+                <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
+            </template>
+        </select-box>
+
     </div>
     <!-- 客户特征结束 -->
 
     <!-- 商品特征开始 -->
     <div class="container" v-show="currentTab === 0">
-      <select-box :isSlot='true' :items='categoryList' itemBoxClass='image-box category-box' itemClass='image-item' sectionTitle="品类">
+      <select-box v-for="item in curCategory" :key="item.labelCategoryCode" :isSlot='item.imageUrl.length > 0' :items="item.labels"  :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0 ?"image-box category-box":""' :itemClass='item.imageUrl.length > 0 ?"image-item":""' sectionSubTitle="(可多选)">
         <template #selectItem="slotProps">
               <img class="image-img" :src="slotProps.item.imageUrl" />
               <p class="image-name">{{slotProps.item.labelName}}</p>
+              <img v-if="slotProps.item.isSelected" class="check-box-img" src="~images/groupGoods/selected_icon.png"/>
         </template>
       </select-box>
-      <select-box :items='selectList' sectionTitle="季节" />
+
+      <!-- <select-box :items='selectList' sectionTitle="季节" />
       <select-box :items='selectList' sectionTitle="风格" />
-
-      <div class="item-wrapper">
-        <div class="title">单款价格区间(元)</div>
-        <div class="item-box price-box">
-          <input type="text" placeholder="最低价" maxlength="7" v-model="minPrice" @blur="setPriceSection('min')">
-          <span>-</span>
-          <input type="text" placeholder="最高价" maxlength="7" v-model="maxPrice" @blur="setPriceSection('max')">
-        </div>
-      </div>
-
-      <select-box :items='modelList' :isSlot='true' itemBoxClass="image-box format-box" itemClass="image-item" sectionTitle="版型">
-      <template #selectItem='slotProps'>
-          <img class="image-img" :src="slotProps.item.icon" />
-          <p class="image-name">{{slotProps.item.name}}</p>
-          <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
-      </template>
-      </select-box>
       <select-box :items='selectList' sectionTitle="材质" />
       <select-box :items='selectList' sectionTitle="色系" />
-      <select-box :items='selectList' sectionTitle="厚度" />
+      <select-box :items='selectList' sectionTitle="厚度" /> -->
     </div>
     <!-- 商品特征结束 -->
     <div class="bottom-box">
-      <div class="bottom-btn">{{currentTab === 1? '下一步':'一键开启 智能组货'}}</div>
+      <div class="bottom-btn" @click="handleSubmit">{{"一键开启组货"}}</div>
     </div>
   </layout-view>
 </template>
@@ -84,59 +73,53 @@ export default {
             minPrice: '',
             maxPrice: '',
             categoryList: [], // 品类列表
+            season: [
+                {
+                    icon: require('@/themes/images/groupGoods/pic_spring.png')
+                    // name: '春',
+                    // isSelected: false
+                },
+                {
+                    icon: require('@/themes/images/groupGoods/pic_summer.png')
+                    // name: '夏',
+                    // isSelected: false
+                },
+                {
+                    icon: require('@/themes/images/groupGoods/pic_autumn.png')
+                    // name: '秋',
+                    // isSelected: false
+                },
+                {
+                    icon: require('@/themes/images/groupGoods/pic_winter.png')
+                    // name: '冬',
+                    // isSelected: false
+                }
+            ],
             customerGroupList: [
                 {
-                    icon: require('@/themes/images/groupGoods/shaonian.png'),
-                    name: '少年',
-                    age: '11~15岁',
-                    isSelected: false
+                    icon: require('@/themes/images/groupGoods/shaonian.png')
+                    // age: '18岁以下',
+                    // isSelected: false
                 },
                 {
-                    icon: require('@/themes/images/groupGoods/qingnian.png'),
-                    name: '青年',
-                    age: '16~30岁',
-                    isSelected: false
+                    icon: require('@/themes/images/groupGoods/qingnian.png')
+                    // age: '18~25岁',
+                    // isSelected: false
                 },
                 {
-                    icon: require('@/themes/images/groupGoods/zhongnian.png'),
-                    name: '中年',
-                    age: '30~50岁',
-                    isSelected: false
-                }
-            ],
-            modelList: [
-                {
-                    icon: require('@/themes/images/groupGoods/kuansong.png'),
-                    name: '宽松版',
-                    isSelected: false
+                    icon: require('@/themes/images/groupGoods/haonian.png')
+                    // age: '26~38岁',
+                    // isSelected: false
                 },
                 {
-                    icon: require('@/themes/images/groupGoods/heshen.png'),
-                    name: '合身版',
-                    isSelected: false
+                    icon: require('@/themes/images/groupGoods/zhongnian.png')
+                    // age: '39~46岁',
+                    // isSelected: false
                 },
                 {
-                    icon: require('@/themes/images/groupGoods/xiushen.png'),
-                    name: '修身版',
-                    isSelected: false
-                }
-            ],
-            selectList: [
-                {
-                    name: '选项',
-                    isSelected: false
-                }, {
-                    name: '选项',
-                    isSelected: false
-                }, {
-                    name: '选项',
-                    isSelected: false
-                }, {
-                    name: '选项',
-                    isSelected: false
-                }, {
-                    name: '选项',
-                    isSelected: false
+                    icon: require('@/themes/images/groupGoods/laonian.png')
+                    // age: '46岁以上',
+                    // isSelected: false
                 }
             ],
             currentTab: 0,
@@ -150,44 +133,74 @@ export default {
                     title: '客户特征'
                 }
             ],
-            headerSearchImg: require('@/themes/images/groupGoods/header_search.png')
+            headerSearchImg: require('@/themes/images/groupGoods/header_search.png'),
+            productCategory: [],
+            customerCategory: [],
+            allLabels: [],
+            curCategory: []
+        }
+    },
+    watch: {
+        currentTab(val) {
+            this.allLabels = []
+            this.getSearchLists()
         }
     },
     created() {
         this.getSearchLists()
     },
     methods: {
+        handleSubmit() {
+            debugger
+            let labels = []
+            this.curCategory.forEach(item => {
+                item.labels = item.labels.filter(item => item.isSelected === true)
+                labels = labels.concat(item.labels)
+            })
+            let arr = labels.filter(item => item.isSelected === true)
+
+            if (this.currentTab === 1) {
+                // 客户特征
+                // let ageArr = this.customerGroupList.filter(item => item.isSelected === true)
+            } else {
+                // 商品特征
+                // let seasonArr = this.season.filter(item => item.isSelected === true)
+            }
+            console.log(arr)
+        },
         getSearchLists() {
-            this.$api.groupGoods.getSearchListsAjax().then((data) => {
+            const params = {
+                searchType: this.currentTab + 1
+            }
+            this.$api.groupGoods.getSearchListsAjax(params).then((data) => {
                 let ret = data.labelCategories // 分类列表
+                this.curCategory = ret
+
                 ret.length && ret.forEach((kindItem) => {
-                    const labelCode = kindItem.labelCategoryCode // 类别code
-                    switch (labelCode) {
-                    case '1': // 品类
-                        this.categoryList = kindItem.labels.concat(kindItem.labels) // 选项列表
-                        break
+                    if (kindItem.imageUrl === '1') {
+                        kindItem.labels.map((item, index) => {
+                            item.imageUrl = this.season[index]
+                        })
+                    } else if (kindItem.imageUrl === '2') {
+                        kindItem.labels.map((item, index) => {
+                            item.imageUrl = this.customerGroupList[index]
+                        })
                     }
+                    this.allLabels = this.allLabels.concat(kindItem.labels)
+                    this.allLabels = this.allLabels.map((item) => {
+                        return {
+                            ...item,
+                            isSelected: false
+                        }
+                    })
+                    // const labelCode = kindItem.labelCategoryCode // 类别code
+                    // switch (labelCode) {
+                    // case '1': // 品类
+                    //     this.categoryList = kindItem.labels.concat(kindItem.labels) // 选项列表
+                    //     break
+                    // }
                 })
             })
-        },
-        setPriceSection(type) {
-            let price = type === 'min' ? 'minPrice' : 'maxPrice'
-            if (!Number(this[price]) || this[price] < 0) {
-                this[price] = ''
-                return this.$toast('请输入大于0数字')
-            }
-            if (type === 'min') {
-                if (this.maxPrice && this[price] > this.maxPrice) {
-                    this[price] = ''
-                    return this.$toast('最低价不能高于最高价')
-                }
-            } else if (type === 'max') {
-                if (this.minPrice && this[price] < this.minPrice) {
-                    this[price] = ''
-                    return this.$toast('最高价不能低于最低价')
-                }
-            }
-            this[price] = Number(this[price]).toFixed(2)
         },
         selectLabels (item, index, type) {
             let isSelected = !item.isSelected
@@ -195,7 +208,6 @@ export default {
             this.$set(target, 'isSelected', isSelected)
         },
         onChangeTab (val) {
-            // console.log(val)
             if (val === 1) {
                 this.customerGroupList = this.customerGroupList.map((item) => {
                     return {
@@ -204,7 +216,7 @@ export default {
                     }
                 })
             } else {
-                this.modelList = this.modelList.map((item) => {
+                this.season = this.season.map((item) => {
                     return {
                         ...item,
                         isSelected: false

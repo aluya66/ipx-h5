@@ -2,21 +2,19 @@
    <div class="contain">
        <div class="content">
            <section class="header">
-                <p><span>深色系</span><span>上装 6；下装 4</span></p>
-                <!-- <span class="line"></span> -->
-                <!-- <img class="selectIcon" src="" alt=""> -->
+                <p><span>{{groupGood.name}}</span><span>{{`上装 &nbsp;${groupGood.topsSkuCount || 0} ；下装&nbsp; ${groupGood.bottomsSkuCount || 0}`}}</span></p>
             </section>
             <div class="list-contain">
                 <img class="pole"  src="@/themes/images/groupGoods/pic_koc_clothes_hanger.png" alt="">
                 <div class="group-contain">
-                    <div class="p-contain" v-for="(item,index) in datas" :key="index" >
+                    <div class="p-contain" v-for="product in getColorSkuList" :key="product.productCode" >
                         <img src="@/themes/images/groupGoods/pic_hook.png" alt="">
-                        <img class="productSize" src="@/themes/images/groupGoods/xiushen.png" alt="">
+                        <img class="productSize" :src='product.imgUrl' alt="">
                     </div>
                 </div>
             </div>
             <section class="footer">
-                <p>￥<span>1000</span></p>
+                <p>￥<span>{{groupGood.totalPrice || 0}}</span></p>
                 <div class="action">
                     <section :class='["default", !manageState ? "inManage" :""]' @click="handleCheckDetail">查看详情</section>
                     <section class="select" v-show="!manageState" @click="handleBuy">一键采购</section>
@@ -32,10 +30,10 @@ export default {
 
     },
     props: {
-        datas: {
-            type: Array,
-            default() {
-                return [1, 2, 3, 4, 5, 6, 7]
+        groupGood: {
+            type: Object,
+            default () {
+                return {}
             }
         },
         manageState: {
@@ -45,7 +43,16 @@ export default {
     },
     data () {
         return {
-
+            colorList: []
+        }
+    },
+    computed: {
+        getColorSkuList() {
+            let arr = []
+            this.groupGood.groupGoodsRecords.forEach(item => {
+                arr = arr.concat(item.colorSkuList)
+            })
+            return arr
         }
     },
     methods: {
@@ -90,6 +97,18 @@ export default {
                     line-height:50px;
                     z-index: 2;
                     padding-left:0;
+                    &:after {
+                        content: "";
+                        width: 100%;
+                        height: 8px;
+                        background:#fff;
+                        position: absolute;
+                        display: inline-block;
+                        left: 0;
+                        top: 12px;
+                        z-index: -1;
+                    // border-top: 8px
+                    }
                 }
 
                 span {
@@ -99,18 +118,7 @@ export default {
                     line-height:16px;
                     padding-left:12px;
                 }
-                &:after {
-                    content: "";
-                    width: 54px;
-                    height: 8px;
-                    background:#fff;
-                    position: absolute;
-                    display: inline-block;
-                    left: 0;
-                    top: 30px;
-                    z-index: 1;
-                    // border-top: 8px
-                }
+
             }
             img {
                 display: block;
@@ -158,8 +166,10 @@ export default {
                     }
                     .productSize {
                         // 3:4
+                        border-radius:4px;
                         width: calc(28.5vw - 36px);
                         height: calc(37.5vw - 47px);
+                        object-fit: cover;
                     }
                 }
             }

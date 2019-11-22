@@ -64,8 +64,8 @@
             finished-text="已到底，没有更多数据"
             @load="handleMore"
         >
-            <div class="groupItemContain" v-for="item in groupDatas" :key="item" @click="handleSelectGroup(item)">
-                <group-item />
+            <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectGroup(item)">
+                <group-item :groupGood='item'/>
                 <img class="groupSelIcon" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
             </div>
         </list>
@@ -104,7 +104,7 @@ export default {
             isSelectAll: false, // 是否点击选中全部
             datas: [], // 样衣数据源
             groupDatas: [1], // 组货数据源
-            pageNo: 1, // 当前页码
+            pageNo: 0, // 当前页码
             pageSize: 10, // 每页请求数
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
@@ -325,7 +325,31 @@ export default {
             }
         },
         handleRequestForGroupList () {
-            this.setSuccessStatus()
+            const params = {
+                pageNo: this.pageNo,
+                pageSize: this.pageSize
+            }
+            this.loading = true
+
+            this.$api.hall.getGroupGoods(params).then(res => {
+                this.setSuccessStatus()
+                if (res && res instanceof Array) {
+                    if (this.pageNo === 1) {
+                        this.groupDatas = res
+                    } else {
+                        this.groupDatas = this.groupDatas.concat(res)
+                    }
+                    if (res.length < this.pageSize) {
+                        this.finished = true
+                    } else {
+                        this.finished = false
+                    }
+                } else {
+                    this.finished = true
+                }
+            }).catch(() => {
+                this.setFailureStatus()
+            })
         }
     },
     activated() {
@@ -391,10 +415,10 @@ export default {
 .contain {
     position: relative;
     // background: #fff;
-    height: 100%;
+    height: 100%;//calc(100vh - 124px)  ;
     overflow: auto;
     .enableScroll {
-        overflow: scroll
+        overflow: scroll;
     }
     .disableScroll{
         overflow: visible !important;

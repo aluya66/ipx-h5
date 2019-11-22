@@ -124,7 +124,7 @@ const setParams = (url, params = {}, opt = {}) => {
         url,
         headers: {
             'Content-Type': contentType,
-            'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaPWmp+2EaFvHQhVFdfjSMbSYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCl6Y2wSxIl7B28bXB8N2cTKH6tCkuTek+J1it9pA7d+LrvyYPEFvEsML/579hFe6n2QX3Pgyp3DZUT5A525Gpe8QvYKrUUMK1ZzZJWEv5A9eM6sBOmlNrLd0b8A0gyyI/qvXj+fFMfSorT/wUTNYH2TwuyBgwRoHsO+EWprIKSQz7WAifOIRmgttRekJJ4krwWULrT4L0hYLqghBopsfvo2tFX8ssUIW+UUvWHDvm0gfCfWaQ5vFAffY6+EMp7HidIc72KNnbzGsRYOxtYeJRsw=',
+            // 'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaPWmp+2EaFvHQhVFdfjSMbSYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCl6Y2wSxIl7B28bXB8N2cTKH6tCkuTek+J1it9pA7d+LrvyYPEFvEsML/579hFe6n2QX3Pgyp3DZUT5A525Gpe8QvYKrUUMK1ZzZJWEv5A9eM6sBOmlNrLd0b8A0gyyI/qvXj+fFMfSorT/wUTNYH2TwuyBgwRoHsO+EWprIKSQz7WAifOIRmgttRekJJ4krwWULrT4L0hYLqghBopsfvo2tFX8ssUIW+UUvWHDvm0gfCfWaQ5vFAffY6+EMp7HidIc72KNnbzGsRYOxtYeJRsw=',
             'channel': 'WEB',
             'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
             'app_version': '1.2.0',
