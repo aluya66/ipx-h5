@@ -11,7 +11,7 @@ export default {
       participantCode: '',
       bookActivityCode: '',
       appid: 'wxa759fc75d9dc5657',
-      redirect_uri: 'http%3A%2F%2Fh5.yosar.net%2F'
+      redirect_uri: 'http%3A%2F%2Fh5.yosar.top%2Fipx-hybrid%2F'
     //   appendUrl: '/testStyle/vote'
     }
   },
