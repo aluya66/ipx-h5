@@ -160,6 +160,7 @@ export default {
           width: 100%;
           border-radius: 4px;
           object-fit: cover;
+          background-color: #fff;
         }
       }
     }
@@ -191,10 +192,11 @@ export default {
           text-align: right;
           display: flex;
           justify-content: flex-end;
+          align-items: center;
           img {
             width: 16px;
             height: 16px;
-            vertical-align: text-top;
+            // vertical-align: text-top;
           }
         }
       }

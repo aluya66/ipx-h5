@@ -106,6 +106,7 @@ export default {
       object-fit: cover;
       height: 100%;
       border-radius: 8px;
+      background-color: #fff;
       // margin: 0 12px 0 -6px;
     }
   }

@@ -77,7 +77,7 @@ export default {
         img {
           width: 56px;
           height: 56px;
-          margin: 0 16px;
+          margin: 0 12px;
           border-radius: 8px;
           object-fit: cover;
         }

@@ -58,8 +58,8 @@ export default {
       let openid = utils.getSessionStore('openId') || ''
       if (!openid) {
         if (this.isWx === 'wx') {
-          let appid = 'wxc2d190b40fb12b9d'
-          let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
+          let appid = 'wxa759fc75d9dc5657'
+          let redirectUri = 'http%3A%2F%2Fh5.yosar.net%2F'
           window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
           return
         }
@@ -186,8 +186,8 @@ export default {
         .getOauth(params)
         .then(res => {
           if (res.code === 1) {
-            let appid = 'wxc2d190b40fb12b9d'
-            let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
+            let appid = 'wxa759fc75d9dc5657'
+            let redirectUri = 'http%3A%2F%2Fh5.yosar.net%2F'
             window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
           } else {
             this.isWxChat = true
