@@ -3,8 +3,9 @@
     <c-header
       slot="header"
       :left-arrow="true"
+      v-if="!isWxStatus"
     ></c-header>
-    <c-list class="list-scroll test-style-list" v-if="isWxChat">
+    <c-list class="list-scroll test-style-list" :class="isWxStatus ? 'list-scroll-height' : '' "  v-if="isWxChat">
       <share-list
         :productList="list"
         :disableClick="isCommit"
@@ -40,6 +41,7 @@ export default {
       bookActivityCode: '',
       isWxStatus: false,
       isWxChat: false,
+      isWx: '',
       list: [],
       wxConig: {}, // 微信基本配置
       selectedNum: 0,
@@ -48,14 +50,14 @@ export default {
   },
   async activated () {
     this.code = this.$route.query.code
-    let isWx = this.$route.query.isWx
+    this.isWx = this.$route.query.isWx
     this.participantCode = this.$route.query.participantCode
     this.bookActivityCode = this.$route.query.bookActivityCode
-    if (this.code || isWx === 'wx') {
+    if (this.code || this.isWx === 'wx') {
       this.isWxStatus = true
       let openid = utils.getSessionStore('openId') || ''
       if (!openid) {
-        if (isWx === 'wx') {
+        if (this.isWx === 'wx') {
           let appid = 'wxc2d190b40fb12b9d'
           let redirectUri = 'http%3A%2F%2Fh5.yosar.com%2F'
           window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirectUri}%3FparticipantCode%3D${this.participantCode}%26bookActivityCode%3d${this.bookActivityCode}&response_type=code&scope=snsapi_userinfo&state=12`
@@ -72,7 +74,9 @@ export default {
     await this.getTestStyleList()
   },
   mounted () {
+    document.title = '选择偏爱款式'
     setTimeout(() => {
+      document.title = '选择偏爱款式'
       if (this.code) {
         this.getTicket()
       }
@@ -279,6 +283,11 @@ export default {
 .list-scroll {
   height: calc(100vh - 55px);
 }
+
+.list-scroll-height {
+   height: calc(100vh);
+}
+
 .submit {
   width: 160px;
   height: 50px;

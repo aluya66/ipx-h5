@@ -68,7 +68,7 @@ export default {
           background-repeat: no-repeat;
           background-size: 100%;
           p {
-            font-family: PingFangSC;
+            // font-family: 'PingFangSC';
             font-size: 12px;
             font-weight: 600;
             color: #8a8c99;
@@ -82,9 +82,9 @@ export default {
           object-fit: cover;
         }
         span {
-          font-family: PingFangSC;
+          // font-family: 'PingFangSC';
           font-size: 14px;
-          font-weight: 500;
+          font-weight: bold;
           color: #2a2b33;
           line-height: 56px;
           width: 80%;
@@ -92,7 +92,7 @@ export default {
         }
       }
       .price {
-        font-family: PingFangSC;
+        // font-family: 'PingFangSC';
         font-size: 12px;
         color: #8a8c99;
         line-height: 56px;
@@ -101,7 +101,7 @@ export default {
         display: flex;
         justify-content: flex-end;
         span {
-          font-family: ALIBABAFont;
+          font-family: 'alibabaBold';
           font-size: 20px;
           font-weight: bold;
           color: #f53030;

@@ -108,6 +108,7 @@ export default {
       flex-wrap: wrap;
       //   justify-content: space-around;
       padding: 0px 10px 20px;
+      width: 100%;
       .product {
         margin: 0 5px 20px;
         // background-color: blue;
@@ -124,7 +125,7 @@ export default {
         }
         p {
           margin: 10px 0;
-          font-family: PingFangSC;
+          font-family: 'PingFangSC', Arial, Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, sans-serif;
           font-size: 12px;
           color: #2a2b33;
           .ellipsis();
@@ -134,7 +135,7 @@ export default {
           height: 32px;
           border-radius: 17px;
           background-color: #3c5cf6;
-          font-family: PingFangSC;
+          font-family: 'PingFangSC', Arial, Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, sans-serif;
           font-size: 14px;
           font-weight: 500;
           color: #ffffff;

@@ -11,7 +11,7 @@
           <share-list class="share-list" :productList="list"></share-list>
         </div>
       </c-list>
-      <div class="bottom-dialog">
+      <div class="bottom-dialog" :style="{'bottom':paddingTop}">
         <h4>分享给您的顾客，开始收集测款数据吧～</h4>
         <p>(测款数据在订货会页面查看)</p>
         <div class="share-logo">
@@ -55,6 +55,15 @@ export default {
     this.participantCode = this.$route.query.participantCode
     this.bookActivityCode = this.$route.query.bookActivityCode
     this.getSharemeasuresList()
+
+    this.baseParams = utils.getStore('baseParams')
+    let statusBarHeight = this.baseParams.statusBarHeight || 0
+    let statusBarHeightSum = Number(statusBarHeight) / 100
+    if (this.baseParams.platform === 'ios') {
+      if (Number(this.baseParams.statusBarHeight) > 20) {
+        this.paddingTop = (Number(statusBarHeightSum)) + 'rem'
+      }
+    }
   },
   mounted () {
     // setTimeout(() => {
@@ -127,7 +136,7 @@ export default {
     padding: 12px 16px;
     p {
       margin: 0;
-      font-family: PingFangSC;
+      // font-family: PingFangSC;
       font-size: 14px;
       font-weight: 500;
       color: #2a2b33;

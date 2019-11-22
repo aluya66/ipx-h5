@@ -115,7 +115,7 @@ export default {
   margin: 0 16px;
   .van-tabs__line {
     position: absolute;
-    bottom: 24px;
+    bottom: 26px;
     left: 0;
     z-index: 0;
     height: 5px;
@@ -174,7 +174,7 @@ export default {
       align-items: center;
       margin-right: 12px;
       p {
-        // font-family: ALIBABAFont;
+        font-family: 'alibabaBold';
         font-size: 18px;
         font-weight: bold;
         color: #f53030;
@@ -199,24 +199,26 @@ export default {
         // background-position: right bottom, left top;
         background-repeat: no-repeat;
         background-position: center;
+        background-size: cover;
       }
       .secondClass {
         background-image: url("../../../themes/images/app/rank-two@2x.png");
         background-repeat: no-repeat;
         background-position: center;
+        background-size: cover;
       }
       .thridClass {
         background-image: url("../../../themes/images/app/rank-three@2x.png");
         background-repeat: no-repeat;
         background-position: center;
+        background-size: cover;
       }
       section {
         width: 26px;
         height: 26px;
-
         line-height: 26px;
         margin: 0 8px 0;
-        font-size: 10px;
+        font-size: 12px;
         color: #8a8c99;
         text-align: center;
       }
@@ -224,13 +226,14 @@ export default {
         width: 48px;
         height: 48px;
         object-fit: cover;
+        border-radius: 8px;
       }
       h3 {
         // height: 20px;
         // line-height: 20px;
         margin: 0 0 0 12px;
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
         color: @color-c1;
         width: 120px;
         // max-width: 200px;

@@ -40,15 +40,19 @@ export default {
         on: {
           // 滑动之后回调函数
           progress: function (e) {
+            console.log(e)
+            console.log(self.percentValue, 'self.percentValue')
             /* realIndex为滚动到当前的slide索引值 */
             self.percentValue = e
             // that.imgIndex = this.realIndex - 1
           },
           slideNextTransitionEnd (e) {
-            self.currentPage += 1
+            // self.currentPage += 1
+            console.log(self.currentPage, 'self.currentPage')
           },
           slidePrevTransitionEnd (e) {
-            self.currentPage -= 1
+            // self.currentPage -= 1
+            console.log(self.currentPagem, 'self.currentPagem')
           }
         }
       }
