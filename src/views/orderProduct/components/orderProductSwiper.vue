@@ -92,11 +92,12 @@ export default {
 }
 .o-swiperClass {
   width: 100%;
-  height: 426px;
+  height: 360px;
   position: relative;
   .o-swiper-slide{
-    width: calc(100vw - 64px);
-    transform:scale(0.98);
+    width: calc(100vw - 56px);
+    height: 100%;
+    // transform:scale(0.98);
     position: relative;
     overflow: hidden;
     // margin-right: 16px!important;
