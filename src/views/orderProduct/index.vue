@@ -73,7 +73,7 @@ export default {
       testProductsStatus: true,
       delayedStatus: false,
       lastPeriodRankStatus: false,
-      topImage: require('@/themes/images/app/main-name@2x.png'),
+      topImage: require('@/themes/images/app/main-name@3x.png'),
       products: [], // 测款商品数据
       testProducts: [], // 一键测款后的数据列表
       managerTypes: [],

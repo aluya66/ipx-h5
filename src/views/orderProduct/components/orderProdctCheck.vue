@@ -1,19 +1,18 @@
 <template>
-  <div class="check-contain" >
+  <div class="check-contain">
     <div class="check-content" v-if="!isTest ">
       <div class="check-topClass">
-        <img src="@/themes/images/app/check-icon@2x.png" alt="">
+        <img src="@/themes/images/app/check-icon@2x.png" alt />
         <div>
           <h3>主推款免费测款</h3>
-          <p>顾客喜不喜欢货品，一测见真知
-淘宝商家制造爆款的秘密工具
-免费测款，让顾客和市场帮你做决策</p>
+          <p>顾客喜不喜欢货品，一测见真知</p>
+          <p>淘宝商家制造爆款的秘密工具</p>
+          <p>免费测款，让顾客和市场帮你做决策</p>
         </div>
       </div>
       <section class="check-button" @click="handleCheck">
-        <p>立即免费测款
-        </p>
-        <img src="@/themes/images/app/check-rightArrow@2x.png" alt="">
+        <p>立即免费测款</p>
+        <img src="@/themes/images/app/check-rightArrow@2x.png" alt />
       </section>
     </div>
     <div v-if="isTest">
@@ -22,11 +21,14 @@
         <div class="infoContent">
           <section class="infoHeader">
             <h3>共{{products.length}}种测款款式</h3>
-            <p @click="handleCheckDetail">查看测款页<img src="@/themes/images/app/icon-next@2x.png" alt=""></p>
+            <p @click="handleCheckDetail">
+              查看测款页
+              <img src="@/themes/images/app/icon-next@2x.png" alt />
+            </p>
           </section>
           <div class="imageContent">
             <section v-for="item in products.slice(0,3)" :key="item.productCode">
-              <img :src="item.mainPic" alt="">
+              <img :src="item.mainPic" alt />
             </section>
           </div>
         </div>
@@ -42,9 +44,7 @@
 
 <script>
 export default {
-  components: {
-
-  },
+  components: {},
   props: {
     products: {
       type: Array,
@@ -104,17 +104,17 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-bottom :20px;
-    margin-top:12px;
+    padding-bottom: 20px;
+    margin-top: 12px;
     position: relative;
     .leftBtn {
       background-image: linear-gradient(to top, #557af4, #724fff);
-      color:#fff;
+      color: #fff;
       margin: 0 16px 0 0;
     }
     .rightBtn {
       border: solid 1.5px #3c5cf6;
-      color:#3c5cf6
+      color: #3c5cf6;
     }
   }
   .testContent {
@@ -133,12 +133,12 @@ export default {
       color: #8a8c99;
       text-align: center;
     }
-    >h3 {
+    > h3 {
       line-height: 28px;
       font-size: 20px;
       font-weight: 500;
       color: @color-c1;
-      margin:20px 0 0;
+      margin: 20px 0 0;
       text-align: center;
       display: inline-block;
       width: 100%;
@@ -148,7 +148,6 @@ export default {
       flex-direction: row;
       padding: 0 12px 12px;
       section {
-
         margin-right: 10px;
         border-radius: 4px;
         object-fit: cover;
@@ -160,7 +159,8 @@ export default {
           height: 119px;
           width: 100%;
           border-radius: 4px;
-          object-fit: cover
+          object-fit: cover;
+          background-color: #fff;
         }
       }
     }
@@ -174,9 +174,9 @@ export default {
         justify-content: space-between;
         align-items: center;
         height: 44px;
-        >h3 {
+        > h3 {
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           line-height: 20px;
           color: @color-c1;
           margin: 0 0 0 12px;
@@ -184,16 +184,19 @@ export default {
           flex: 2;
         }
         p {
-          font-size:12px;
+          font-size: 12px;
           line-height: 16px;
           color: #8a8c99;
-          margin:0 12px 0 0;
+          margin: 0 12px 0 0;
           flex: 1;
-          text-align:right;
+          text-align: right;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
           img {
             width: 16px;
             height: 16px;
-            vertical-align: text-top
+            // vertical-align: text-top;
           }
         }
       }
@@ -238,7 +241,7 @@ export default {
         // margin: 20px 0 0 0;
         width: 84px;
       }
-      >div {
+      > div {
         display: flex;
         flex: auto;
         flex-direction: column;
@@ -246,16 +249,17 @@ export default {
         text-align: left;
         padding-left: 16px;
         h3 {
-            font-family: PingFangSC;
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 28px;
-            font-size:@f20;
-            color: #2a2b33;
-            margin: 0;
+          // font-family: PingFangSC;
+          font-size: 20px;
+          font-weight: 500;
+          line-height: 28px;
+          font-size: @f20;
+          color: #2a2b33;
+          margin: 0;
+          margin-bottom: 12px;
         }
         p {
-          font-family: PingFangSC;
+          // font-family: PingFangSC;
           font-size: 12px;
           line-height: 16px;
           margin: 0;

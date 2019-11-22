@@ -1018,8 +1018,8 @@ export default {
   }
   .display-img {
     position: relative;
-    padding: 0!important;
-    padding-left:  10px !important;
+    padding: 0 12px!important;
+    // padding-left:  10px !important;
     .ul {
       max-width: 100%;
       overflow: hidden;
@@ -1033,9 +1033,12 @@ export default {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 33.3%;
+        width: 31%;
         // height: 111px;
-        padding: 0 10px 10px 0;
+        margin: 0 10px 10px 0;
+        &:nth-child(3n) {
+          margin: 0
+        }
         .div {
           padding-bottom: 100%;
           background-color: #e6e6e6;

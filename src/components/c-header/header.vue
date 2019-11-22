@@ -74,14 +74,15 @@ export default create({
   activated () {
     this.baseParams = utils.getStore('baseParams')
     // this.baseParams.statusBarHeight = 44;
+    let statusBarHeight = this.baseParams.statusBarHeight || 0
+    let statusBarHeightSum = Number(statusBarHeight) / 100
     if (this.baseParams.platform === 'ios') {
-      if (Number(this.baseParams.statusBarHeight) > 20) {
-        // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
-        // alert(this.paddingTop)
-      }
+      this.paddingTop = statusBarHeightSum + 'rem'
+      // if (Number(this.baseParams.statusBarHeight) > 20) {
+      //   // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
+      //   // alert(this.paddingTop)
+      // }
     } else if (this.baseParams.platform === 'android') {
-      let statusBarHeight = this.baseParams.statusBarHeight || 0
-      let statusBarHeightSum = Number(statusBarHeight) / 100
       this.paddingTop = statusBarHeightSum + 'rem'
     }
   },
@@ -121,6 +122,14 @@ export default create({
     color: #2a2b33;
     height: 46px;
     line-height: 46px;
+  }
+}
+
+.c-header-white{
+  .van-icon-arrow-left {
+    background: url("../../themes/images/app/icon_next20_white1@2x.png");
+    .background-common(@f26);
+    transform:rotate(-180deg);
   }
 }
 

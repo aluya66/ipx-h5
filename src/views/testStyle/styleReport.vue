@@ -4,7 +4,7 @@
     <div class="panel">
       <div class="head">
         <img src="../../themes/images/app/invalid-name@2x.png" alt />
-        <c-header slot="header" :left-arrow="true"></c-header>
+        <c-header slot="header" :left-arrow="true" class="c-header-white"></c-header>
         <div class="content">
           <p>测款数据</p>
           <span>数据持续更新中</span>
@@ -100,14 +100,32 @@ export default {
     background-color: white;
     border-radius: 8px;
     transform: translateY(-8px);
+    .van-tab{
+      &.van-tab--active{
+        span{
+          color: #2a2b33
+        }
+      }
+      span{
+        font-size: 16px;
+        font-weight: bold;
+        color: #8a8c99;
+      }
+    }
     .van-tabs__line {
-      border-radius: 10px;
+      border-radius: 0;
       background-color: #2a2b33;
       margin-bottom: 4px;
     }
     .van-tabs {
-      padding-top: 8px;
-      border-bottom: 1px solid #e1e2e6;
+      // padding-top: 8px;
+      border-bottom: 0.5px solid #e1e2e6;
+      .van-hairline--top-bottom{
+        &::after{
+          border: 0;
+        }
+      }
+
     }
   }
 }

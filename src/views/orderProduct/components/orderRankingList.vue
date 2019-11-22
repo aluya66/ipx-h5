@@ -7,7 +7,7 @@
       title-inactive-color="#8a8c99"
       class="customTab"
     >
-      <tab :title="item" v-for="(item ,index) in getMenuItems" :key="index">
+      <tab :title="item" v-for="(item ,index) in getMenuItems" :key="index" :name="item">
         <div class="r-contain" v-for="(listItem ,index) in getLists" :key="index">
           <div class="r-leftContain">
             <section :class="handleRankIcon(index)">{{index > 2 ? index + 1 :''}}</section>
@@ -15,7 +15,7 @@
             <h3>{{listItem.productName}}</h3>
           </div>
           <div class="r-rightContain">
-            <p>{{getMenuItems[active] === '单品排行榜' ? listItem.singleSalesVolume : getMenuItems[active] === '品类排行榜' ? listItem.categorySalesVolume : getMenuItems[active] === '测款排行榜' ? listItem.measureVoteNum : 0}}</p>
+            <p>{{active === '单品排行榜' ? listItem.singleSalesVolume : active === '品类排行榜' ? listItem.categorySalesVolume : active === '测款排行榜' ? listItem.measureVoteNum : 0}}</p>
             <span>{{getMenuItems[active] === '测款排行榜' ? '票' : '件'}}</span>
           </div>
         </div>
@@ -61,9 +61,9 @@ export default {
     },
     getLists () {
       switch (this.active) {
-        case 0:
+        case '单品排行榜':
           return this.allList.singleSalesRankList
-        case 1:
+        case '品类排行榜':
           return this.allList.categorySalesRankList
         default:
           return this.allList.singleMeasureRankList
@@ -115,7 +115,7 @@ export default {
   margin: 0 16px;
   .van-tabs__line {
     position: absolute;
-    bottom: 24px;
+    bottom: 26px;
     left: 0;
     z-index: 0;
     height: 5px;
@@ -174,7 +174,7 @@ export default {
       align-items: center;
       margin-right: 12px;
       p {
-        // font-family: ALIBABAFont;
+        font-family: 'alibabaBold';
         font-size: 18px;
         font-weight: bold;
         color: #f53030;
@@ -199,24 +199,26 @@ export default {
         // background-position: right bottom, left top;
         background-repeat: no-repeat;
         background-position: center;
+        background-size: cover;
       }
       .secondClass {
         background-image: url("../../../themes/images/app/rank-two@2x.png");
         background-repeat: no-repeat;
         background-position: center;
+        background-size: cover;
       }
       .thridClass {
         background-image: url("../../../themes/images/app/rank-three@2x.png");
         background-repeat: no-repeat;
         background-position: center;
+        background-size: cover;
       }
       section {
         width: 26px;
         height: 26px;
-
         line-height: 26px;
         margin: 0 8px 0;
-        font-size: 10px;
+        font-size: 12px;
         color: #8a8c99;
         text-align: center;
       }
@@ -224,13 +226,14 @@ export default {
         width: 48px;
         height: 48px;
         object-fit: cover;
+        border-radius: 8px;
       }
       h3 {
         // height: 20px;
         // line-height: 20px;
         margin: 0 0 0 12px;
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
         color: @color-c1;
         width: 120px;
         // max-width: 200px;

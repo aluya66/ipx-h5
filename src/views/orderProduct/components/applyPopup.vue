@@ -4,7 +4,7 @@
     closeable
     round
     position="bottom"
-    class="contain"
+    class="contain apply-popup"
     @close="handleClose"
     :style="{ height: '4.59rem', bottom: handleBottom}"
   >
@@ -256,6 +256,14 @@ export default {
 }
 </script>
 
+<style lang="less">
+.apply-popup{
+  .van-field__control{
+    font-weight: 500;
+    color: #b2b5c1
+  }
+}
+</style>
 <style lang='less' scoped>
 .contain {
   h3 {
@@ -271,7 +279,7 @@ export default {
   }
 
   .content {
-    border-top: 1px solid #e3e2e6;
+    border-top: 0.5px solid #e3e2e6;
     padding: 0 16px;
     > p {
       // height: 16px;
@@ -331,7 +339,7 @@ export default {
       line-height: 50px;
       border-radius: 25px;
       // box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
-      margin: 32px 16px 38px;
+      margin: 32px 0 38px;
       font-size: 18px;
       font-weight: 500;
       // line-height: 1.44;

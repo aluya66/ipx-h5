@@ -40,15 +40,19 @@ export default {
         on: {
           // 滑动之后回调函数
           progress: function (e) {
+            console.log(e)
+            console.log(self.percentValue, 'self.percentValue')
             /* realIndex为滚动到当前的slide索引值 */
             self.percentValue = e
             // that.imgIndex = this.realIndex - 1
           },
           slideNextTransitionEnd (e) {
-            self.currentPage += 1
+            // self.currentPage += 1
+            console.log(self.currentPage, 'self.currentPage')
           },
           slidePrevTransitionEnd (e) {
-            self.currentPage -= 1
+            // self.currentPage -= 1
+            console.log(self.currentPagem, 'self.currentPagem')
           }
         }
       }
@@ -88,11 +92,12 @@ export default {
 }
 .o-swiperClass {
   width: 100%;
-  height: 426px;
+  height: 360px;
   position: relative;
   .o-swiper-slide{
-    width: calc(100vw - 64px);
-    transform:scale(0.98);
+    width: calc(100vw - 56px);
+    height: 100%;
+    // transform:scale(0.98);
     position: relative;
     overflow: hidden;
     // margin-right: 16px!important;
@@ -102,6 +107,7 @@ export default {
       object-fit: cover;
       height: 100%;
       border-radius: 8px;
+      background-color: #fff;
       // margin: 0 12px 0 -6px;
     }
   }
