@@ -13,7 +13,7 @@
               &yen;<span class="van-sku__price-num">{{seletedDetailsItem.tshPrice}}</span>
             </div>
             <div class="van-sku-header-item">
-              <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span>
+              <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
             </div>
             <div class="van-sku-header-item">请调整颜色、尺码和数量</div>
           </div>
@@ -21,19 +21,19 @@
       </template>
       <template slot="sku-group">
         <van-tabs v-model="colorSkuAction" swipeable class="sku-group-tabs">
-          <template v-for="(colorSkusItem, colorSkusIndex) in seletedDetailsItem.colorSkus">
+          <template v-for="(colorSkusItem, colorSkusIndex) in seletedDetailsItem.colorSkuList">
             <van-tab :key="colorSkusIndex" :name="colorSkusItem.attrColorValue">
               <div slot="title">
                 {{colorSkusItem.attrColorValue}}
                 <div
                   class="van-info"
-                  v-if="colorSkusItem.seletedColorSkuNum > 0"
-                >{{colorSkusItem.seletedColorSkuNum > 99 ? colorSkusItem.seletedColorSkuNum + '+' : colorSkusItem.seletedColorSkuNum}}</div>
+                  v-if="colorSkusItem.seletedColorSkuSumNum > 0"
+                >{{colorSkusItem.seletedColorSkuSumNum > 99 ? colorSkusItem.seletedColorSkuSumNum + '+' : colorSkusItem.seletedColorSkuSumNum}}</div>
               </div>
               <div class="sku-card">
                 <div
                   class="sku-card-list"
-                  v-for="(skuItem, skuIndex) in colorSkusItem.seletedcolorSkus"
+                  v-for="(skuItem, skuIndex) in colorSkusItem.skuList"
                   :key="skuIndex"
                 >
                   <div class="flex-left">
@@ -59,7 +59,7 @@
             </van-tab>
           </template>
         </van-tabs>
-        <div class="number-tip" v-if="seletedDetailsItem.seletedColorSkuSumNum <= 0">库存数量，不满足起批数量</div>
+        <div class="number-tip" v-if="seletedDetailsItem.groupNum <= 0">库存数量，不满足起批数量</div>
       </template>
 
       <template slot="sku-stepper">{{goodsId}}</template>
@@ -70,7 +70,7 @@
             size="large"
             type="warning"
             @click="onPointClicked"
-            v-if="seletedDetailsItem.seletedColorSkuSumNum > 0"
+            v-if="seletedDetailsItem.groupNum > 0"
           >确定</van-button>
           <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button>
         </div>
