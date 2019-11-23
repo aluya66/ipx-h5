@@ -106,7 +106,8 @@ export default {
         })
     },
     async shareWechat (type) {
-      let url = window.location.host
+      // let url = window.location.host
+      let url = 'h5.yosar.com'
       // type 1=好友 2=朋友圈
       let method = 'one_key_share'
       let params = {

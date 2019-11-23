@@ -117,7 +117,7 @@ export default {
       background-color: #fff;
       // padding: 2px;
       // box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
-    
+
       // margin: 0 12px 0 -6px;
     }
   }
