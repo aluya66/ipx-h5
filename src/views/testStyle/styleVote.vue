@@ -226,7 +226,7 @@ export default {
       // let url = 'http://ipx-hybrid.yosar.test'
       let params = {
         title: '我想邀请你一起做时尚买手',
-        link: `${url}/?isWx=${isWx}&bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+        link: `${url}?isWx=${isWx}&bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
         imgUrl: 'http://media.yosar.com/19/324/1574152045660',
         desc: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
       }
