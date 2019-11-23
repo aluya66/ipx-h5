@@ -7,7 +7,7 @@
           <span>订货会</span>
         </template>
       </c-header>
-      <div class="content">
+      <div class="content" :class="footerHeight ? 'contents' : ''">
         <img class="op-topImage" :src="topImage" alt="">
         <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" v-if="products && products.length > 0"/>
         <swiper :imageData="products" v-if="products && products.length > 0"/>
@@ -65,6 +65,7 @@ export default {
     return {
       token: '',
       baseParams: '', // 基础配置
+      footerHeight: 0, 
       bannerCode: '',
       participantCode: '', // 参会编号
       inScroll: false,
@@ -216,6 +217,11 @@ export default {
   activated () {
     this.baseParams = utils.getStore('baseParams') || {}
     this.token = utils.getStore('token') || ''
+    if (this.baseParams.platform === 'ios') {
+      if (Number(this.baseParams.statusBarHeight) >= 40) {
+        this.footerHeight = (Number(37) / 100) + 'rem'
+      }
+    }
     this.handleRequestMain()
     this.handleRequestUserManagers()
   },
@@ -236,6 +242,9 @@ export default {
   .content {
     height: calc(100vh - 50px);
     overflow: auto;
+    &.contents  {
+      height: calc(100vh - 94px);
+    }
     .bottomBtn {
       position: fixed;
       width: 106px;
