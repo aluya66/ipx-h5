@@ -9,7 +9,7 @@
                 <div class="group-contain">
                     <div class="p-contain" v-for="product in getColorSkuList" :key="product.productCode" >
                         <img src="@/themes/images/groupGoods/pic_hook.png" alt="">
-                        <img class="productSize" :src='product.imgUrl' alt="">
+                        <img class="productSize" :src='product.imgUrl' alt="" @click="handleSelectImg(product)" >
                     </div>
                 </div>
             </div>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     components: {
 
@@ -48,20 +49,63 @@ export default {
     },
     computed: {
         getColorSkuList() {
-            let arr = []
-            this.groupGood.groupGoodsRecords.forEach(item => {
-                arr = arr.concat(item.colorSkuList)
-            })
-            return arr
+            let products = this.groupGood.groupGoodsRecords
+            if (products instanceof Array && products.length > 0) {
+                let arr = []
+                this.groupGood.groupGoodsRecords.forEach(item => {
+                    arr = arr.concat(item.colorSkuList)
+                })
+                return arr
+            }
+            return []
         }
     },
     methods: {
+        handleSelectImg(e, product) {
+            e.stopPropagation()
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: product.productCode
+            }
+            utils.postMessage('', params)
+        },
         handleCheckDetail(e) {
             e.stopPropagation()
             this.$router.push({ path: '/hall/groupListDetail', query: { groupId: this.groupGood.groupGoodsId } })
         },
         handleBuy(e) {
             e.stopPropagation()
+            /// 将商品按设计师分组
+            let shopCarts = []
+            let products = this.groupGood.groupGoodsRecords
+            let designerIds = []
+            products.forEach(item => {
+                designerIds.push(item.designer.id)
+            })
+            designerIds.forEach(idStr => {
+                let arr = products.filter(item => item.designer.id === idStr)
+                let skuArr = []
+                arr.forEach(productItem => {
+                    productItem.colorSkuList.forEach(skuItem => {
+                        skuArr = skuArr.concat(skuItem.skuList)
+                    })
+                })
+                let designerObj = arr[0].designer
+                let obj = {
+                    products: arr,
+                    designer: designerObj,
+                    skuProductList: skuArr
+                }
+                shopCarts.push(obj)
+            })
+            const params = {
+                jumpUrl: 'createOrder://',
+                totalPrice: this.groupGood.totalPrice,
+                groupCode: this.groupGood.groupGoodsId,
+                discount: '1',
+                orderData: shopCarts
+            }
+            utils.postMessage('', params)
         }
     }
 }

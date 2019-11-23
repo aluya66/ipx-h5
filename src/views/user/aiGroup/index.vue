@@ -12,7 +12,7 @@
                 <img class="header-img" :src="backImage" />
             </template>
             <template slot="right" tag="div">
-                <p style="color:#fff">前往展厅</p>
+                <p style="color:#fff" @click="handleToHall">前往展厅</p>
             </template>
         </c-header>
         <div class="contain">
@@ -113,6 +113,9 @@ export default {
         }
     },
     methods: {
+        handleToHall() {
+            this.$router.push({ path: '/user/hall' })
+        },
         handleSelectRec() {
             this.titleIndex = 0
         },

@@ -26,3 +26,8 @@ export const getSeletedProductList = params => Http.fetch(`${context}/v1/group/s
     method: 'post',
     hasErrMsg: true
 })
+
+export const searchGroup = params => Http.fetch(`${context}/v1/group/goods/info`, params, {
+    method: 'post',
+    hasErrMsg: true
+})

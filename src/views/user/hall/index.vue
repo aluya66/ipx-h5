@@ -64,7 +64,7 @@
             finished-text="已到底，没有更多数据"
             @load="handleMore"
         >
-            <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectGroup(item)">
+            <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectProduct(item)">
                 <group-item :groupGood='item'/>
                 <img class="groupSelIcon" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
             </div>
@@ -103,7 +103,7 @@ export default {
             selectItems: [], // 保存选中的item
             isSelectAll: false, // 是否点击选中全部
             datas: [], // 样衣数据源
-            groupDatas: [1], // 组货数据源
+            groupDatas: [], // 组货数据源
             pageNo: 0, // 当前页码
             pageSize: 10, // 每页请求数
             finished: false, // 加载完标识
@@ -122,13 +122,22 @@ export default {
     watch: {
         datas(val) {
             /// 全选状态下 全部选中
-            if (this.isSelectAll) {
+            if (this.isSelectAll && this.menuIndex === 1) {
+                this.selectItems = JSON.parse(JSON.stringify(val))
+            }
+        },
+        groupDatas(val) {
+            if (this.isSelectAll && this.menuIndex === 0) {
                 this.selectItems = JSON.parse(JSON.stringify(val))
             }
         },
         selectItems(val) {
             // 选中的数量跟数据源一样 标示为全选
-            this.isSelectAll = this.selectItems.length === this.datas.length
+            if (this.selectItems.length > 0) {
+                this.isSelectAll = this.menuIndex === 1 ? this.selectItems.length === this.datas.length : this.selectItems.length === this.groupDatas.length
+            } else {
+                this.isSelectAll = false
+            }
         },
         /// 观察管理状态切换
         isManageState(val) {
@@ -172,7 +181,7 @@ export default {
                 this.selectItems = this.selectItems.filter(obj => obj.collectId !== item.collectId)
             } else if (this.menuIndex === 0) {
                 // 组货
-                this.selectItems = this.selectItems.filter(obj => obj.groupId !== item.groupId)
+                this.selectItems = this.selectItems.filter(obj => obj.groupGoodsId !== item.groupGoodsId)
             }
         },
         /// 获取样衣是否被选中状态
@@ -187,7 +196,7 @@ export default {
             } else {
                 // 组货
                 return this.selectItems.some(obj => {
-                    if (obj.groupId === item.groupId) {
+                    if (obj.groupGoodsId === item.groupGoodsId) {
                         return true
                     }
                 })
@@ -196,10 +205,10 @@ export default {
         /// 全选
         handleSelectAll () {
             this.isSelectAll = !this.isSelectAll
-            if (this.isSelectAll) {
+            if (this.isSelectAll && this.menuIndex === 1) {
                 this.selectItems = JSON.parse(JSON.stringify(this.datas))
-            } else {
-                this.selectItems = []
+            } else if (this.isSelectAll && this.menuIndex === 0) {
+                this.selectItems = JSON.parse(JSON.stringify(this.groupDatas))
             }
         },
         /// 点击管理
@@ -305,23 +314,27 @@ export default {
             })
         },
         handleDeletes () {
-            let idsArr = []
-            if (this.selectItems.length > 0) {
-                this.selectItems.forEach(item => {
-                    idsArr.push(parseInt(item.collectId))
-                })
-                const params = {
-                    ids: idsArr
-                }
-                this.$api.hall.deleteCollects(params).then(res => {
-                    this.$toast('已删除')
-                    this.datas = this.datas.filter(function (item) {
-                        return idsArr.indexOf(item.collectId) < 0
+            if (this.menuIndex === 0) {
+                this.handleGroupDeletes()
+            } else {
+                let idsArr = []
+                if (this.selectItems.length > 0) {
+                    this.selectItems.forEach(item => {
+                        idsArr.push(parseInt(item.collectId))
                     })
-                    this.selectItems = []
-                }).catch(() => {
+                    const params = {
+                        ids: idsArr
+                    }
+                    this.$api.hall.deleteCollects(params).then(res => {
+                        this.$toast('已删除')
+                        this.datas = this.datas.filter(function (item) {
+                            return idsArr.indexOf(item.collectId) < 0
+                        })
+                        this.selectItems = []
+                    }).catch(() => {
 
-                })
+                    })
+                }
             }
         },
         handleRequestForGroupList () {
@@ -350,10 +363,31 @@ export default {
             }).catch(() => {
                 this.setFailureStatus()
             })
+        },
+        handleGroupDeletes () {
+            let idsArr = []
+            if (this.selectItems.length > 0) {
+                this.selectItems.forEach(item => {
+                    idsArr.push(parseInt(item.groupGoodsId))
+                })
+                const params = {
+                    groupGoodsIds: idsArr
+                }
+                debugger
+                this.$api.hall.deleteGroupGoods(params).then(res => {
+                    this.$toast('已删除')
+                    this.groupDatas = this.groupDatas.filter(function (item) {
+                        return idsArr.indexOf(item.groupGoodsId) < 0
+                    })
+                    this.selectItems = []
+                }).catch(() => {
+
+                })
+            }
         }
     },
     activated() {
-        // this.handleRefresh()
+        this.handleRefresh()
         this.handleScroll()
     },
     destroyed () {
@@ -428,6 +462,9 @@ export default {
         position: relative;
         background: #fff;
         margin-top: -1px;
+        .groupItemContain {
+            position: relative;
+        }
         .groupSelIcon {
             display: block;
             position: absolute;

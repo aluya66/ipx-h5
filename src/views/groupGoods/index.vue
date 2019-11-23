@@ -151,22 +151,26 @@ export default {
     },
     methods: {
         handleSubmit() {
-            debugger
             let labels = []
-            this.curCategory.forEach(item => {
+            let allCategory = JSON.parse(JSON.stringify(this.curCategory))
+            allCategory.forEach(item => {
                 item.labels = item.labels.filter(item => item.isSelected === true)
                 labels = labels.concat(item.labels)
             })
             let arr = labels.filter(item => item.isSelected === true)
+            if (arr.length > 0) {
+                const params = {
+                    labelCategories: arr,
+                    searchType: this.currentTab + 1
+                }
+                this.$api.groupGoods.searchGroup(params).then(res => {
 
-            if (this.currentTab === 1) {
-                // 客户特征
-                // let ageArr = this.customerGroupList.filter(item => item.isSelected === true)
+                }).catch(() => {
+
+                })
             } else {
-                // 商品特征
-                // let seasonArr = this.season.filter(item => item.isSelected === true)
+                this.$toast('至少选择一个标签进行组货')
             }
-            console.log(arr)
         },
         getSearchLists() {
             const params = {

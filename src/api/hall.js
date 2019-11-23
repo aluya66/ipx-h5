@@ -29,3 +29,13 @@ export const getGroupGoods = params => Http.fetch(`${context}/v1/group/goods`, p
     method: 'get'
     // mockFile: 'groupGoods'
 })
+
+/**
+ * 组货清单
+ * @param {*} params params数据对象
+ * @param {Object} mockFile 接口名称对应的mock数据文件
+ */
+export const deleteGroupGoods = params => Http.fetch(`${context}/v1/group/goods/del`, params, {
+    method: 'put'
+    // mockFile: 'groupGoods'
+})
