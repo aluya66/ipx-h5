@@ -2,7 +2,7 @@
   <div class="flex install-bottom" :style="{ bottom: footerHeight }">
     <div class="flex-left">
       <div class="logo">
-        <!-- <img src="" alt="" srcset=""> -->
+        <img src="../../../themes/images/app/logo.png" alt="" srcset="">
       </div>
       <div class="name">
         <h5>IPX</h5>
@@ -32,6 +32,7 @@ export default {
   },
   created () {
     this.baseParams = utils.getStore('baseParams')
+    this.footerHeight = (Number(37) / 100) + 'rem'
     if (this.baseParams.platform === 'ios') {
       if (Number(this.baseParams.statusBarHeight) >= 40) {
         this.footerHeight = (Number(37) / 100) + 'rem'
@@ -60,6 +61,9 @@ export default {
       height: 26px;
       background: rgba(0, 0, 0, 1);
       border-radius: 50%;
+      img{
+        border-radius: 8px;
+      }
     }
     .name {
       margin-left: 8px;
@@ -90,10 +94,10 @@ export default {
       align-items: center;
       justify-content: center;
       // width: 82px;
-      height: 24px;
+      height: 34px;
       background: rgba(228, 233, 255, 1);
-      border-radius: 12px;
-      padding: 0 6px;
+      border-radius: 24px;
+      padding: 0 12px;
       span {
         color: rgba(6, 48, 254, 1);
         line-height: 20px;

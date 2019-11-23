@@ -64,7 +64,7 @@ export default {
         margin: 0;
         line-height:20px;
         a{
-          color: #585b66
+          color: #3c5cf6
         }
       }
       &:first-child {

@@ -159,6 +159,9 @@ export default {
     padding: 10px;
     height: calc(120vh);
     overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .bottom-dialog {
     position: fixed;

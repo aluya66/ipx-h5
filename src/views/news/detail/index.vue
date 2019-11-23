@@ -248,7 +248,7 @@ export default {
 </script>
 <style  lang="less">
 .video-content {
-  color: #000000;
+  color: #2A2B33;
   font-size: 14px;
   width: 100% !important;
   line-height: 24px;

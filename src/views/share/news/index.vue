@@ -60,11 +60,11 @@
           <div class="video-cover">
             <div class="cover" :style="{backgroundImage:'url(' + feed.user_avatar + ')'}"></div>
             <div class="name">{{feed.user_name}}</div>
-            <div class="text">{{feed.user_bio}}</div>
+            <!-- <div class="text">{{feed.user_bio}}</div> -->
           </div>
           <div class="video-content" v-html="feed.summary"></div>
           <div class="video-tags">
-            <div class="tag" v-for="keyword in (feed.keywords)" :key="keyword">{{keyword}}</div>
+            <div class="tag" v-for="keyword in (feed.keywords)" :key="keyword">#{{keyword}}</div>
           </div>
           <!-- <comments :show-dialog="showDialog" :comments="comments"></comments> -->
         </div>
@@ -73,21 +73,21 @@
         <div class="display-demo">
           <div class="display-img display-share-img">
             <img style :src="feed.cover_src" />
-            <div class="img-text">
+            <!-- <div class="img-text">
               <span class="left">{{feed.channel_name}}</span>
               <span class="right">{{feed.release_time}}</span>
-            </div>
+            </div> -->
           </div>
           <div v-if="feed&&feed.title" class="video-title">{{feed.title}}</div>
           <div class="video-cover">
             <div class="cover" :style="{backgroundImage:'url(' + feed.user_avatar + ')'}"></div>
             <div class="name">{{feed.user_name}}</div>
-            <div class="text">{{feed.user_bio}}</div>
+            <!-- <div class="text">{{feed.user_bio}}</div> -->
           </div>
           <div v-if="feed.summary" class="video-summary" v-html="feed.summary"></div>
           <div class="video-content" v-html="feed.content" id="content-html"></div>
           <div class="video-tags">
-            <div class="tag" v-for="(keyword, index) in (feed.keywords)" :key="index">{{keyword}}</div>
+            <div class="tag" v-for="(keyword, index) in (feed.keywords)" :key="index">#{{keyword}}</div>
           </div>
           <!-- <comments :show-dialog="showDialog" :comments="comments"></comments> -->
         </div>
@@ -134,21 +134,21 @@
                 </div>
               </li>
             </ul>
-            <div class="img-text">
+            <!-- <div class="img-text">
               <span class="left">{{feed.channel_name}}</span>
               <span class="right">{{feed.release_time}}</span>
-            </div>
+            </div> -->
           </div>
 
           <div v-if="feed&&feed.title" class="video-title">{{feed.title}}</div>
           <div class="video-cover">
             <div class="cover" :style="{backgroundImage:'url(' + feed.user_avatar + ')'}"></div>
             <div class="name">{{feed.user_name}}</div>
-            <div class="text">{{feed.user_bio}}</div>
+            <!-- <div class="text">{{feed.user_bio}}</div> -->
           </div>
           <div class="video-content" v-html="feed.summary"></div>
           <div class="video-tags">
-            <div class="tag" v-for="(keyword, index) in (feed.keywords)" :key="index">{{keyword}}</div>
+            <div class="tag" v-for="(keyword, index) in (feed.keywords)" :key="index">#{{keyword}}</div>
           </div>
         </div>
       </div>
@@ -879,6 +879,7 @@ export default {
     position: relative;
     padding: 16px;
     display: flex;
+    color: #2A2B33;
     align-items: center;
     .cover {
       // background: url("https://user-gold-cdn.xitu.io/2018/8/16/165413191415b344?imageView2/1/w/100/h/100/q/85/format/webp/interlace/1");
@@ -911,6 +912,7 @@ export default {
     font-size: 14px;
     width: 100%;
     padding: 16px;
+    color: #2A2B33;
     line-height: 24px;
     p {
       text-align: left;
@@ -1011,8 +1013,8 @@ export default {
     .tag {
       display: inline-block;
       padding: 8px 5px;
-      background: black;
-      color: white;
+      background:rgba(235,238,255,1);
+      color: #3C5CF6;
       margin: 10px 16px 0 0;
     }
   }
