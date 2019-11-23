@@ -221,7 +221,8 @@ export default {
     },
     wxInit () {
       let { appId, timestamp, nonceStr, signature } = this.wxConig
-      let url = 'https%3A%2F%2Fh5.yosar.com%2Fipxhybrid%2F'
+      // let url = 'https%3A%2F%2Fh5.yosar.com%2Fipxhybrid%2F'
+      let url = 'https://h5.yosar.com/ipxhybrid/'
       let isWx = 'wx'
       // let url = 'http://ipx-hybrid.yosar.test'
       let params = {
