@@ -28,7 +28,7 @@
                 <div class="product-info">
                     <p>{{item.productName}}</p>
                     <div class="sku-list">
-                        <p for="" v-for="(sku,i) in item.colorSkus" :key="i">{{sku.attrColorValue}}</p>
+                        <p for="" v-for="(sku,i) in item.colorSkuList" :key="i">{{sku.attrColorValue}}</p>
                     </div>
                     <p class="price">¥{{item.tshPrice}}</p>
                     <button @click="openSku(item,index)">调整规格</button>
@@ -102,22 +102,20 @@ export default {
                 if (res.code === 0) {
                     const { data } = res
                     const { groupGoodsRecords } = data
-                    const { colorSkuList } = groupGoodsRecords
 
                     this.groupDetail = data
                     this.groupGoodsRecords = groupGoodsRecords
-                    this.seletedDetailsItem = colorSkuList
-                    let seletedTotalItem = 0
-                    let seletedStatus = true
+                    // let seletedTotalItem = 0
+                    // let seletedStatus = true
                     // this.groupGoodsRecords.forEach((item, index) => {
-                    //     if (item.colorSkuList > 0) {
+                    //     if (item.defaultSelectedkinds > 0) {
                     //         seletedTotalItem++
                     //     } else {
                     //         seletedStatus = false
                     //     }
                     // })
-                    this.groupDetail.seletedTotalItem = seletedTotalItem
-                    this.groupDetail.seletedStatus = seletedStatus
+                    // this.groupDetail.seletedTotalItem = seletedTotalItem
+                    // this.groupDetail.seletedStatus = seletedStatus
                     this.groupName = this.groupDetail.name
                 }
             }).catch((err) => {
@@ -143,6 +141,7 @@ export default {
     height: calc(100vh - 85px);
     overflow-y: scroll;
     padding: 16px;
+    margin-top: -1px;
 }
 .top-content {
     padding: 16px 12px;
