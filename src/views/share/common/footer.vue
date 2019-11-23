@@ -1,5 +1,5 @@
 <template>
-  <div class="flex install-bottom">
+  <div class="flex install-bottom" :style="{ bottom: footerHeight }">
     <div class="flex-left">
       <div class="logo">
         <!-- <img src="" alt="" srcset=""> -->
@@ -18,13 +18,24 @@
 </template>
 
 <script>
+import utils from 'utils'
 export default {
   data () {
-    return {}
+    return {
+      footerHeight: 0
+    }
   },
   methods: {
     download () {
       window.location.href = 'https://h5.yosar.com/pages/downLoad/'
+    }
+  },
+  created () {
+    this.baseParams = utils.getStore('baseParams')
+    if (this.baseParams.platform === 'ios') {
+      if (Number(this.baseParams.statusBarHeight) >= 40) {
+        this.footerHeight = (Number(37) / 100) + 'rem'
+      }
     }
   }
 }
@@ -78,7 +89,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 82px;
+      // width: 82px;
       height: 24px;
       background: rgba(228, 233, 255, 1);
       border-radius: 12px;

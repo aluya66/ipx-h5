@@ -27,6 +27,7 @@
           <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
           <p v-if="!inScroll">测款报告</p>
         </div>
+        <c-footer></c-footer>
       </div>
       <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' :phoneNumber="baseParams.phoneNumber" @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
     </div>
@@ -42,12 +43,14 @@ import Check from './components/orderProdctCheck.vue'
 import List from './components/orderRankingList.vue'
 import StoreAddress from './components/orderProductAddress.vue'
 import ApplyPopup from './components/applyPopup.vue'
+import CFooter from '../common/cfooter'
 import utils from 'utils'
 
 const { CHeader } = components
 export default {
   components: {
     CHeader,
+    CFooter,
     SectionHeader,
     Swiper,
     Check,
