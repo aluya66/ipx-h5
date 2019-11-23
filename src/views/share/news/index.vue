@@ -735,7 +735,7 @@ export default {
     // border-radius: 0 0 35px 35px;
     // border: 1px solid #edf0f4;
     border-top: none;
-    background-color: #edf0f4;
+    // background-color: #edf0f4;
     .pinlun {
       background: rgba(255, 255, 255, 1);
       .more {
@@ -1012,9 +1012,10 @@ export default {
     padding: 0 0 70px 16px;
     .tag {
       display: inline-block;
-      padding: 8px 5px;
+      padding: 8px 12px;
       background:rgba(235,238,255,1);
       color: #3C5CF6;
+      border-radius: 15px;
       margin: 10px 16px 0 0;
     }
   }

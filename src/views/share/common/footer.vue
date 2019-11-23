@@ -32,7 +32,6 @@ export default {
   },
   created () {
     this.baseParams = utils.getStore('baseParams')
-    this.footerHeight = (Number(37) / 100) + 'rem'
     if (this.baseParams.platform === 'ios') {
       if (Number(this.baseParams.statusBarHeight) >= 40) {
         this.footerHeight = (Number(37) / 100) + 'rem'
