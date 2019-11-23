@@ -162,13 +162,11 @@ import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
 import vShareFooter from '../common/footer'
-import CFooter from '../../common/cfooter'
 
 import { Icon } from 'vant'
 export default {
   components: {
     [Icon.name]: Icon,
-    CFooter,
     swiper,
     swiperSlide,
     vShareFooter

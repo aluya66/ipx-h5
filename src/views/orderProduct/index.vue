@@ -65,7 +65,7 @@ export default {
     return {
       token: '',
       baseParams: '', // 基础配置
-      footerHeight: 0, 
+      footerHeight: 0,
       bannerCode: '',
       participantCode: '', // 参会编号
       inScroll: false,
