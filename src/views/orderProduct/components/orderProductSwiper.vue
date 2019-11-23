@@ -47,12 +47,10 @@ export default {
             // that.imgIndex = this.realIndex - 1
           },
           slideNextTransitionEnd (e) {
-            // self.currentPage += 1
-            console.log(self.currentPage, 'self.currentPage')
+            self.currentPage += 1
           },
           slidePrevTransitionEnd (e) {
-            // self.currentPage -= 1
-            console.log(self.currentPagem, 'self.currentPagem')
+            self.currentPage -= 1
           }
         }
       }
