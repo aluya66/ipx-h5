@@ -73,17 +73,14 @@ export default {
     },
     // 测款报告
     handleCheckTestResult () {
-      alert('handleCheckTestResult')
       this.$emit('onResult')
     },
     // 分享测款
     handleShare () {
-      alert('handleShare')
       this.$emit('onShare')
     },
     // 查看测款详情页
     handleCheckDetail () {
-      alert('onDetail')
       this.$emit('onDetail')
     }
   }

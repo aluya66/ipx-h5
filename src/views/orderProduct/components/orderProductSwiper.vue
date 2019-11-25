@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="width: 100%;overflow: hidden;">
   <swiper class="o-swiperClass"  :options="swiperOption">
     <swiper-slide id='index' :class="index === currentPage ? 'o-swiper-slide currPage':'o-swiper-slide'" v-for="(item, index) in images" :key="index">
       <!-- <c-image class="o-image" :poster-url="item.mainPic" img-view="?imageView2/1/w/320/h/426"></c-image> -->
@@ -92,7 +92,7 @@ export default {
   width: 100%;
   height: 360px;
   position: relative;
-  overflow: initial;
+  overflow: hidden;
   .o-swiper-slide{
     width: calc(100vw - 56px);
     height: 100%;

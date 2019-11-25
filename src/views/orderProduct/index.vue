@@ -101,17 +101,14 @@ export default {
   methods: {
     // 查看测款报告
     handleCheckResult () {
-      alert('handleCheckResult')
-      this.$router.push({ path: '/testStyle/share', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
+      this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
     },
     // 查看测款页
     handleTestDetail () {
-      alert('handleTestDetail')
       this.$router.push({ path: '/', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
     },
     // 分享测款
     handleShareTest () {
-      alert('handleShareTest')
       this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
     },
     // 免费测款
