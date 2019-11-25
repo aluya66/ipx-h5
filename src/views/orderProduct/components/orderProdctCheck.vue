@@ -73,14 +73,17 @@ export default {
     },
     // 测款报告
     handleCheckTestResult () {
+      alert('handleCheckTestResult')
       this.$emit('onResult')
     },
     // 分享测款
     handleShare () {
+      alert('handleShare')
       this.$emit('onShare')
     },
     // 查看测款详情页
     handleCheckDetail () {
+      alert('onDetail')
       this.$emit('onDetail')
     }
   }
@@ -94,7 +97,7 @@ export default {
     line-height: 50px;
     text-align: center;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     height: 50px;
     border-radius: 25px;
     box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
@@ -108,7 +111,7 @@ export default {
     margin-top: 12px;
     position: relative;
     .leftBtn {
-      background-image: linear-gradient(to top, #557af4, #724fff);
+      background-image: linear-gradient(to right, #557af4, #724fff);
       color: #fff;
       margin: 0 16px 0 0;
     }
@@ -136,7 +139,7 @@ export default {
     > h3 {
       line-height: 28px;
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 600;
       color: @color-c1;
       margin: 20px 0 0;
       text-align: center;
@@ -211,7 +214,7 @@ export default {
     .check-button {
       border-radius: 25px;
       box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
-      background-image: linear-gradient(to top, #557af4, #724fff);
+      background-image: linear-gradient(to right, #557af4, #724fff);
       height: 50px;
       display: flex;
       flex-direction: row;
@@ -221,7 +224,7 @@ export default {
 
       p {
         font-size: 18px;
-        font-weight: 500;
+        font-weight: 600;
         color: #ffffff;
         line-height: 50px;
       }
@@ -251,7 +254,7 @@ export default {
         h3 {
           // font-family: PingFangSC;
           font-size: 20px;
-          font-weight: 500;
+          font-weight: 600;
           line-height: 28px;
           font-size: @f20;
           color: #2a2b33;

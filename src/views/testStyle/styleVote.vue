@@ -312,10 +312,10 @@ export default {
   height: 50px;
   border-radius: 36px;
   box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
-  background-image: linear-gradient(to bottom, #557af4, #724fff);
+  background-image: linear-gradient(to right, #557af4, #724fff);
   font-family: PingFangSC;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   color: #ffffff;
   position: fixed;
   bottom: 25px;

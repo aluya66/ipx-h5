@@ -13,7 +13,7 @@
         </div>
       </c-list>
     </div>
-    <div class="bottom-dialog" :style="{'bottom':paddingTop}">
+    <div class="bottom-dialog" :style="{'padding-bottom':paddingTop}">
       <h4>分享给您的顾客，开始收集测款数据吧～</h4>
       <p>(测款数据在订货会页面查看)</p>
       <div class="share-logo">
@@ -152,7 +152,7 @@ export default {
       margin: 0;
       // font-family: PingFangSC;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       color: #2a2b33;
       line-height: 1.43;
     }
@@ -185,7 +185,7 @@ export default {
     border-radius: 15px 15px 0 0;
     box-shadow: 0 -1px 6px 0 rgba(33, 44, 98, 0.06);
     width: 100%;
-    height: 156px;
+    // height: 156px;
     text-align: center;
     padding: 20px;
     h4 {

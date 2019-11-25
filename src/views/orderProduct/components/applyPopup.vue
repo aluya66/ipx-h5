@@ -259,8 +259,12 @@ export default {
 <style lang="less">
 .apply-popup{
   .van-field__control{
-    font-weight: 500;
-    color: #b2b5c1
+    font-weight: 600;
+    color: #2a2b33;
+    &::-webkit-input-placeholder {
+      /* WebKit browsers */
+      color: #b2b5c1;
+    }
   }
 }
 </style>
@@ -273,7 +277,7 @@ export default {
     line-height: 52px;
     margin: 0;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
     color: @color-c1;
     text-align: center;
   }
@@ -317,7 +321,7 @@ export default {
         background-color: #f4f5f7;
         line-height: 32px;
         font-size: 12px;
-        font-weight: 500;
+        font-weight: 600;
         margin-left: 12px;
         text-align: center;
         &:first-child {
@@ -341,16 +345,16 @@ export default {
       // box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
       margin: 32px 0 38px;
       font-size: 18px;
-      font-weight: 500;
+      font-weight: 600;
       // line-height: 1.44;
       color: #ffffff;
       text-align: center;
     }
     .enable {
-      background-image: linear-gradient(to top, #557af4, #724fff);
+      background-image: linear-gradient(to right, #557af4, #724fff);
     }
     .disable {
-      background-image: linear-gradient(to top, @color-c5, @color-c5);
+      background-image: linear-gradient(to right, @color-c5, @color-c5);
     }
   }
 }

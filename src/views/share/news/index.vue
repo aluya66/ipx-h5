@@ -745,7 +745,7 @@ export default {
         font-size: 16px;
         background: rgba(0, 0, 0, 1);
         font-family: PingFangSC-Medium;
-        font-weight: 500;
+        font-weight: 600;
         color: rgba(255, 255, 255, 1);
       }
       .title {
@@ -808,7 +808,7 @@ export default {
             .text {
               font-size: 16px;
               font-family: PingFangSC-Regular;
-              font-weight: 500;
+              font-weight: 600;
               color: rgba(0, 0, 0, 1);
               line-height: 25px;
             }

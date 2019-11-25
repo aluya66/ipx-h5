@@ -137,7 +137,7 @@ export default {
           background-color: #3c5cf6;
           font-family: 'PingFangSC', Arial, Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, sans-serif;
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           color: #ffffff;
         }
         .select-actived {
