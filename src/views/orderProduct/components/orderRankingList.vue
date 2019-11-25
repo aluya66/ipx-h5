@@ -158,7 +158,7 @@ export default {
       span {
         font-size: 16px;
         color: #3c5cf6;
-        
+
       }
     }
     span {

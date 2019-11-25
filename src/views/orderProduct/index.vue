@@ -139,8 +139,6 @@ export default {
     },
     // 点击报名弹框
     handleApply () {
-      this.showPopup = !this.showPopup
-      return
       if (this.token) {
         if (this.enableToTakePart === 0) {
           this.$toast('已提交过报名信息，请勿重复提交')
