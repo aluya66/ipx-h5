@@ -877,7 +877,7 @@ export default {
   }
   .video-cover {
     position: relative;
-    padding: 16px;
+    padding: 12px;
     display: flex;
     color: #2A2B33;
     align-items: center;
@@ -892,7 +892,7 @@ export default {
     }
     .name {
       display: inline-block;
-      font-size: 12px;
+      font-size: 14px;
       font-family: PingFangSC-Regular;
       font-weight: 400;
       color: rgba(0, 0, 0, 1);
@@ -911,7 +911,7 @@ export default {
   .video-content {
     font-size: 14px;
     width: 100%;
-    padding: 16px;
+    padding: 0 12px 12px;
     color: #2A2B33;
     line-height: 24px;
     p {
@@ -1009,19 +1009,19 @@ export default {
   .video-tags {
     // margin: 0 0 32px 0;
     // margin: 0 0 70px 16px;
-    padding: 0 0 70px 16px;
+    padding: 0 0 70px 12px;
     .tag {
       display: inline-block;
       padding: 8px 12px;
       background:rgba(235,238,255,1);
       color: #3C5CF6;
       border-radius: 15px;
-      margin: 10px 16px 0 0;
+      margin: 0px 16px 0 0;
     }
   }
   .display-img {
     position: relative;
-    padding: 0 12px!important;
+    padding: 0!important;
     // padding-left:  10px !important;
     .ul {
       max-width: 100%;
@@ -1032,13 +1032,17 @@ export default {
       padding: 0;
       display: flex;
       flex-wrap: wrap;
+      
+      margin-right: -4px;
+
+      // justify-content: space-between;
       .li {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 31%;
+        width: 32.5%;
         // height: 111px;
-        margin: 0 10px 10px 0;
+        margin: 0 4px 4px 0;
         &:nth-child(3n) {
           margin: 0
         }
@@ -1088,10 +1092,13 @@ export default {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
-        width: 47.8%;
-        margin: 0 12px 12px 0;
+        width: 49%;
+        margin: 0 4px 4px 0;
+        // width: 50%;
+        // margin: 0 4px 4px 0;
         &:nth-child(2n) {
           margin: 0;
+          // padding-right: 0;
         }
         .div {
           padding-bottom: 100%;
