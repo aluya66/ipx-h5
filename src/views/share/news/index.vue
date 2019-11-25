@@ -1016,7 +1016,7 @@ export default {
       background:rgba(235,238,255,1);
       color: #3C5CF6;
       border-radius: 15px;
-      margin: 0px 16px 0 0;
+      margin: 0px 16px 6px 0;
     }
   }
   .display-img {

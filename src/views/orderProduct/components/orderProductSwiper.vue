@@ -92,7 +92,7 @@ export default {
   width: 100%;
   height: 360px;
   position: relative;
-  overflow: hidden;
+  overflow: initial;
   .o-swiper-slide{
     width: calc(100vw - 56px);
     height: 100%;

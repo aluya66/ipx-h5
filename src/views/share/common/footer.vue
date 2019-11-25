@@ -61,6 +61,8 @@ export default {
       background: rgba(0, 0, 0, 1);
       border-radius: 50%;
       img{
+        width: 26px;
+        height: 26px;
         border-radius: 8px;
       }
     }
