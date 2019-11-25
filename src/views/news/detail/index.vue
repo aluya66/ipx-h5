@@ -1,10 +1,8 @@
 <template>
-  <layout-view>
-    <div style="min-height:100px">
-      <div v-show="content" id="content-html" class="video-content" v-html="content"></div>
-      <!-- {{content}} -->
-    </div>
-  </layout-view>
+  <div style="min-height:100px">
+    <div v-show="content" id="content-html" class="video-content" v-html="content"></div>
+    <!-- {{content}} -->
+  </div>
 </template>
 
 <script>

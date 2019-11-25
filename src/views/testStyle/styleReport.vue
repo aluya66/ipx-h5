@@ -70,10 +70,7 @@ export default {
         .then(res => {
           res.map((item, index) => {
             if (index < 3) {
-              item.topNumUrl =
-                'url(' +
-                require('../../themes/images/app/rank' + index + '@2x.png') +
-                ')'
+              item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@2x.png') + ')'
             }
           })
           this.testStyleList = res

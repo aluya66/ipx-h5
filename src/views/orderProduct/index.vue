@@ -102,7 +102,7 @@ export default {
     // 查看测款报告
     handleCheckResult () {
       alert('handleCheckResult')
-      this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
+      this.$router.push({ path: '/testStyle/share', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
     },
     // 查看测款页
     handleTestDetail () {
