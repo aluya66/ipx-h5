@@ -1032,9 +1032,7 @@ export default {
       padding: 0;
       display: flex;
       flex-wrap: wrap;
-      
-      margin-right: -4px;
-
+      // margin-right: -4px;
       // justify-content: space-between;
       .li {
         display: inline-block;
