@@ -1023,9 +1023,10 @@ export default {
     position: relative;
     padding: 0!important;
     // padding-left:  10px !important;
+    // overflow: hidden;
     .ul {
-      max-width: 100%;
-      overflow: hidden;
+      // max-width: 100%;
+      // overflow: hidden;
       font-size: 0;
       list-style: none;
       margin: 0;
@@ -1090,10 +1091,10 @@ export default {
         display: inline-block;
         vertical-align: top;
         box-sizing: border-box;
+        // width: 49%;
+        // margin: 0 4px 4px 0;
         width: 49%;
         margin: 0 4px 4px 0;
-        // width: 50%;
-        // margin: 0 4px 4px 0;
         &:nth-child(2n) {
           margin: 0;
           // padding-right: 0;

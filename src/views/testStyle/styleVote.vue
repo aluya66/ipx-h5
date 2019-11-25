@@ -1,10 +1,12 @@
 <template>
-  <layout-view>
+  <div class="scroll-banned">
     <c-header
       slot="header"
       :left-arrow="true"
       v-if="!isWxStatus"
     ></c-header>
+  <layout-view>
+
     <c-list class="list-scroll test-style-list" :class="isWxStatus ? 'list-scroll-height' : '' "  v-if="isWxChat">
       <share-list
         :productList="list"
@@ -13,12 +15,14 @@
         :isWxStatus="isWxStatus"
       ></share-list>
     </c-list>
-    <button
+
+  </layout-view>
+  <button
       class="submit"
       @click="commit"
       v-if="isWxChat"
     >{{isCommit?'邀请好友投票':'提交投票'}}</button>
-  </layout-view>
+  </div>
 </template>
 
 <script>
@@ -285,8 +289,18 @@ export default {
 }
 </style>
 <style lang="less" scoped>
+.scroll-banned{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backface-visibility: hidden;
+  perspective: 1000;
+}
 .list-scroll {
-  height: calc(100vh - 55px);
+  height: calc(100vh - 50px);
 }
 
 .list-scroll-height {

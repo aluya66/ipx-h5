@@ -1,8 +1,9 @@
 <template>
   <layout-view>
+    <!-- <div> -->
     <c-header slot="header" :left-arrow="true"></c-header>
 
-    <div class="panel">
+    <div class="panel share-panel">
       <div class="top-title">
         <p>已为您生成以下测款页面，测款商品为本次订货会的{{totalNum}}款主打商品：</p>
       </div>
@@ -11,21 +12,22 @@
           <share-list class="share-list" :productList="list"></share-list>
         </div>
       </c-list>
-      <div class="bottom-dialog" :style="{'bottom':paddingTop}">
-        <h4>分享给您的顾客，开始收集测款数据吧～</h4>
-        <p>(测款数据在订货会页面查看)</p>
-        <div class="share-logo">
-          <div class="left" @click="shareWechat(1)">
-            <img src="../../themes/images/app/share-wechat@2x.png" />
-            <p>微信群</p>
-          </div>
-          <div class="left" @click="shareWechat(2)">
-            <img src="../../themes/images/app/share-wefriends@2x.png" />
-            <p>朋友圈</p>
-          </div>
+    </div>
+    <div class="bottom-dialog" :style="{'bottom':paddingTop}">
+      <h4>分享给您的顾客，开始收集测款数据吧～</h4>
+      <p>(测款数据在订货会页面查看)</p>
+      <div class="share-logo">
+        <div class="left" @click="shareWechat(1)">
+          <img src="../../themes/images/app/share-wechat@2x.png" />
+          <p>微信群</p>
+        </div>
+        <div class="left" @click="shareWechat(2)">
+          <img src="../../themes/images/app/share-wefriends@2x.png" />
+          <p>朋友圈</p>
         </div>
       </div>
     </div>
+    <!-- </div> -->
   </layout-view>
 </template>
 
@@ -66,13 +68,19 @@ export default {
     }
   },
   mounted () {
-    // setTimeout(() => {
-    //   console.log(document.querySelector(".van-pull-refresh"));
+    setTimeout(() => {
+      console.log(document.querySelector('.van-pull-refresh'))
 
-    //   console.log(this.$refs.shareList.offsetHeight);
-    //   document.querySelector(".van-pull-refresh").style.height =
-    //     this.$refs.shareList.offsetHeight + "px";
-    // }, 1000);
+      console.log(this.$refs.shareList.offsetHeight)
+      document.querySelector('.list-scroll').style.height =
+        (this.$refs.shareList.offsetHeight - 880) + 'px'
+      document.querySelector('.van-pull-refresh').style.height =
+        (this.$refs.shareList.offsetHeight - 1000) + 'px'
+      document.querySelector('.van-list').style.height =
+      (this.$refs.shareList.offsetHeight - 1000) + 'px'
+      document.querySelector('.van-pull-refresh__track').style.height =
+      (this.$refs.shareList.offsetHeight - 1000) + 'px'
+    }, 500)
   },
   methods: {
     getSharemeasuresList () {
@@ -129,8 +137,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.share-panel{
+  height: calc(89vh);
+  overflow: auto;
+}
 .panel {
   background-color: @color-c8;
+
   .top-title {
     width: 100%;
     background-color: white;
@@ -145,8 +158,7 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(100vh - 116px);
-    overflow: hidden;
+    // height: calc(100vh - 600px);
   }
   .scale-content {
     width: 120%;
@@ -157,13 +169,16 @@ export default {
     transform: scale(0.5, 0.5) translateX(-15%);
     transform-origin: top;
     padding: 10px;
-    height: calc(120vh);
+    // height: calc(120vh);
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
     }
   }
-  .bottom-dialog {
+
+}
+
+.bottom-dialog {
     position: fixed;
     bottom: 0;
     background-color: white;
@@ -203,5 +218,4 @@ export default {
       }
     }
   }
-}
 </style>

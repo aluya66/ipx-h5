@@ -108,13 +108,13 @@ export default {
 <style lang="less">
 .app-container {
   // position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  backface-visibility: hidden;
-  perspective: 1000;
+  // width: 100%;
+  // height: 100%;
+  // display: flex;
+  // flex-direction: column;
+  // overflow: hidden;
+  // backface-visibility: hidden;
+  // perspective: 1000;
 }
 
 </style>
