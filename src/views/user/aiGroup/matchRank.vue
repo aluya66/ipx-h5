@@ -1,31 +1,35 @@
 <template>
    <layout-view class="header-bg">
     <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
+        <div slot="title" v-show="showTitle" >最潮搭配TOP10</div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
         </template>
    </c-header>
    <div class="contain">
        <p class="top-title">最潮搭配TOP10</p>
-       <div class="rank">
-           <div class="rank-contain" v-for="(item,index) in rankData" :key="item">
-                <img class="mainImage" :src="testImg" alt="">
-                <div class="infoContain">
-                    <div>
-                        <h3>秋装百搭组货</h3>
-                        <div class="percentage">
-                            <p> &nbsp; 时尚指数 100% &nbsp;</p>
-                            <p>&nbsp; 推荐指数 98% &nbsp;</p>
-                            <p>&nbsp; 热销指数 78% &nbsp;</p>
+       <div class="rank" :style="getListContainHeight()">
+           <div class="rank-content" v-for="(item,index) in rankData" :key="item">
+               <div class="rank-contain">
+                    <img class="mainImage" :src="item.groupImg" alt="">
+                    <div class="infoContain">
+                        <div>
+                            <h3>{{item.groupTitle}}</h3>
+                            <div class="percentage">
+                                <p> &nbsp; 时尚指数 {{item.fashionIndexNum}}% &nbsp;</p>
+                                <p>&nbsp; 推荐指数 {{item.adviceIndexNum}}% &nbsp;</p>
+                                <p>&nbsp; 热销指数 {{item.hotIndexNum}}% &nbsp;</p>
+                            </div>
                         </div>
+                        <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">183920</p>
+                        <section class="call">打call</section>
                     </div>
-                    <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">183920</p>
-                    <section class="call">打call</section>
-                </div>
-                <section class="rankImage" >
-                    <img :src="rankImg[index]" alt="">
-                    <p>{{index + 1}}</p>
-                </section>
+                    <section class="rankImage" v-show="index<3">
+                        <img  :src="rankImg[index]" alt="">
+                        <p>NO.{{index + 1}}</p>
+                    </section>
+               </div>
+
            </div>
        </div>
    </div>
@@ -33,6 +37,7 @@
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     components: {
 
@@ -42,14 +47,50 @@ export default {
     },
     data () {
         return {
-            rankData: [1, 2, 3, 4, 5, 6],
+            showTitle: false,
+            rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             rankImg: [require('../../../themes/images/groupGoods/bg_No.1.png'), require('../../../themes/images/groupGoods/bg_No.2.png'), require('../../../themes/images/groupGoods/bg_No.3.png')]
         }
     },
-    methods: {
+    computed() {
 
+    },
+    methods: {
+        // 监听滚动
+        handleScroll () {
+            window.addEventListener('scroll', () => {
+                let scrollTop = document.querySelector('.contain').scrollTop
+                let offsetTop = document.querySelector('.rank').offsetTop
+                this.showTitle = scrollTop >= offsetTop
+            }, true)
+        },
+        getListContainHeight() {
+            return `height:${this.getContainHeight()}rem`
+        },
+        getContainHeight() {
+            this.baseParams = utils.getStore('baseParams')
+            let statusBarHeight = Number(this.baseParams.statusBarHeight)
+            let wHeight = window.screen.height
+            return (wHeight - statusBarHeight) / 100
+        },
+        handleRequest() {
+            this.$api.groupGoods.groupRank().then(res => {
+                if (res.data instanceof Array) {
+                    this.rankData = res.data
+                }
+            }).catch(() => {
+
+            })
+        }
+    },
+    activated() {
+        this.handleRequest()
+        this.handleScroll()
+    },
+    destroyed () {
+        window.removeEventListener('scroll') // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>
@@ -85,7 +126,17 @@ export default {
         margin-top: 16px;
         background:rgba(255,255,255,1);
         border-radius:12px 12px 0px 0px;
-        padding: 36px 16px 0;
+        // overflow: hidden;
+        // padding: 36px 0 0;
+        // height: 200px;
+        .rank-content {
+            padding: 44px 16px 0;
+            background: #fff;
+            &:first-child {
+                padding:36px 16px 0;
+                border-radius:12px 12px 0px 0px;
+            }
+        }
         .rank-contain {
             background:rgba(255,255,255,1);
             box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
@@ -104,6 +155,8 @@ export default {
                 width: 114px;
                 height: 129px;
                 object-fit: cover;
+                border-radius:8px;
+                border:1px solid rgba(244,245,247,1);
             }
             .rankImage {
                 position: absolute;

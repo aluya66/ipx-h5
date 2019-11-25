@@ -53,11 +53,8 @@ export default {
             } else {
                 results = window.nativeInjectData
             }
-
-            this.baseParams = results.data || testData
-
-            this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 24
-
+            this.baseParams = (results && results.data) || testData
+            this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 20
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
         }

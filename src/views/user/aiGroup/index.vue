@@ -18,28 +18,28 @@
         <div class="contain">
             <p class="c-title">推荐买手</p>
             <swiper class="d-swiper" :options="dSwiperOption">
-                <swiper-slide class="designer-contain" v-for="item in designers" :key="item">
-                    <img :class='["designer-header",curDesigner?"designer-header-select":"designer-header-default"]' src="@/themes/images/groupGoods/groupInfoBg.png" alt="">
-                    <p :class='["designer-name",curDesigner?"designer-name-select":"designer-name-default"]'>左导</p>
+                <swiper-slide class="designer-contain" v-for="item in allDatas" :key="item.groupGoodsKoc.kocCode" @click="handleChooseDesigner(item)">
+                    <img :class='["designer-header",getIsCurrentDesigner(item)?"designer-header-select":"designer-header-default"]' :src="item.groupGoodsKoc.headPic" alt="">
+                    <p :class='["designer-name",getIsCurrentDesigner(item)?"designer-name-select":"designer-name-default"]'>{{item.groupGoodsKoc.kocNickName}}</p>
                 </swiper-slide>
             </swiper>
             <swiper class="swiper" :options="swiperOption">
-                <swiper-slide class="slide" v-for="item in datas" :key="item">
+                <swiper-slide class="slide" v-for="item in curDesigner.groupGoodList" :key="item.groupCode">
                     <section class="box-header">
-                        <p><span>深色系</span><span>上装 6；下装 4</span></p>
+                        <p><span>{{item.groupTitle}}</span></p>
                     </section>
                     <div class="box-content" :style="getBoxContainHeight" >
-                        <img :style="getImgHeight" src="@/themes/images/groupGoods/groupInfoBg.png" alt="">
+                        <img :style="getImgHeight" :src="item.groupImg" alt="">
                     </div>
                     <div class="box-footer">
-                        <div v-for="(item,index) in footerData" :key="item">
-                            <p>{{item}}<span>%</span></p>
-                            <p>{{footerTitles[index]}}</p>
+                        <div v-for="(footerItem,index) in footerTitles" :key="index">
+                            <p>{{getPercent(item,index)}}<span>%</span></p>
+                            <p>{{footerItem}}</p>
                         </div>
                     </div>
                 </swiper-slide>
             </swiper>
-            <div class="rank">
+            <div class="rank" @click="handleToRank">
                 <div>
                     <img src="@/themes/images/groupGoods/groupInfoBg.png" alt="">
                     <div>
@@ -72,6 +72,7 @@ export default {
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             titleIndex: 0,
             screenWidth: document.body.clientWidth,
+            allDatas: [],
             designers: [1, 2, 3, 4, 5],
             datas: [1, 2, 3],
             footerData: [80, 90, 99],
@@ -96,6 +97,7 @@ export default {
         }
     },
     computed: {
+
         getBoxSize() {
             let width = this.screenWidth - 72 * window.devicePixelRatio
             let height = width / (303 / 342) + (50 + 85) * window.devicePixelRatio
@@ -113,6 +115,16 @@ export default {
         }
     },
     methods: {
+        getPercent(item, index) {
+            let arr = [item.adviceIndexNum, item.fashionIndexNum, item.hotIndexNum]
+            return arr[index]
+        },
+        handleChooseDesigner (item) {
+            this.curDesigner = item
+        },
+        getIsCurrentDesigner (item) {
+            return item === this.curDesigner
+        },
         handleToHall() {
             this.$router.push({ path: '/user/hall' })
         },
@@ -121,7 +133,24 @@ export default {
         },
         handleSelectAi () {
             this.titleIndex = 1
+        },
+        handleToRank() {
+            this.$router.push({ path: '/user/aiGroup/matchRank' })
         }
+    },
+    activated() {
+        let params = this.$route.query.params
+
+        this.$api.groupGoods.searchGroup(params).then(res => {
+            if (res.data instanceof Array) {
+                this.allDatas = res.data
+                if (this.allDatas.length > 0) {
+                    this.curDesigner = this.allDatas[0]
+                }
+            }
+        }).catch(() => {
+
+        })
     }
 }
 </script>
@@ -172,6 +201,10 @@ export default {
         font-weight:400;
         line-height:20px;
         margin-top: 10px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
     }
     .designer-name-default {
         color:@color-c3;
@@ -185,7 +218,7 @@ export default {
     font-weight:500;
     color:rgba(255,255,255,1);
     line-height:28px;
-    margin-top: 24px;
+    margin-top: 34px;
     margin-left: 16px;
     position: relative;
     width: 80px;
@@ -281,6 +314,18 @@ export default {
             line-height:50px;
             z-index: 2;
             padding-left:0;
+            &:after {
+                content: "";
+                width: 100%;
+                height: 8px;
+                background:#fff;
+                position: absolute;
+                display: inline-block;
+                left: 0;
+                top: 13px;
+                z-index: -1;
+            // border-top: 8px
+            }
         }
 
         span {
@@ -290,18 +335,7 @@ export default {
             line-height:16px;
             padding-left:12px;
         }
-        &:after {
-            content: "";
-            width: 54px;
-            height: 8px;
-            background:#fff;
-            position: absolute;
-            display: inline-block;
-            left: 0;
-            top: 28px;
-            z-index: 1;
-            // border-top: 8px
-        }
+
     }
     img {
         display: block;

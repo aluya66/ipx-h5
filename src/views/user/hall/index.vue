@@ -1,12 +1,25 @@
 <template>
     <layout-view class="hall-bg">
     <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true">
-        <div slot="title">我的展厅</div>
+        <div v-show="!isInSearch" slot="title">我的展厅</div>
         <template slot="left" tag="div">
-            <img class="header-img" :src="backImage" />
+            <img class="header-img" :src="backImage"  />
         </template>
         <template slot="right" tag="div">
-            <img class="header-img" :src="headerSearchImg" />
+            <div class='searchContain' v-show="isInSearch">
+                <form action="/">
+                    <search
+                        v-model="searchKey"
+                        :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"'
+                        show-action
+                        shape="round"
+                        :left-icon="headerSearchImg_gray"
+                        @cancel="handleCancel"
+                        @input="handleRefresh"
+                    />
+                </form>
+            </div>
+            <img class="header-img"  v-show="!isInSearch" :src="headerSearchImg" @click="handleClickSearchIcon" />
         </template>
     </c-header>
     <div class="contain">
@@ -52,7 +65,7 @@
                 <img class="itemSelIcon" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
-                <h3>￥{{item.tshPrice}}</h3>
+                <h3>￥{{parseInt(item.tshPrice).toFixed(2)}}</h3>
             </div>
         </list>
         <list
@@ -84,7 +97,7 @@
 </template>
 
 <script>
-import { List } from 'vant'
+import { List, Search } from 'vant'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 
@@ -92,13 +105,16 @@ export default {
     components: {
         List,
         ManageView,
-        groupItem
+        groupItem,
+        Search
     },
     props: {
 
     },
     data () {
         return {
+            isInSearch: false,
+            searchKey: '',
             isManageState: false, // 是不是在管理状态
             selectItems: [], // 保存选中的item
             isSelectAll: false, // 是否点击选中全部
@@ -112,6 +128,7 @@ export default {
             isStickyTop: false, // 是否吸顶
             offsetY: 0,
             headerSearchImg: require('@/themes/images/app/icon_nav_search_white@2x.png'),
+            headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
@@ -163,6 +180,12 @@ export default {
 
     },
     methods: {
+        handleClickSearchIcon() {
+            this.isInSearch = true
+        },
+        handleCancel() {
+            this.isInSearch = false
+        },
         /// 点击商品
         handleSelectProduct(item) {
             if (this.isManageState) {
@@ -242,8 +265,6 @@ export default {
 
                 let scrollTop = document.querySelector('.contain').scrollTop
                 let offsetTop = document.querySelector('#stickyContain').offsetTop
-                console.log('offsetTop:', offsetTop)
-                console.log('scrollTop:', scrollTop)
                 this.isStickyTop = scrollTop >= offsetTop
                 if (!this.isStickyTop) {
                     this.offsetY = offsetTop
@@ -289,7 +310,8 @@ export default {
         handleRequest () {
             const params = {
                 pageNo: this.pageNo,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                productName: this.searchKey
             }
             this.loading = true
 
@@ -340,7 +362,8 @@ export default {
         handleRequestForGroupList () {
             const params = {
                 pageNo: this.pageNo,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                searchKeyWord: this.searchKey
             }
             this.loading = true
 
@@ -373,7 +396,6 @@ export default {
                 const params = {
                     groupGoodsIds: idsArr
                 }
-                debugger
                 this.$api.hall.deleteGroupGoods(params).then(res => {
                     this.$toast('已删除')
                     this.groupDatas = this.groupDatas.filter(function (item) {
@@ -397,6 +419,22 @@ export default {
 </script>
 
 <style lang="less">
+    .searchContain {
+        .van-search {
+            height: 46px;
+            margin-left: 0px;
+            width:calc(100vw - 66px);
+            background: rgba(0,0,0,0) !important;
+        }
+
+        .van-search__action {
+            color: #fff;
+            font-size:14px;
+            font-weight:500;
+            line-height:20px;
+            padding-right: 0;
+        }
+    }
     .product-list {
         display: flex;
         // height: 100%;
@@ -452,13 +490,13 @@ export default {
     height: 100%;//calc(100vh - 124px)  ;
     overflow: auto;
     .enableScroll {
-        overflow: scroll;
+        overflow: visible;
     }
     .disableScroll{
         overflow: visible !important;
     }
     .groupList {
-        height: 100%;
+        // height: 100%;
         position: relative;
         background: #fff;
         margin-top: -1px;
@@ -475,7 +513,7 @@ export default {
         }
     }
     .product-list {
-        height: 100%;//calc(100vh);
+        // height: 100%;//calc(100vh);
         overflow: auto;
         background: #fff;
         .item {

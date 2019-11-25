@@ -26,8 +26,13 @@ export const getSeletedProductList = params => Http.fetch(`${context}/v1/group/s
     method: 'post',
     hasErrMsg: true
 })
-
+// 组货搜索
 export const searchGroup = params => Http.fetch(`${context}/v1/group/goods/info`, params, {
     method: 'post',
+    hasErrMsg: true
+})
+// 组货top10
+export const groupRank = params => Http.fetch(`${context}/v1/group/goods/top`, params, {
+    method: 'get',
     hasErrMsg: true
 })

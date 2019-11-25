@@ -2,9 +2,6 @@
   <layout-view>
     <c-header slot="header" :left-arrow="true">
       <div slot="title">智能组货</div>
-      <template slot="right" tag="div">
-        <img class="header-img" :src="headerSearchImg" />
-      </template>
     </c-header>
     <c-tabs
       class="goods-group-tab"
@@ -160,14 +157,16 @@ export default {
             let arr = labels.filter(item => item.isSelected === true)
             if (arr.length > 0) {
                 const params = {
-                    labelCategories: arr,
-                    searchType: this.currentTab + 1
+                    labels: arr,
+                    searchType: this.currentTab + 1,
+                    pageNo: 1,
+                    pageSize: 100
                 }
-                this.$api.groupGoods.searchGroup(params).then(res => {
-
-                }).catch(() => {
-
-                })
+                this.$router.push({
+                    path: '/user/aiGroup',
+                    query: {
+                        params: params
+                    } })
             } else {
                 this.$toast('至少选择一个标签进行组货')
             }

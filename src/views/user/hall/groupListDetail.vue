@@ -30,7 +30,7 @@
                     <div class="sku-list">
                         <p for="" v-for="(sku,i) in item.colorSkuList" :key="i">{{sku.attrColorValue}}</p>
                     </div>
-                    <p class="price">¥{{item.tshPrice}}</p>
+                    <p class="price">¥{{parseInt(item.tshPrice).toFixed(2)}}</p>
                     <button @click="openSku(item,index)">调整规格</button>
                 </div>
             </div>
