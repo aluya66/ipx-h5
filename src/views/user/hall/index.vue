@@ -1,12 +1,25 @@
 <template>
     <layout-view class="hall-bg">
     <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true">
-        <div slot="title">我的展厅</div>
+        <div v-show="!isInSearch" slot="title">我的展厅</div>
         <template slot="left" tag="div">
-            <img class="header-img" :src="backImage" />
+            <img class="header-img" :src="backImage"  />
         </template>
         <template slot="right" tag="div">
-            <img class="header-img" :src="headerSearchImg" />
+            <div class='searchContain' v-show="isInSearch">
+                <form action="/">
+                    <search
+                        v-model="searchKey"
+                        :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"'
+                        show-action
+                        shape="round"
+                        :left-icon="headerSearchImg_gray"
+                        @cancel="handleCancel"
+                        @input="handleRefresh"
+                    />
+                </form>
+            </div>
+            <img class="header-img"  v-show="!isInSearch" :src="headerSearchImg" @click="handleClickSearchIcon" />
         </template>
     </c-header>
     <div class="contain">
@@ -52,7 +65,7 @@
                 <img class="itemSelIcon" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
-                <h3>￥{{item.tshPrice}}</h3>
+                <h3>￥{{parseInt(item.tshPrice).toFixed(2)}}</h3>
             </div>
         </list>
         <list
@@ -64,7 +77,7 @@
             finished-text="已到底，没有更多数据"
             @load="handleMore"
         >
-            <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectGroup(item)">
+            <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectProduct(item)">
                 <group-item :groupGood='item'/>
                 <img class="groupSelIcon" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
             </div>
@@ -84,7 +97,7 @@
 </template>
 
 <script>
-import { List } from 'vant'
+import { List, Search } from 'vant'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 
@@ -92,18 +105,21 @@ export default {
     components: {
         List,
         ManageView,
-        groupItem
+        groupItem,
+        Search
     },
     props: {
 
     },
     data () {
         return {
+            isInSearch: false,
+            searchKey: '',
             isManageState: false, // 是不是在管理状态
             selectItems: [], // 保存选中的item
             isSelectAll: false, // 是否点击选中全部
             datas: [], // 样衣数据源
-            groupDatas: [1], // 组货数据源
+            groupDatas: [], // 组货数据源
             pageNo: 0, // 当前页码
             pageSize: 10, // 每页请求数
             finished: false, // 加载完标识
@@ -112,6 +128,7 @@ export default {
             isStickyTop: false, // 是否吸顶
             offsetY: 0,
             headerSearchImg: require('@/themes/images/app/icon_nav_search_white@2x.png'),
+            headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
@@ -122,13 +139,22 @@ export default {
     watch: {
         datas(val) {
             /// 全选状态下 全部选中
-            if (this.isSelectAll) {
+            if (this.isSelectAll && this.menuIndex === 1) {
+                this.selectItems = JSON.parse(JSON.stringify(val))
+            }
+        },
+        groupDatas(val) {
+            if (this.isSelectAll && this.menuIndex === 0) {
                 this.selectItems = JSON.parse(JSON.stringify(val))
             }
         },
         selectItems(val) {
             // 选中的数量跟数据源一样 标示为全选
-            this.isSelectAll = this.selectItems.length === this.datas.length
+            if (this.selectItems.length > 0) {
+                this.isSelectAll = this.menuIndex === 1 ? this.selectItems.length === this.datas.length : this.selectItems.length === this.groupDatas.length
+            } else {
+                this.isSelectAll = false
+            }
         },
         /// 观察管理状态切换
         isManageState(val) {
@@ -154,6 +180,12 @@ export default {
 
     },
     methods: {
+        handleClickSearchIcon() {
+            this.isInSearch = true
+        },
+        handleCancel() {
+            this.isInSearch = false
+        },
         /// 点击商品
         handleSelectProduct(item) {
             if (this.isManageState) {
@@ -172,7 +204,7 @@ export default {
                 this.selectItems = this.selectItems.filter(obj => obj.collectId !== item.collectId)
             } else if (this.menuIndex === 0) {
                 // 组货
-                this.selectItems = this.selectItems.filter(obj => obj.groupId !== item.groupId)
+                this.selectItems = this.selectItems.filter(obj => obj.groupGoodsId !== item.groupGoodsId)
             }
         },
         /// 获取样衣是否被选中状态
@@ -187,7 +219,7 @@ export default {
             } else {
                 // 组货
                 return this.selectItems.some(obj => {
-                    if (obj.groupId === item.groupId) {
+                    if (obj.groupGoodsId === item.groupGoodsId) {
                         return true
                     }
                 })
@@ -196,10 +228,10 @@ export default {
         /// 全选
         handleSelectAll () {
             this.isSelectAll = !this.isSelectAll
-            if (this.isSelectAll) {
+            if (this.isSelectAll && this.menuIndex === 1) {
                 this.selectItems = JSON.parse(JSON.stringify(this.datas))
-            } else {
-                this.selectItems = []
+            } else if (this.isSelectAll && this.menuIndex === 0) {
+                this.selectItems = JSON.parse(JSON.stringify(this.groupDatas))
             }
         },
         /// 点击管理
@@ -233,8 +265,6 @@ export default {
 
                 let scrollTop = document.querySelector('.contain').scrollTop
                 let offsetTop = document.querySelector('#stickyContain').offsetTop
-                console.log('offsetTop:', offsetTop)
-                console.log('scrollTop:', scrollTop)
                 this.isStickyTop = scrollTop >= offsetTop
                 if (!this.isStickyTop) {
                     this.offsetY = offsetTop
@@ -280,7 +310,8 @@ export default {
         handleRequest () {
             const params = {
                 pageNo: this.pageNo,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                productName: this.searchKey
             }
             this.loading = true
 
@@ -305,29 +336,34 @@ export default {
             })
         },
         handleDeletes () {
-            let idsArr = []
-            if (this.selectItems.length > 0) {
-                this.selectItems.forEach(item => {
-                    idsArr.push(parseInt(item.collectId))
-                })
-                const params = {
-                    ids: idsArr
-                }
-                this.$api.hall.deleteCollects(params).then(res => {
-                    this.$toast('已删除')
-                    this.datas = this.datas.filter(function (item) {
-                        return idsArr.indexOf(item.collectId) < 0
+            if (this.menuIndex === 0) {
+                this.handleGroupDeletes()
+            } else {
+                let idsArr = []
+                if (this.selectItems.length > 0) {
+                    this.selectItems.forEach(item => {
+                        idsArr.push(parseInt(item.collectId))
                     })
-                    this.selectItems = []
-                }).catch(() => {
+                    const params = {
+                        ids: idsArr
+                    }
+                    this.$api.hall.deleteCollects(params).then(res => {
+                        this.$toast('已删除')
+                        this.datas = this.datas.filter(function (item) {
+                            return idsArr.indexOf(item.collectId) < 0
+                        })
+                        this.selectItems = []
+                    }).catch(() => {
 
-                })
+                    })
+                }
             }
         },
         handleRequestForGroupList () {
             const params = {
                 pageNo: this.pageNo,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                searchKeyWord: this.searchKey
             }
             this.loading = true
 
@@ -350,10 +386,30 @@ export default {
             }).catch(() => {
                 this.setFailureStatus()
             })
+        },
+        handleGroupDeletes () {
+            let idsArr = []
+            if (this.selectItems.length > 0) {
+                this.selectItems.forEach(item => {
+                    idsArr.push(parseInt(item.groupGoodsId))
+                })
+                const params = {
+                    groupGoodsIds: idsArr
+                }
+                this.$api.hall.deleteGroupGoods(params).then(res => {
+                    this.$toast('已删除')
+                    this.groupDatas = this.groupDatas.filter(function (item) {
+                        return idsArr.indexOf(item.groupGoodsId) < 0
+                    })
+                    this.selectItems = []
+                }).catch(() => {
+
+                })
+            }
         }
     },
     activated() {
-        // this.handleRefresh()
+        this.handleRefresh()
         this.handleScroll()
     },
     destroyed () {
@@ -363,6 +419,22 @@ export default {
 </script>
 
 <style lang="less">
+    .searchContain {
+        .van-search {
+            height: 46px;
+            margin-left: 0px;
+            width:calc(100vw - 66px);
+            background: rgba(0,0,0,0) !important;
+        }
+
+        .van-search__action {
+            color: #fff;
+            font-size:14px;
+            font-weight:500;
+            line-height:20px;
+            padding-right: 0;
+        }
+    }
     .product-list {
         display: flex;
         // height: 100%;
@@ -418,16 +490,19 @@ export default {
     height: 100%;//calc(100vh - 124px)  ;
     overflow: auto;
     .enableScroll {
-        overflow: scroll;
+        overflow: visible;
     }
     .disableScroll{
         overflow: visible !important;
     }
     .groupList {
-        height: 100%;
+        // height: 100%;
         position: relative;
         background: #fff;
         margin-top: -1px;
+        .groupItemContain {
+            position: relative;
+        }
         .groupSelIcon {
             display: block;
             position: absolute;
@@ -438,7 +513,7 @@ export default {
         }
     }
     .product-list {
-        height: 100%;//calc(100vh);
+        // height: 100%;//calc(100vh);
         overflow: auto;
         background: #fff;
         .item {

@@ -2,9 +2,6 @@
   <layout-view>
     <c-header slot="header" :left-arrow="true">
       <div slot="title">智能组货</div>
-      <template slot="right" tag="div">
-        <img class="header-img" :src="headerSearchImg" />
-      </template>
     </c-header>
     <c-tabs
       class="goods-group-tab"
@@ -151,22 +148,28 @@ export default {
     },
     methods: {
         handleSubmit() {
-            debugger
             let labels = []
-            this.curCategory.forEach(item => {
+            let allCategory = JSON.parse(JSON.stringify(this.curCategory))
+            allCategory.forEach(item => {
                 item.labels = item.labels.filter(item => item.isSelected === true)
                 labels = labels.concat(item.labels)
             })
             let arr = labels.filter(item => item.isSelected === true)
-
-            if (this.currentTab === 1) {
-                // 客户特征
-                // let ageArr = this.customerGroupList.filter(item => item.isSelected === true)
+            if (arr.length > 0) {
+                const params = {
+                    labels: arr,
+                    searchType: this.currentTab + 1
+                    // pageNo: 1,
+                    // pageSize: 100
+                }
+                this.$router.push({
+                    path: '/user/aiGroup',
+                    query: {
+                        params: params
+                    } })
             } else {
-                // 商品特征
-                // let seasonArr = this.season.filter(item => item.isSelected === true)
+                this.$toast('至少选择一个标签进行组货')
             }
-            console.log(arr)
         },
         getSearchLists() {
             const params = {

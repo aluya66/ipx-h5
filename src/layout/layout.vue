@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <div class="layout" :style="layoutPadding">
     <slot name="header"></slot>
     <div class="layout__content" :id="appId">
       <slot></slot>
@@ -8,6 +8,7 @@
   </div>
 </template>
 <script>
+import utils from '../utils'
 export default {
     name: 'layout-view',
     props: {
@@ -15,7 +16,31 @@ export default {
     },
     data () {
         return {
-            appId: this.id || this.$route.path.replace(/\//g, '_') || new Date().getTime()
+            appId: this.id || this.$route.path.replace(/\//g, '_') || new Date().getTime(),
+            paddingTop: 0,
+            paddingBottom: 0
+        }
+    },
+    computed: {
+        layoutPadding() {
+            return `padding-top:${this.paddingTop};padding-bottom:${this.paddingBottom}`
+        }
+    },
+    created() {
+
+    },
+    activated() {
+        this.baseParams = utils.getStore('baseParams')
+        // this.baseParams.statusBarHeight = 44;
+        let statusBarHeight = Number(this.baseParams.statusBarHeight) / 100
+
+        if (this.baseParams.platform === 'ios') {
+            if (Number(this.baseParams.statusBarHeight) > 20) {
+                this.paddingTop = (Number(statusBarHeight) - Number(0.2)) + 'rem'
+                this.paddingBottom = '0.34rem'
+            }
+        } else {
+            this.paddingTop = statusBarHeight + 'rem'
         }
     }
 }
@@ -29,6 +54,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: #fff;
   &__content {
     width: 100%;
     height: 100%;

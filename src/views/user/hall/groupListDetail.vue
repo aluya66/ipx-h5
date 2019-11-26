@@ -63,205 +63,205 @@
 </template>
 
 <script>
-import skuSelect from "@/views/common/skuSelect.vue";
-import utils from "utils";
+import skuSelect from '@/views/common/skuSelect.vue'
+import utils from 'utils'
 export default {
-  data() {
-    return {
-      showSku: false, // 是否弹出sku选择框
-      groupName: "深色系", // 组货名称
-      groupGoodsId: "", // 组货id
-      goodsId: "",
-      colorSkuAction: "",
-      groupDetail: {}, // 组货基本信息
-      groupGoodsRecords: [], // 商品列表数据源
+    data() {
+        return {
+            showSku: false, // 是否弹出sku选择框
+            groupName: '深色系', // 组货名称
+            groupGoodsId: '', // 组货id
+            goodsId: '',
+            colorSkuAction: '',
+            groupDetail: {}, // 组货基本信息
+            groupGoodsRecords: [], // 商品列表数据源
 
-      seletedDetailsItem: {}, // sku数据源
-      seletedItemIndex: "" // 选择调整商品下标
-    };
-  },
-  activated() {
-    this.groupName = utils.getStore("groupName") || "未设置";
-  },
-  created() {
-    this.getGroupDetail();
-    // this.groupGoods()
-  },
-  components: {
-    skuSelect
-  },
-  filters: {
-    selectSkuStr(val) {
-      let str = val.attrColorValue + "：";
-      let arr = [];
-      val.skuList.forEach(item => {
-        arr.push(item.attrSpecValue);
-      });
-      return str + arr.join("，");
-    }
-  },
-  methods: {
-    openSku(item, index) {
-      this.seletedDetailsItem = {};
-      this.colorSkuAction = 0;
-      this.showSku = !this.showSku;
-      this.seletedDetailsItem = item;
-      this.seletedItemIndex = index;
-      let { colorSkuList } = this.seletedDetailsItem;
-      let seletedColorSkuSumNum = 0;
-
-      colorSkuList.forEach((item, index) => {
-        let seletedColorSkuNum = 0;
-        item.skuList.forEach((skuItem, skuIndex) => {
-          skuItem.skuValue =
-            Number(skuItem.entityStock) > 0 ? Number(skuItem.groupNum) : 0;
-          seletedColorSkuNum =
-            Number(skuItem.skuValue) + Number(seletedColorSkuNum);
-          //   debugger
-        });
-        item.seletedColorSkuNum = seletedColorSkuNum;
-        seletedColorSkuSumNum =
-          Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum);
-        //   debugger
-      });
-
-      this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum;
-      //   debugger
-    },
-    getGroupDetail() {
-      // 获取组货详情列表
-      const params = {
-        groupGoodsId: this.$route.query.groupId
-      };
-      this.$api.groupGoods
-        .getGroupListDetail(params)
-        .then(res => {
-          if (res.code === 0) {
-            const { data } = res;
-            const { groupGoodsRecords } = data;
-
-            this.groupDetail = data;
-            this.groupGoodsRecords = groupGoodsRecords;
-            // let seletedTotalItem = 0
-            // let seletedStatus = true
-            // this.groupGoodsRecords.forEach((item, index) => {
-            //     if (item.defaultSelectedkinds > 0) {
-            //         seletedTotalItem++
-            //     } else {
-            //         seletedStatus = false
-            //     }
-            // })
-            // this.groupDetail.seletedTotalItem = seletedTotalItem
-            // this.groupDetail.seletedStatus = seletedStatus
-            this.groupName = this.groupDetail.name;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    groupGoods() {
-      let params = {
-        groupGoodsInfos: [
-          {
-            groupGoodsRecords: [
-              {
-                num: 2,
-                productAtrNumber: "19Y9302QL480",
-                productCode: "051705137353",
-                productSkuCode: "051705137353000",
-                starasSkuCode: "19Y9302QL480XWKX"
-              },
-              {
-                num: 3,
-                productAtrNumber: "19Y9302QL480",
-                productCode: "051705137353",
-                productSkuCode: "051705137353002",
-                starasSkuCode: "19Y9302QL480XWEW"
-              },
-              {
-                num: 1,
-                productAtrNumber: "1HZ9401S2552",
-                productCode: "052205137352",
-                productSkuCode: "052205137352000",
-                starasSkuCode: "1HZ9401S2552XWHM"
-              }
-            ],
-            name: "测试组货完成"
-          }
-        ]
-      };
-      this.$api.groupGoods
-        .groupGoods(params)
-        .then(res => {
-          console.log(res);
-          debugger;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    skuCommit(seletedDetailsItem) {
-      // sku修改 确定
-      this.showSku = false;
-      this.seletedDetailsItem = seletedDetailsItem;
-
-      let seletedTotalNum = 0; // 总件数
-      let seletedTotalKinds = 0; // 总种类
-      let defaultSelectedPieces = 0; // 款件数
-      let defaultSelectedkinds = 0; // 款种类
-      let totalAmount = 0; // 总价
-
-      this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-        if (item.seletedColorSkuNum > 0) {
-          defaultSelectedPieces =
-            Number(item.seletedColorSkuNum) + defaultSelectedPieces;
-          defaultSelectedkinds++;
+            seletedDetailsItem: {}, // sku数据源
+            seletedItemIndex: '' // 选择调整商品下标
         }
-      });
+    },
+    activated() {
+        this.groupName = utils.getStore('groupName') || '未设置'
+    },
+    created() {
+        this.getGroupDetail()
+    // this.groupGoods()
+    },
+    components: {
+        skuSelect
+    },
+    filters: {
+        selectSkuStr(val) {
+            let str = val.attrColorValue + '：'
+            let arr = []
+            val.skuList.forEach(item => {
+                arr.push(item.attrSpecValue)
+            })
+            return str + arr.join('，')
+        }
+    },
+    methods: {
+        openSku(item, index) {
+            this.seletedDetailsItem = {}
+            this.colorSkuAction = 0
+            this.showSku = !this.showSku
+            this.seletedDetailsItem = item
+            this.seletedItemIndex = index
+            let { colorSkuList } = this.seletedDetailsItem
+            let seletedColorSkuSumNum = 0
 
-      this.seletedDetailsItem.defaultSelectedPieces = defaultSelectedPieces;
-      this.seletedDetailsItem.defaultSelectedkinds = defaultSelectedkinds;
+            colorSkuList.forEach((item, index) => {
+                let seletedColorSkuNum = 0
+                item.skuList.forEach((skuItem, skuIndex) => {
+                    skuItem.skuValue =
+            Number(skuItem.entityStock) > 0 ? Number(skuItem.groupNum) : 0
+                    seletedColorSkuNum =
+            Number(skuItem.skuValue) + Number(seletedColorSkuNum)
+                    //   debugger
+                })
+                item.seletedColorSkuNum = seletedColorSkuNum
+                seletedColorSkuSumNum =
+          Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
+                //   debugger
+            })
 
-      this.groupGoodsRecords.forEach((item, index) => {
-        totalAmount =
+            this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+            //   debugger
+        },
+        getGroupDetail() {
+            // 获取组货详情列表
+            const params = {
+                groupGoodsId: this.$route.query.groupId
+            }
+            this.$api.groupGoods
+                .getGroupListDetail(params)
+                .then(res => {
+                    if (res.code === 0) {
+                        const { data } = res
+                        const { groupGoodsRecords } = data
+
+                        this.groupDetail = data
+                        this.groupGoodsRecords = groupGoodsRecords
+                        // let seletedTotalItem = 0
+                        // let seletedStatus = true
+                        // this.groupGoodsRecords.forEach((item, index) => {
+                        //     if (item.defaultSelectedkinds > 0) {
+                        //         seletedTotalItem++
+                        //     } else {
+                        //         seletedStatus = false
+                        //     }
+                        // })
+                        // this.groupDetail.seletedTotalItem = seletedTotalItem
+                        // this.groupDetail.seletedStatus = seletedStatus
+                        this.groupName = this.groupDetail.name
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        groupGoods() {
+            let params = {
+                groupGoodsInfos: [
+                    {
+                        groupGoodsRecords: [
+                            {
+                                num: 2,
+                                productAtrNumber: '19Y9302QL480',
+                                productCode: '051705137353',
+                                productSkuCode: '051705137353000',
+                                starasSkuCode: '19Y9302QL480XWKX'
+                            },
+                            {
+                                num: 3,
+                                productAtrNumber: '19Y9302QL480',
+                                productCode: '051705137353',
+                                productSkuCode: '051705137353002',
+                                starasSkuCode: '19Y9302QL480XWEW'
+                            },
+                            {
+                                num: 1,
+                                productAtrNumber: '1HZ9401S2552',
+                                productCode: '052205137352',
+                                productSkuCode: '052205137352000',
+                                starasSkuCode: '1HZ9401S2552XWHM'
+                            }
+                        ],
+                        name: '测试组货完成'
+                    }
+                ]
+            }
+            this.$api.groupGoods
+                .groupGoods(params)
+                .then(res => {
+                    console.log(res)
+                    debugger
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        skuCommit(seletedDetailsItem) {
+            // sku修改 确定
+            this.showSku = false
+            this.seletedDetailsItem = seletedDetailsItem
+
+            let seletedTotalNum = 0 // 总件数
+            let seletedTotalKinds = 0 // 总种类
+            let defaultSelectedPieces = 0 // 款件数
+            let defaultSelectedkinds = 0 // 款种类
+            let totalAmount = 0 // 总价
+
+            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
+                if (item.seletedColorSkuNum > 0) {
+                    defaultSelectedPieces =
+            Number(item.seletedColorSkuNum) + defaultSelectedPieces
+                    defaultSelectedkinds++
+                }
+            })
+
+            this.seletedDetailsItem.defaultSelectedPieces = defaultSelectedPieces
+            this.seletedDetailsItem.defaultSelectedkinds = defaultSelectedkinds
+
+            this.groupGoodsRecords.forEach((item, index) => {
+                totalAmount =
           Number(item.defaultSelectedPieces) * Number(item.tshPrice) +
-          Number(totalAmount);
-        item.colorSkuList.forEach((skuItem, skuIndex) => {
-          seletedTotalNum =
-            Number(skuItem.seletedColorSkuNum) + Number(seletedTotalNum);
-          if (skuItem.seletedColorSkuNum > 0) {
-            seletedTotalKinds++;
-          }
-        });
-      });
+          Number(totalAmount)
+                item.colorSkuList.forEach((skuItem, skuIndex) => {
+                    seletedTotalNum =
+            Number(skuItem.seletedColorSkuNum) + Number(seletedTotalNum)
+                    if (skuItem.seletedColorSkuNum > 0) {
+                        seletedTotalKinds++
+                    }
+                })
+            })
 
-      this.groupDetail.seletedTotalKinds = seletedTotalKinds;
-      this.groupDetail.seletedTotalNum = seletedTotalNum;
-      this.groupDetail.totalAmount = totalAmount;
-      this.groupDetail.totalDiscountAmount = totalAmount;
+            this.groupDetail.seletedTotalKinds = seletedTotalKinds
+            this.groupDetail.seletedTotalNum = seletedTotalNum
+            this.groupDetail.totalAmount = totalAmount
+            this.groupDetail.totalDiscountAmount = totalAmount
 
-      const params = {
-          groupGoodsId: this.groupDetail.groupId,
-          groupGoodsRecords: {
-              num: 1,
-              productAtrNumber: "", 
-              productCode: "",
-              productSkuCode: "",
-              starasSkuCode: "",
-          },
-          name: this.groupDetail.name
-      }
-      this.$api.groupGoods.updateGroupListDetail(params).then(res => {
-          console.log(res)
-      }).catch(err => {
-          console.log(err)
-      })
+            const params = {
+                groupGoodsId: this.groupDetail.groupId,
+                groupGoodsRecords: {
+                    num: 1,
+                    productAtrNumber: '',
+                    productCode: '',
+                    productSkuCode: '',
+                    starasSkuCode: ''
+                },
+                name: this.groupDetail.name
+            }
+            this.$api.groupGoods.updateGroupListDetail(params).then(res => {
+                console.log(res)
+            }).catch(err => {
+                console.log(err)
+            })
 
-      this.showSku = false;
+            this.showSku = false
+        }
     }
-  }
-};
+}
 </script>
 
 <style lang='less' scoped>
