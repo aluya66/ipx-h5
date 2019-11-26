@@ -73,7 +73,7 @@ export default {
             this.baseParams = utils.getStore('baseParams')
             let statusBarHeight = Number(this.baseParams.statusBarHeight)
             let wHeight = window.screen.height
-            return (wHeight - statusBarHeight) / 100
+            return (wHeight - statusBarHeight - 115) / 100
         },
         handleRequest() {
             this.$api.groupGoods.groupRank().then(res => {

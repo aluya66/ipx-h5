@@ -158,9 +158,9 @@ export default {
             if (arr.length > 0) {
                 const params = {
                     labels: arr,
-                    searchType: this.currentTab + 1,
-                    pageNo: 1,
-                    pageSize: 100
+                    searchType: this.currentTab + 1
+                    // pageNo: 1,
+                    // pageSize: 100
                 }
                 this.$router.push({
                     path: '/user/aiGroup',

@@ -15,7 +15,8 @@
                 <p style="color:#fff" @click="handleToHall">前往展厅</p>
             </template>
         </c-header>
-        <div class="contain">
+        <empty class="empty" v-if="titleIndex == 1" />
+        <div v-else class="contain">
             <p class="c-title">推荐买手</p>
             <swiper class="d-swiper" :options="dSwiperOption">
                 <swiper-slide class="designer-contain" v-for="item in allDatas" :key="item.groupGoodsKoc.kocCode" @click="handleChooseDesigner(item)">
@@ -57,11 +58,13 @@
 import 'swiper/dist/css/swiper.css'
 
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import Empty from './groupEmpty.vue'
 
 export default {
     components: {
         swiper,
-        swiperSlide
+        swiperSlide,
+        Empty
     },
     props: {
 
@@ -166,6 +169,9 @@ export default {
     background-image :url('../../../themes/images/groupGoods/bg_koc_recommend_top.png');
     background-repeat:no-repeat;
     background-size:100% 246px;
+}
+.empty {
+    margin-top: 24px;
 }
 .contain {
     overflow: auto;
