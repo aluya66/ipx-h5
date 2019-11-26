@@ -126,8 +126,8 @@ export default create({
     .van-nav-bar__title {
         font-size: 18px;
         font-weight: 600;
-        height: 46px;
-        line-height: 46px;
+        height: 44px;
+        line-height: 44px;
         .title_light {
             color: @color-c1;
         }

@@ -9,7 +9,7 @@
    <div class="contain">
        <p class="top-title">最潮搭配TOP10</p>
        <div class="rank" :style="getListContainHeight()">
-           <div class="rank-content" v-for="(item,index) in rankData" :key="item">
+           <div class="rank-content" v-for="(item,index) in rankData" :key="item" @click="handleToDetail(item)">
                <div class="rank-contain">
                     <img class="mainImage" :src="item.groupImg" alt="">
                     <div class="infoContain">
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">183920</p>
-                        <section class="call">打call</section>
+                        <section class="call" @click.stop="handleCall(item)">打call</section>
                     </div>
                     <section class="rankImage" v-show="index<3">
                         <img  :src="rankImg[index]" alt="">
@@ -58,6 +58,28 @@ export default {
 
     },
     methods: {
+        handleToDetail(item) {
+            this.$router.push({
+                path: '/groupDetail',
+                query: {
+                    groupCode: item.groupCode
+                }
+            })
+        },
+        handleCall(item) {
+            const params = {
+                vo: {
+                    groupCode: item.groupCode
+                }
+            }
+            this.$api.groupGoods.postCall(params).then(res => {
+                if (res.code === 0) {
+                    this.$toast('打call成功')
+                }
+            }).catch(() => {
+
+            })
+        },
         // 监听滚动
         handleScroll () {
             window.addEventListener('scroll', () => {

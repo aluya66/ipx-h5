@@ -56,3 +56,9 @@ export const groupRank = params => Http.fetch(`${context}/v1/group/goods/top`, p
     method: 'get',
     hasErrMsg: true
 })
+
+// 打call
+export const postCall = params => Http.fetch(`${context}/v1/group/goods/popularity`, params, {
+    method: 'post',
+    hasErrMsg: true
+})

@@ -33,11 +33,10 @@ export default {
         this.baseParams = utils.getStore('baseParams')
         // this.baseParams.statusBarHeight = 44;
         let statusBarHeight = Number(this.baseParams.statusBarHeight) / 100
-
         if (this.baseParams.platform === 'ios') {
             if (Number(this.baseParams.statusBarHeight) > 20) {
-                this.paddingTop = (Number(statusBarHeight) - Number(0.2)) + 'rem'
-                this.paddingBottom = '0.34rem'
+                this.paddingTop = Number(statusBarHeight) + 'rem'
+                // this.paddingBottom = '0.34rem'
             }
         } else {
             this.paddingTop = statusBarHeight + 'rem'

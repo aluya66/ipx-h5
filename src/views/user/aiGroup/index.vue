@@ -19,13 +19,13 @@
         <div v-else class="contain">
             <p class="c-title">推荐买手</p>
             <swiper class="d-swiper" :options="dSwiperOption">
-                <swiper-slide class="designer-contain" v-for="item in allDatas" :key="item.groupGoodsKoc.kocCode" @click="handleChooseDesigner(item)">
+                <swiper-slide class="designer-contain" v-for="item in allDatas" :key="item.groupGoodsKoc.kocCode">
                     <img :class='["designer-header",getIsCurrentDesigner(item)?"designer-header-select":"designer-header-default"]' :src="item.groupGoodsKoc.headPic" alt="">
                     <p :class='["designer-name",getIsCurrentDesigner(item)?"designer-name-select":"designer-name-default"]'>{{item.groupGoodsKoc.kocNickName}}</p>
                 </swiper-slide>
             </swiper>
-            <swiper class="swiper" :options="swiperOption">
-                <swiper-slide class="slide" v-for="item in curDesigner.groupGoodList" :key="item.groupCode">
+            <swiper class="swiper" ref="groupSwiper" :options="swiperOption">
+                <swiper-slide class="slide" v-for="item in curDesigner.groupGoodList" :key="item.groupCode" >
                     <section class="box-header">
                         <p><span>{{item.groupTitle}}</span></p>
                     </section>
@@ -84,17 +84,29 @@ export default {
                 slidesPerView: 'auto',
                 centeredSlides: true,
                 spaceBetween: 16 * window.devicePixelRatio,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true
+                on: {
+                    click: () => {
+                        let groupList = this.curDesigner.groupGoodList
+                        let swiper = this.$refs.groupSwiper.swiper
+                        let i = swiper.activeIndex
+                        this.$router.push({
+                            path: '/groupDetail',
+                            query: {
+                                groupCode: groupList[i].groupCode
+                            }
+                        })
+                    }
                 }
             },
             dSwiperOption: {
                 slidesPerView: 4.6,
                 spaceBetween: 24,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true
+                on: {
+                    click: () => {
+                        let swiper = this.$refs.groupSwiper.swiper
+                        let i = swiper.activeIndex
+                        this.curDesigner = this.allDatas[i]
+                    }
                 }
             }
         }
@@ -118,25 +130,28 @@ export default {
         }
     },
     methods: {
+        // 获取百分比
         getPercent(item, index) {
             let arr = [item.adviceIndexNum, item.fashionIndexNum, item.hotIndexNum]
             return arr[index]
         },
-        handleChooseDesigner (item) {
-            this.curDesigner = item
-        },
+        // 判断是不是当前设计师
         getIsCurrentDesigner (item) {
             return item === this.curDesigner
         },
+        // 去展厅
         handleToHall() {
             this.$router.push({ path: '/user/hall' })
         },
+        // 切换菜单 ---买手推荐
         handleSelectRec() {
             this.titleIndex = 0
         },
+        // 切换菜单 ---智能组货
         handleSelectAi () {
             this.titleIndex = 1
         },
+        // 查看TOP10
         handleToRank() {
             this.$router.push({ path: '/user/aiGroup/matchRank' })
         }
@@ -428,7 +443,7 @@ export default {
 
     }
     img {
-        display: in;
+        // display: in;
         width: 28px;
         height: 28px;
         margin-right:12px;
