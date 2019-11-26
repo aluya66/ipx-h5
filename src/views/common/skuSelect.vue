@@ -10,7 +10,7 @@
           </div>
           <div class="van-sku-header__goods-info">
             <div class="van-sku__goods-price">
-              &yen;<span class="van-sku__price-num">{{seletedDetailsItem.tshPrice}}</span>
+              &yen;<span class="van-sku__price-num">{{seletedDetailsItem.spuTshPrice}}</span>
             </div>
             <div class="van-sku-header-item">
               <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
@@ -27,8 +27,8 @@
                 {{colorSkusItem.attrColorValue}}
                 <div
                   class="van-info"
-                  v-if="colorSkusItem.seletedColorSkuSumNum > 0"
-                >{{colorSkusItem.seletedColorSkuSumNum > 99 ? colorSkusItem.seletedColorSkuSumNum + '+' : colorSkusItem.seletedColorSkuSumNum}}</div>
+                  v-if="colorSkusItem.seletedColorSkuNum > 0"
+                >{{colorSkusItem.seletedColorSkuNum > 99 ? colorSkusItem.seletedColorSkuNum + '+' : colorSkusItem.seletedColorSkuNum}}</div>
               </div>
               <div class="sku-card">
                 <div
@@ -59,7 +59,7 @@
             </van-tab>
           </template>
         </van-tabs>
-        <div class="number-tip" v-if="seletedDetailsItem.groupNum <= 0">库存数量，不满足起批数量</div>
+        <div class="number-tip" v-if="seletedDetailsItem.seletedColorSkuSumNum <= 0">库存数量，不满足起批数量</div>
       </template>
 
       <template slot="sku-stepper">{{goodsId}}</template>
@@ -70,7 +70,7 @@
             size="large"
             type="warning"
             @click="onPointClicked"
-            v-if="seletedDetailsItem.groupNum > 0"
+            v-if="seletedDetailsItem.seletedColorSkuSumNum > 0"
           >确定</van-button>
           <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button>
         </div>
@@ -126,20 +126,21 @@ export default {
     },
     methods: {
         changSelectedNum (colorSkusIndex, skuIndex) {
-            let { colorSkus } = this.seletedDetailsItem
+            let { colorSkuList } = this.seletedDetailsItem
             let seletedColorSkuNum = 0
             let seletedColorSkuSumNum = 0
-            colorSkus[colorSkusIndex].seletedcolorSkus.forEach((item, index) => {
+            colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
                 seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum)
             })
-            this.seletedDetailsItem.colorSkus[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
+            this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
 
-            colorSkus.forEach((item, index) => {
+            colorSkuList.forEach((item, index) => {
                 seletedColorSkuSumNum =
             Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
             })
 
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+            // debugger
         },
         onPointClicked() {
             this.$emit('pointClick', this.seletedDetailsItem)
@@ -273,13 +274,6 @@ export default {
 .van-hairline--top-bottom::after,
 .van-hairline-unset--top-bottom::after {
   border: 0;
-}
-
-.van-info {
-}
-
-.van-sku-body {
-  // background-color: #
 }
 
 .sku-group-tabs {
