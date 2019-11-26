@@ -58,7 +58,7 @@ export default {
       justify-content:flex-start;
       align-items: flex-start;
       margin-top: 4px;
-      
+
       p {
         font-size: 12px;
         color: #585b66;
