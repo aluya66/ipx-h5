@@ -21,8 +21,20 @@ export const getGroupListDetail = params => Http.fetch(`${context}/v1/group/good
     hasErrMsg: true
 })
 
-// 临时接口
-export const getSeletedProductList = params => Http.fetch(`${context}/v1/group/seletedproduct`, params, {
+/**
+ * 组货清单详情修改
+ * @param {*} params params数据对象
+ */
+export const updateGroupListDetail = params => Http.fetch(`${context}/v1/group/goods`, params, {
+    method: 'put',
+    hasErrMsg: true
+})
+
+/**
+ * 完成组货
+ * @param {*} params params数据对象
+ */
+export const groupGoods = params => Http.fetch(`${context}/v1/group/goods`, params, {
     method: 'post',
     hasErrMsg: true
 })
