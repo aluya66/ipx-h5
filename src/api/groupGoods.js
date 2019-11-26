@@ -31,6 +31,14 @@ export const updateGroupListDetail = params => Http.fetch(`${context}/v1/group/g
 })
 
 /**
+ * 获取组货详情
+ * @param {*} params params数据对象
+ */
+export const getGroupDetail = params => Http.fetch(`${context}/v1/group/goods/info/detail`, params, {
+    method: 'get'
+})
+
+/**
  * 完成组货
  * @param {*} params params数据对象
  */

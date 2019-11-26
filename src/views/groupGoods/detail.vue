@@ -2,11 +2,11 @@
   <layout-view>
     <div class="panel">
       <div class="header-top">
-        <c-header
-          slot="header"
-          :left-arrow="true"
-        >
-        </c-header>
+          <c-header
+            slot="header"
+            :left-arrow="true"
+          >
+          </c-header>
         <swiper class="swiper-content">
           <swiper-slide class="swiper-slide">
             <video
@@ -111,15 +111,23 @@
         </div>
         <div class="collocation-list">
           <!-- v-for="(item,index) in seletedDetails" :key="index" item.mainPic {{item.productName}} {{item.tshPrice}}-->
-          <div class="product-cell" v-for="(item,index) in list" :key="index" >
+          <div
+            class="product-cell"
+            v-for="(item,index) in productList"
+            :key="index"
+          >
             <img
-              src="../../themes/images/app/invalid-name@2x.png"
+              :src="item.mainPic"
               alt=""
             >
             <div class="product-info">
               <p>{{item.productName}}</p>
               <div class="sku-list">
-                <p for="" v-for="(sku,i) in item.colorSkus" :key="i">{{sku.attrColorValue}}</p>
+                <p
+                  for=""
+                  v-for="(sku,i) in item.colorSkuList"
+                  :key="i"
+                >{{sku.attrColorValue}}</p>
               </div>
               <p class="price">¥{{item.tshPrice}}</p>
             </div>
@@ -130,81 +138,137 @@
     </div>
 
     <div class="footer">
-        <div class="price">¥<span>198.89</span></div>
-        <button @click="addHall">添加至展厅</button>
+      <div class="price">¥<span>198.89</span></div>
+      <button @click="addHall">添加至展厅</button>
     </div>
   </layout-view>
 </template>
 
 <script>
-import { Dialog } from 'vant'
-import progressCricle from '@/views/common/cricleProgress.vue'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
-require('swiper/dist/css/swiper.css')
+import { Dialog } from "vant";
+import progressCricle from "@/views/common/cricleProgress.vue";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+require("swiper/dist/css/swiper.css");
 
 export default {
-    components: {
-        progressCricle,
-        swiperSlide,
-        swiper
-    },
-    data() {
-        return {
-            popularNum: '183340',
-            list: [
-                {
-                    mainPic: '../../themes/images/app/invalid-name@2x.png',
-                    productName: '色发是个都是割发代首风格色发是德国',
-                    tshPrice: '34.88',
-                    colorSkus: [
-                        {
-                            attrColorValue: '红色, XL, s'
-                        }
-                    ]
-                },
-                {
-                    mainPic: '../../themes/images/app/invalid-name@2x.png',
-                    productName: '色发是个都是割发代首风格色发是德国',
-                    tshPrice: '34.88',
-                    colorSkus: [
-                        {
-                            attrColorValue: '红色, XL, s'
-                        }
-                    ]
-                },
-                {
-                    mainPic: '../../themes/images/app/invalid-name@2x.png',
-                    productName: '色发是个都是割发代首风格色发是德国',
-                    tshPrice: '34.88',
-                    colorSkus: [
-                        {
-                            attrColorValue: '红色, XL, s'
-                        }
-                    ]
-                }
-            ]
+  components: {
+    progressCricle,
+    swiperSlide,
+    swiper
+  },
+  data() {
+    return {
+      popularNum: "183340",
+      productList: [
+        {
+          mainPic: "../../themes/images/app/invalid-name@2x.png",
+          productName: "色发是个都是割发代首风格色发是德国",
+          tshPrice: "34.88",
+          colorSkus: [
+            {
+              attrColorValue: "红色, XL, s"
+            }
+          ]
+        },
+        {
+          mainPic: "../../themes/images/app/invalid-name@2x.png",
+          productName: "色发是个都是割发代首风格色发是德国",
+          tshPrice: "34.88",
+          colorSkus: [
+            {
+              attrColorValue: "红色, XL, s"
+            }
+          ]
+        },
+        {
+          mainPic: "../../themes/images/app/invalid-name@2x.png",
+          productName: "色发是个都是割发代首风格色发是德国",
+          tshPrice: "34.88",
+          colorSkus: [
+            {
+              attrColorValue: "红色, XL, s"
+            }
+          ]
         }
-    },
-    computed: {
-        popularArray() {
-            return this.popularNum.split('')
-        }
-    },
-    methods: {
-        addHall() {
-            Dialog.confirm({
-                title: '添加成功',
-                message: '该组货方案已添加至我的展厅',
-                confirmButtonText: '编辑组货方案',
-                cancelButtonText: '继续逛逛'
-            }).then(() => {
-                this.$router.push('/hall/groupListDetail')
-            }).catch(() => {
-                // on cancel
-            })
-        }
+      ],
+      groupDetail: {},
+    };
+  },
+  computed: {
+    popularArray() {
+      return this.popularNum.split("");
     }
-}
+  },
+  activated() {
+      this.getGroupDetail()
+  },
+  methods: {
+    getGroupDetail() {
+        const params = {
+            groupCode: "g001111"
+        }
+        this.$api.groupGoods.getGroupDetail(params).then(res => {
+            this.groupDetail = res
+            this.productList = res.groupGoodsSpus
+        }).catch((err) => {
+            console.log(err)
+        })
+    },
+    addHall() {
+      let params = {
+        groupGoodsInfos: [
+          {
+            groupGoodsRecords: [
+              {
+                num: 2,
+                productAtrNumber: "19Y9302QL480",
+                productCode: "051705137353",
+                productSkuCode: "051705137353000",
+                starasSkuCode: "19Y9302QL480XWKX"
+              },
+              {
+                num: 3,
+                productAtrNumber: "19Y9302QL480",
+                productCode: "051705137353",
+                productSkuCode: "051705137353002",
+                starasSkuCode: "19Y9302QL480XWEW"
+              },
+              {
+                num: 1,
+                productAtrNumber: "1HZ9401S2552",
+                productCode: "052205137352",
+                productSkuCode: "052205137352000",
+                starasSkuCode: "1HZ9401S2552XWHM"
+              }
+            ],
+            name: "测试组货完成"
+          }
+        ]
+      };
+      this.$api.groupGoods
+        .groupGoods(params)
+        .then(res => {
+          if (res.code === 0) {
+            Dialog.confirm({
+              title: "添加成功",
+              message: "该组货方案已添加至我的展厅",
+              confirmButtonText: "编辑组货方案",
+              cancelButtonText: "继续逛逛"
+            })
+              .then(() => {
+                this.$router.push("/hall/groupListDetail");
+              })
+              .catch(() => {
+                // on cancel
+              });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+  }
+};
 </script>
 
 <style lang="less">
@@ -219,7 +283,7 @@ export default {
 <style lang='less' scoped>
 .panel {
   background-color: white;
-  height: calc(100vh - 2px);
+  height: calc(100vh - 51px);
   overflow-y: scroll;
   .header-top {
     .swiper-content {
@@ -415,37 +479,41 @@ export default {
   }
 }
 .footer {
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    bottom: 0;
-    width: 100%;
-    height:49px;
-    background: white;
-    box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
-    border-radius:12px 12px 0px 0px;
-    padding: 0 16px;
-    .price {
-        font-size:12px;
-        font-weight:400;
-        color:rgba(245,48,48,1);
-        line-height:49px;
-        > span {
-        font-size:20px;
-        font-weight:bold;
-        color:rgba(245,48,48,1);
-        line-height:49px;
-        }
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  bottom: 0;
+  width: 100%;
+  height: 49px;
+  background: white;
+  box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
+  border-radius: 12px 12px 0px 0px;
+  padding: 0 16px;
+  .price {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(245, 48, 48, 1);
+    line-height: 49px;
+    > span {
+      font-size: 20px;
+      font-weight: bold;
+      color: rgba(245, 48, 48, 1);
+      line-height: 49px;
     }
-    > button {
-        width: 110px;
-        height: 40px;
-        background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-        border-radius:20px;
-        font-size:14px;
-        font-weight:bold;
-        color: white;
-        align-self: center;
-    }
+  }
+  > button {
+    width: 110px;
+    height: 40px;
+    background: linear-gradient(
+      135deg,
+      rgba(85, 122, 244, 1) 0%,
+      rgba(114, 79, 255, 1) 100%
+    );
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    align-self: center;
+  }
 }
 </style>
