@@ -80,7 +80,7 @@ export default {
         (this.$refs.shareList.offsetHeight - 860) + 'px'
       } else {
         document.querySelector('.van-pull-refresh').style.height =
-        (this.$refs.shareList.offsetHeight - 460) + 'px'
+        (this.$refs.shareList.offsetHeight - 650) + 'px'
       }
 
       // document.querySelector('.van-list').style.height =
