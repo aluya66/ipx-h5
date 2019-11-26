@@ -88,6 +88,11 @@ export default {
     //     this.getTicket()
     //   })
     // }
+
+    document.body.style.background = '#fff'
+  },
+  destroyed() {
+    document.body.style.background = '#f9fafc'
   },
   methods: {
     async getTestStyleList () {
@@ -309,7 +314,7 @@ export default {
   border-radius: 36px;
   box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
   background-image: linear-gradient(to right, #557af4, #724fff);
-  font-family: PingFangSC;
+  // font-family: PingFangSC;
   font-size: 18px;
   font-weight: 600;
   color: #ffffff;

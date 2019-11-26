@@ -107,7 +107,7 @@ export default {
         &.icon-next {
           width: 12px;
           height: 12px;
-          background: url("../../../themes/images/app/icon_next_12＊12_blue@2x.png")
+          background: url("../../../themes/images/app/icon_next_blue@2x.png")
             no-repeat center;
           background-size: cover;
         }

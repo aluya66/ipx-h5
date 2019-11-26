@@ -300,6 +300,7 @@ export default {
       background-color: @color-c8;
       margin-top: 16px;
       font-size: 14px;
+      align-items: center;
     }
     .secHeader {
       text-align: left;
@@ -324,6 +325,9 @@ export default {
         font-weight: 600;
         margin-left: 12px;
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         &:first-child {
           margin-left: 0;
         }

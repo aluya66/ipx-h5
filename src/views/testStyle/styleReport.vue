@@ -3,7 +3,7 @@
     <!-- <c-list class="list-scroll"> -->
     <div class="panel">
       <div class="head">
-        <img src="../../themes/images/app/invalid-name@2x.png" alt />
+        <img src="../../themes/images/app/invalid-name@3x.png" alt />
         <c-header slot="header" :left-arrow="true" class="c-header-white"></c-header>
         <div class="content">
           <p>测款数据</p>
@@ -70,7 +70,7 @@ export default {
         .then(res => {
           res.map((item, index) => {
             if (index < 3) {
-              item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@2x.png') + ')'
+              item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@3x.png') + ')'
             }
           })
           this.testStyleList = res
@@ -93,19 +93,20 @@ export default {
     position: fixed;
     top: 0;
   }
+
   .tab-raduis {
-    background-color: white;
-    border-radius: 8px;
+    background-color: #fff;
     transform: translateY(-8px);
     .van-tab{
+      background-color: #fff;
       &.van-tab--active{
         span{
+          font-weight: bold;
           color: #2a2b33
         }
       }
       span{
         font-size: 16px;
-        font-weight: bold;
         color: #8a8c99;
       }
     }
@@ -113,10 +114,23 @@ export default {
       border-radius: 0;
       background-color: #2a2b33;
       margin-bottom: 4px;
+      border-radius: 2px;
     }
     .van-tabs {
       // padding-top: 8px;
+      background-color: #fff;
       border-bottom: 0.5px solid #e1e2e6;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      .van-tabs__wrap{
+        // border-radius: 12px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background-color: #fff;
+        .van-tabs__nav{
+          background-color: transparent;
+        }
+      }
       .van-hairline--top-bottom{
         &::after{
           border: 0;
@@ -164,8 +178,8 @@ export default {
   }
   .tab-raduis {
     background-color: white;
-    border-radius: 8px;
-    transform: translateY(-8px);
+    border-radius: 12px;
+    transform: translateY(-12px);
   }
 }
 </style>

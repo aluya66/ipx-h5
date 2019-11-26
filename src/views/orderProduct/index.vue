@@ -16,15 +16,15 @@
         <list :allList="listsObject" v-if="lastPeriodRankStatus"/>
         <store-address />
         <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply" v-if="delayedStatus">
-          <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
+          <img src="@/themes/images/app/icon-me-apply-gray@3x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
         <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck" v-if="testProductsStatus && products && products.length > 0">
-          <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
+          <img src="@/themes/images/app/icon-me-survey-gray@3x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
         <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheckResult" v-if="!testProductsStatus && haveSharedStatus === 1">
-          <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
+          <img src="@/themes/images/app/icon-me-survey-gray@3x.png" alt="">
           <p v-if="!inScroll">测款报告</p>
         </div>
         <c-footer></c-footer>
@@ -136,6 +136,8 @@ export default {
     },
     // 点击报名弹框
     handleApply () {
+      this.showPopup = !this.showPopup
+      return
       if (this.token) {
         if (this.enableToTakePart === 0) {
           this.$toast('已提交过报名信息，请勿重复提交')
@@ -300,6 +302,7 @@ export default {
     display: block;
     width: 100%;
     object-fit: cover;
+    background-color: #fff;
   }
 }
 

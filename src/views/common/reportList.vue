@@ -10,7 +10,8 @@
           <span>{{item.productName}}</span>
         </div>
         <div class="price">
-          <span>{{item.measureVoteNum}}</span>&nbsp;票
+          <p>{{item.measureVoteNum}}</p>&nbsp;
+          <span>票</span>
         </div>
       </div>
     </div>
@@ -34,7 +35,7 @@ export default {
   },
   // created () {
   //   this.list = this.list.map((item,index) =>{
-  //       item.topNumUrl = 'url(' + require('../../themes/images/app/rank'+index+'@2x.png') + ')'
+  //       item.topNumUrl = 'url(' + require('../../themes/images/app/rank'+index+'@3x.png') + ')'
   //   })
   // },
   filters: {
@@ -49,7 +50,7 @@ export default {
 <style lang="less" scoped>
 .panel {
   .report-list {
-    height: calc(100vh - 260px);
+    height: calc(100vh - 240px);
     padding-bottom: 2px;
     overflow: auto;
     .report {
@@ -57,9 +58,10 @@ export default {
       justify-content: space-between;
       margin: 16px 16px;
       margin-bottom: 32px;
+      align-items: center;
       .left {
         display: flex;
-        width: 68%;
+        width: 80%;
         .rank {
           width: 32px;
           height: 32px;
@@ -78,7 +80,7 @@ export default {
           width: 56px;
           height: 56px;
           margin: 0 12px;
-          border-radius: 8px;
+          border-radius: 4px;
           object-fit: cover;
         }
         span {
@@ -87,7 +89,7 @@ export default {
           font-weight: bold;
           color: #2a2b33;
           line-height: 56px;
-          width: 80%;
+          width: 140px;
           .ellipsis();
         }
       }
@@ -95,17 +97,19 @@ export default {
         // font-family: 'PingFangSC';
         font-size: 12px;
         color: #8a8c99;
-        line-height: 56px;
+        // line-height: 56px;
         width: 30%;
         text-align: right;
         display: flex;
         justify-content: flex-end;
-        span {
+        align-items: flex-end;
+        p {
           font-family: 'alibabaBold';
           font-size: 20px;
           font-weight: bold;
           color: #f53030;
           width: 80%;
+          margin: 0;
           /* display: inline-block; */
           text-align: right;
           display: inline-block;

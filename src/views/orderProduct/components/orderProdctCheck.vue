@@ -2,7 +2,7 @@
   <div class="check-contain">
     <div class="check-content" v-if="!isTest ">
       <div class="check-topClass">
-        <img src="@/themes/images/app/check-icon@2x.png" alt />
+        <img src="@/themes/images/app/check-icon@3x.png" alt />
         <div>
           <h3>主推款免费测款</h3>
           <p>顾客喜不喜欢货品，一测见真知</p>
@@ -12,7 +12,7 @@
       </div>
       <section class="check-button" @click="handleCheck">
         <p>立即免费测款</p>
-        <img src="@/themes/images/app/check-rightArrow@2x.png" alt />
+        <img src="@/themes/images/app/check-rightArrow@3x.png" alt />
       </section>
     </div>
     <div v-if="isTest">
@@ -91,7 +91,7 @@ export default {
 .check-contain {
   padding: 0 16px;
   .actionBtn {
-    line-height: 50px;
+    line-height: 48px;
     text-align: center;
     font-size: 18px;
     font-weight: 600;
@@ -99,6 +99,9 @@ export default {
     border-radius: 25px;
     box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   dl {
     display: flex;
@@ -124,7 +127,7 @@ export default {
     position: relative;
     padding-bottom: 26px;
     position: relative;
-    padding: 0 12px;
+    padding: 0 16px;
     .proptTitle {
       margin: 16px 0 0 0;
       height: 16px;
