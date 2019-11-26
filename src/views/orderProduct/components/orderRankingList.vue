@@ -10,7 +10,7 @@
       <tab :title="item" v-for="(item ,index) in getMenuItems" :key="index" :name="item">
         <div class="r-contain" v-for="(listItem ,index) in getLists" :key="index">
           <div class="r-leftContain">
-            <section :class="handleRankIcon(index)">{{index > 2 ? index + 1 :''}}</section>
+            <section :class="handleRankIcon(index)">{{index > 2 ? (index + 1) >= 10  ? index + 1 : '0' + (index + 1) : ''}}</section>
             <img :src="listItem.mainPic + '?imageView2/1/w/288/h/288'" alt />
             <h3>{{listItem.productName}}</h3>
           </div>
@@ -124,7 +124,8 @@ export default {
       right: -50%;
       bottom: -50%;
       left: -50%;
-      border: 0 solid #ebedf0;
+      border:0;
+      border-bottom: 0 solid#ebedf0;;
       -webkit-transform: scale(.5);
       transform: scale(.5);
       border-width: 0.01rem 0;
@@ -157,13 +158,12 @@ export default {
     &.van-tab--active {
       span {
         font-size: 16px;
+        font-weight: 600;
         color: #3c5cf6;
-
       }
     }
     span {
-      font-family: PingFangSC;
-      font-weight: 600;
+      // font-family: PingFangSC;
       font-size: 14px;
       color: #8a8c99;
     }
@@ -190,7 +190,7 @@ export default {
     .r-rightContain {
       display: flex;
       flex-direction: row;
-      align-items: center;
+      align-items: flex-end;
       margin-right: 12px;
       p {
         font-family: 'alibabaBold';
@@ -214,20 +214,20 @@ export default {
       justify-content: space-around;
       align-items: center;
       .firstClass {
-        background-image: url("../../../themes/images/app/rank-one@2x.png");
+        background-image: url("../../../themes/images/app/rank-one@3x.png");
         // background-position: right bottom, left top;
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
       }
       .secondClass {
-        background-image: url("../../../themes/images/app/rank-two@2x.png");
+        background-image: url("../../../themes/images/app/rank-two@3x.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
       }
       .thridClass {
-        background-image: url("../../../themes/images/app/rank-three@2x.png");
+        background-image: url("../../../themes/images/app/rank-three@3x.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -237,7 +237,7 @@ export default {
         height: 26px;
         line-height: 26px;
         margin: 0 8px 0;
-        font-size: 12px;
+        font-size: 10px;
         color: #8a8c99;
         font-weight: 600;
         text-align: center;

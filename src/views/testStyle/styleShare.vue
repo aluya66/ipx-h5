@@ -18,11 +18,11 @@
       <p>(测款数据在订货会页面查看)</p>
       <div class="share-logo">
         <div class="left" @click="shareWechat(1)">
-          <img src="../../themes/images/app/share-wechat@2x.png" />
+          <img src="../../themes/images/app/share-wechat@3x.png" />
           <p>微信群</p>
         </div>
         <div class="left" @click="shareWechat(2)">
-          <img src="../../themes/images/app/share-wefriends@2x.png" />
+          <img src="../../themes/images/app/share-wefriends@3x.png" />
           <p>朋友圈</p>
         </div>
       </div>
@@ -44,11 +44,12 @@ export default {
       participantCode: '',
       bookActivityCode: '',
       totalNum: '',
+      paddingTop: '',
       list: [
         {
           mainPic: '',
-          productAtrNumber: '124124',
-          productCode: '235235hu'
+          productAtrNumber: '',
+          productCode: ''
         }
       ]
     }
@@ -72,14 +73,20 @@ export default {
       console.log(document.querySelector('.van-pull-refresh'))
 
       console.log(this.$refs.shareList.offsetHeight)
-      document.querySelector('.list-scroll').style.height =
-        (this.$refs.shareList.offsetHeight - 880) + 'px'
-      document.querySelector('.van-pull-refresh').style.height =
-        (this.$refs.shareList.offsetHeight - 1000) + 'px'
-      document.querySelector('.van-list').style.height =
-      (this.$refs.shareList.offsetHeight - 1000) + 'px'
-      document.querySelector('.van-pull-refresh__track').style.height =
-      (this.$refs.shareList.offsetHeight - 1000) + 'px'
+      // document.querySelector('.list-scroll').style.height =
+      //   (this.$refs.shareList.offsetHeight - 880) + 'px'
+      if(this.$refs.shareList.offsetHeight > 2000) {
+        document.querySelector('.van-pull-refresh').style.height =
+        (this.$refs.shareList.offsetHeight - 860) + 'px'
+      } else {
+        document.querySelector('.van-pull-refresh').style.height =
+        (this.$refs.shareList.offsetHeight - 560) + 'px'
+      }
+      
+      // document.querySelector('.van-list').style.height =
+      // (this.$refs.shareList.offsetHeight - 600) + 'px'
+      // document.querySelector('.van-pull-refresh__track').style.height =
+      // (this.$refs.shareList.offsetHeight - 1000) + 'px'
     }, 500)
   },
   methods: {
@@ -138,8 +145,8 @@ export default {
 
 <style lang="less" scoped>
 .share-panel{
-  height: calc(89vh);
-  overflow: auto;
+  // height: calc(89vh);
+  // overflow: auto;
 }
 .panel {
   background-color: @color-c8;
@@ -158,7 +165,7 @@ export default {
     }
   }
   .list-scroll {
-    // height: calc(100vh - 600px);
+    height: calc(100vh - 100px);
   }
   .scale-content {
     width: 120%;

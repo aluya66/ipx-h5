@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
     <h1>参会导航</h1>
-    <img src="@/themes/images/app/map@2x.png" alt="">
+    <img src="@/themes/images/app/map@3x.png" alt="">
     <div class="address">
       <section>
         <p>地址:</p>
@@ -51,13 +51,14 @@ export default {
     width: 100%
   }
   .address {
+    padding-bottom: 40px;
     section {
       display: flex;
       flex-direction: row;
       justify-content:flex-start;
       align-items: flex-start;
       margin-top: 4px;
-      margin-bottom: 40px;
+      
       p {
         font-size: 12px;
         color: #585b66;

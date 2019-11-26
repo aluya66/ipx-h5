@@ -1,7 +1,7 @@
 <template>
   <div class="panel">
     <img
-      src="../../themes/images/app/vote_banner@2x.png"
+      src="../../themes/images/app/vote_banner@3x.png"
       alt=""
     >
     <div class="content">
@@ -109,8 +109,9 @@ export default {
       //   justify-content: space-around;
       padding: 0px 10px 20px;
       width: 100%;
+      transform: translateY(-28px);
       .product {
-        margin: 0 5px 20px;
+        margin: 0 5px 24px;
         // background-color: blue;
         text-align: center;
         width: 30%;

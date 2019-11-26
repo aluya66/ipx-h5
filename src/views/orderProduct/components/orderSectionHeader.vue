@@ -33,7 +33,7 @@ export default {
   height: 152px;
   // height: 100px;
   position: relative;
-  background-color: #f8f8f8;
+  background-color: #f9fafc;
   p {
     position: absolute;
     text-align: center;
