@@ -9,7 +9,7 @@
                 <div class="group-contain">
                     <div class="p-contain" v-for="product in getColorSkuList" :key="product.productCode" >
                         <img src="@/themes/images/groupGoods/pic_hook.png" alt="">
-                        <img class="productSize" :src='product.imgUrl' alt="" @click="handleSelectImg(product)" >
+                        <img class="productSize" :src='product.imgUrl' alt="" @click.stop="handleSelectImg(product)" >
                     </div>
                 </div>
             </div>
@@ -61,8 +61,7 @@ export default {
         }
     },
     methods: {
-        handleSelectImg(e, product) {
-            e.stopPropagation()
+        handleSelectImg(product) {
             const params = {
                 jumpUrl: 'productDetail://',
                 productCode: product.productCode
@@ -101,7 +100,7 @@ export default {
             const params = {
                 jumpUrl: 'createOrder://',
                 totalPrice: this.groupGood.totalPrice,
-                groupCode: this.groupGood.groupGoodsId,
+                groupCode: this.groupGood.groupGoodsId + '',
                 discount: '1',
                 orderData: shopCarts
             }

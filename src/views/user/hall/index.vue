@@ -1,6 +1,6 @@
 <template>
     <layout-view class="hall-bg">
-    <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true">
+    <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true" :pageOutStatus="true">
         <div v-show="!isInSearch" slot="title">我的展厅</div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage"  />
