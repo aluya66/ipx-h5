@@ -443,7 +443,7 @@ export default {
 
     }
     img {
-        display: in;
+        // display: in;
         width: 28px;
         height: 28px;
         margin-right:12px;
