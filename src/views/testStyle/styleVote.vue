@@ -91,7 +91,7 @@ export default {
 
     document.body.style.background = '#fff'
   },
-  destroyed() {
+  destroyed () {
     document.body.style.background = '#f9fafc'
   },
   methods: {

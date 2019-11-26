@@ -75,14 +75,14 @@ export default {
       console.log(this.$refs.shareList.offsetHeight)
       // document.querySelector('.list-scroll').style.height =
       //   (this.$refs.shareList.offsetHeight - 880) + 'px'
-      if(this.$refs.shareList.offsetHeight > 2000) {
+      if (this.$refs.shareList.offsetHeight > 2000) {
         document.querySelector('.van-pull-refresh').style.height =
         (this.$refs.shareList.offsetHeight - 860) + 'px'
       } else {
         document.querySelector('.van-pull-refresh').style.height =
         (this.$refs.shareList.offsetHeight - 560) + 'px'
       }
-      
+
       // document.querySelector('.van-list').style.height =
       // (this.$refs.shareList.offsetHeight - 600) + 'px'
       // document.querySelector('.van-pull-refresh__track').style.height =
