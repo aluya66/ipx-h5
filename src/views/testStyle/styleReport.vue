@@ -1,35 +1,28 @@
 <template>
   <layout-view>
-    <c-list class="list-scroll">
-      <div class="panel">
-        <div class="head">
-          <img
-            src="../../themes/images/app/invalid-name@2x.png"
-            alt=""
-          >
-          <c-header
-            slot="header"
-            :left-arrow="true"
-          >
-          </c-header>
-          <div class="content">
-            <p>测款数据</p>
-            <span>数据持续更新中</span>
-          </div>
+    <!-- <c-list class="list-scroll"> -->
+    <div class="panel">
+      <div class="head">
+        <img src="../../themes/images/app/invalid-name@3x.png" alt />
+        <c-header slot="header" :left-arrow="true" class="c-header-white"></c-header>
+        <div class="content">
+          <p>测款数据</p>
+          <span>数据持续更新中</span>
         </div>
-        <div class="tab-raduis">
-          <c-tabs
-            :tabs="tabs"
-            :line-width="8/100+'rem'"
-            :title-active-color="'#2a2b33'"
-            :title-inactive-color="'#8a8c99'"
-            :border="false"
-            @change="changeActive"
-          ></c-tabs>
-        </div>
-        <reportList :list="testStyleList" />
       </div>
-    </c-list>
+      <div class="tab-raduis">
+        <c-tabs
+          :tabs="tabs"
+          :line-width="8/100+'rem'"
+          :title-active-color="'#2a2b33'"
+          :title-inactive-color="'#8a8c99'"
+          :border="false"
+          @change="changeActive"
+        ></c-tabs>
+      </div>
+      <reportList :list="testStyleList" />
+    </div>
+    <!-- </c-list> -->
   </layout-view>
 </template>
 
@@ -38,57 +31,59 @@ import reportList from '@/views/common/reportList.vue'
 import components from 'components'
 const { CTabs } = components
 export default {
-    components: {
-        CTabs,
-        reportList
-    },
-    data () {
-        return {
-            tabs: [
-                {
-                    name: 0,
-                    title: '我的测款数据'
-                },
-                {
-                    name: 1,
-                    title: '平台测款数据'
-                }
-            ],
-            curType: 0,
-            testStyleList: []
-        }
-    },
-    created () {
-        this.getRankList()
-    },
-    methods: {
-        getRankList () {
-            const params = {
-                bookRankDispalyNum: 10,
-                bookVoteSearchType: this.curType
-            }
-            this.$api.book
-                .bookRankList(params)
-                .then(res => {
-                    res.map((item, index) => {
-                        if (index < 3) {
-                            item.topNumUrl =
-                'url(' +
-                require('../../themes/images/app/rank' + index + '@2x.png') +
-                ')'
-                        }
-                    })
-                    this.testStyleList = res
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+  components: {
+    CTabs,
+    reportList
+  },
+  data () {
+    return {
+      tabs: [
+        {
+          name: 0,
+          title: '我的测款数据'
         },
-        changeActive (val) {
-            this.curType = val
-            this.getRankList()
+        {
+          name: 1,
+          title: '平台测款数据'
         }
+      ],
+      participantCode: '',
+      bookActivityCode: '',
+      curType: 0,
+      testStyleList: []
     }
+  },
+  activated () {
+    this.participantCode = this.$route.query.participantCode
+    this.bookActivityCode = this.$route.query.bookActivityCode
+    this.getRankList()
+  },
+  methods: {
+    getRankList () {
+      const params = {
+        bookVoteSearchType: this.curType,
+        participantCode: this.participantCode,
+        bookActivityCode: this.bookActivityCode
+      }
+      this.$api.book
+        .bookRankList(params)
+        .then(res => {
+          res.map((item, index) => {
+            if (index < 3) {
+              item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@3x.png') + ')'
+            }
+          })
+          this.testStyleList = res
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    changeActive (val) {
+      this.curType = val
+      this.getRankList()
+    }
+  }
 }
 </script>
 
@@ -98,18 +93,50 @@ export default {
     position: fixed;
     top: 0;
   }
+
   .tab-raduis {
-    background-color: white;
-    border-radius: 8px;
+    background-color: #fff;
     transform: translateY(-8px);
+    .van-tab{
+      background-color: #fff;
+      &.van-tab--active{
+        span{
+          font-weight: bold;
+          color: #2a2b33
+        }
+      }
+      span{
+        font-size: 16px;
+        color: #8a8c99;
+      }
+    }
     .van-tabs__line {
-      border-radius: 10px;
+      border-radius: 0;
       background-color: #2a2b33;
       margin-bottom: 4px;
+      border-radius: 2px;
     }
     .van-tabs {
-      padding-top: 8px;
-      border-bottom: 1px solid #e1e2e6;
+      // padding-top: 8px;
+      background-color: #fff;
+      border-bottom: 0.5px solid #e1e2e6;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      .van-tabs__wrap{
+        // border-radius: 12px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background-color: #fff;
+        .van-tabs__nav{
+          background-color: transparent;
+        }
+      }
+      .van-hairline--top-bottom{
+        &::after{
+          border: 0;
+        }
+      }
+
     }
   }
 }
@@ -122,6 +149,8 @@ export default {
 .panel {
   position: relative;
   background-color: white;
+  height: calc(100vh);
+  overflow: hidden;
   .head {
     img {
       width: 100%;
@@ -149,8 +178,8 @@ export default {
   }
   .tab-raduis {
     background-color: white;
-    border-radius: 8px;
-    transform: translateY(-8px);
+    border-radius: 12px;
+    transform: translateY(-12px);
   }
 }
 </style>

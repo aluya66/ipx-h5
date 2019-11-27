@@ -6,9 +6,9 @@
  * @param {*} day
  */
 export const setCookie = (name, value, day) => {
-    const date = new Date()
-    date.setDate(date.getDate() + day)
-    document.cookie = `${name}=${value};expires=${date}`
+  const date = new Date()
+  date.setDate(date.getDate() + day)
+  document.cookie = `${name}=${value};expires=${date}`
 }
 
 /**
@@ -19,12 +19,12 @@ export const setCookie = (name, value, day) => {
  */
 
 export const getCookie = name => {
-    const reg = RegExp(`${name}=([^;]+)`)
-    const arr = document.cookie.match(reg)
-    if (arr) {
-        return arr[1]
-    }
-    return ''
+  const reg = RegExp(`${name}=([^;]+)`)
+  const arr = document.cookie.match(reg)
+  if (arr) {
+    return arr[1]
+  }
+  return ''
 }
 
 /**
@@ -33,53 +33,78 @@ export const getCookie = name => {
  * @param {*} name
  */
 export const delCookie = name => {
-    setCookie(name, null, -1)
+  setCookie(name, null, -1)
+}
+
+/**
+ * 存储sessionStorage
+ */
+export const setSessionStore = (name, content, storeType = sessionStorage) => {
+  if (!name) return
+  if (typeof content !== 'string') {
+    content = JSON.stringify(content)
+  }
+  storeType.setItem(name, content)
+}
+
+/**
+ * 获取sessionStorage
+ */
+export const getSessionStore = (name, storeType = sessionStorage) => {
+  if (!name) return
+  let value = storeType.getItem(name)
+  if (value && value.indexOf('{') >= 0) {
+    value = JSON.parse(storeType.getItem(name))
+  }
+  return value
 }
 
 /**
  * 存储localStorage
  */
 export const setStore = (name, content, storeType = localStorage) => {
-    if (!name) return
-    if (typeof content !== 'string') {
-        content = JSON.stringify(content)
-    }
-    storeType.setItem(name, content)
+  if (!name) return
+  if (typeof content !== 'string') {
+    content = JSON.stringify(content)
+  }
+  storeType.setItem(name, content)
 }
 
 /**
  * 获取localStorage
  */
 export const getStore = (name, storeType = localStorage) => {
-    if (!name) return
-    let value = storeType.getItem(name)
-    if (value && value.indexOf('{') >= 0) {
-        value = JSON.parse(storeType.getItem(name))
-    }
-    return value
+  if (!name) return
+  let value = storeType.getItem(name)
+  if (value && value.indexOf('{') >= 0) {
+    value = JSON.parse(storeType.getItem(name))
+  }
+  return value
 }
 
 /**
  * 删除localStorage
  */
 export const removeStore = (name, storeType = localStorage) => {
-    if (!name) return
-    storeType.removeItem(name)
+  if (!name) return
+  storeType.removeItem(name)
 }
 
 /**
  * 删除所有localStorage
  */
 export const clearStore = (storeType = localStorage) => {
-    storeType.clear()
+  storeType.clear()
 }
 
 export default {
-    setCookie,
-    getCookie,
-    delCookie,
-    setStore,
-    getStore,
-    removeStore,
-    clearStore
+  setCookie,
+  getCookie,
+  delCookie,
+  setSessionStore,
+  getSessionStore,
+  setStore,
+  getStore,
+  removeStore,
+  clearStore
 }

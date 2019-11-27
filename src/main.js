@@ -19,6 +19,11 @@ import serviceApi from 'api'
 
 // 加入公共的全局methods方法
 import mixin from './views/mixins'
+
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+Vue.use(preview)
+
 Vue.mixin(mixin)
 
 Vue.use(VueRouter)
@@ -31,20 +36,21 @@ registerComponent(Vue)
 const i18n = importI18n(Vue)
 
 const globalVue = new Vue({
-    el: '#app',
-    i18n,
-    store, // 需要用到vuex时打开
-    router: route(VueRouter),
-    render: h => h(App),
-    beforeCreate () {
-        Vue.prototype.$api = serviceApi
-        Vue.prototype.$toast = Toast
-        Vue.prototype.$defaultImg = require('images/img_default_photo.png')
-        Vue.prototype.$staticFile =
+  el: '#app',
+  i18n,
+  store, // 需要用到vuex时打开
+  router: route(VueRouter),
+  render: h => h(App),
+  beforeCreate () {
+    Vue.prototype.$api = serviceApi
+    Vue.prototype.$toast = Toast
+
+    Vue.prototype.$defaultImg = require('images/img_default_photo.png')
+    Vue.prototype.$staticFile =
       process.env.NODE_ENV === 'production'
-          ? `${process.env.VUE_APP_BASEURLPATH}${process.env.VUE_APP_STATICFILE}`
-          : process.env.VUE_APP_STATICFILE
-    }
+        ? `${process.env.VUE_APP_BASEURLPATH}${process.env.VUE_APP_STATICFILE}`
+        : process.env.VUE_APP_STATICFILE
+  }
 })
 
 window.globalVue = globalVue
