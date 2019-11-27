@@ -7,14 +7,14 @@
 
 <script>
 export default {
-  data () {
-    return {
-      errorImg: ''
+    data () {
+        return {
+            errorImg: ''
+        }
+    },
+    created () {
+        this.errorImg = require('../../themes/images/app/default_no search copy@2x.png')
     }
-  },
-  created () {
-    this.errorImg = require('../../themes/images/app/default_no search copy@2x.png')
-  }
 }
 </script>
 

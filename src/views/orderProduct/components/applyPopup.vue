@@ -61,198 +61,198 @@ import { Popup, Field } from 'vant'
 import utils from 'utils'
 
 export default {
-  components: {
-    Popup,
-    Field
-  },
-  props: {
-    showPopup: {
-      type: Boolean,
-      default: false
+    components: {
+        Popup,
+        Field
     },
-    manageTypes: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    phoneNumber: {
-      type: String,
-      default: ''
-    }
-  },
-  data () {
-    return {
-      timer: null,
-      isShow: false,
-      safeAreaInsetStatus: true,
-      phoneFormartResult: false,
-      userNameFormartResult: false,
-      userCityFormartResult: false,
-      showPhoneError: false,
-      showUserNameError: false,
-      showUserCityError: false,
-      userName: '',
-      userPhone: '',
-      userCity: '',
-      selectCode: '',
-      handlePosition: 'fixed',
-      handleBottom: 0
-      // selectItems: []
-    }
-  },
-  watch: {
-    phoneNumber (val) {
-      this.userPhone = val || ''
-    },
-    showPopup (val) {
-      this.isShow = val
-    },
-    userPhone (val) {
-      let phoneResult = utils.isPhone(this.userPhone)
-      this.phoneFormartResult = phoneResult
-      if (val.length === 11) {
-        if (!phoneResult) {
-          this.showPhoneError = true
-          this.$toast('手机格式有误')
-        } else {
-          this.showPhoneError = false
+    props: {
+        showPopup: {
+            type: Boolean,
+            default: false
+        },
+        manageTypes: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        phoneNumber: {
+            type: String,
+            default: ''
         }
-      } else {
-        this.phoneFormartResult = false
-        this.showPhoneError = false
-      }
     },
-    userName (val) {
-      // let reg = /^[\u0391-\uFFE5A-Za-z]+$/
-      // let reg = /^\[a-zA-Z\s\u4e00-\u9fa5]+$/
-      let reg = /^[a-zA-Z\s\u4e00-\u9fa5]+$/
-      // let reg = /^[\u0391-\uFFE5\s\A-Za-z]+$/
-      let spacingReg = /^[ ]+$/
-      if (spacingReg.test(val)) {
-        this.userName = ''
-      }
-      // else {
-      //   let rs = ''
-      //   for (let i = 0; i < val.length; i++) {
-      //     if (reg.test(val.substr(i, 1))) {
-      //       rs = rs + val.substr(i, 1)
-      //     }
-      //   }
-      //   this.userName = rs
-      // }
-
-      // this.userName = val.replace(filterSpecharsReg, '')
-      let userNameResult = reg.test(val)
-
-      if (!userNameResult) {
-        this.userNameFormartResult = false
-        this.showUserNameError = true
-        // this.$toast('请输入正确的姓名')
-        this.$toast('请输入中英文字符')
-      } else {
-        this.userNameFormartResult = true
-        this.showUserNameError = false
-      }
+    data () {
+        return {
+            timer: null,
+            isShow: false,
+            safeAreaInsetStatus: true,
+            phoneFormartResult: false,
+            userNameFormartResult: false,
+            userCityFormartResult: false,
+            showPhoneError: false,
+            showUserNameError: false,
+            showUserCityError: false,
+            userName: '',
+            userPhone: '',
+            userCity: '',
+            selectCode: '',
+            handlePosition: 'fixed',
+            handleBottom: 0
+            // selectItems: []
+        }
     },
-    userCity (val) {
-      let reg = /^[a-zA-Z\s\u4e00-\u9fa5]+$/
-      // let reg = /^\S[a-zA-Z\s\u4e00-\u9fa5]+\S$/
-      // let reg = /^[\u0391-\uFFE5\s\A-Za-z]+$/
-      let spacingReg = /^[ ]+$/
-      if (spacingReg.test(val)) {
-        this.userCity = ''
-      }
-      // else {
-      //   let rs = ''
-      //   for (let i = 0; i < val.length; i++) {
-      //     if (reg.test(val.substr(i, 1))) {
-      //       rs = rs + val.substr(i, 1)
-      //     }
-      //   }
-      //   this.userCity = rs
-      // }
-      let userCityResult = reg.test(val)
-      if (!userCityResult) {
-        this.userCityFormartResult = false
-        this.showUserCityError = true
-        // this.$toast('请输入正确的城市')
-        this.$toast('请输入中英文字符')
-      } else {
-        this.userCityFormartResult = true
-        this.showUserCityError = false
-      }
-    }
-  },
-  created () {
-    this.userPhone = this.phoneNumber || ''
-  },
-  computed: {
-    submitState () {
-      if (
-        this.userName.length &&
+    watch: {
+        phoneNumber (val) {
+            this.userPhone = val || ''
+        },
+        showPopup (val) {
+            this.isShow = val
+        },
+        userPhone (val) {
+            let phoneResult = utils.isPhone(this.userPhone)
+            this.phoneFormartResult = phoneResult
+            if (val.length === 11) {
+                if (!phoneResult) {
+                    this.showPhoneError = true
+                    this.$toast('手机格式有误')
+                } else {
+                    this.showPhoneError = false
+                }
+            } else {
+                this.phoneFormartResult = false
+                this.showPhoneError = false
+            }
+        },
+        userName (val) {
+            // let reg = /^[\u0391-\uFFE5A-Za-z]+$/
+            // let reg = /^\[a-zA-Z\s\u4e00-\u9fa5]+$/
+            let reg = /^[a-zA-Z\s\u4e00-\u9fa5]+$/
+            // let reg = /^[\u0391-\uFFE5\s\A-Za-z]+$/
+            let spacingReg = /^[ ]+$/
+            if (spacingReg.test(val)) {
+                this.userName = ''
+            }
+            // else {
+            //   let rs = ''
+            //   for (let i = 0; i < val.length; i++) {
+            //     if (reg.test(val.substr(i, 1))) {
+            //       rs = rs + val.substr(i, 1)
+            //     }
+            //   }
+            //   this.userName = rs
+            // }
+
+            // this.userName = val.replace(filterSpecharsReg, '')
+            let userNameResult = reg.test(val)
+
+            if (!userNameResult) {
+                this.userNameFormartResult = false
+                this.showUserNameError = true
+                // this.$toast('请输入正确的姓名')
+                this.$toast('请输入中英文字符')
+            } else {
+                this.userNameFormartResult = true
+                this.showUserNameError = false
+            }
+        },
+        userCity (val) {
+            let reg = /^[a-zA-Z\s\u4e00-\u9fa5]+$/
+            // let reg = /^\S[a-zA-Z\s\u4e00-\u9fa5]+\S$/
+            // let reg = /^[\u0391-\uFFE5\s\A-Za-z]+$/
+            let spacingReg = /^[ ]+$/
+            if (spacingReg.test(val)) {
+                this.userCity = ''
+            }
+            // else {
+            //   let rs = ''
+            //   for (let i = 0; i < val.length; i++) {
+            //     if (reg.test(val.substr(i, 1))) {
+            //       rs = rs + val.substr(i, 1)
+            //     }
+            //   }
+            //   this.userCity = rs
+            // }
+            let userCityResult = reg.test(val)
+            if (!userCityResult) {
+                this.userCityFormartResult = false
+                this.showUserCityError = true
+                // this.$toast('请输入正确的城市')
+                this.$toast('请输入中英文字符')
+            } else {
+                this.userCityFormartResult = true
+                this.showUserCityError = false
+            }
+        }
+    },
+    created () {
+        this.userPhone = this.phoneNumber || ''
+    },
+    computed: {
+        submitState () {
+            if (
+                this.userName.length &&
         this.userCity.length &&
         this.selectCode.length &&
         this.phoneFormartResult &&
         this.userNameFormartResult &&
         this.userCityFormartResult
-      ) {
-        return true
-      }
-      return false
-    }
-  },
-  methods: {
-    handleVerifyPhone () {
-      this.handleBottom = '0'
-      if (this.userPhone.length < 11) {
-        this.$toast('手机格式有误')
-        this.showPhoneError = true
-      }
-    },
-    handleVerifyUserName () {
-      this.handleBottom = '0'
-    },
-    handleVerifyUserCity () {
-      this.handleBottom = '0'
-    },
-    handleHeight () {
-      let platform = utils.getStore('baseParams').platform
-      if (platform === 'android') {
-        this.handleBottom = '300px'
-      }
-    },
-    // 处理选择经营类型
-    handleSelect (itemCode) {
-      this.selectCode = itemCode
-      // this.selectItems = []
-      // let result = this.selectItems.indexOf(itemCode)
-      // if (result > -1) {
-      //   this.selectItems.splice(result, 1)
-      // } else {
-      //   this.selectItems.push(itemCode)
-      // }
-    },
-    // 判断是否选中
-    handleContainItem (itemCode) {
-      // let result = this.selectItems.indexOf(itemCode)
-      return this.selectCode === itemCode
-    },
-    handleClose () {
-      this.$emit('onClose')
-    },
-    handleApply () {
-      if (this.submitState) {
-        let info = {
-          userName: this.userName,
-          userPhone: this.userPhone,
-          userCity: this.userCity,
-          manageCode: this.selectCode
+            ) {
+                return true
+            }
+            return false
         }
-        this.$emit('submit', info)
-      }
+    },
+    methods: {
+        handleVerifyPhone () {
+            this.handleBottom = '0'
+            if (this.userPhone.length < 11) {
+                this.$toast('手机格式有误')
+                this.showPhoneError = true
+            }
+        },
+        handleVerifyUserName () {
+            this.handleBottom = '0'
+        },
+        handleVerifyUserCity () {
+            this.handleBottom = '0'
+        },
+        handleHeight () {
+            let platform = utils.getStore('baseParams').platform
+            if (platform === 'android') {
+                this.handleBottom = '300px'
+            }
+        },
+        // 处理选择经营类型
+        handleSelect (itemCode) {
+            this.selectCode = itemCode
+            // this.selectItems = []
+            // let result = this.selectItems.indexOf(itemCode)
+            // if (result > -1) {
+            //   this.selectItems.splice(result, 1)
+            // } else {
+            //   this.selectItems.push(itemCode)
+            // }
+        },
+        // 判断是否选中
+        handleContainItem (itemCode) {
+            // let result = this.selectItems.indexOf(itemCode)
+            return this.selectCode === itemCode
+        },
+        handleClose () {
+            this.$emit('onClose')
+        },
+        handleApply () {
+            if (this.submitState) {
+                let info = {
+                    userName: this.userName,
+                    userPhone: this.userPhone,
+                    userCity: this.userCity,
+                    manageCode: this.selectCode
+                }
+                this.$emit('submit', info)
+            }
+        }
     }
-  }
 }
 </script>
 

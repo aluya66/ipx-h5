@@ -31,59 +31,59 @@ import reportList from '@/views/common/reportList.vue'
 import components from 'components'
 const { CTabs } = components
 export default {
-  components: {
-    CTabs,
-    reportList
-  },
-  data () {
-    return {
-      tabs: [
-        {
-          name: 0,
-          title: '我的测款数据'
-        },
-        {
-          name: 1,
-          title: '平台测款数据'
-        }
-      ],
-      participantCode: '',
-      bookActivityCode: '',
-      curType: 0,
-      testStyleList: []
-    }
-  },
-  activated () {
-    this.participantCode = this.$route.query.participantCode
-    this.bookActivityCode = this.$route.query.bookActivityCode
-    this.getRankList()
-  },
-  methods: {
-    getRankList () {
-      const params = {
-        bookVoteSearchType: this.curType,
-        participantCode: this.participantCode,
-        bookActivityCode: this.bookActivityCode
-      }
-      this.$api.book
-        .bookRankList(params)
-        .then(res => {
-          res.map((item, index) => {
-            if (index < 3) {
-              item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@3x.png') + ')'
-            }
-          })
-          this.testStyleList = res
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    components: {
+        CTabs,
+        reportList
     },
-    changeActive (val) {
-      this.curType = val
-      this.getRankList()
+    data () {
+        return {
+            tabs: [
+                {
+                    name: 0,
+                    title: '我的测款数据'
+                },
+                {
+                    name: 1,
+                    title: '平台测款数据'
+                }
+            ],
+            participantCode: '',
+            bookActivityCode: '',
+            curType: 0,
+            testStyleList: []
+        }
+    },
+    activated () {
+        this.participantCode = this.$route.query.participantCode
+        this.bookActivityCode = this.$route.query.bookActivityCode
+        this.getRankList()
+    },
+    methods: {
+        getRankList () {
+            const params = {
+                bookVoteSearchType: this.curType,
+                participantCode: this.participantCode,
+                bookActivityCode: this.bookActivityCode
+            }
+            this.$api.book
+                .bookRankList(params)
+                .then(res => {
+                    res.map((item, index) => {
+                        if (index < 3) {
+                            item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@3x.png') + ')'
+                        }
+                    })
+                    this.testStyleList = res
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        changeActive (val) {
+            this.curType = val
+            this.getRankList()
+        }
     }
-  }
 }
 </script>
 

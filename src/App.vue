@@ -4,33 +4,33 @@
 <script>
 import utils from 'utils'
 export default {
-  name: 'c-app',
-  data () {
-    return {
-      baseParams: {}
-    }
-  },
-  created () {
-    this.getBaseCofing()
-  },
-  methods: {
+    name: 'c-app',
+    data () {
+        return {
+            baseParams: {}
+        }
+    },
+    created () {
+        this.getBaseCofing()
+    },
+    methods: {
     // 获取配置参数
-    getBaseCofing () {
-      this.baseParams = this.$route.query
+        getBaseCofing () {
+            this.baseParams = this.$route.query
 
-      const ua = navigator.userAgent
-      const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi)
-      const statusBarHeight = ua.match(/statusBarHeight\/(\d{2})/i)
+            const ua = navigator.userAgent
+            const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi)
+            const statusBarHeight = ua.match(/statusBarHeight\/(\d{2})/i)
 
-      let params = {
-        success: true,
-        message: '',
-        code: 0,
-        method: 'app_info',
-        data: {},
-        uiData: '',
-        callBack: 'javascript:baseCofing'
-      }
+            let params = {
+                success: true,
+                message: '',
+                code: 0,
+                method: 'app_info',
+                data: {},
+                uiData: '',
+                callBack: 'javascript:baseCofing'
+            }
 
             let testData = {
                 'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNyMeo4fzD3E+MKLDUmlokxYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpEfi4HUZ6cvCvZQv+/JGCOwFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+X5dMJSQjb9MVs4LYagvHPGlDh5Eg2BOhSDnbLgVL5xHJ74skEJEgog7FuFXiloYykht5BzoIFMMo7GYKzeKb3U',

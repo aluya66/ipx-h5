@@ -8,20 +8,20 @@
  *
  */
 export default (err, callBackFun, time) => {
-  const errCode = err.code
-  let errMsg = ''
-  switch (errCode) {
+    const errCode = err.code
+    let errMsg = ''
+    switch (errCode) {
     case 101:
-      errMsg = '鉴权失败'
-      break
+        errMsg = '鉴权失败'
+        break
     case 102:
-      errMsg = '服务器异常，请稍后重试'
-      break
+        errMsg = '服务器异常，请稍后重试'
+        break
     default:
-      errMsg = err.message
-      break
-  }
-  // console.log(`${errCode}【${errMsg}】`)
-  window.globalVue.$toast(`${errMsg}`, time)
-  callBackFun && callBackFun(err)
+        errMsg = err.message
+        break
+    }
+    // console.log(`${errCode}【${errMsg}】`)
+    window.globalVue.$toast(`${errMsg}`, time)
+    callBackFun && callBackFun(err)
 }

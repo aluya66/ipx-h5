@@ -51,7 +51,7 @@ export const bookApplyManagers = params => Http.fetch(`${context}/v1/bookactivit
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getSharemeasuresList = params => Http.fetch(`${context}/v1/bookactivity/sharemeasures`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -60,5 +60,5 @@ export const getSharemeasuresList = params => Http.fetch(`${context}/v1/bookacti
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const bookShared = params => Http.fetch(`${context}/v1/bookactivity/shared`, params, {
-  method: 'get'
+    method: 'get'
 })
