@@ -21,9 +21,10 @@ const env = {
     themes: process.env.VUE_APP_themes
 }
 
-console.log('======debug======', env.isDebug, '======themes======', env.themes)
+console.log('======debug======', env.isDebug, '======themes======', env.themes, process.env.VUE_CMS_serverPath)
 
 module.exports = {
+    // process.env.VUE_APP_BASEURLPATH
     publicPath: !env.isDebug ? process.env.VUE_APP_BASEURLPATH : '/',
     outputDir: `dist${process.env.VUE_APP_BASEURLPATH}`,
     // 放置生成的静态资源(s、css、img、fonts)的(相对于 outputDir 的)目录(默认'')
@@ -198,11 +199,11 @@ module.exports = {
                     '^/api-ipx': '/'
                 }
             },
-            [process.env.VUE_APP_WXPATH]: {
-                target: process.env.VUE_APP_WXSERVER,
+            [process.env.VUE_APP_CMS_serverPath]: {
+                target: process.env.VUE_APP_CMS_serverUrl,
                 ws: false,
                 pathRewrite: {
-                    '^/weixin': '/'
+                    '^/api-cms-ipx': '/'
                 }
             }
         },

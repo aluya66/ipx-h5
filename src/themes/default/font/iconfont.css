@@ -6,6 +6,18 @@
   url('iconfont.ttf?t=1565601130484') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
   url('iconfont.svg?t=1565601130484#iconfont') format('svg'); /* iOS 4.1- */
 }
+/* 
+@font-face {font-family: "PingFangRegular";
+  src: url('PingFang\ Regular.ttf')
+}
+
+@font-face {font-family: "alibabaRegular";
+  src: url('alibaba\ font-Regular.otf')
+}*/
+
+@font-face {font-family: "alibabaBold";
+  src: url('alibaba\ font-Bold.otf')
+} 
 
 .iconfont {
   font-family: "iconfont" !important;

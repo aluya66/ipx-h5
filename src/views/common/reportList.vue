@@ -1,29 +1,21 @@
 <template>
   <div class="panel">
     <div class="report-list">
-      <div
-        class="report"
-        v-for="(item,index) in list"
-        :key="index"
-      >
+      <div class="report" v-for="(item,index) in list" :key="index">
         <div class="left">
-          <div
-            class="rank"
-            :style="{'backgroundImage': item.topNumUrl}"
-          >
-            <p v-if="index > 2"> {{index | numStr}} </p>
+          <div class="rank" :style="{'backgroundImage': item.topNumUrl}">
+            <p v-if="index > 2">{{index | numStr}}</p>
           </div>
-          <img :src="item.mainPic">
+          <img :src="item.mainPic" />
           <span>{{item.productName}}</span>
         </div>
         <div class="price">
-          <span>{{item.singleSalesVolume}}</span>&nbsp;票
+          <p>{{item.measureVoteNum}}</p>&nbsp;
+          <span>票</span>
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -43,7 +35,7 @@ export default {
     },
     // created () {
     //   this.list = this.list.map((item,index) =>{
-    //       item.topNumUrl = 'url(' + require('../../themes/images/app/rank'+index+'@2x.png') + ')'
+    //       item.topNumUrl = 'url(' + require('../../themes/images/app/rank'+index+'@3x.png') + ')'
     //   })
     // },
     filters: {
@@ -58,14 +50,18 @@ export default {
 <style lang="less" scoped>
 .panel {
   .report-list {
+    height: calc(100vh - 240px);
     padding-bottom: 2px;
+    overflow: auto;
     .report {
       display: flex;
       justify-content: space-between;
       margin: 16px 16px;
       margin-bottom: 32px;
+      align-items: center;
       .left {
         display: flex;
+        width: 80%;
         .rank {
           width: 32px;
           height: 32px;
@@ -74,7 +70,7 @@ export default {
           background-repeat: no-repeat;
           background-size: 100%;
           p {
-            font-family: PingFangSC;
+            // font-family: 'PingFangSC';
             font-size: 12px;
             font-weight: 600;
             color: #8a8c99;
@@ -83,28 +79,41 @@ export default {
         img {
           width: 56px;
           height: 56px;
-          margin: 0 16px;
-          border-radius: 8px;
+          margin: 0 12px;
+          border-radius: 4px;
+          object-fit: cover;
         }
         span {
-          font-family: PingFangSC;
+          // font-family: 'PingFangSC';
           font-size: 14px;
-          font-weight: 500;
+          font-weight: bold;
           color: #2a2b33;
           line-height: 56px;
-          .ellipsis()
+          width: 140px;
+          .ellipsis();
         }
       }
       .price {
-        font-family: PingFangSC;
+        // font-family: 'PingFangSC';
         font-size: 12px;
         color: #8a8c99;
-        line-height: 56px;
-        span {
-          font-family: ALIBABAFont;
+        // line-height: 56px;
+        width: 30%;
+        text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        p {
+          font-family: 'alibabaBold';
           font-size: 20px;
           font-weight: bold;
           color: #f53030;
+          width: 80%;
+          margin: 0;
+          /* display: inline-block; */
+          text-align: right;
+          display: inline-block;
+          .ellipsis();
         }
       }
     }

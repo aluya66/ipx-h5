@@ -138,10 +138,19 @@ export default create({
 
 }
 
+.c-header-white{
+  .van-icon-arrow-left {
+    // background: url("../../themes/images/app/icon_next20_white1@3x.png");
+    background: url("../../themes/images/app/icon_nav_back_white@3x.png");
+    .background-common(@f26);
+  }
+}
+
 .van-icon-arrow-left {
   width: @f26;
   height: @f26;
-  background: url("../../themes/images/icon_nav_gray1_def.png");
+  // background: url("../../themes/images/icon_nav_gray1_def.png");
+  background: url("../../themes/images/app/icon_nav_back1_def@3x.png");
   .background-common(@f26);
   &.van-icon-arrow-left:before {
     content: "";
