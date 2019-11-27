@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div id="stickyContain" class="sticky-contain" >
+        <div id="stickyContain" class="sticky-contain" :style="changePosition" >
                 <div class="menu">
                     <section :class='["menu-item" ,menuIndex == 0 ?"item-select":"item-default"]' @click="handleGroupList">组货清单
                         <span v-if="menuIndex == 0"></span>
@@ -62,7 +62,7 @@
             @load="handleMore"
         >
             <div class="item" v-for="item in datas" :key="item.productCode" @click="handleSelectProduct(item)">
-                <img class="itemSelIcon" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
+                <img class="itemSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
                 <h3>￥{{parseInt(item.tshPrice).toFixed(2)}}</h3>
@@ -79,7 +79,7 @@
         >
             <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectProduct(item)">
                 <group-item :groupGood='item'/>
-                <img class="groupSelIcon" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
+                <img class="groupSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
             </div>
         </list>
         <manage-view ref="manageView">
@@ -179,7 +179,15 @@ export default {
         }
     },
     computed: {
-
+        changePosition() {
+            let baseParams = utils.getStore('baseParams')
+            let statusBarHeight = (Number(baseParams.statusBarHeight) + 44) / 100
+            if (this.isStickyTop) {
+                return `position:fixed;top:${statusBarHeight}rem`
+            } else {
+                return `position:sticky;top:0`
+            }
+        }
     },
     methods: {
         handleClickTest() {
@@ -507,7 +515,8 @@ export default {
     position: relative;
     // background: #fff;
     height: 100%;//calc(100vh - 124px)  ;
-    overflow: auto;
+    overflow: scroll;
+
     .enableScroll {
         overflow: visible;
     }

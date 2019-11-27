@@ -1,6 +1,6 @@
 export default {
     path: '/user/aiGroup/matchRank',
-    name: 'aiGroup',
+    name: 'matchRank',
     meta: {
         keepAlive: true
     },
