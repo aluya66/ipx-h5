@@ -24,14 +24,14 @@
     </c-header>
     <div class="contain">
         <div class="test-agcency-contain">
-            <div :class='["test-agency", "test"]'>
+            <div :class='["test-agency", "test"]' @click="handleClickTest">
                 <div>
                     <p>在线测款</p>
                     <p>预测款式趋势</p>
                 </div>
                 <img :src="testImage" alt="" />
             </div>
-            <div :class='["test-agency", "agency"]'>
+            <div :class='["test-agency", "agency"]' @click="handleGoDelegate">
                 <div>
                     <p>加盟代理</p>
                     <p>低至2.8折采购价</p>
@@ -182,9 +182,20 @@ export default {
 
     },
     methods: {
+        handleClickTest() {
+            this.$toast('功能即将开启，请耐心等待')
+        },
+        handleGoDelegate() {
+            const params = {
+                jumpUrl: 'goDelegate://'
+            }
+            utils.postMessage('', params)
+        },
+        // 搜索
         handleClickSearchIcon() {
             this.isInSearch = true
         },
+        // 取消搜索
         handleCancel() {
             this.isInSearch = false
         },
