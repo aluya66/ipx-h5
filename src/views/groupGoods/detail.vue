@@ -194,7 +194,7 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         this.$toast('打call成功')
-                        getWeekData()
+                        this.getWeekData()
                     }
                 })
                 .catch(() => {})
@@ -226,7 +226,6 @@ export default {
                     this.fashionNum = this.groupDetail.fashionIndexNum + ''
                     this.adviceNum = this.groupDetail.adviceIndexNum + ''
                     this.hotNum = this.groupDetail.hotIndexNum + ''
-                    
                 })
                 .catch(err => {
                     console.log(err)
