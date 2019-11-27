@@ -59,6 +59,7 @@ import 'swiper/dist/css/swiper.css'
 
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Empty from './groupEmpty.vue'
+import utils from '../../../utils'
 
 export default {
     components: {
@@ -157,8 +158,8 @@ export default {
         }
     },
     activated() {
+        utils.postMessage('changeStatus', 'light')
         let params = this.$route.query.params
-
         this.$api.groupGoods.searchGroup(params).then(res => {
             if (res.data instanceof Array) {
                 this.allDatas = res.data

@@ -58,7 +58,7 @@
 <script>
 import components from 'components'
 import SelectBox from '../common/selectBox.vue'
-
+import utils from 'utils'
 const { CTabs } = components
 export default {
     components: {
@@ -145,6 +145,9 @@ export default {
     },
     created() {
         this.getSearchLists()
+    },
+    activated() {
+        utils.postMessage('changeStatus', 'default')
     },
     methods: {
         handleSubmit() {
