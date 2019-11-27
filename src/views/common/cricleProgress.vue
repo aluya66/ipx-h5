@@ -63,7 +63,6 @@ export default {
     },
     methods: {
         cricleChart(componentId, actualPercent, chartColor, text, actualText) {
-            debugger
             var _F = F2
             var Shape = _F.Shape
             var G = _F.G
