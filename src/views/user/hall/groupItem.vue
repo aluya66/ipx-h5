@@ -2,7 +2,7 @@
    <div class="contain">
        <div class="content">
            <section class="header">
-                <p><span>{{groupGood.name}}</span><span>{{`上装 &nbsp;${groupGood.topsSkuCount || 0} ；下装&nbsp; ${groupGood.bottomsSkuCount || 0}`}}</span></p>
+                <p><span>{{groupGood.name}}</span><span v-if='false'>{{`上装 &nbsp;${groupGood.topsSkuCount || 0} ；下装&nbsp; ${groupGood.bottomsSkuCount || 0}`}}</span></p>
             </section>
             <div class="list-contain">
                 <img class="pole"  src="@/themes/images/groupGoods/pic_koc_clothes_hanger.png" alt="">
@@ -149,7 +149,7 @@ export default {
                         position: absolute;
                         display: inline-block;
                         left: 0;
-                        top: 12px;
+                        top: 14px;
                         z-index: -1;
                     // border-top: 8px
                     }
@@ -233,7 +233,7 @@ export default {
                 line-height:17px;
                 span {
                     font-size:20px;
-                    font-weight:800;
+                    font-weight:700;
                     line-height:17px;
                 }
             }

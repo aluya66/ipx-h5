@@ -141,7 +141,7 @@ export default {
         },
         // 去展厅
         handleToHall() {
-            this.$router.push({ path: '/user/hall' })
+            this.$router.push({ path: '/user/hall', query: { isFromWeb: true } })
         },
         // 切换菜单 ---买手推荐
         handleSelectRec() {
@@ -343,7 +343,7 @@ export default {
                 position: absolute;
                 display: inline-block;
                 left: 0;
-                top: 13px;
+                top: 15px;
                 z-index: -1;
             // border-top: 8px
             }

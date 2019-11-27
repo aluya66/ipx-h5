@@ -1,6 +1,6 @@
 <template>
     <layout-view class="hall-bg">
-    <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true" :pageOutStatus="true">
+    <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true" :pageOutStatus="!isFromWeb">
         <div v-show="!isInSearch" slot="title">我的展厅</div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage"  />
@@ -100,6 +100,7 @@
 import { List, Search } from 'vant'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
+import utils from 'utils'
 
 export default {
     components: {
@@ -113,6 +114,7 @@ export default {
     },
     data () {
         return {
+            isFromWeb: true,
             isInSearch: false,
             searchKey: '',
             isManageState: false, // 是不是在管理状态
@@ -192,6 +194,11 @@ export default {
                 this.handleSelectItem(item)
             } else {
                 /// 详情？
+                const params = {
+                    jumpUrl: 'productDetail://',
+                    productCode: item.productCode
+                }
+                utils.postMessage('', params)
             }
         },
         /// 选择单个样衣
@@ -409,6 +416,7 @@ export default {
         }
     },
     activated() {
+        this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
         this.handleScroll()
     },
@@ -444,7 +452,7 @@ export default {
         padding: 0 16px;
         overflow: auto;
         justify-content: space-between;
-        margin-top: -1px;
+        margin-top: -12px;
         .van-list__finished-text {
             width: 100%;
         }
@@ -556,7 +564,7 @@ export default {
     .test-agency {
         width: calc(50vw - 21.5px);
         height: 92px;
-        margin-top: 40px;
+        margin-top: 20px;
         border-radius:8px;
         display: flex;
         flex-direction: row;
