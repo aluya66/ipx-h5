@@ -70,18 +70,18 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      console.log(document.querySelector('.van-pull-refresh'))
+      // console.log(document.querySelector('.van-pull-refresh'))
 
-      console.log(this.$refs.shareList.offsetHeight)
+      // console.log(this.$refs.shareList.offsetHeight)
       // document.querySelector('.list-scroll').style.height =
       //   (this.$refs.shareList.offsetHeight - 880) + 'px'
-      if (this.$refs.shareList.offsetHeight > 3000) {
-        document.querySelector('.van-pull-refresh').style.height =
-        (this.$refs.shareList.offsetHeight - 860) + 'px'
-      } else {
-        document.querySelector('.van-pull-refresh').style.height =
-        (this.$refs.shareList.offsetHeight - 650) + 'px'
-      }
+      // if (this.$refs.shareList.offsetHeight > 3000) {
+      //   document.querySelector('.van-pull-refresh').style.height =
+      //   (this.$refs.shareList.offsetHeight - 860) + 'px'
+      // } else {
+      //   document.querySelector('.van-pull-refresh').style.height =
+      //   (this.$refs.shareList.offsetHeight - 650) + 'px'
+      // }
 
       // document.querySelector('.van-list').style.height =
       // (this.$refs.shareList.offsetHeight - 600) + 'px'
@@ -165,7 +165,8 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(100vh - 200px);
+    overflow: hidden;
+    // height: calc(100vh - 200px);
   }
   .scale-content {
     width: 120%;
@@ -176,13 +177,16 @@ export default {
     transform: scale(0.5, 0.5) translateX(-15%);
     transform-origin: top;
     padding: 10px;
-    // height: calc(120vh);
-    overflow: auto;
+    height: calc(115vh);
+    // overflow: auto;
     &::-webkit-scrollbar {
       display: none;
     }
   }
-
+  .share-list{
+    height: calc(110vh);
+    overflow: auto;
+  }
 }
 
 .bottom-dialog {
