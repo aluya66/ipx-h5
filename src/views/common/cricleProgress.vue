@@ -56,11 +56,14 @@ export default {
             break
         }
     },
-    mounted() {
-        this.cricleChart(this.componentId, this.actualPercent, this.chartColor, this.textId, this.actualText)
+    watch: {
+        actualPercent(val) {
+            this.cricleChart(this.componentId, val, this.chartColor, this.textId, this.actualText)
+        }
     },
     methods: {
         cricleChart(componentId, actualPercent, chartColor, text, actualText) {
+            debugger
             var _F = F2
             var Shape = _F.Shape
             var G = _F.G
@@ -128,8 +131,6 @@ export default {
                     })
                 }
             })
-            // console.log(this.actualPercent)
-            // var _that = this
             var data = [
                 {
                     const: 'a',
@@ -137,7 +138,6 @@ export default {
                     expect: 100
                 }
             ]
-            // console.log('传入的id', this.componentId)
             var chart = new F2.Chart({
                 id: componentId,
                 padding: [0, 30, 60],

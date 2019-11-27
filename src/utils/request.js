@@ -124,7 +124,7 @@ const setParams = (url, params = {}, opt = {}) => {
         url,
         headers: {
             'Content-Type': contentType,
-            'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOoU7gweJ+3TU+calRDAsd4YPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpMNhqvLqVq0pFqUbhumk5lcFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+USTqW/OuKvbqPYqYUhX2uiAESu9olXRVgsDolI27mbVcu/7FsqSMqcgLGAjYkxauZK7V/fAehk826j7EaNzJZW',
+            'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNyMeo4fzD3E+MKLDUmlokxYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpEfi4HUZ6cvCvZQv+/JGCOwFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+X5dMJSQjb9MVs4LYagvHPGlDh5Eg2BOhSDnbLgVL5xHJ74skEJEgog7FuFXiloYykht5BzoIFMMo7GYKzeKb3U',
             'channel': 'WEB',
             'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
             'app_version': '1.2.0',

@@ -153,23 +153,23 @@ export default {
 
             const params = {
                 groupGoodsId: this.groupDetail.groupGoodsId,
-                name: this.groupDetail.name,
+                name: this.groupDetail.name
             }
 
             this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-               item.skuList.forEach((skuItem,skuIndex) => {
-                   let sku = {
+                item.skuList.forEach((skuItem, skuIndex) => {
+                    let sku = {
                         num: skuItem.skuValue,
                         productAtrNumber: this.seletedDetailsItem.productAtrNumber,
                         productCode: this.seletedDetailsItem.productCode,
                         productSkuCode: skuItem.productSkuCode,
                         starasSkuCode: skuItem.starasSkuCode
-                   }
-                   groupProducts.push(sku)
-               })
+                    }
+                    groupProducts.push(sku)
+                })
             })
             params.groupGoodsRecords = groupProducts
-            
+
             this.$api.groupGoods.updateGroupListDetail(params).then(res => {
                 if (res.code === 0) {
                     this.getGroupDetail()
