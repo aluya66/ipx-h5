@@ -1,6 +1,6 @@
 <template>
   <layout-view>
-    <c-header slot="header" :left-arrow="true">
+    <c-header slot="header" :left-arrow="true" :pageOutStatus='true'>
       <div slot="title">智能组货</div>
     </c-header>
     <c-tabs
@@ -14,14 +14,7 @@
       @change="onChangeTab"
     ></c-tabs>
     <!-- 客户特征开始 -->
-    <div class="container" v-show="currentTab === 1">
-        <!-- <select-box :items='customerGroupList' :isSlot='true' itemBoxClass="image-box customer-box" itemClass="image-item" sectionTitle="客户群体" sectionSubTitle="(可多选)">
-            <template #selectItem='slotProps'>
-                <img class="image-img" :src="slotProps.item.icon" />
-                <p class="image-info">{{slotProps.item.age}}</p>
-                <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
-            </template>
-        </select-box> -->
+    <div class="container" :style="getBottomOffset(65)" v-if="currentTab === 1">
         <select-box v-for="item in curCategory" :key="item.labelCategoryCode" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.imageUrl.length > 0?"image-item":""' sectionSubTitle="(可多选)" >
             <template #selectItem='slotProps'>
                 <img class="image-img" :src="slotProps.item.imageUrl" />
@@ -34,7 +27,7 @@
     <!-- 客户特征结束 -->
 
     <!-- 商品特征开始 -->
-    <div class="container" v-show="currentTab === 0">
+    <div class="container" :style="getBottomOffset(65)" v-if="currentTab === 0">
       <select-box v-for="item in curCategory" :key="item.labelCategoryCode" :isSlot='item.imageUrl.length > 0' :items="item.labels"  :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0 ?"image-box category-box":""' :itemClass='item.imageUrl.length > 0 ?"image-item":""' sectionSubTitle="(可多选)">
         <template #selectItem="slotProps">
               <img class="image-img" :src="slotProps.item.imageUrl" />
@@ -42,15 +35,9 @@
               <img v-if="slotProps.item.isSelected" class="check-box-img" src="~images/groupGoods/selected_icon.png"/>
         </template>
       </select-box>
-
-      <!-- <select-box :items='selectList' sectionTitle="季节" />
-      <select-box :items='selectList' sectionTitle="风格" />
-      <select-box :items='selectList' sectionTitle="材质" />
-      <select-box :items='selectList' sectionTitle="色系" />
-      <select-box :items='selectList' sectionTitle="厚度" /> -->
     </div>
     <!-- 商品特征结束 -->
-    <div class="bottom-box">
+    <div class="bottom-box" :style="()=>{utils.bottomOffset(0)}">
       <div class="bottom-btn" @click="handleSubmit">{{"一键开启组货"}}</div>
     </div>
   </layout-view>
@@ -150,6 +137,9 @@ export default {
         utils.postMessage('changeStatus', 'default')
     },
     methods: {
+        getBottomOffset (offset) {
+            return utils.bottomOffset(offset)
+        },
         handleSubmit() {
             let labels = []
             let allCategory = JSON.parse(JSON.stringify(this.curCategory))
@@ -257,9 +247,9 @@ export default {
 }
 .container {
   padding: 0 16px;
-  height: calc(100vh - 60px);
+  height: 100%;//calc(100vh - 60px);
   overflow: auto;
-  padding-bottom: 60px;
+//   padding-bottom: 60px;
   background-color: #fff;
   .item-wrapper {
     position: relative;

@@ -33,11 +33,11 @@ export default {
             }
 
             let testData = {
-                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNyMeo4fzD3E+MKLDUmlokxYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpEfi4HUZ6cvCvZQv+/JGCOwFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+X5dMJSQjb9MVs4LYagvHPGlDh5Eg2BOhSDnbLgVL5xHJ74skEJEgog7FuFXiloYykht5BzoIFMMo7GYKzeKb3U',
+                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOF6AH4/oPB8bsw/F2f13YiYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpOJ0+X+ccAG4ohzdE6/sXfcFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+X5y5lPfFWoPl1H5d5CYkkbRuMrEqbJ+demQC6k2QoR2kHHtpePlGRrmhLMQ4BOQRxnMQ+5RlcfrFUN6mNVKNbw',
                 'channel': 'WEB',
                 'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
                 'app_version': '1.2.0',
-                'platform': 'android',
+                'platform': 'web',
                 'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
                 'mobile_model': 'ELE-AL00',
                 'os_version': '9',

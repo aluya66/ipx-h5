@@ -6,7 +6,7 @@
             <img class="header-img" :src="backImage" />
         </template>
    </c-header>
-   <div class="contain">
+   <div class="contain" >
        <p class="top-title">最潮搭配TOP10</p>
        <div class="rank" :style="getListContainHeight()">
            <div class="rank-content" v-for="(item,index) in rankData" :key="item" @click="handleToDetail(item)">
@@ -89,7 +89,9 @@ export default {
             }, true)
         },
         getListContainHeight() {
-            return `height:${this.getContainHeight()}rem`
+            let offsetStr = utils.bottomOffset(0)
+
+            return `height:${this.getContainHeight()}rem;${offsetStr}`
         },
         getContainHeight() {
             this.baseParams = utils.getStore('baseParams')

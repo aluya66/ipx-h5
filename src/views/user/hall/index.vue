@@ -55,6 +55,7 @@
         <list
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
+            :style="()=>{utils.bottomOffset(0)}"
             v-if="menuIndex == 1"
             v-model="loading"
             :finished="finished"
@@ -71,6 +72,7 @@
         <list
             ref="grouplist"
             :class='["groupList", isStickyTop?"enableScroll":"disableScroll"]'
+            :style="()=>{utils.bottomOffset(0)}"
             v-if="menuIndex == 0"
             v-model="loading"
             :finished="finished"
