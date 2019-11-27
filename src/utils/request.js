@@ -96,6 +96,8 @@ const setProxy = mockFile => `/mock/${mockFile}`
  */
 
 const setParams = (url, params = {}, opt = {}) => {
+    let baseParams = utils.getStore('baseParams')
+
     promiseArr.isGlobalErr = !!opt.hasErrMsg
     // 所有接口统一参数
     params = {
@@ -122,19 +124,7 @@ const setParams = (url, params = {}, opt = {}) => {
 
     let curParams = {
         url,
-        headers: {
-            'Content-Type': contentType,
-            'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOi/rfZtF5tQ1Li6K9tHv3UYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpMjCcYF84n/LB07nFSlVECMFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+XW/bPM6jqtfhrwbMCafBkFEfn+pC/Jc8+R4+X7tCybXf9UGyJK9GGLmPvsg9ww7H2kxylMF1cDtvzrbmHCrI0f',
-            'channel': 'WEB',
-            'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
-            'app_version': '1.2.0',
-            'platform': 'android',
-            'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
-            'mobile_model': 'ELE-AL00',
-            'os_version': '9',
-            'lat': '100.156161',
-            'lng': '100.156161'
-        },
+        headers: baseParams,
         method
     }
     // get请求和post请求参数和
