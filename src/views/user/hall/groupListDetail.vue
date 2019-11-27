@@ -85,7 +85,6 @@ export default {
     },
     created() {
         this.getGroupDetail()
-    // this.groupGoods()
     },
     components: {
         skuSelect
@@ -117,16 +116,13 @@ export default {
             Number(skuItem.entityStock) > 0 ? Number(skuItem.groupNum) : 0
                     seletedColorSkuNum =
             Number(skuItem.skuValue) + Number(seletedColorSkuNum)
-                    //   debugger
                 })
                 item.seletedColorSkuNum = seletedColorSkuNum
                 seletedColorSkuSumNum =
           Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
-                //   debugger
             })
 
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
-            //   debugger
         },
         getGroupDetail() {
             // 获取组货详情列表
@@ -142,60 +138,8 @@ export default {
 
                         this.groupDetail = data
                         this.groupGoodsRecords = groupGoodsRecords
-                        // let seletedTotalItem = 0
-                        // let seletedStatus = true
-                        // this.groupGoodsRecords.forEach((item, index) => {
-                        //     if (item.defaultSelectedkinds > 0) {
-                        //         seletedTotalItem++
-                        //     } else {
-                        //         seletedStatus = false
-                        //     }
-                        // })
-                        // this.groupDetail.seletedTotalItem = seletedTotalItem
-                        // this.groupDetail.seletedStatus = seletedStatus
                         this.groupName = this.groupDetail.name
                     }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-        groupGoods() {
-            let params = {
-                groupGoodsInfos: [
-                    {
-                        groupGoodsRecords: [
-                            {
-                                num: 2,
-                                productAtrNumber: '19Y9302QL480',
-                                productCode: '051705137353',
-                                productSkuCode: '051705137353000',
-                                starasSkuCode: '19Y9302QL480XWKX'
-                            },
-                            {
-                                num: 3,
-                                productAtrNumber: '19Y9302QL480',
-                                productCode: '051705137353',
-                                productSkuCode: '051705137353002',
-                                starasSkuCode: '19Y9302QL480XWEW'
-                            },
-                            {
-                                num: 1,
-                                productAtrNumber: '1HZ9401S2552',
-                                productCode: '052205137352',
-                                productSkuCode: '052205137352000',
-                                starasSkuCode: '1HZ9401S2552XWHM'
-                            }
-                        ],
-                        name: '测试组货完成'
-                    }
-                ]
-            }
-            this.$api.groupGoods
-                .groupGoods(params)
-                .then(res => {
-                    console.log(res)
-                    debugger
                 })
                 .catch(err => {
                     console.log(err)
@@ -205,59 +149,35 @@ export default {
             // sku修改 确定
             this.showSku = false
             this.seletedDetailsItem = seletedDetailsItem
-
-            let seletedTotalNum = 0 // 总件数
-            let seletedTotalKinds = 0 // 总种类
-            let defaultSelectedPieces = 0 // 款件数
-            let defaultSelectedkinds = 0 // 款种类
-            let totalAmount = 0 // 总价
-
-            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-                if (item.seletedColorSkuNum > 0) {
-                    defaultSelectedPieces =
-            Number(item.seletedColorSkuNum) + defaultSelectedPieces
-                    defaultSelectedkinds++
-                }
-            })
-
-            this.seletedDetailsItem.defaultSelectedPieces = defaultSelectedPieces
-            this.seletedDetailsItem.defaultSelectedkinds = defaultSelectedkinds
-
-            this.groupGoodsRecords.forEach((item, index) => {
-                totalAmount =
-          Number(item.defaultSelectedPieces) * Number(item.tshPrice) +
-          Number(totalAmount)
-                item.colorSkuList.forEach((skuItem, skuIndex) => {
-                    seletedTotalNum =
-            Number(skuItem.seletedColorSkuNum) + Number(seletedTotalNum)
-                    if (skuItem.seletedColorSkuNum > 0) {
-                        seletedTotalKinds++
-                    }
-                })
-            })
-
-            this.groupDetail.seletedTotalKinds = seletedTotalKinds
-            this.groupDetail.seletedTotalNum = seletedTotalNum
-            this.groupDetail.totalAmount = totalAmount
-            this.groupDetail.totalDiscountAmount = totalAmount
+            let groupProducts = []
 
             const params = {
-                groupGoodsId: this.groupDetail.groupId,
-                groupGoodsRecords: {
-                    num: 1,
-                    productAtrNumber: '',
-                    productCode: '',
-                    productSkuCode: '',
-                    starasSkuCode: ''
-                },
-                name: this.groupDetail.name
+                groupGoodsId: this.groupDetail.groupGoodsId,
+                name: this.groupDetail.name,
             }
+
+            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
+               item.skuList.forEach((skuItem,skuIndex) => {
+                   let sku = {
+                        num: skuItem.skuValue,
+                        productAtrNumber: this.seletedDetailsItem.productAtrNumber,
+                        productCode: this.seletedDetailsItem.productCode,
+                        productSkuCode: skuItem.productSkuCode,
+                        starasSkuCode: skuItem.starasSkuCode
+                   }
+                   groupProducts.push(sku)
+               })
+            })
+            params.groupGoodsRecords = groupProducts
+            
             this.$api.groupGoods.updateGroupListDetail(params).then(res => {
-                console.log(res)
+                if (res.code === 0) {
+                    this.getGroupDetail()
+                    this.$toast.success('已修改')
+                }
             }).catch(err => {
                 console.log(err)
             })
-
             this.showSku = false
         }
     }
