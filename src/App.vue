@@ -47,8 +47,8 @@ export default {
             let results = {}
             let data = {}
             if (!isIos) {
-                // data = window.IPX.postMessage(JSON.stringify(params))
-                // results = JSON.parse(data).results
+                data = window.IPX.postMessage(JSON.stringify(params))
+                results = JSON.parse(data).results
             } else {
                 results = window.nativeInjectData
             }
