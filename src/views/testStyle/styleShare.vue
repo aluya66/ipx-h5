@@ -75,12 +75,12 @@ export default {
       console.log(this.$refs.shareList.offsetHeight)
       // document.querySelector('.list-scroll').style.height =
       //   (this.$refs.shareList.offsetHeight - 880) + 'px'
-      if (this.$refs.shareList.offsetHeight > 2000) {
+      if (this.$refs.shareList.offsetHeight > 3000) {
         document.querySelector('.van-pull-refresh').style.height =
         (this.$refs.shareList.offsetHeight - 860) + 'px'
       } else {
         document.querySelector('.van-pull-refresh').style.height =
-        (this.$refs.shareList.offsetHeight - 560) + 'px'
+        (this.$refs.shareList.offsetHeight - 650) + 'px'
       }
 
       // document.querySelector('.van-list').style.height =
@@ -165,7 +165,7 @@ export default {
     }
   }
   .list-scroll {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 200px);
   }
   .scale-content {
     width: 120%;
