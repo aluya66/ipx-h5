@@ -2,29 +2,34 @@
   <layout-view>
     <!-- <router-view></router-view> -->
     <div class="op-contain">
-      <c-header :pageOutStatus="false" slot="header">
+      <c-header :pageOutStatus="true" slot="header">
         <template v-slot:title>
-          <span>订购会</span>
+          <span>订货会</span>
         </template>
       </c-header>
-      <div class="content">
+      <div class="content" :class="footerHeight ? 'contents' : ''">
         <img class="op-topImage" :src="topImage" alt="">
-        <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" />
-        <swiper :imageData="products" />
-        <check @onCheck="handleCheck" @onResult='handleCheckResult' @onDetail='handleTestDetail' @onShare='handleShareTest' :products='testProducts'/>
-        <section-header class="newHeader" title="上周订货会快报" subTitle="订货会热销行情，最新市场风向标" />
-        <list :allList="listsObject"/>
+        <section-header title="本期主推款预告" subTitle="更多爆款货品，敬请亲临订货会" v-if="products && products.length > 0"/>
+        <swiper :imageData="products" v-if="products && products.length > 0"/>
+        <check @onCheck="handleCheck" @onResult='handleCheckResult' @onDetail='handleTestDetail' @onShare='handleShareTest' :products='testProducts' v-if="products && products.length > 0"/>
+        <section-header class="newHeader" title="上期订货会快报" subTitle="订货会热销行情，最新市场风向标" v-if="lastPeriodRankStatus" />
+        <list :allList="listsObject" v-if="lastPeriodRankStatus"/>
         <store-address />
-        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply">
-          <img src="@/themes/images/app/icon-me-apply-gray@2x.png" alt="">
+        <div :class="['bottomBtn','applyBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleApply" v-if="delayedStatus">
+          <img src="@/themes/images/app/icon-me-apply-gray@3x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
-        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck">
-          <img src="@/themes/images/app/icon-me-survey-gray@2x.png" alt="">
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck" v-if="testProductsStatus && products && products.length > 0">
+          <img src="@/themes/images/app/icon-me-survey-gray@3x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheckResult" v-if="!testProductsStatus && haveSharedStatus === 1">
+          <img src="@/themes/images/app/icon-me-survey-gray@3x.png" alt="">
+          <p v-if="!inScroll">测款报告</p>
+        </div>
+        <c-footer></c-footer>
       </div>
-      <apply-popup :showPopup='showPopup' :manageTypes='managerTypes' @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
+      <apply-popup :showPopup='showPopup' :bookActivityCode="bookActivityCode" :manageTypes='managerTypes' :phoneNumber="baseParams.phoneNumber" @submit="handleApplySubmit"  @onClose="()=>{ showPopup = false }" />
     </div>
   </layout-view>
 </template>
@@ -38,11 +43,14 @@ import Check from './components/orderProdctCheck.vue'
 import List from './components/orderRankingList.vue'
 import StoreAddress from './components/orderProductAddress.vue'
 import ApplyPopup from './components/applyPopup.vue'
+import CFooter from '../common/cfooter'
+import utils from 'utils'
 
 const { CHeader } = components
 export default {
     components: {
         CHeader,
+        CFooter,
         SectionHeader,
         Swiper,
         Check,
@@ -55,16 +63,26 @@ export default {
     },
     data () {
         return {
-            bannerCode: '1000A01',
+            token: '',
+            baseParams: '', // 基础配置
+            footerHeight: 0,
+            bannerCode: '',
+            participantCode: '', // 参会编号
             inScroll: false,
             oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
             scrollTop: 0, // 记录当前的滚动距离
+            enableToTakePart: '1', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
+            haveSharedStatus: 0,
             showPopup: false,
-            topImage: require('@/themes/images/app/main-name@2x.png'),
-            products: [],
-            testProducts: [],
+            testProductsStatus: true,
+            delayedStatus: false,
+            lastPeriodRankStatus: false,
+            topImage: require('@/themes/images/app/main-name@3x.png'),
+            products: [], // 测款商品数据
+            testProducts: [], // 一键测款后的数据列表
             managerTypes: [],
-            listsObject: {}
+            listsObject: {},
+            bookActivityCode: '' // 订货会数据编码
         }
     },
     watch: {
@@ -83,19 +101,25 @@ export default {
     methods: {
     // 查看测款报告
         handleCheckResult () {
-            this.$router.push({ path: '/testStyle/report' })
+            this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
         },
         // 查看测款页
         handleTestDetail () {
-            this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
+            this.$router.push({ path: '/', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
         },
         // 分享测款
         handleShareTest () {
-            this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
+            this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
         },
         // 免费测款
         handleCheck () {
-            this.$router.push({ path: '/testStyle/share', query: { bannerCode: this.bannerCode } })
+            this.token = utils.getStore('token') || ''
+            if (this.token) {
+                this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+            } else {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+            }
         },
         // 报名参加
         handleApplySubmit (info) {
@@ -103,13 +127,25 @@ export default {
                 participantCity: info.userCity,
                 participantName: info.userName,
                 participantPhone: info.userPhone,
-                tradeCode: info.manageCode
+                tradeCode: info.manageCode,
+                bookActivityCode: this.bookActivityCode
             }
+
+            console.log(params, 'params')
             this.handleRequestApply(params)
         },
         // 点击报名弹框
         handleApply () {
-            this.showPopup = !this.showPopup
+            if (this.token) {
+                if (this.enableToTakePart === 0) {
+                    this.$toast('已提交过报名信息，请勿重复提交')
+                } else {
+                    this.showPopup = !this.showPopup
+                }
+            } else {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+            }
         },
         // 监听滚动
         handleScroll () {
@@ -123,27 +159,46 @@ export default {
             const params = {
                 bannerCode: this.bannerCode,
                 bookDataQueryType: '0',
-                bookRankQueryType: '0',
-                bookRankDispalyNum: '10'
+                bookRankQueryType: '0'
             }
             this.$api.book.bookMainInfo(params).then((response) => {
+                this.participantCode = response.participantCode
+                this.enableToTakePart = response.enableToTakePart
+                this.bookActivityCode = response.bookActivityCode
+                this.haveSharedStatus = response.haveSharedStatus
+                // console.log(this.bookActivityCode, 'this.bookActivityCode')
+                // console.log(response.bookMeasureProds)
                 if (response.bookMeasureProds instanceof Array) {
                     this.products = response.bookMeasureProds
+                    console.log(this.products)
+                    // this.products = JSON.parse(JSON.stringify(response.bookMeasureProds))
                 }
                 if (response.lastPeriodRank instanceof Object) {
                     this.listsObject = response.lastPeriodRank
+
+                    if (this.listsObject.singleMeasureRankList.length > 0 || this.listsObject.categorySalesRankList.length > 0 || this.listsObject.singleSalesRankList.length > 0) {
+                        this.lastPeriodRankStatus = true
+                    }
                 }
-                if (response.selfMeasureData.selfMeasureProds instanceof Array) {
-                    this.testProducts = response.selfMeasureData.selfMeasureProds
+                if (response.mySharedProds instanceof Array) {
+                    this.testProducts = response.mySharedProds
+                    if (this.testProducts && this.testProducts.length > 0) {
+                        this.testProductsStatus = false
+                    }
                 }
+
+                this.delayedStatus = true
             }).catch(() => {
 
             })
         },
         // 提交报名
         handleRequestApply (params) {
+            // 13632540770
             this.$api.book.bookApply(params).then((response) => {
                 this.$toast.success('报名成功')
+                this.handleRequestMain()
+                this.showPopup = false
             }).catch(() => {
 
             })
@@ -160,6 +215,13 @@ export default {
         }
     },
     activated () {
+        this.baseParams = utils.getStore('baseParams') || {}
+        this.token = utils.getStore('token') || ''
+        if (this.baseParams.platform === 'ios') {
+            if (Number(this.baseParams.statusBarHeight) >= 40) {
+                this.footerHeight = (Number(37) / 100) + 'rem'
+            }
+        }
         this.handleRequestMain()
         this.handleRequestUserManagers()
     },
@@ -178,8 +240,11 @@ export default {
   background: @color-c8;
   // height: 100%;
   .content {
-    height: calc(100vh - 40px);
+    height: calc(100vh - 50px);
     overflow: auto;
+    &.contents  {
+      height: calc(100vh - 94px);
+    }
     .bottomBtn {
       position: fixed;
       width: 106px;
@@ -235,6 +300,7 @@ export default {
     display: block;
     width: 100%;
     object-fit: cover;
+    background-color: #fff;
   }
 }
 

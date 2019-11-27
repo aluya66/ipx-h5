@@ -31,7 +31,9 @@ export default {
 <style lang='less' scoped>
 .op-section {
   height: 152px;
+  // height: 100px;
   position: relative;
+  background-color: #f9fafc;
   p {
     position: absolute;
     text-align: center;

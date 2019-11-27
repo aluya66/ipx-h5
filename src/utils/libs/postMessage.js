@@ -16,10 +16,10 @@ export const postMessage = (method, data) => {
         'callBack': ''
     }
 
-    if (baseParams.platform === 'android') {
-        window.IPX.postMessage(JSON.stringify(params))
-    } else {
+    if (baseParams.platform === 'ios') {
         window.webkit.messageHandlers.IPX.postMessage(params)
+    } else {
+        window.IPX.postMessage(JSON.stringify(params))
     }
 }
 

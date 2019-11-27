@@ -21,6 +21,7 @@ export default {
             const ua = navigator.userAgent
             const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi)
             const statusBarHeight = ua.match(/statusBarHeight\/(\d{2})/i)
+
             let params = {
                 success: true,
                 message: '',

@@ -16,8 +16,10 @@ const Route = (VueRouter) => {
         strict: utils.isDebug,
         scrollBehavior (to, from, savedPosition) {
             if (savedPosition) {
+                console.log(savedPosition)
                 return savedPosition
             } else {
+                console.log(123)
                 if (from.meta.keepAlive) {
                     from.meta.savedPosition = document.body.scrollTop
                 }

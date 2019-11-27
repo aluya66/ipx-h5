@@ -4,7 +4,7 @@ import Customer from '@/views/home/customer.vue'
 import Shop from '@/views/home/shop.vue'
 
 export default {
-    path: '/',
+    path: '/home',
     name: 'home',
     meta: {
         title: 'home',
