@@ -30,7 +30,7 @@
         }
       })({
         sdk_url: 'static/js/sensorsdata.min.js',
-        name: 'sensors',
+        name: 'sa',
         server_url:`https://sensorsdatauploading.yosar.com/sa?project=default`,
         //heatmap_url神策分析中点击分析及触达分析功能代码，代码生成工具会自动生成。如果神策代码中 `sensorsdata.min.js` 版本是 1.13.1 及以前版本，这个参数须配置，高于此版本不需要配置。
         heatmap_url: "static/js/heatmap.min.js",
@@ -48,7 +48,7 @@
           scroll_delay_time:4000,
         }
       });
-      sensors.quick('autoTrack', {
+      sa.quick('autoTrack', {
         Platform:'H5'
       }); //神策系统必须是1.4最新版及以上
 

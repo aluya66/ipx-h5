@@ -70,9 +70,10 @@ export default {
     // 发起测款
         handleCheck () {
             // 上报按钮事件
-            window.sensors.track('click', {
-                // String 类型
-                pagename: 'immediatelyFreeCheckStyle'
+            window.sa.track('IPX_WEB', {
+                page:'orderProduct',
+                type:'click',
+                event:'immediatelyFreeCheckStyle'
             })
             this.$emit('onCheck')
         },

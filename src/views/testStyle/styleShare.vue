@@ -70,9 +70,10 @@ export default {
     },
     mounted () {
         // 上报页面事件
-        window.sensors.track('pageView', {
-            // String 类型
-            pagename: 'styleShare'
+        window.sa.track('IPX_WEB', {
+            page:'styleShare',
+            type:'pageView',
+            event:'pageView'
         })
         setTimeout(() => {
             console.log(document.querySelector('.van-pull-refresh'))
@@ -129,16 +130,18 @@ export default {
             // type 1=好友
             if (type === 1) {
                 // 上报按钮事件
-                window.sensors.track('click', {
-                    // String 类型
-                    pagename: 'shareGoodFriends'
+                window.sa.track('IPX_WEB', {
+                    page:'styleShare',
+                    type:'click',
+                    event:'shareGoodFriends'
                 })
             } else {
                 // 2=朋友圈
                 // 上报按钮事件
-                window.sensors.track('click', {
-                    // String 类型
-                    pagename: 'shareWechatMoments'
+                window.sa.track('IPX_WEB', {
+                    page:'styleShare',
+                    type:'click',
+                    event:'shareWechatMoments'
                 })
             }
             // let url = window.location.host

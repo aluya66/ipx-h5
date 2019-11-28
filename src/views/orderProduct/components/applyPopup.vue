@@ -243,9 +243,10 @@ export default {
         },
         handleApply () {
             // 上报按钮事件
-            window.sensors.track('click', {
-                // String 类型
-                pagename: 'submitApplication'
+            window.sa.track('IPX_WEB', {
+                page:'styleShare',
+                type:'click',
+                event:'submitApplication'
             })
             if (this.submitState) {
                 let info = {
