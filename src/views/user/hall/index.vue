@@ -192,6 +192,7 @@ export default {
         }
     },
     methods: {
+        // 是否iPhoneX底部
         getBottomOffset (offset) {
             return utils.bottomOffset(offset)
         },
