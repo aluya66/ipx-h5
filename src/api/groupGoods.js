@@ -49,12 +49,12 @@ export const groupGoods = params => Http.fetch(`${context}/v1/group/goods`, para
 // 组货搜索
 export const searchGroup = params => Http.fetch(`${context}/v1/group/goods/info`, params, {
     method: 'post',
-    hasErrMsg: true
+    hasErrMsg: false
 })
 // 组货top10
 export const groupRank = params => Http.fetch(`${context}/v1/group/goods/top`, params, {
     method: 'get',
-    hasErrMsg: true
+    hasErrMsg: false
 })
 
 // 周累计人气

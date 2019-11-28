@@ -95,11 +95,11 @@ export default {
         font-size: 12px;
         font-weight: 700;
         text-align: center;
-        line-height: 28px;
         border-radius: 14px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+
         &:nth-child(4n) {
           margin-right: 0;
         }
@@ -109,10 +109,12 @@ export default {
         background: @color-c8;
         border: 0;
         line-height: 28px;
+        padding: 0 8px;
       }
       .item-selected {
         color: @color-ec;
         line-height: 26px;
+        padding: 0 7px;
         background: @color-ec-gray;
         border: 1px solid @color-ec3;
       }
@@ -149,10 +151,10 @@ export default {
         }
         .image-info {
           margin: 0;
-          font-size: 11px;
+          font-size: 14px;
           font-family: P ingFangSC-Regular, PingFang SC;
           font-weight: 400;
-          color: @color-c3;
+          color: @color-c1;
           line-height: 16px;
         }
         .check-box {

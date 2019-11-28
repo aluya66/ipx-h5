@@ -101,8 +101,8 @@ export default {
         },
         handleRequest() {
             this.$api.groupGoods.groupRank().then(res => {
-                if (res.data instanceof Array) {
-                    this.rankData = res.data
+                if (res instanceof Array) {
+                    this.rankData = res
                 }
             }).catch(() => {
 
@@ -196,6 +196,7 @@ export default {
                     left: 0;
                 }
                 p {
+                    margin: 0;
                     text-align: center;
                     line-height: 24px;
                     font-size:10px;
@@ -219,11 +220,12 @@ export default {
                     font-weight:500;
                     color:@color-c1;
                     line-height:22px;
+                    margin: 0;
                 }
                 .percentage {
 
                     p {
-                        margin-top: 8px;
+                        margin: 8px 0 0;
                         display: inline-block;
                         font-size:10px;
                         font-weight:500;
@@ -250,6 +252,7 @@ export default {
                     color:@color-c1;
                     line-height:22px;
                     vertical-align: middle;
+                    margin: 0;
                     img {
 
                         width: 16;height: 16px;

@@ -161,8 +161,8 @@ export default {
         utils.postMessage('changeStatus', 'light')
         let params = utils.getStore('searchParams')
         this.$api.groupGoods.searchGroup(params).then(res => {
-            if (res.data instanceof Array) {
-                this.allDatas = res.data
+            if (res instanceof Array) {
+                this.allDatas = res
                 if (this.allDatas.length > 0) {
                     this.curDesigner = this.allDatas[0]
                 }

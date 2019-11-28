@@ -1,13 +1,14 @@
 <template>
     <div>
         <!-- 弹出层 -->
-        <div class="CustomPopupContent " :class="{'CustomPopupContentShow':showCustomPopup}">
+        <div class="CustomPopupContent " :class="{'CustomPopupContentShow':showCustomPopup}" :style="getBottomOffset(0)">
             <slot></slot>
         </div>
     </div>
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     data () {
         return {
@@ -20,6 +21,9 @@ export default {
         },
         maskClick () {
             this.showCustomPopup = false
+        },
+        getBottomOffset (offset) {
+            return utils.bottomOffset(offset)
         }
     }
 }
