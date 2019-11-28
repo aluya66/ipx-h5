@@ -159,6 +159,7 @@ export default {
             this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
                 item.skuList.forEach((skuItem, skuIndex) => {
                     let sku = {
+                        groupGoodsRecordId: '',
                         num: skuItem.skuValue,
                         productAtrNumber: this.seletedDetailsItem.productAtrNumber,
                         productCode: this.seletedDetailsItem.productCode,

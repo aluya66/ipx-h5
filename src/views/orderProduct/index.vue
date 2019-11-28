@@ -115,9 +115,9 @@ export default {
         handleCheck () {
             // 上报按钮事件
             window.sa.track('IPX_WEB', {
-                page:'orderProduct',
-                type:'click',
-                event:'freeCheckStyle'
+                page: 'orderProduct',
+                type: 'click',
+                event: 'freeCheckStyle'
             })
             this.token = utils.getStore('token') || ''
             if (this.token) {
@@ -144,9 +144,9 @@ export default {
         handleApply () {
             // 上报按钮事件
             window.sa.track('IPX_WEB', {
-                page:'orderProduct',
-                type:'click',
-                event:'enrollInMeeting'
+                page: 'orderProduct',
+                type: 'click',
+                event: 'enrollInMeeting'
             })
             if (this.token) {
                 if (this.enableToTakePart === 0) {

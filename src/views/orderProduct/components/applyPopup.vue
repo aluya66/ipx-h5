@@ -244,9 +244,9 @@ export default {
         handleApply () {
             // 上报按钮事件
             window.sa.track('IPX_WEB', {
-                page:'styleShare',
-                type:'click',
-                event:'submitApplication'
+                page: 'styleShare',
+                type: 'click',
+                event: 'submitApplication'
             })
             if (this.submitState) {
                 let info = {

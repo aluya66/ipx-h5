@@ -159,6 +159,7 @@ export default {
             groupGoodsKoc: {},
             popularArray: [],
             slidImages: [],
+            groupGoodsId: '',
             cricleLists: [
                 {
                     actualPercent: '',
@@ -217,7 +218,7 @@ export default {
         },
         getWeekData() {
             const params = {
-                groupCode: 'g001111'
+                groupCode: this.$route.query.groupCode
             }
             this.$api.groupGoods
                 .groupWeekPopular(params)
@@ -230,7 +231,7 @@ export default {
         },
         getGroupDetail() {
             const params = {
-                groupCode: 'g001111'
+                groupCode: this.$route.query.groupCode
             }
             this.$api.groupGoods
                 .getGroupDetail(params)
@@ -287,7 +288,7 @@ export default {
                             .then(() => {
                                 this.$router.push({
                                     path: '/hall/groupListDetail',
-                                    query: { groupId: this.groupGood.groupGoodsId }
+                                    query: { groupId: this.groupGoodsId }
                                 })
                             })
                             .catch(() => {
