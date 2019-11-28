@@ -17,6 +17,9 @@ import serviceApi from 'api'
 // 通过iconfont使用svg时，打开此项
 // import './themes/default/font/iconfont'
 
+// 将utils挂载vue上,全局使用
+import globalUtils from 'utils'
+
 // 加入公共的全局methods方法
 import mixin from './views/mixins'
 
@@ -44,7 +47,7 @@ const globalVue = new Vue({
     beforeCreate () {
         Vue.prototype.$api = serviceApi
         Vue.prototype.$toast = Toast
-
+        Vue.prototype.$utils = globalUtils
         Vue.prototype.$defaultImg = require('images/img_default_photo.png')
         Vue.prototype.$staticFile =
       process.env.NODE_ENV === 'production'
