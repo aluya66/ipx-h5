@@ -131,6 +131,13 @@ export default {
             this.getSearchLists()
         }
     },
+    mounted() {
+        window.sa.track('IPX_WEB', {
+            page: 'groupFilter', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
+    },
     created() {
         this.getSearchLists()
     },
@@ -142,6 +149,11 @@ export default {
             return utils.bottomOffset(offset)
         },
         handleSubmit() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilter', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'startGroup' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             let labels = []
             let allCategory = JSON.parse(JSON.stringify(this.curCategory))
             allCategory.forEach(item => {

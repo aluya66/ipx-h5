@@ -77,9 +77,9 @@ export default {
             titleIndex: 0,
             screenWidth: document.body.clientWidth,
             allDatas: [],
-            designers: [1, 2, 3, 4, 5],
-            datas: [1, 2, 3],
-            footerData: [80, 90, 99],
+            designers: [],
+            datas: [],
+            footerData: [],
             footerTitles: ['推荐指数', '时尚指数', '热销指数'],
             swiperOption: {
                 slidesPerView: 'auto',
@@ -87,6 +87,11 @@ export default {
                 spaceBetween: 16 * window.devicePixelRatio,
                 on: {
                     click: () => {
+                        window.sa.track('IPX_WEB', {
+                            page: 'groupFilterResult', // 页面名字
+                            type: 'click', // 固定参数，表明是点击事件
+                            event: 'clickGroupMainPic' // 按钮唯一标识，取个语义化且不重名的名字
+                        })
                         let groupList = this.curDesigner.groupGoodList
                         let swiper = this.$refs.groupSwiper.swiper
                         let i = swiper.activeIndex
@@ -142,6 +147,11 @@ export default {
         },
         // 去展厅
         handleToHall() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'clickToHall' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.$router.push({ path: '/user/hall', query: { isFromWeb: true } })
         },
         // 切换菜单 ---买手推荐
@@ -156,6 +166,13 @@ export default {
         handleToRank() {
             this.$router.push({ path: '/groupGoods/aiGroup/matchRank' })
         }
+    },
+    mounted() {
+        window.sa.track('IPX_WEB', {
+            page: 'groupFilterResult', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
     },
     activated() {
         utils.postMessage('changeStatus', 'light')

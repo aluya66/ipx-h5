@@ -445,6 +445,13 @@ export default {
         this.handleRefresh()
         this.handleScroll()
     },
+    mounted() {
+        window.sa.track('IPX_WEB', {
+            page: 'userHall', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
+    },
     destroyed () {
         window.removeEventListener('scroll') // 离开当前组件别忘记移除事件监听哦
     }
@@ -456,7 +463,7 @@ export default {
         .van-search {
             height: 46px;
             margin-left: 0px;
-            width:calc(100vw - 66px);
+            width:calc(100vw - 55px);
             background: rgba(0,0,0,0) !important;
         }
 

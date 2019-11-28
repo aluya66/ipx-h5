@@ -109,6 +109,13 @@ export default {
             })
         }
     },
+    mounted() {
+        window.sa.track('IPX_WEB', {
+            page: 'groupHotRank', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
+    },
     activated() {
         this.handleRequest()
         this.handleScroll()
