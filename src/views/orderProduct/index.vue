@@ -240,9 +240,9 @@ export default {
     mounted () {
         // 上报页面事件
         window.sa.track('IPX_WEB', {
-            page:'orderProduct',
-            type:'pageView',
-            event:'pageView'
+            page: 'orderProduct',
+            type: 'pageView',
+            event: 'pageView'
         })
         this.handleScroll()
     },

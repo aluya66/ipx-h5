@@ -99,79 +99,77 @@
 
 <script>
 import utils from 'utils'
-import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from "vant";
+import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from 'vant'
 export default {
-  components: {
-    [Icon.name]: Icon,
-    [Dialog.Component.name]: Dialog.Component,
-    [Sku.name]: Sku,
-    [Button.name]: Button,
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
-    [Stepper.name]: Stepper
-  },
-  props: {
-    seletedDetailsItem: {
-      type: Object,
-      default() {
-        return {};
-      }
+    components: {
+        [Icon.name]: Icon,
+        [Dialog.Component.name]: Dialog.Component,
+        [Sku.name]: Sku,
+        [Button.name]: Button,
+        [Tab.name]: Tab,
+        [Tabs.name]: Tabs,
+        [Stepper.name]: Stepper
     },
-    colorSkuAction: {
-      type: String,
-      default() {
-        return "";
-      }
+    props: {
+        seletedDetailsItem: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        colorSkuAction: {
+            type: String,
+            default() {
+                return ''
+            }
+        },
+        goodsId: {
+            type: String,
+            default() {
+                return ''
+            }
+        },
+        showSku: {
+            type: Boolean,
+            default() {
+                return false
+            }
+        }
     },
-    goodsId: {
-      type: String,
-      default() {
-        return "";
-      }
+    data() {
+        return {
+            sku: {
+                tree: [],
+                list: []
+            }
+        }
     },
-    showSku: {
-      type: Boolean,
-      default() {
-        return false;
-      }
-    }
-  },
-  data() {
-    return {
-      sku: {
-        tree: [],
-        list: []
-      }
-    };
-  },
-  methods: {
-    getBottomOffset(offset) {
-      return utils.bottomOffset(offset);
-    },
-    changSelectedNum(colorSkusIndex, skuIndex) {
-      let { colorSkuList } = this.seletedDetailsItem;
-      let seletedColorSkuNum = 0;
-      let seletedColorSkuSumNum = 0;
-      colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
-        seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum);
-      });
-      this.seletedDetailsItem.colorSkuList[
-        colorSkusIndex
-      ].seletedColorSkuNum = seletedColorSkuNum;
+    methods: {
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        changSelectedNum(colorSkusIndex, skuIndex) {
+            let { colorSkuList } = this.seletedDetailsItem
+            let seletedColorSkuNum = 0
+            let seletedColorSkuSumNum = 0
+            colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
+                seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum)
+            })
+            this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
 
-      colorSkuList.forEach((item, index) => {
-        seletedColorSkuSumNum =
-          Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum);
-      });
+            colorSkuList.forEach((item, index) => {
+                seletedColorSkuSumNum =
+          Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
+            })
 
-      this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum;
-      // debugger
-    },
-    onPointClicked() {
-      this.$emit("pointClick", this.seletedDetailsItem);
+            this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+            // debugger
+        },
+        onPointClicked() {
+            this.$emit('pointClick', this.seletedDetailsItem)
+        }
     }
-  }
-};
+}
 </script>
 
 <style lang='less' scoped>
