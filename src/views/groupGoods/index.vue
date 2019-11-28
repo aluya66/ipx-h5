@@ -15,9 +15,9 @@
     ></c-tabs>
     <!-- 客户特征开始 -->
     <div class="container" :style="getBottomOffset(65)" v-if="currentTab === 1">
-        <select-box v-for="item in curCategory" :key="item.labelCategoryCode" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.imageUrl.length > 0?"image-item":""' sectionSubTitle="(可多选)" >
+        <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.imageUrl.length > 0?"image-item":""' sectionSubTitle="(可多选)" >
             <template #selectItem='slotProps'>
-                <img class="image-img" :src="slotProps.item.imageUrl" />
+                <img class="image-img" :src="slotProps.item.imageUrl">
                 <p class="image-info">{{slotProps.item.labelName}}</p>
                 <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
             </template>
@@ -28,9 +28,9 @@
 
     <!-- 商品特征开始 -->
     <div class="container" :style="getBottomOffset(65)" v-if="currentTab === 0">
-      <select-box v-for="item in curCategory" :key="item.labelCategoryCode" :isSlot='item.imageUrl.length > 0' :items="item.labels"  :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0 ?"image-box category-box":""' :itemClass='item.imageUrl.length > 0 ?"image-item":""' sectionSubTitle="(可多选)">
+      <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels"  :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0 ?"image-box category-box":""' :itemClass='item.imageUrl.length > 0 ?"image-item":""' sectionSubTitle="(可多选)">
         <template #selectItem="slotProps">
-              <img class="image-img" :src="slotProps.item.imageUrl" />
+              <img class="image-img" :src="slotProps.item.imageUrl">
               <p class="image-name">{{slotProps.item.labelName}}</p>
               <img v-if="slotProps.item.isSelected" class="check-box-img" src="~images/groupGoods/selected_icon.png"/>
         </template>
@@ -155,11 +155,8 @@ export default {
                     // pageNo: 1,
                     // pageSize: 100
                 }
-                this.$router.push({
-                    path: '/groupGoods/aiGroup',
-                    query: {
-                        params: params
-                    } })
+                utils.setStore('searchParams', params)
+                this.$router.push({ path: '/groupGoods/aiGroup' })
             } else {
                 this.$toast('至少选择一个标签进行组货')
             }
@@ -169,17 +166,20 @@ export default {
                 searchType: this.currentTab + 1
             }
             this.$api.groupGoods.getSearchListsAjax(params).then((data) => {
-                let ret = data.labelCategories // 分类列表
+                let ret = data.labels // 分类列表
                 this.curCategory = ret
 
-                ret.length && ret.forEach((kindItem) => {
+                ret && ret.length && ret.forEach((kindItem) => {
+                    if (kindItem.imageUrl === undefined) {
+                        kindItem.imageUrl = ''
+                    }
                     if (kindItem.imageUrl === '1') {
                         kindItem.labels.map((item, index) => {
-                            item.imageUrl = this.season[index]
+                            item.imageUrl = this.season[index].icon
                         })
                     } else if (kindItem.imageUrl === '2') {
                         kindItem.labels.map((item, index) => {
-                            item.imageUrl = this.customerGroupList[index]
+                            item.imageUrl = this.customerGroupList[index].icon
                         })
                     }
                     this.allLabels = this.allLabels.concat(kindItem.labels)
@@ -189,6 +189,7 @@ export default {
                             isSelected: false
                         }
                     })
+
                     // const labelCode = kindItem.labelCategoryCode // 类别code
                     // switch (labelCode) {
                     // case '1': // 品类

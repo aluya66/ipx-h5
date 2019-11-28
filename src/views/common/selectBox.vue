@@ -90,15 +90,14 @@ export default {
       .item-common {
         margin-bottom: 12px;
         margin-right: 11px;
-        width: 77px;
+        width: calc(25vw - 17px);
         height: 28px;
         font-size: 12px;
-        font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 700;
         text-align: center;
         line-height: 28px;
         border-radius: 14px;
-        &:nth-child(4) {
+        &:nth-child(4n) {
           margin-right: 0;
         }
       }

@@ -15,7 +15,7 @@
                 <p style="color:#fff" @click="handleToHall">前往展厅</p>
             </template>
         </c-header>
-        <empty class="empty" v-if="titleIndex == 1" />
+        <empty-view class="empty" v-if="titleIndex == 1" />
         <div v-else class="contain">
             <p class="c-title">推荐买手</p>
             <swiper class="d-swiper" :options="dSwiperOption">
@@ -58,14 +58,14 @@
 import 'swiper/dist/css/swiper.css'
 
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import Empty from './groupEmpty.vue'
+import EmptyView from '../../error/emptyView.vue'
 import utils from 'utils'
 
 export default {
     components: {
         swiper,
         swiperSlide,
-        Empty
+        EmptyView
     },
     props: {
 
@@ -159,7 +159,7 @@ export default {
     },
     activated() {
         utils.postMessage('changeStatus', 'light')
-        let params = this.$route.query.params
+        let params = utils.getStore('searchParams')
         this.$api.groupGoods.searchGroup(params).then(res => {
             if (res.data instanceof Array) {
                 this.allDatas = res.data
@@ -188,6 +188,8 @@ export default {
 }
 .empty {
     margin-top: 24px;
+    border-radius:12px 12px 0px 0px;
+    padding-top: 112px;
 }
 .contain {
     overflow: auto;
@@ -383,6 +385,7 @@ export default {
     text-align: center;
     height: 66px;
     p {
+        margin: 0;
         &:first-child {
             height: 26px;
             margin-top: 11px;
@@ -432,8 +435,10 @@ export default {
                 font-weight:500;
                 color:@color-c1;
                 line-height:26px;
+                margin: 0;
             }
             p {
+                margin: 0;
                 font-size:12px;
                 font-weight:400;
                 color:@color-c3;

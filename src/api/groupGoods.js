@@ -9,7 +9,7 @@ const context = process.env.VUE_APP_serverPath
  */
 export const getSearchListsAjax = params => Http.fetch(`${context}/v1/group/goods/search`, params, {
     method: 'get',
-    mockFile: 'groupGoods'
+    hasErrMsg: false
 })
 
 /**

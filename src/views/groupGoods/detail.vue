@@ -140,167 +140,167 @@
 </template>
 
 <script>
-import { Dialog } from "vant";
-import progressCricle from "@/views/common/cricleProgress.vue";
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-require("swiper/dist/css/swiper.css");
+import { Dialog } from 'vant'
+import progressCricle from '@/views/common/cricleProgress.vue'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+require('swiper/dist/css/swiper.css')
 
 export default {
-  components: {
-    progressCricle,
-    swiperSlide,
-    swiper
-  },
-  data() {
-    return {
-      popularNum: "",
-      productList: [],
-      groupDetail: {},
-      groupGoodsKoc: {},
-      popularArray: [],
-      slidImages: [],
-      cricleLists: [
-        {
-          actualPercent: "",
-          actualText: "时尚指数",
-          chartType: "1"
-        },
-        {
-          actualPercent: "",
-          actualText: "推荐指数",
-          chartType: "2"
-        },
-        {
-          actualPercent: "",
-          actualText: "热销指数",
-          chartType: "3"
+    components: {
+        progressCricle,
+        swiperSlide,
+        swiper
+    },
+    data() {
+        return {
+            popularNum: '',
+            productList: [],
+            groupDetail: {},
+            groupGoodsKoc: {},
+            popularArray: [],
+            slidImages: [],
+            cricleLists: [
+                {
+                    actualPercent: '',
+                    actualText: '时尚指数',
+                    chartType: '1'
+                },
+                {
+                    actualPercent: '',
+                    actualText: '推荐指数',
+                    chartType: '2'
+                },
+                {
+                    actualPercent: '',
+                    actualText: '热销指数',
+                    chartType: '3'
+                }
+            ]
         }
-      ]
-    };
-  },
-  activated() {
-    this.getGroupDetail();
-    this.getWeekData();
-  },
-  watch: {
-    popularNum(val) {
-      let numStr = val + "";
-      this.popularArray = numStr.split("");
-    }
-  },
-  filters: {
-    selectSkuStr(val) {
-      let str = val.attrColorValue + "：";
-      let arr = [];
-      val.skuList.forEach(item => {
-        arr.push(item.attrSpecValue);
-      });
-      return str + arr.join("，");
-    }
-  },
-  methods: {
-    handleCall() {
-      const params = {
-        vo: {
-          groupCode: this.groupDetail.groupCode
+    },
+    activated() {
+        this.getGroupDetail()
+        this.getWeekData()
+    },
+    watch: {
+        popularNum(val) {
+            let numStr = val + ''
+            this.popularArray = numStr.split('')
         }
-      };
-      this.$api.groupGoods
-        .postCall(params)
-        .then(res => {
-          if (res.code === 0) {
-            this.$toast("打call成功");
-            this.getWeekData();
-          }
-        })
-        .catch(() => {});
     },
-    getWeekData() {
-      const params = {
-        groupCode: "g001111"
-      };
-      this.$api.groupGoods
-        .groupWeekPopular(params)
-        .then(res => {
-          this.popularNum = res.popularityCount;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    getGroupDetail() {
-      const params = {
-        groupCode: "g001111"
-      };
-      this.$api.groupGoods
-        .getGroupDetail(params)
-        .then(res => {
-          this.groupDetail = res;
-          this.productList = res.groupGoodsSpus;
-          this.groupGoodsKoc = res.groupGoodsKoc;
-          this.slidImages = res.detailImgs;
-          this.cricleLists[0].actualPercent =
-            this.groupDetail.fashionIndexNum + "";
-          this.cricleLists[1].actualPercent =
-            this.groupDetail.adviceIndexNum + "";
-          this.cricleLists[2].actualPercent = this.groupDetail.hotIndexNum + "";
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    addHall() {
-      let params = {};
-      let groupInfos = [];
-      let groupProductInfo = {
-        name: "测试组货完成",
-        groupCode: this.groupDetail.groupCode
-      };
-      let groupProducts = [];
-      this.productList.forEach((good, goodIndex) => {
-        good.colorSkuList.forEach((item, index) => {
-          item.skuList.forEach((skuItem, skuIndex) => {
-            let sku = {
-              num: skuItem.groupNum,
-              productAtrNumber: good.productAtrNumber,
-              productCode: good.productCode,
-              productSkuCode: skuItem.productSkuCode,
-              starasSkuCode: skuItem.starasSkuCode
-            };
-            groupProducts.push(sku);
-          });
-        });
-      });
-      groupProductInfo.groupGoodsRecords = groupProducts;
-      groupInfos.push(groupProductInfo);
-      params.groupGoodsInfos = groupInfos;
-      this.$api.groupGoods
-        .groupGoods(params)
-        .then(res => {
-          if (res.code === 0) {
-            Dialog.confirm({
-              title: "添加成功",
-              message: "该组货方案已添加至我的展厅",
-              confirmButtonText: "编辑组货方案",
-              cancelButtonText: "继续逛逛"
+    filters: {
+        selectSkuStr(val) {
+            let str = val.attrColorValue + '：'
+            let arr = []
+            val.skuList.forEach(item => {
+                arr.push(item.attrSpecValue)
             })
-              .then(() => {
-                this.$router.push({
-                  path: "/hall/groupListDetail",
-                  query: { groupId: this.groupGood.groupGoodsId }
-                });
-              })
-              .catch(() => {
-                // on cancel
-              });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+            return str + arr.join('，')
+        }
+    },
+    methods: {
+        handleCall() {
+            const params = {
+                vo: {
+                    groupCode: this.groupDetail.groupCode
+                }
+            }
+            this.$api.groupGoods
+                .postCall(params)
+                .then(res => {
+                    if (res.code === 0) {
+                        this.$toast('打call成功')
+                        this.getWeekData()
+                    }
+                })
+                .catch(() => {})
+        },
+        getWeekData() {
+            const params = {
+                groupCode: 'g001111'
+            }
+            this.$api.groupGoods
+                .groupWeekPopular(params)
+                .then(res => {
+                    this.popularNum = res.popularityCount
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        getGroupDetail() {
+            const params = {
+                groupCode: 'g001111'
+            }
+            this.$api.groupGoods
+                .getGroupDetail(params)
+                .then(res => {
+                    this.groupDetail = res
+                    this.productList = res.groupGoodsSpus
+                    this.groupGoodsKoc = res.groupGoodsKoc
+                    this.slidImages = res.detailImgs
+                    this.cricleLists[0].actualPercent =
+            this.groupDetail.fashionIndexNum + ''
+                    this.cricleLists[1].actualPercent =
+            this.groupDetail.adviceIndexNum + ''
+                    this.cricleLists[2].actualPercent = this.groupDetail.hotIndexNum + ''
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        addHall() {
+            let params = {}
+            let groupInfos = []
+            let groupProductInfo = {
+                name: '测试组货完成',
+                groupCode: this.groupDetail.groupCode
+            }
+            let groupProducts = []
+            this.productList.forEach((good, goodIndex) => {
+                good.colorSkuList.forEach((item, index) => {
+                    item.skuList.forEach((skuItem, skuIndex) => {
+                        let sku = {
+                            num: skuItem.groupNum,
+                            productAtrNumber: good.productAtrNumber,
+                            productCode: good.productCode,
+                            productSkuCode: skuItem.productSkuCode,
+                            starasSkuCode: skuItem.starasSkuCode
+                        }
+                        groupProducts.push(sku)
+                    })
+                })
+            })
+            groupProductInfo.groupGoodsRecords = groupProducts
+            groupInfos.push(groupProductInfo)
+            params.groupGoodsInfos = groupInfos
+            this.$api.groupGoods
+                .groupGoods(params)
+                .then(res => {
+                    if (res.code === 0) {
+                        Dialog.confirm({
+                            title: '添加成功',
+                            message: '该组货方案已添加至我的展厅',
+                            confirmButtonText: '编辑组货方案',
+                            cancelButtonText: '继续逛逛'
+                        })
+                            .then(() => {
+                                this.$router.push({
+                                    path: '/hall/groupListDetail',
+                                    query: { groupId: this.groupGood.groupGoodsId }
+                                })
+                            })
+                            .catch(() => {
+                                // on cancel
+                            })
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     }
-  }
-};
+}
 </script>
 
 <style lang="less">
