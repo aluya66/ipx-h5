@@ -135,13 +135,14 @@
     <div class="footer" :style="getBottomOffset(0)" >
       <div class="
       price"
-    >¥<span>198.89</span></div>
+    >¥<span>{{groupDetail.totalPrice}}</span></div>
     <button @click="addHall">添加至展厅</button>
     </div>
   </layout-view>
 </template>
 
 <script>
+import utils from 'utils'
 import { Dialog } from "vant";
 import progressCricle from "@/views/common/cricleProgress.vue";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
@@ -161,7 +162,7 @@ export default {
       groupGoodsKoc: {},
       popularArray: [],
       slidImages: [],
-      groupGoodsId: "",
+    //   groupGoodsId: "",
       cricleLists: [
         {
           actualPercent: "",
@@ -285,7 +286,7 @@ export default {
         good.colorSkuList.forEach((item, index) => {
           item.skuList.forEach((skuItem, skuIndex) => {
             let sku = {
-              num: skuItem.groupNum,
+              num: skuItem.num,
               productAtrNumber: good.productAtrNumber,
               productCode: good.productCode,
               productSkuCode: skuItem.productSkuCode,
@@ -302,6 +303,7 @@ export default {
         .groupGoods(params)
         .then(res => {
           if (res.code === 0) {
+              let groupGoodsId = res.data.groupGoodsId
             Dialog.confirm({
               title: "添加成功",
               message: "该组货方案已添加至我的展厅",
@@ -316,7 +318,7 @@ export default {
                 });
                 this.$router.push({
                   path: "/hall/groupListDetail",
-                  query: { groupId: this.groupGoodsId }
+                  query: { groupId: groupGoodsId }
                 });
               })
               .catch(() => {
