@@ -1,19 +1,21 @@
 <template>
-   <layout-view class="header-bg">
-        <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
-            <div class="title" slot="title">
-                <div class="titleContain">
-                    <span :class='["title-slider",titleIndex==1?"title-slider-right":"title-slider-left"]'></span>
-                    <section :class='[titleIndex==1?"title-default":"title-select"]' @click="handleSelectRec">买手推荐</section>
-                    <section :class='[titleIndex==0?"title-default":"title-select"]' @click="handleSelectAi">智能组货</section>
-                </div>
+<layout-view class="header-bg">
+    <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
+        <div class="title" slot="title">
+            <div class="titleContain">
+                <span :class='["title-slider",titleIndex==1?"title-slider-right":"title-slider-left"]'></span>
+                <section :class='[titleIndex==1?"title-default":"title-select"]' @click="handleSelectRec">买手推荐</section>
+                <section :class='[titleIndex==0?"title-default":"title-select"]' @click="handleSelectAi">智能组货</section>
             </div>
-            <template slot="left" tag="div">
+        </div>
+        <template slot="left" tag="div">
                 <img class="header-img" :src="backImage" />
-            </template>
-            <template slot="right" >
-                <p style="color:#fff" @click="handleToHall">前往展厅</p>
-            </template>
+</template>
+
+<template slot="right">
+<p style="color:#fff" @click="handleToHall">
+    前往展厅</p>
+</template>
         </c-header>
         <empty-view class="empty" v-if="titleIndex == 1" />
         <div v-else class="contain" :style="getBottomOffset()">
@@ -57,7 +59,10 @@
 <script>
 import 'swiper/dist/css/swiper.css'
 
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import {
+    swiper,
+    swiperSlide
+} from 'vue-awesome-swiper'
 import EmptyView from '../../error/emptyView.vue'
 import utils from 'utils'
 
@@ -70,7 +75,7 @@ export default {
     props: {
 
     },
-    data () {
+    data() {
         return {
             curDesigner: {},
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
@@ -109,6 +114,11 @@ export default {
                 spaceBetween: 24,
                 on: {
                     click: () => {
+                        window.sa.track('IPX_WEB', {
+                            page: 'groupFilterResult', // 页面名字
+                            type: 'click', // 固定参数，表明是点击事件
+                            event: 'clickBuyerHeader' // 按钮唯一标识，取个语义化且不重名的名字
+                        })
                         let swiper = this.$refs.groupSwiper.swiper
                         let i = swiper.activeIndex
                         this.curDesigner = this.allDatas[i]
@@ -124,12 +134,12 @@ export default {
             let height = width / (303 / 342) + (50 + 85) * window.devicePixelRatio
             return `height:${height}px`
         },
-        getImgHeight () {
+        getImgHeight() {
             let width = this.screenWidth - 72 * window.devicePixelRatio
             let height = width / (303 / 342)
             return `height:${height}px`
         },
-        getBoxContainHeight () {
+        getBoxContainHeight() {
             let width = this.screenWidth - 72 * window.devicePixelRatio
             let height = width / (303 / 342) + 20 * window.devicePixelRatio
             return `height:${height}px`
@@ -146,7 +156,7 @@ export default {
             return arr[index]
         },
         // 判断是不是当前设计师
-        getIsCurrentDesigner (item) {
+        getIsCurrentDesigner(item) {
             return item === this.curDesigner
         },
         // 去展厅
@@ -156,19 +166,31 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'clickToHall' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            this.$router.push({ path: '/user/hall', query: { isFromWeb: true } })
+            this.$router.push({
+                path: '/user/hall',
+                query: {
+                    isFromWeb: true
+                }
+            })
         },
         // 切换菜单 ---买手推荐
         handleSelectRec() {
             this.titleIndex = 0
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'recommendBuyer' // 按钮唯一标识，取个语义化且不重名的名字
+            })
         },
         // 切换菜单 ---智能组货
-        handleSelectAi () {
+        handleSelectAi() {
             this.titleIndex = 1
         },
         // 查看TOP10
         handleToRank() {
-            this.$router.push({ path: '/groupGoods/aiGroup/matchRank' })
+            this.$router.push({
+                path: '/groupGoods/aiGroup/matchRank'
+            })
         }
     },
     mounted() {
@@ -197,32 +219,36 @@ export default {
 
 <style lang='less' scoped>
 .header-img {
-  display: inline-block;
-  vertical-align: middle;
-  width: 26px;
-  height: 26px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 26px;
+    height: 26px;
 }
+
 .header-bg {
-    background-image :url('../../../themes/images/groupGoods/bg_koc_recommend_top.png');
-    background-repeat:no-repeat;
-    background-size:100% 246px;
+    background-image: url('../../../themes/images/groupGoods/bg_koc_recommend_top.png');
+    background-repeat: no-repeat;
+    background-size: 100% 246px;
 }
+
 .empty {
     margin-top: 24px;
-    border-radius:12px 12px 0px 0px;
+    border-radius: 12px 12px 0px 0px;
     padding-top: 112px;
 }
+
 .contain {
     overflow: auto;
     height: 100%;
 }
+
 .d-swiper {
     margin: 16px 16px 0;
     height: 108px;
-    box-shadow:0 2px 10px 0 rgba(33,44,98,0.06);
-    border-radius:12px;
+    box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
+    border-radius: 12px;
     background: #fff;
-    padding:0 8px;
+    padding: 0 8px;
     .designer-contain {
         display: flex;
         flex-direction: column;
@@ -230,21 +256,21 @@ export default {
         justify-content: center;
     }
     .designer-header {
-        width:48px;
-        height:48px;
+        width: 48px;
+        height: 48px;
         border-radius: 24px;
     }
     .designer-header-default {
-        border:1px solid rgba(255,255,255,1);
+        border: 1px solid rgba(255, 255, 255, 1);
     }
     .designer-header-select {
-        border:2px solid @color-ec
+        border: 2px solid @color-ec
     }
     .designer-name {
         text-align: center;
-        font-size:14px;
-        font-weight:400;
-        line-height:20px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
         margin-top: 10px;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -252,17 +278,18 @@ export default {
         width: 100%;
     }
     .designer-name-default {
-        color:@color-c3;
+        color: @color-c3;
     }
     .designer-name-select {
-        color:@color-ec;
+        color: @color-ec;
     }
 }
+
 .c-title {
-    font-size:20px;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    line-height:28px;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 28px;
     margin-top: 34px;
     margin-left: 16px;
     position: relative;
@@ -275,8 +302,8 @@ export default {
         width: 12px;
         height: 12px;
         border-radius: 6px;
-        background:rgba(250,217,97,1);
-        opacity:0.3;
+        background: rgba(250, 217, 97, 1);
+        opacity: 0.3;
     }
 }
 
@@ -285,19 +312,19 @@ export default {
     margin-left: -16px;
     padding-bottom: 20px;
 }
+
 .header {
-    background: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
     .title {
         // margin: auto 0;
         // height: 100%;
         height: 40px;
     }
     .titleContain {
-        width:160px;
-        height:32px;
-        // background: #fff;
-        background:rgba(0,0,0,0.1);
-        border-radius:16px;
+        width: 160px;
+        height: 32px; // background: #fff;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
         position: relative;
         margin: 6px auto;
         display: flex;
@@ -308,8 +335,8 @@ export default {
             width: 50%;
             line-height: 32px;
             height: 32px;
-            font-size:14px;
-            font-weight:500;
+            font-size: 14px;
+            font-weight: 500;
             z-index: 200;
         }
         .title-select {
@@ -322,13 +349,13 @@ export default {
             position: absolute;
             top: 0;
             transition: left 0.3s;
-            width:80px;
+            width: 80px;
             height: 32px;
             background: #fff;
             border-radius: 16px;
             z-index: 100;
         }
-        .title-slider-left{
+        .title-slider-left {
             left: 0
         }
         .title-slider-right {
@@ -336,51 +363,48 @@ export default {
         }
     }
 }
+
 .box-header {
     vertical-align: middle;
     position: relative;
-    background:linear-gradient(180deg,rgba(246,246,250,1) 0%,rgba(232,233,237,1) 100%);
-    border-radius:8px 8px 0px 0px;
+    background: linear-gradient(180deg, rgba(246, 246, 250, 1) 0%, rgba(232, 233, 237, 1) 100%);
+    border-radius: 8px 8px 0px 0px;
     padding: 0 12px;
     height: 50px;
-
     .selectIcon {
         position: absolute;
     }
     p {
-        line-height:50px;
+        line-height: 50px;
         position: relative;
         span:first-child {
             position: relative;
             display: inline;
-            font-size:18px;
-            font-weight:500;
-            color:@color-c1;
-            line-height:50px;
+            font-size: 18px;
+            font-weight: 500;
+            color: @color-c1;
+            line-height: 50px;
             z-index: 2;
-            padding-left:0;
+            padding-left: 0;
             &:after {
                 content: "";
                 width: 100%;
                 height: 8px;
-                background:#fff;
+                background: #fff;
                 position: absolute;
                 display: inline-block;
                 left: 0;
                 top: 15px;
-                z-index: -1;
-            // border-top: 8px
+                z-index: -1; // border-top: 8px
             }
         }
-
         span {
-            font-size:12px;
-            font-weight:400;
-            color:@color-c1;
-            line-height:16px;
-            padding-left:12px;
+            font-size: 12px;
+            font-weight: 400;
+            color: @color-c1;
+            line-height: 16px;
+            padding-left: 12px;
         }
-
     }
     img {
         display: block;
@@ -389,6 +413,7 @@ export default {
         height: 26px;
     }
 }
+
 .box-content {
     background: url("../../../themes/images/groupGoods/bg_clothes_hanger.png");
     background-size: 100% 100%;
@@ -399,6 +424,7 @@ export default {
         object-fit: cover;
     }
 }
+
 .box-footer {
     display: flex;
     flex-direction: row;
@@ -411,37 +437,39 @@ export default {
             height: 26px;
             margin-top: 11px;
             line-height: 26px;
-            font-size:18px;
-            font-weight:bold;
-            color:@color-c1;
+            font-size: 18px;
+            font-weight: bold;
+            color: @color-c1;
             span {
-                font-size:8px;
-                font-weight:500;
-                color:@color-c1;
-                line-height:12px;
+                font-size: 8px;
+                font-weight: 500;
+                color: @color-c1;
+                line-height: 12px;
             }
         }
         &:last-child {
-            height:16px;
-            font-size:12px;
-            font-weight:400;
-            color:@color-c3;
-            line-height:16px;
+            height: 16px;
+            font-size: 12px;
+            font-weight: 400;
+            color: @color-c3;
+            line-height: 16px;
             margin-top: 2px;
         }
     }
 }
+
 .slide {
     width: calc(100vw - 48px);
-    box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
-    border-radius:12px;
+    box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.06);
+    border-radius: 12px;
 }
+
 .rank {
     margin: 12px 16px 0;
-    background:@color-ec1;
-    border-radius:12px;
+    background: @color-ec1;
+    border-radius: 12px;
     height: 70px;
-    margin-bottom:21px;
+    margin-bottom: 21px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -452,31 +480,30 @@ export default {
             flex-direction: row;
             align-items: center;
             h3 {
-                font-size:18px;
-                font-weight:500;
-                color:@color-c1;
-                line-height:26px;
+                font-size: 18px;
+                font-weight: 500;
+                color: @color-c1;
+                line-height: 26px;
                 margin: 0;
             }
             p {
                 margin: 0;
-                font-size:12px;
-                font-weight:400;
-                color:@color-c3;
-                line-height:16px;
+                font-size: 12px;
+                font-weight: 400;
+                color: @color-c3;
+                line-height: 16px;
                 margin-top: 4px;
             }
         }
-
     }
     img {
         // display: in;
         width: 28px;
         height: 28px;
-        margin-right:12px;
+        margin-right: 12px;
         &:first-child {
             display: block;
-            width:50px;
+            width: 50px;
             height: 50px;
             margin-left: 12px;
             object-fit: cover;

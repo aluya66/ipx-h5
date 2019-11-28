@@ -36,7 +36,6 @@ export default {
         })
 
         if (shopCarts.length <= 0) {
-            window.globalVue.$toast('123213')
             Dialog.alert({
                 message: '商品数据有变动，请确认后再购买'
             }).then(() => {

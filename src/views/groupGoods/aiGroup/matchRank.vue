@@ -59,6 +59,11 @@ export default {
     },
     methods: {
         handleToDetail(item) {
+            window.sa.track('IPX_WEB', {
+                page: 'groupHotRank', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'rankItemClick' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.$router.push({
                 path: '/groupDetail',
                 query: {
@@ -67,6 +72,11 @@ export default {
             })
         },
         handleCall(item) {
+            window.sa.track('IPX_WEB', {
+                page: 'groupHotRank', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'rankCall' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             const params = {
                 vo: {
                     groupCode: item.groupCode
