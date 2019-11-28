@@ -90,8 +90,8 @@ export default {
         },
         getListContainHeight() {
             let offsetStr = utils.bottomOffset(0)
-
-            return `height:${this.getContainHeight()}rem;${offsetStr}`
+            let str = `min-height:${this.getContainHeight()}rem;${offsetStr}`
+            return str
         },
         getContainHeight() {
             this.baseParams = utils.getStore('baseParams')

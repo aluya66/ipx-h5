@@ -131,6 +131,7 @@ export default {
             menuIndex: 0, // 栏目flag 1=样衣 0=组货清单
             isStickyTop: false, // 是否吸顶
             offsetY: 0,
+            flag: false,
             headerSearchImg: require('@/themes/images/app/icon_nav_search_white@2x.png'),
             headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
@@ -184,7 +185,7 @@ export default {
         changePosition() {
             let baseParams = utils.getStore('baseParams')
             let statusBarHeight = (Number(baseParams.statusBarHeight) + 44) / 100
-            if (this.isStickyTop) {
+            if (this.isStickyTop && this.flag) {
                 return `position:fixed;top:${statusBarHeight}rem`
             } else {
                 return `position:sticky;top:0`
@@ -300,6 +301,12 @@ export default {
                 this.isStickyTop = scrollTop >= offsetTop
                 if (!this.isStickyTop) {
                     this.offsetY = offsetTop
+                } else {
+                    if (this.offsetY + 60 * window.devicePixelRatio <= scrollTop) {
+                        this.flag = true
+                    } else {
+                        this.flag = false
+                    }
                 }
             }, true)
         },
@@ -482,7 +489,7 @@ export default {
         flex-direction: row;
         flex-wrap: wrap;
         padding: 0 16px;
-        overflow: auto;
+        // overflow: auto;
         justify-content: space-between;
         margin-top: -12px;
         .van-list__finished-text {
@@ -555,7 +562,7 @@ export default {
     }
     .product-list {
         // height: 100%;//calc(100vh);
-        overflow: auto;
+        // overflow: auto;
         background: #fff;
         .item {
             width: calc(50vw - 23.5px);
