@@ -154,7 +154,7 @@ export default {
         },
         // 查看TOP10
         handleToRank() {
-            this.$router.push({ path: '/user/aiGroup/matchRank' })
+            this.$router.push({ path: '/groupGoods/aiGroup/matchRank' })
         }
     },
     activated() {

@@ -7,6 +7,9 @@ export const bottomOffset = (offset) => {
     if (h > 20) {
         let y = window.devicePixelRatio * (offset + 34)
         return `padding-bottom:${y}px !important`
+    } else {
+        let y = window.devicePixelRatio * offset
+        return `padding-bottom:${y}px !important`
     }
 }
 

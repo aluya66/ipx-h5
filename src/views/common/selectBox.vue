@@ -97,6 +97,9 @@ export default {
         text-align: center;
         line-height: 28px;
         border-radius: 14px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
         &:nth-child(4n) {
           margin-right: 0;
         }

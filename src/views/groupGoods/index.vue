@@ -14,7 +14,7 @@
       @change="onChangeTab"
     ></c-tabs>
     <!-- 客户特征开始 -->
-    <div class="container" :style="getBottomOffset(65)" v-if="currentTab === 1">
+    <div class="container" :style="getBottomOffset(75)" v-if="currentTab === 1">
         <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.imageUrl.length > 0?"image-item":""' sectionSubTitle="(可多选)" >
             <template #selectItem='slotProps'>
                 <img class="image-img" :src="slotProps.item.imageUrl">
@@ -27,7 +27,7 @@
     <!-- 客户特征结束 -->
 
     <!-- 商品特征开始 -->
-    <div class="container" :style="getBottomOffset(65)" v-if="currentTab === 0">
+    <div class="container" :style="getBottomOffset(75)" v-if="currentTab === 0">
       <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels"  :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0 ?"image-box category-box":""' :itemClass='item.imageUrl.length > 0 ?"image-item":""' sectionSubTitle="(可多选)">
         <template #selectItem="slotProps">
               <img class="image-img" :src="slotProps.item.imageUrl">
@@ -37,7 +37,7 @@
       </select-box>
     </div>
     <!-- 商品特征结束 -->
-    <div class="bottom-box" :style="()=>{utils.bottomOffset(0)}">
+    <div class="bottom-box" :style="getBottomOffset(7)">
       <div class="bottom-btn" @click="handleSubmit">{{"一键开启组货"}}</div>
     </div>
   </layout-view>
@@ -127,6 +127,7 @@ export default {
     watch: {
         currentTab(val) {
             this.allLabels = []
+            this.curCategory = []
             this.getSearchLists()
         }
     },
@@ -311,7 +312,8 @@ export default {
   right: 0;
   display: flex;
   justify-content: center;
-  padding-bottom: 27px;
+  box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+//   padding-bottom: 27px;
   background-color: #fff;
   .bottom-btn {
     width: 343px;
@@ -324,6 +326,7 @@ export default {
     line-height: 45px;
     background: rgba(60, 92, 246, 1);
     border-radius: 25px;
+    margin: 7px 0;
   }
 }
 
