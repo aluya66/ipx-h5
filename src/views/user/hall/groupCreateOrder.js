@@ -19,6 +19,7 @@ export default {
                         sku.mainPic = productItem.mainPic
                     })
                     let skus = skuItem.skuList.filter(sku => sku.num > 0)
+                    productItem.selectSku = skus
                     skuArr = skuArr.concat(skus)
                 })
             })

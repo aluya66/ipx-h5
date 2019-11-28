@@ -16,7 +16,7 @@
             </template>
         </c-header>
         <empty-view class="empty" v-if="titleIndex == 1" />
-        <div v-else class="contain">
+        <div v-else class="contain" :style="getBottomOffset()">
             <p class="c-title">推荐买手</p>
             <swiper class="d-swiper" :options="dSwiperOption">
                 <swiper-slide class="designer-contain" v-for="item in allDatas" :key="item.groupGoodsKoc.kocCode">
@@ -40,7 +40,7 @@
                     </div>
                 </swiper-slide>
             </swiper>
-            <div class="rank" @click="handleToRank">
+            <div class="rank" @click="handleToRank" >
                 <div>
                     <img src="@/themes/images/groupGoods/groupInfoBg.png" alt="">
                     <div>
@@ -136,6 +136,10 @@ export default {
         }
     },
     methods: {
+        getBottomOffset() {
+            let offsetStr = utils.bottomOffset(0)
+            return offsetStr
+        },
         // 获取百分比
         getPercent(item, index) {
             let arr = [item.adviceIndexNum, item.fashionIndexNum, item.hotIndexNum]
