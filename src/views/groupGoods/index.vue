@@ -37,7 +37,7 @@
       </select-box>
     </div>
     <!-- 商品特征结束 -->
-    <div class="bottom-box" :style="getBottomOffset(7)">
+    <div class="bottom-box" :style="getBottomOffset(0)">
       <div class="bottom-btn" @click="handleSubmit">{{"一键开启组货"}}</div>
     </div>
   </layout-view>
