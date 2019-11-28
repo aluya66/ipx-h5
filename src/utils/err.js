@@ -11,8 +11,13 @@ export default (err, callBackFun, time) => {
     const errCode = err.code
     let errMsg = ''
     switch (errCode) {
+    case 11:
+        errMsg = err.message
+        window.$utils.postMessage('user_authentication', '')
+        break
     case 101:
         errMsg = '鉴权失败'
+        window.$utils.postMessage('user_authentication', '')
         break
     case 102:
         errMsg = '服务器异常，请稍后重试'
@@ -21,7 +26,7 @@ export default (err, callBackFun, time) => {
         errMsg = err.message
         break
     }
-    // console.log(`${errCode}【${errMsg}】`)
     window.globalVue.$toast(`${errMsg}`, time)
+    // console.log(`${errCode}【${errMsg}】`)
     callBackFun && callBackFun(err)
 }
