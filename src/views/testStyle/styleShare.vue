@@ -69,6 +69,11 @@ export default {
         }
     },
     mounted () {
+        // 上报页面事件
+        window.sensors.track('pageView', {
+            // String 类型
+            pagename: 'styleShare'
+        })
         setTimeout(() => {
             console.log(document.querySelector('.van-pull-refresh'))
 

@@ -226,6 +226,11 @@ export default {
         this.handleRequestUserManagers()
     },
     mounted () {
+        // 上报页面事件
+        window.sensors.track('pageView', {
+            // String 类型
+            pagename: 'orderProduct'
+        })
         this.handleScroll()
     },
     destroyed () {
