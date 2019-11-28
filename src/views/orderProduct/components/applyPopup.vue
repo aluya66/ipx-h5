@@ -242,6 +242,11 @@ export default {
             this.$emit('onClose')
         },
         handleApply () {
+            // 上报按钮事件
+            window.sensors.track('click', {
+                // String 类型
+                pagename: 'submitApplication'
+            })
             if (this.submitState) {
                 let info = {
                     userName: this.userName,

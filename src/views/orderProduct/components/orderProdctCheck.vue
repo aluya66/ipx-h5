@@ -69,6 +69,11 @@ export default {
     methods: {
     // 发起测款
         handleCheck () {
+            // 上报按钮事件
+            window.sensors.track('click', {
+                // String 类型
+                pagename: 'immediatelyFreeCheckStyle'
+            })
             this.$emit('onCheck')
         },
         // 测款报告
