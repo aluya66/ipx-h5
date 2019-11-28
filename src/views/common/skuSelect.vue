@@ -1,152 +1,177 @@
 <template>
-    <van-sku
-        v-model="showSku"
-        :sku="sku"
-        >
-      <template slot="sku-header">
-        <div class="van-sku-header van-hairline--bottom">
-          <div class="van-sku-header__img-wrap">
-            <img :src="seletedDetailsItem.mainPic" />
-          </div>
-          <div class="van-sku-header__goods-info">
-            <div class="van-sku__goods-price">
-              &yen;<span class="van-sku__price-num">{{seletedDetailsItem.spuTshPrice}}</span>
-            </div>
-            <div class="van-sku-header-item">
-              <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
-            </div>
-            <div class="van-sku-header-item">请调整颜色、尺码和数量</div>
-          </div>
+  <van-sku
+    v-model="showSku"
+    :sku="sku"
+  >
+    <template slot="sku-header">
+      <div class="van-sku-header van-hairline--bottom">
+        <div class="van-sku-header__img-wrap">
+          <img :src="seletedDetailsItem.mainPic" />
         </div>
-      </template>
-      <template slot="sku-group">
-        <van-tabs v-model="colorSkuAction" swipeable class="sku-group-tabs">
-          <template v-for="(colorSkusItem, colorSkusIndex) in seletedDetailsItem.colorSkuList">
-            <van-tab :key="colorSkusIndex" :name="colorSkusItem.attrColorValue">
-              <div slot="title">
-                {{colorSkusItem.attrColorValue}}
-                <div
-                  class="van-info"
-                  v-if="colorSkusItem.seletedColorSkuNum > 0"
-                >{{colorSkusItem.seletedColorSkuNum > 99 ? colorSkusItem.seletedColorSkuNum + '+' : colorSkusItem.seletedColorSkuNum}}</div>
-              </div>
-              <div class="sku-card">
-                <div
-                  class="sku-card-list"
-                  v-for="(skuItem, skuIndex) in colorSkusItem.skuList"
-                  :key="skuIndex"
-                >
-                  <div class="flex-left">
-                    <p class="spec-name">{{skuItem.attrSpecValue}}</p>
-                    <p class="batch-price">&yen;{{skuItem.tshPrice}}</p>
-                  </div>
-                  <div class="flex-right">
-                    <div class="sku-num">库存：{{skuItem.entityStock}}</div>
-                    <!-- :value="Number(skuItem.entityStock) > 0 ? skuItem.selectedNum : 0" -->
-                    <!-- v-model="skuItem.skuValue" -->
-                    <van-stepper
-                      :min="0"
-                      :max="skuItem.entityStock"
-                      v-model="skuItem.skuValue"
-                      @change="changSelectedNum(colorSkusIndex, skuIndex)"
-                    />
-                    <!-- <span
+        <div class="van-sku-header__goods-info">
+          <div class="van-sku__goods-price">
+            &yen;<span class="van-sku__price-num">{{seletedDetailsItem.spuTshPrice}}</span>
+          </div>
+          <div class="van-sku-header-item">
+            <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
+          </div>
+          <div class="van-sku-header-item">请调整颜色、尺码和数量</div>
+        </div>
+      </div>
+    </template>
+    <template slot="sku-group">
+      <van-tabs
+        v-model="colorSkuAction"
+        swipeable
+        class="sku-group-tabs"
+      >
+        <template v-for="(colorSkusItem, colorSkusIndex) in seletedDetailsItem.colorSkuList">
+          <van-tab
+            :key="colorSkusIndex"
+            :name="colorSkusItem.attrColorValue"
+          >
+            <div slot="title">
+              {{colorSkusItem.attrColorValue}}
+              <div
+                class="van-info"
+                v-if="colorSkusItem.seletedColorSkuNum > 0"
+              >{{colorSkusItem.seletedColorSkuNum > 99 ? colorSkusItem.seletedColorSkuNum + '+' : colorSkusItem.seletedColorSkuNum}}</div>
+            </div>
+            <div class="sku-card">
+              <div
+                class="sku-card-list"
+                v-for="(skuItem, skuIndex) in colorSkusItem.skuList"
+                :key="skuIndex"
+              >
+                <div class="flex-left">
+                  <p class="spec-name">{{skuItem.attrSpecValue}}</p>
+                  <p class="batch-price">&yen;{{skuItem.tshPrice}}</p>
+                </div>
+                <div class="flex-right">
+                  <div class="sku-num">库存：{{skuItem.entityStock}}</div>
+                  <!-- :value="Number(skuItem.entityStock) > 0 ? skuItem.selectedNum : 0" -->
+                  <!-- v-model="skuItem.skuValue" -->
+                  <van-stepper
+                    :min="0"
+                    :max="skuItem.entityStock"
+                    v-model="skuItem.skuValue"
+                    @change="changSelectedNum(colorSkusIndex, skuIndex)"
+                  />
+                  <!-- <span
                       v-show="skuValueStatus"
                     >{{ skuItem.skuValue | filterSkuValue(skuItem.selectedNum, skuItem.entityStock) }}</span>-->
-                  </div>
                 </div>
               </div>
-            </van-tab>
-          </template>
-        </van-tabs>
-        <div class="number-tip" v-if="seletedDetailsItem.seletedColorSkuSumNum <= 0">库存数量，不满足起批数量</div>
-      </template>
+            </div>
+          </van-tab>
+        </template>
+      </van-tabs>
+      <div
+        class="number-tip"
+        v-if="seletedDetailsItem.seletedColorSkuSumNum <= 0"
+      >库存数量，不满足起批数量</div>
+    </template>
 
-      <template slot="sku-stepper">{{goodsId}}</template>
-      <template slot="sku-actions">
-        <div class="van-sku-actions">
-          <van-button
-            square
-            size="large"
-            type="warning"
-            @click="onPointClicked"
-            v-if="seletedDetailsItem.seletedColorSkuSumNum > 0"
-          >确定</van-button>
-          <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button>
-        </div>
-      </template>
-    </van-sku>
+    <template slot="sku-stepper">{{goodsId}}</template>
+    <template slot="sku-actions">
+      <div
+        class="van-sku-actions"
+        :style="getBottomOffset(0)"
+      >
+        <van-button
+          square
+          size="large"
+          type="warning"
+          @click="onPointClicked"
+          v-if="seletedDetailsItem.seletedColorSkuSumNum > 0"
+        >确定</van-button>
+        <van-button
+          square
+          size="large"
+          type="warning"
+          class="forbidColor"
+          v-else
+        >确定</van-button>
+      </div>
+    </template>
+  </van-sku>
 </template>
 
 <script>
-import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from 'vant'
+import utils from 'utils'
+import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from "vant";
 export default {
-    components: {
-        [Icon.name]: Icon,
-        [Dialog.Component.name]: Dialog.Component,
-        [Sku.name]: Sku,
-        [Button.name]: Button,
-        [Tab.name]: Tab,
-        [Tabs.name]: Tabs,
-        [Stepper.name]: Stepper
+  components: {
+    [Icon.name]: Icon,
+    [Dialog.Component.name]: Dialog.Component,
+    [Sku.name]: Sku,
+    [Button.name]: Button,
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs,
+    [Stepper.name]: Stepper
+  },
+  props: {
+    seletedDetailsItem: {
+      type: Object,
+      default() {
+        return {};
+      }
     },
-    props: {
-        seletedDetailsItem: {
-            type: Object,
-            default () {
-                return {}
-            }
-        },
-        colorSkuAction: {
-            type: String,
-            default() {
-                return ''
-            }
-        },
-        goodsId: {
-            type: String,
-            default() {
-                return ''
-            }
-        },
-        showSku: {
-            type: Boolean,
-            default() {
-                return false
-            }
-        }
+    colorSkuAction: {
+      type: String,
+      default() {
+        return "";
+      }
     },
-    data () {
-        return {
-            sku: {
-                tree: [],
-                list: []
-            }
-        }
+    goodsId: {
+      type: String,
+      default() {
+        return "";
+      }
     },
-    methods: {
-        changSelectedNum (colorSkusIndex, skuIndex) {
-            let { colorSkuList } = this.seletedDetailsItem
-            let seletedColorSkuNum = 0
-            let seletedColorSkuSumNum = 0
-            colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
-                seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum)
-            })
-            this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
-
-            colorSkuList.forEach((item, index) => {
-                seletedColorSkuSumNum =
-            Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
-            })
-
-            this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
-            // debugger
-        },
-        onPointClicked() {
-            this.$emit('pointClick', this.seletedDetailsItem)
-        }
+    showSku: {
+      type: Boolean,
+      default() {
+        return false;
+      }
     }
-}
+  },
+  data() {
+    return {
+      sku: {
+        tree: [],
+        list: []
+      }
+    };
+  },
+  methods: {
+    getBottomOffset(offset) {
+      return utils.bottomOffset(offset);
+    },
+    changSelectedNum(colorSkusIndex, skuIndex) {
+      let { colorSkuList } = this.seletedDetailsItem;
+      let seletedColorSkuNum = 0;
+      let seletedColorSkuSumNum = 0;
+      colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
+        seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum);
+      });
+      this.seletedDetailsItem.colorSkuList[
+        colorSkusIndex
+      ].seletedColorSkuNum = seletedColorSkuNum;
+
+      colorSkuList.forEach((item, index) => {
+        seletedColorSkuSumNum =
+          Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum);
+      });
+
+      this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum;
+      // debugger
+    },
+    onPointClicked() {
+      this.$emit("pointClick", this.seletedDetailsItem);
+    }
+  }
+};
 </script>
 
 <style lang='less' scoped>
@@ -251,8 +276,8 @@ export default {
     margin-top: 14px;
     .van-sku__goods-price {
       color: #f53030;
-      font-size:14px;
-      font-weight:400;
+      font-size: 14px;
+      font-weight: 400;
       .van-sku__price-num {
         font-size: 20px;
         font-weight: bold;
