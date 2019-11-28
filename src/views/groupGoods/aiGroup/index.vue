@@ -77,9 +77,9 @@ export default {
             titleIndex: 0,
             screenWidth: document.body.clientWidth,
             allDatas: [],
-            designers: [1, 2, 3, 4, 5],
-            datas: [1, 2, 3],
-            footerData: [80, 90, 99],
+            designers: [],
+            datas: [],
+            footerData: [],
             footerTitles: ['推荐指数', '时尚指数', '热销指数'],
             swiperOption: {
                 slidesPerView: 'auto',

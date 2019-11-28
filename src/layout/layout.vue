@@ -32,10 +32,13 @@ export default {
     activated() {
         this.baseParams = utils.getStore('baseParams')
         let statusBarHeight = Number(this.baseParams.statusBarHeight) / 100
+
         if (this.baseParams.platform === 'ios') {
             if (Number(this.baseParams.statusBarHeight) > 20) {
                 this.paddingTop = Number(statusBarHeight) + 'rem'
                 // this.paddingBottom = '0.34rem'
+            } else {
+                this.paddingTop = statusBarHeight + 'rem'
             }
         } else {
             this.paddingTop = statusBarHeight + 'rem'
