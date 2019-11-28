@@ -126,6 +126,21 @@ export default {
                 })
         },
         async shareWechat (type) {
+            // type 1=好友
+            if(type === 1){
+                // 上报按钮事件
+                window.sensors.track('click', {
+                    // String 类型
+                    pagename: 'shareGoodFriends'
+                })
+            }else{
+                // 2=朋友圈
+                // 上报按钮事件
+                window.sensors.track('click', {
+                    // String 类型
+                    pagename: 'shareWechatMoments'
+                })
+            }
             // let url = window.location.host
             let url = 'h5.yosar.com'
             // type 1=好友 2=朋友圈
