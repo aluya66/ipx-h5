@@ -71,9 +71,9 @@ export default {
     mounted () {
         // 上报页面事件
         window.sa.track('IPX_WEB', {
-            page:'styleShare',
-            type:'pageView',
-            event:'pageView'
+            page: 'styleShare',
+            type: 'pageView',
+            event: 'pageView'
         })
         setTimeout(() => {
             console.log(document.querySelector('.van-pull-refresh'))
@@ -131,17 +131,17 @@ export default {
             if (type === 1) {
                 // 上报按钮事件
                 window.sa.track('IPX_WEB', {
-                    page:'styleShare',
-                    type:'click',
-                    event:'shareGoodFriends'
+                    page: 'styleShare',
+                    type: 'click',
+                    event: 'shareGoodFriends'
                 })
             } else {
                 // 2=朋友圈
                 // 上报按钮事件
                 window.sa.track('IPX_WEB', {
-                    page:'styleShare',
-                    type:'click',
-                    event:'shareWechatMoments'
+                    page: 'styleShare',
+                    type: 'click',
+                    event: 'shareWechatMoments'
                 })
             }
             // let url = window.location.host

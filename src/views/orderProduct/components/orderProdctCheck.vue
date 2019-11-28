@@ -71,9 +71,9 @@ export default {
         handleCheck () {
             // 上报按钮事件
             window.sa.track('IPX_WEB', {
-                page:'orderProduct',
-                type:'click',
-                event:'immediatelyFreeCheckStyle'
+                page: 'orderProduct',
+                type: 'click',
+                event: 'immediatelyFreeCheckStyle'
             })
             this.$emit('onCheck')
         },
