@@ -156,7 +156,7 @@ export default {
                     // pageSize: 100
                 }
                 this.$router.push({
-                    path: '/user/aiGroup',
+                    path: '/groupGoods/aiGroup',
                     query: {
                         params: params
                     } })

@@ -59,7 +59,7 @@ import 'swiper/dist/css/swiper.css'
 
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Empty from './groupEmpty.vue'
-import utils from '../../../utils'
+import utils from 'utils'
 
 export default {
     components: {

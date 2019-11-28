@@ -1,8 +1,8 @@
 export default {
-    path: '/user/aiGroup/matchRank',
+    path: '/groupGoods/aiGroup/matchRank',
     name: 'matchRank',
     meta: {
         keepAlive: true
     },
-    component: () => import('@/views/user/aiGroup/matchRank.vue')
+    component: () => import('@/views/groupGoods/aiGroup/matchRank.vue')
 }
