@@ -114,9 +114,10 @@ export default {
         // 免费测款
         handleCheck () {
             // 上报按钮事件
-            window.sensors.track('click', {
-                // String 类型
-                pagename: 'freeCheckStyle'
+            window.sa.track('IPX_WEB', {
+                page:'orderProduct',
+                type:'click',
+                event:'freeCheckStyle'
             })
             this.token = utils.getStore('token') || ''
             if (this.token) {
@@ -142,9 +143,10 @@ export default {
         // 点击报名弹框
         handleApply () {
             // 上报按钮事件
-            window.sensors.track('click', {
-                // String 类型
-                pagename: 'EnrollInMeeting'
+            window.sa.track('IPX_WEB', {
+                page:'orderProduct',
+                type:'click',
+                event:'enrollInMeeting'
             })
             if (this.token) {
                 if (this.enableToTakePart === 0) {
@@ -237,7 +239,7 @@ export default {
     },
     mounted () {
         // 上报页面事件
-        window.sensors.track('pageView', {
+        window.sa.track('pageView', {
             // String 类型
             pagename: 'orderProduct'
         })
