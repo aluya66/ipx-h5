@@ -239,9 +239,10 @@ export default {
     },
     mounted () {
         // 上报页面事件
-        window.sa.track('pageView', {
-            // String 类型
-            pagename: 'orderProduct'
+        window.sa.track('IPX_WEB', {
+            page:'orderProduct',
+            type:'pageView',
+            event:'pageView'
         })
         this.handleScroll()
     },

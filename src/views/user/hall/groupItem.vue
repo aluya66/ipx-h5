@@ -26,6 +26,8 @@
 
 <script>
 import utils from 'utils'
+import order from './groupCreateOrder'
+
 export default {
     components: {
 
@@ -74,38 +76,8 @@ export default {
         },
         handleBuy(e) {
             e.stopPropagation()
-            /// 将商品按设计师分组
-            let shopCarts = []
-            let products = this.groupGood.groupGoodsRecords
-            let designerIds = []
-            products.forEach(item => {
-                designerIds.push(item.designer.id)
-            })
-            designerIds.forEach(idStr => {
-                let arr = products.filter(item => item.designer.id === idStr)
-                let skuArr = []
-                arr.forEach(productItem => {
-                    productItem.colorSkuList.forEach(skuItem => {
-                        skuItem.mainPic = productItem.mainPic
-                        skuArr = skuArr.concat(skuItem.skuList)
-                    })
-                })
-                let designerObj = arr[0].designer
-                let obj = {
-                    products: arr,
-                    designer: designerObj,
-                    skuProductList: skuArr
-                }
-                shopCarts.push(obj)
-            })
-            const params = {
-                jumpUrl: 'createOrder://',
-                totalPrice: this.groupGood.totalPrice,
-                groupCode: this.groupGood.groupGoodsId + '',
-                discount: '1',
-                orderData: shopCarts
-            }
-            utils.postMessage('', params)
+            let code = this.groupGood.groupGoodsId + ''
+            order.createOrder(this.groupGood.groupGoodsRecords, this.groupGood.totalPrice, code)
         }
     }
 }
