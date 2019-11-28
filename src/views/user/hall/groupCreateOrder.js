@@ -13,15 +13,16 @@ export default {
             let arr = products.filter(item => item.designer.id === idStr)
             let skuArr = []
             arr.forEach(productItem => {
+                let selectSkus = []
                 productItem.colorSkuList.forEach(skuItem => {
-                    // skuItem.mainPic = productItem.mainPic
                     skuItem.skuList.forEach(sku => {
                         sku.mainPic = productItem.mainPic
                     })
                     let skus = skuItem.skuList.filter(sku => sku.num > 0)
-                    productItem.selectSku = skus
+                    selectSkus = selectSkus.concat(skus)
                     skuArr = skuArr.concat(skus)
                 })
+                productItem.selectSku = selectSkus
             })
             let designerObj = arr[0].designer
             if (skuArr.length > 0) {
@@ -33,7 +34,9 @@ export default {
                 shopCarts.push(obj)
             }
         })
+
         if (shopCarts.length <= 0) {
+            window.globalVue.$toast('123213')
             Dialog.alert({
                 message: '商品数据有变动，请确认后再购买'
             }).then(() => {

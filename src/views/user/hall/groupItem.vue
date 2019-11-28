@@ -7,7 +7,7 @@
             <div class="list-contain">
                 <img class="pole"  src="@/themes/images/groupGoods/pic_koc_clothes_hanger.png" alt="">
                 <div class="group-contain">
-                    <div class="p-contain" v-for="product in getColorSkuList" :key="product.productCode" >
+                    <div class="p-contain" v-for="(product,index) in getColorSkuList" :key="product.productCode + index" >
                         <img src="@/themes/images/groupGoods/pic_hook.png" alt="">
                         <img class="productSize" :src='product.imgUrl' alt="" @click.stop="handleSelectImg(product)" >
                     </div>

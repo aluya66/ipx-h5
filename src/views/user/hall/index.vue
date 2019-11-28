@@ -302,7 +302,7 @@ export default {
                 if (!this.isStickyTop) {
                     this.offsetY = offsetTop
                 } else {
-                    if (this.offsetY + 60 * window.devicePixelRatio <= scrollTop) {
+                    if (this.offsetY + 200 * window.devicePixelRatio <= scrollTop) {
                         this.flag = true
                     } else {
                         this.flag = false
