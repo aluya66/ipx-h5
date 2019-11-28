@@ -1,8 +1,8 @@
 export default {
-    path: '/user/aiGroup',
+    path: '/groupGoods/aiGroup',
     name: 'aiGroup',
     meta: {
         keepAlive: true
     },
-    component: () => import('@/views/user/aiGroup/index.vue')
+    component: () => import('@/views/groupGoods/aiGroup/index.vue')
 }

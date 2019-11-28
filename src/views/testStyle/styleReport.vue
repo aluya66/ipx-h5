@@ -1,5 +1,5 @@
 <template>
-  <layout-view>
+  <layout-view style="padding-top:0">
     <!-- <c-list class="list-scroll"> -->
     <div class="panel">
       <div class="head">

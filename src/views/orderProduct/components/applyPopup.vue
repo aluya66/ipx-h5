@@ -242,6 +242,12 @@ export default {
             this.$emit('onClose')
         },
         handleApply () {
+            // 上报按钮事件
+            window.sa.track('IPX_WEB', {
+                page: 'styleShare',
+                type: 'click',
+                event: 'submitApplication'
+            })
             if (this.submitState) {
                 let info = {
                     userName: this.userName,

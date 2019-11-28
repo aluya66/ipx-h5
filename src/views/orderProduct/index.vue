@@ -113,6 +113,12 @@ export default {
         },
         // 免费测款
         handleCheck () {
+            // 上报按钮事件
+            window.sa.track('IPX_WEB', {
+                page: 'orderProduct',
+                type: 'click',
+                event: 'freeCheckStyle'
+            })
             this.token = utils.getStore('token') || ''
             if (this.token) {
                 this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
@@ -136,6 +142,12 @@ export default {
         },
         // 点击报名弹框
         handleApply () {
+            // 上报按钮事件
+            window.sa.track('IPX_WEB', {
+                page: 'orderProduct',
+                type: 'click',
+                event: 'enrollInMeeting'
+            })
             if (this.token) {
                 if (this.enableToTakePart === 0) {
                     this.$toast('已提交过报名信息，请勿重复提交')
@@ -226,6 +238,11 @@ export default {
         this.handleRequestUserManagers()
     },
     mounted () {
+        // 上报页面事件
+        window.sa.track('pageView', {
+            // String 类型
+            pagename: 'orderProduct'
+        })
         this.handleScroll()
     },
     destroyed () {

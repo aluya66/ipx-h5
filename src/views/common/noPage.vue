@@ -1,55 +1,33 @@
 <template>
   <div class="no-page">
-    <c-icon name="failure"></c-icon>
+    <noPage />
+    <!-- <c-icon name="failure"></c-icon>
     <div class="text">
       未找到頁面，
       <span>{{count}}s</span>後返回首頁
-    </div>
+    </div>-->
   </div>
 </template>
 
 <script>
+import noPage from '../error/emptyView'
 export default {
-    data () {
-        return {
-            delayTime: null,
-            count: 5
-        }
+    data() {
+        return {}
     },
-    created () {
-        this.setTime()
+    components: {
+        noPage
     },
-    methods: {
-        setTime () {
-            const that = this
-            setTimeout(() => {
-                that.count -= 1
-                if (that.count === 0) {
-                    this.$router.replace('/login')
-                } else {
-                    that.setTime()
-                }
-            }, 1000)
-        }
-    }
+    created() {},
+    methods: {}
 }
 </script>
 
 <style lang='less' scoped>
 .no-page {
   width: 100%;
-  height: 100vh;
-  font-size: 0.2rem;
-  text-align: center;
-  background-color: @background-sub-color;
-  min-height: 600px;
-  margin-top: 30%;
-  .text {
-    margin-top: 30px;
-    color: @text-sub-color;
-    span {
-      color: @text-red;
-    }
-  }
+  height: calc(100vh);
+  background-color: #fff;
+  padding-top: 30%;
 }
 </style>

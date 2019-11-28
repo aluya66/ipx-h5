@@ -69,6 +69,12 @@ export default {
     methods: {
     // 发起测款
         handleCheck () {
+            // 上报按钮事件
+            window.sa.track('IPX_WEB', {
+                page: 'orderProduct',
+                type: 'click',
+                event: 'immediatelyFreeCheckStyle'
+            })
             this.$emit('onCheck')
         },
         // 测款报告

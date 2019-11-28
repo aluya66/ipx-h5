@@ -86,6 +86,7 @@ export default {
                 let skuArr = []
                 arr.forEach(productItem => {
                     productItem.colorSkuList.forEach(skuItem => {
+                        skuItem.mainPic = productItem.mainPic
                         skuArr = skuArr.concat(skuItem.skuList)
                     })
                 })

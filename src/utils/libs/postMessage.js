@@ -15,10 +15,9 @@ export const postMessage = (method, data) => {
         'uiData': '',
         'callBack': ''
     }
-
     if (baseParams.platform === 'ios') {
         window.webkit.messageHandlers.IPX.postMessage(params)
-    } else {
+    } else if (baseParams.platform === 'android') {
         window.IPX.postMessage(JSON.stringify(params))
     }
 }

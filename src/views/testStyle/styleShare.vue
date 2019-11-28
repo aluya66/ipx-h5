@@ -69,6 +69,12 @@ export default {
         }
     },
     mounted () {
+        // 上报页面事件
+        window.sa.track('IPX_WEB', {
+            page: 'styleShare',
+            type: 'pageView',
+            event: 'pageView'
+        })
         setTimeout(() => {
             console.log(document.querySelector('.van-pull-refresh'))
 
@@ -121,6 +127,23 @@ export default {
                 })
         },
         async shareWechat (type) {
+            // type 1=好友
+            if (type === 1) {
+                // 上报按钮事件
+                window.sa.track('IPX_WEB', {
+                    page: 'styleShare',
+                    type: 'click',
+                    event: 'shareGoodFriends'
+                })
+            } else {
+                // 2=朋友圈
+                // 上报按钮事件
+                window.sa.track('IPX_WEB', {
+                    page: 'styleShare',
+                    type: 'click',
+                    event: 'shareWechatMoments'
+                })
+            }
             // let url = window.location.host
             let url = 'h5.yosar.com'
             // type 1=好友 2=朋友圈

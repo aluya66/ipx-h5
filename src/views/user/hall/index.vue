@@ -55,6 +55,7 @@
         <list
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
+            :style="getBottomOffset(0)"
             v-if="menuIndex == 1"
             v-model="loading"
             :finished="finished"
@@ -71,6 +72,7 @@
         <list
             ref="grouplist"
             :class='["groupList", isStickyTop?"enableScroll":"disableScroll"]'
+            :style="getBottomOffset(0)"
             v-if="menuIndex == 0"
             v-model="loading"
             :finished="finished"
@@ -190,6 +192,9 @@ export default {
         }
     },
     methods: {
+        getBottomOffset (offset) {
+            return utils.bottomOffset(offset)
+        },
         handleClickTest() {
             this.$toast('功能即将开启，请耐心等待')
         },

@@ -6,7 +6,7 @@
             <img class="header-img" :src="backImage" />
         </template>
    </c-header>
-   <div class="contain">
+   <div class="contain" >
        <p class="top-title">最潮搭配TOP10</p>
        <div class="rank" :style="getListContainHeight()">
            <div class="rank-content" v-for="(item,index) in rankData" :key="item" @click="handleToDetail(item)">
@@ -51,7 +51,7 @@ export default {
             rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
-            rankImg: [require('../../../themes/images/groupGoods/bg_No.1.png'), require('../../../themes/images/groupGoods/bg_No.2.png'), require('../../../themes/images/groupGoods/bg_No.3.png')]
+            rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png')]
         }
     },
     computed() {
@@ -89,7 +89,9 @@ export default {
             }, true)
         },
         getListContainHeight() {
-            return `height:${this.getContainHeight()}rem`
+            let offsetStr = utils.bottomOffset(0)
+
+            return `height:${this.getContainHeight()}rem;${offsetStr}`
         },
         getContainHeight() {
             this.baseParams = utils.getStore('baseParams')
@@ -99,8 +101,8 @@ export default {
         },
         handleRequest() {
             this.$api.groupGoods.groupRank().then(res => {
-                if (res.data instanceof Array) {
-                    this.rankData = res.data
+                if (res instanceof Array) {
+                    this.rankData = res
                 }
             }).catch(() => {
 
@@ -194,6 +196,7 @@ export default {
                     left: 0;
                 }
                 p {
+                    margin: 0;
                     text-align: center;
                     line-height: 24px;
                     font-size:10px;
@@ -217,11 +220,12 @@ export default {
                     font-weight:500;
                     color:@color-c1;
                     line-height:22px;
+                    margin: 0;
                 }
                 .percentage {
 
                     p {
-                        margin-top: 8px;
+                        margin: 8px 0 0;
                         display: inline-block;
                         font-size:10px;
                         font-weight:500;
@@ -248,6 +252,7 @@ export default {
                     color:@color-c1;
                     line-height:22px;
                     vertical-align: middle;
+                    margin: 0;
                     img {
 
                         width: 16;height: 16px;

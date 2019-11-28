@@ -17,7 +17,7 @@
     <div :style='themeLight' slot="title" v-if="$slots.title">
       <slot name="title"></slot>
     </div>
-    <div slot="right" v-if="$slots.right">
+    <div class="c-header-right" slot="right" v-if="$slots.right">
       <slot name="right"></slot>
     </div>
   </van-nav-bar>
@@ -138,6 +138,11 @@ export default create({
 
 }
 
+.c-header-right {
+    p {
+        margin: 0
+    }
+}
 .c-header-white{
   .van-icon-arrow-left {
     // background: url("../../themes/images/app/icon_next20_white1@3x.png");
