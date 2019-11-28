@@ -132,9 +132,11 @@
 
     </div>
 
-    <div class="footer">
-      <div class="price">¥<span>198.89</span></div>
-      <button @click="addHall">添加至展厅</button>
+    <div class="footer" :style="getBottomOffset(0)" >
+      <div class="
+      price"
+    >¥<span>198.89</span></div>
+    <button @click="addHall">添加至展厅</button>
     </div>
   </layout-view>
 </template>
@@ -208,6 +210,9 @@ export default {
     }
   },
   methods: {
+    getBottomOffset(offset) {
+      return utils.bottomOffset(offset);
+    },
     handleCall() {
       window.sa.track("IPX_WEB", {
         page: "groupDetail", //页面名字
