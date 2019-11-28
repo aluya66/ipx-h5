@@ -48,7 +48,7 @@
       </div>
       <div class="footer-content">
         <div class="total-price">合计：<span class="yen">¥</span><span class="price">{{groupDetail.totalPrice}}</span></div>
-        <button>立即采购</button>
+        <button @click="goPay">立即采购</button>
       </div>
 
       <!-- sku选择 -->
@@ -80,11 +80,19 @@ export default {
             seletedItemIndex: '' // 选择调整商品下标
         }
     },
+    created() {
+        this.getGroupDetail()
+    },
     activated() {
         this.groupName = utils.getStore('groupName') || '未设置'
     },
-    created() {
-        this.getGroupDetail()
+    mounted() {
+        // 上报页面事件
+        window.sa.track('IPX_WEB', {
+            page: 'groupListDetail',
+            type: 'pageView',
+            event: 'pageView'
+        })
     },
     components: {
         skuSelect
@@ -101,6 +109,11 @@ export default {
     },
     methods: {
         openSku(item, index) {
+          window.sa.track('IPX_WEB', {
+          page:'groupListDetail',  //页面名字
+          type:'click',         //固定参数，表明是点击事件
+          event:'modifySku'   //按钮唯一标识，取个语义化且不重名的名字
+          })
             this.seletedDetailsItem = {}
             this.colorSkuAction = 0
             this.showSku = !this.showSku
@@ -180,7 +193,14 @@ export default {
                 console.log(err)
             })
             this.showSku = false
-        }
+        },
+        goPay() {
+          window.sa.track('IPX_WEB', {
+          page:'groupListDetail',  //页面名字
+          type:'click',         //固定参数，表明是点击事件
+          event:'purchase'   //按钮唯一标识，取个语义化且不重名的名字
+          })
+        },
     }
 }
 </script>
