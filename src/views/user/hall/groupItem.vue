@@ -76,6 +76,11 @@ export default {
         },
         handleBuy(e) {
             e.stopPropagation()
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'purchase' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             let code = this.groupGood.groupGoodsId + ''
             order.createOrder(this.groupGood.groupGoodsRecords, this.groupGood.totalPrice, code)
         }
