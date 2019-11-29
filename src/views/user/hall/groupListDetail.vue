@@ -1,56 +1,46 @@
 <template>
   <layout-view>
-    <c-header
-      slot="header"
-      :left-arrow="true"
-    >
+    <c-header slot="header" :left-arrow="true">
       <div slot="title">组货清单详情</div>
-      <template
-        slot="right"
-        tag="div"
-      >
+      <template slot="right" tag="div">
         <span class="header-save">保存</span>
       </template>
     </c-header>
     <div class="panel">
       <div class="top-content">
         <span>组货名称</span>
-        <p>{{groupName}}</p>
-        <button @click="routerLink(`/changeGroupName/${groupName}`)">更改</button>
+        <p>{{ groupName }}</p>
+        <button @click="changeGroupName">更改</button>
       </div>
       <div class="list-title">
         <div class="dot"></div>
         <p>样衣列表</p>
       </div>
       <div class="list-content">
-        <div
-          class="product-cell"
-          v-for="(item,index) in groupGoodsRecords"
-          :key="index"
-        >
-          <img
-            :src="item.mainPic"
-            alt=""
-          >
+        <div class="product-cell" v-for="(item, index) in groupGoodsRecords" :key="index">
+          <img :src="item.mainPic" alt="" />
           <div class="product-info">
-            <p>{{item.productName}}</p>
+            <p :class="[item.disabled ? 'disableTitle' : '']">{{ item.productName }}</p>
             <div class="sku-list">
               <p
                 for=""
-                v-for="(sku,i) in item.colorSkuList"
+                v-for="(sku, i) in item.colorSkuList"
                 :key="i"
-              >{{sku | selectSkuStr}}</p>
+                :class="[item.disabled ? 'disableSku' : '']"
+              >
+                {{ sku | selectSkuStr }}
+              </p>
+              <p class="tips">{{ item | tipStr }}</p>
             </div>
-            <p class="price">¥{{item.spuTshPrice}}</p>
-            <button @click="openSku(item,index)">调整规格</button>
+            <p :class="[item.disabled ? 'disablePrice' : 'price']">¥{{ item.spuTshPrice }}</p>
+            <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
           </div>
         </div>
       </div>
-      <div
-        class="footer-content"
-        :style="getBottomOffset(0)"
-      >
-        <div class="total-price">合计：<span class="yen">¥</span><span class="price">{{groupDetail.totalPrice}}</span></div>
+      <div class="footer-content" :style="getBottomOffset(0)">
+        <div class="total-price">
+          合计：<span class="yen">¥</span><span class="price">{{ groupDetail.totalPrice }}</span>
+        </div>
         <button @click="goPay">立即采购</button>
       </div>
 
@@ -66,155 +56,200 @@
 </template>
 
 <script>
-import skuSelect from '@/views/common/skuSelect.vue'
-import utils from 'utils'
+import skuSelect from "@/views/common/skuSelect.vue";
+import order from "./groupCreateOrder";
+import utils from "utils";
 export default {
-    data() {
-        return {
-            showSku: false, // 是否弹出sku选择框
-            groupName: '深色系', // 组货名称
-            groupGoodsId: '', // 组货id
-            goodsId: '',
-            colorSkuAction: '',
-            groupDetail: {}, // 组货基本信息
-            groupGoodsRecords: [], // 商品列表数据源
+  components: {
+    skuSelect
+  },
+  data() {
+    return {
+      showSku: false, // 是否弹出sku选择框
+      groupName: " ", // 组货名称
+      groupGoodsId: "", // 组货id
+      goodsId: "",
+      colorSkuAction: "",
+      groupDetail: {}, // 组货基本信息
+      groupGoodsRecords: [], // 商品列表数据源
 
-            seletedDetailsItem: {}, // sku数据源
-            seletedItemIndex: '' // 选择调整商品下标
-        }
-    },
-    created() {
-        this.getGroupDetail()
-    },
-    activated() {
-        this.groupName = utils.getStore('groupName') || '未设置'
-    },
-    mounted() {
+      seletedDetailsItem: {}, // sku数据源
+      seletedItemIndex: "" // 选择调整商品下标
+    };
+  },
+  activated() {
+    this.showSku = false
+    this.getGroupDetail();
+    utils.postMessage("changeStatus", "default");
+  },
+  mounted() {
     // 上报页面事件
-        window.sa.track('IPX_WEB', {
-            page: 'groupListDetail',
-            type: 'pageView',
-            event: 'pageView'
-        })
+    window.sa.track("IPX_WEB", {
+      page: "groupListDetail",
+      type: "pageView",
+      event: "pageView"
+    });
+  },
+  filters: {
+    selectSkuStr(val) {
+      let str = val.attrColorValue + "：";
+      let arr = [];
+      val.skuList.forEach(item => {
+        arr.push(item.attrSpecValue);
+      });
+      return str + arr.join("，");
     },
-    components: {
-        skuSelect
-    },
-    filters: {
-        selectSkuStr(val) {
-            let str = val.attrColorValue + '：'
-            let arr = []
-            val.skuList.forEach(item => {
-                arr.push(item.attrSpecValue)
-            })
-            return str + arr.join('，')
-        }
-    },
-    methods: {
-        getBottomOffset(offset) {
-            return utils.bottomOffset(offset)
-        },
-        openSku(item, index) {
-            window.sa.track('IPX_WEB', {
-                page: 'groupListDetail', // 页面名字
-                type: 'click', // 固定参数，表明是点击事件
-                event: 'modifySku' // 按钮唯一标识，取个语义化且不重名的名字
-            })
-            this.seletedDetailsItem = {}
-            this.colorSkuAction = 0
-            this.showSku = !this.showSku
-            this.seletedDetailsItem = item
-            this.seletedItemIndex = index
-            let { colorSkuList } = this.seletedDetailsItem
-            let seletedColorSkuSumNum = 0
-
-            colorSkuList.forEach((item, index) => {
-                let seletedColorSkuNum = 0
-                item.skuList.forEach((skuItem, skuIndex) => {
-                    skuItem.skuValue =
-            Number(skuItem.entityStock) > 0 ? Number(skuItem.groupNum) : 0
-                    seletedColorSkuNum =
-            Number(skuItem.skuValue) + Number(seletedColorSkuNum)
-                })
-                item.seletedColorSkuNum = seletedColorSkuNum
-                seletedColorSkuSumNum =
-          Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
-            })
-
-            this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
-        },
-        getGroupDetail() {
-            // 获取组货详情列表
-            const params = {
-                groupGoodsId: this.$route.query.groupId
-            }
-            this.$api.groupGoods
-                .getGroupListDetail(params)
-                .then(res => {
-                    if (res.code === 0) {
-                        const { data } = res
-                        const { groupGoodsRecords } = data
-
-                        this.groupDetail = data
-                        this.groupGoodsRecords = groupGoodsRecords
-                        this.groupName = this.groupDetail.name
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-        skuCommit(seletedDetailsItem) {
-            // sku修改 确定
-            this.showSku = false
-            this.seletedDetailsItem = seletedDetailsItem
-            let groupProducts = []
-
-            const params = {
-                groupGoodsId: this.groupDetail.groupGoodsId,
-                name: this.groupDetail.name
-            }
-
-            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-                item.skuList.forEach((skuItem, skuIndex) => {
-                    let sku = {
-                        groupGoodsRecordId: '',
-                        num: skuItem.skuValue,
-                        productAtrNumber: this.seletedDetailsItem.productAtrNumber,
-                        productCode: this.seletedDetailsItem.productCode,
-                        productSkuCode: skuItem.productSkuCode,
-                        starasSkuCode: skuItem.starasSkuCode
-                    }
-                    groupProducts.push(sku)
-                })
-            })
-            params.groupGoodsRecords = groupProducts
-
-            this.$api.groupGoods
-                .updateGroupListDetail(params)
-                .then(res => {
-                    if (res.code === 0) {
-                        this.getGroupDetail()
-                        this.$toast.success('已修改')
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            this.showSku = false
-        },
-        goPay() {
-            window.sa.track('IPX_WEB', {
-                page: 'groupListDetail', // 页面名字
-                type: 'click', // 固定参数，表明是点击事件
-                event: 'purchase' // 按钮唯一标识，取个语义化且不重名的名字
-            })
-        }
+    tipStr(value) {
+      if (value.productShelves === 0) {
+        value.disabled = true;
+        return "商品已失效"; // 下架 置灰
+      }
+      let batchNum = value.minBatchNum;
+      let stockAll = 0;
+      let isChanged = false;
+      let isEnough = false;
+      value.colorSkuList.forEach((item, index) => {
+        item.skuList.forEach((skuItem, skuIndex) => {
+          if (skuItem.entityStock === 0 && skuItem.num !== 0) {
+            isChanged = true;
+          }
+          if (skuItem.num >= batchNum && skuItem.entityStock >= skuItem.num) {
+            isEnough = true;
+          }
+          stockAll += skuItem.entityStock;
+        });
+      });
+      if (stockAll === 0 || stockAll < batchNum) {
+        value.disabled = true;
+        return "库存不足，暂不可购买"; // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
+      }
+      if (!isEnough && stockAll >= batchNum) {
+        return "不满足起订量，需手动调整"; // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
+      }
+      if (isChanged && isEnough) {
+        return "部分商品库存变更"; // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
+      }
     }
-}
+  },
+  methods: {
+    getBottomOffset(offset) {
+      return utils.bottomOffset(offset);
+    },
+    openSku(item, index) {
+      window.sa.track("IPX_WEB", {
+        page: "groupListDetail", // 页面名字
+        type: "click", // 固定参数，表明是点击事件
+        event: "modifySku" // 按钮唯一标识，取个语义化且不重名的名字
+      });
+      this.seletedDetailsItem = {};
+      this.colorSkuAction = "0";
+      this.showSku = !this.showSku;
+      this.seletedDetailsItem = item;
+      this.seletedItemIndex = index;
+      let { colorSkuList } = this.seletedDetailsItem;
+      let seletedColorSkuSumNum = 0;
+
+      colorSkuList.forEach((item, index) => {
+        let seletedColorSkuNum = 0;
+        item.skuList.forEach((skuItem, skuIndex) => {
+          skuItem.skuValue = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0;
+          seletedColorSkuNum = Number(skuItem.skuValue) + Number(seletedColorSkuNum);
+        });
+        item.seletedColorSkuNum = seletedColorSkuNum;
+        seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum);
+      });
+
+      this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum;
+    },
+    getGroupDetail() {
+      // 获取组货详情列表
+      const params = {
+        groupGoodsId: this.$route.query.groupId
+      };
+      this.$api.groupGoods
+        .getGroupListDetail(params)
+        .then(res => {
+          if (res.code === 0) {
+            const { data } = res;
+            const { groupGoodsRecords } = data;
+
+            this.groupDetail = data;
+            this.groupGoodsRecords = groupGoodsRecords;
+            this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
+              return {
+                ...item,
+                disabled: false
+              };
+            });
+            this.groupName = this.groupDetail.name;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    skuCommit(seletedDetailsItem) {
+      // sku修改 确定
+      this.seletedDetailsItem = seletedDetailsItem;
+      let groupProducts = [];
+
+      const params = {
+        groupGoodsId: this.groupDetail.groupGoodsId,
+        name: this.groupDetail.name
+      };
+
+      this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
+        item.skuList.forEach((skuItem, skuIndex) => {
+          let sku = {
+            groupGoodsRecordId: "",
+            num: skuItem.skuValue,
+            productAtrNumber: this.seletedDetailsItem.productAtrNumber,
+            productCode: this.seletedDetailsItem.productCode,
+            productSkuCode: skuItem.productSkuCode,
+            starasSkuCode: skuItem.starasSkuCode
+          };
+          groupProducts.push(sku);
+        });
+      });
+      params.groupGoodsRecords = groupProducts;
+
+      this.$api.groupGoods
+        .updateGroupListDetail(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.getGroupDetail();
+            this.$toast.success("已修改");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      this.showSku = false;
+    },
+    changeGroupName() {
+      this.$router.push({
+        path: "/group/changeGroupName",
+        query: { name: this.groupName, groupGoodsId: this.groupDetail.groupGoodsId }
+      });
+    },
+    goPay() {
+      window.sa.track("IPX_WEB", {
+        page: "groupListDetail", // 页面名字
+        type: "click", // 固定参数，表明是点击事件
+        event: "purchase" // 按钮唯一标识，取个语义化且不重名的名字
+      });
+      order.createOrder(
+        this.groupGoodsRecords,
+        this.groupDetail.totalPrice,
+        this.groupGoodsId,
+        true
+      );
+    }
+  }
+};
 </script>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .header-save {
   font-size: 14px;
   font-weight: 400;
@@ -222,7 +257,7 @@ export default {
 }
 .panel {
   background-color: white;
-  height: calc(100vh - 85px);
+  height: calc(100vh - 65px);
   overflow-y: scroll;
   padding: 16px;
   margin-top: -1px;
@@ -278,36 +313,36 @@ export default {
   margin-top: 16px;
   .product-cell {
     background: white;
-    box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.06);
-    border-radius: 8px;
-    padding: 16px;
-    height: 166px;
-    margin-bottom: 20px;
+    height: 106px;
+    margin-bottom: 32px;
     display: flex;
     > img {
       flex: none;
-      width: 100px;
-      height: 134px;
+      width: 106px;
+      height: 106px;
       border-radius: 4px;
       object-fit: cover;
     }
     .product-info {
       margin-left: 12px;
-      // margin-right: 16px;
-      width: calc(100vw - 176px);
+      width: calc(100vw - 152px);
       > p {
         font-size: 16px;
         font-weight: 500;
         color: @color-c1;
         .ellipsis();
       }
+      .disableTitle {
+        font-size: 16px;
+        font-weight: 500;
+        color: @color-c4;
+        .ellipsis();
+      }
       .sku-list {
         margin-top: 8px;
-        margin-bottom: 16px;
-        height: 80px;
-        max-height: 80px;
+        height: 55px; //// 去掉
         overflow: hidden;
-        overflow-y: auto;
+        overflow-y: auto; //// 去掉
         > p {
           font-size: 12px;
           font-weight: 400;
@@ -315,12 +350,31 @@ export default {
           line-height: 16px;
           margin: 8px 0;
         }
+        .disableSku {
+          font-size: 12px;
+          font-weight: 400;
+          color: @color-c4;
+          line-height: 16px;
+          margin: 8px 0;
+        }
+        .tips {
+          font-size: 12px;
+          font-weight: 400;
+          color: @color-rc;
+          height: 15px;
+        }
       }
       .price {
         font-size: 18px;
         font-weight: 500;
         color: @color-rc;
-        margin-bottom: 16px;
+        margin-top: 8px;
+      }
+      .disablePrice {
+        font-size: 18px;
+        font-weight: 500;
+        color: @color-c4;
+        margin-top: 8px;
       }
       > button {
         width: 80px;
@@ -331,7 +385,11 @@ export default {
         font-weight: 500;
         color: @color-ec;
         float: right;
-        transform: translate(0, -44px);
+        transform: translate(0, -25px);
+      }
+      > button:disabled {
+        background: rgba(249, 250, 252, 1);
+        color: @color-c4;
       }
     }
   }
@@ -368,11 +426,7 @@ export default {
   > button {
     width: 96px;
     height: 40px;
-    background: linear-gradient(
-      135deg,
-      rgba(85, 122, 244, 1) 0%,
-      rgba(114, 79, 255, 1) 100%
-    );
+    background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
     border-radius: 20px;
     font-size: 14px;
     font-weight: 500;

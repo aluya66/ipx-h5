@@ -1,6 +1,6 @@
 
 export default {
-    path: '/changeGroupName/:name',
+    path: '/group/changeGroupName',
     name: 'changeGroupName',
     meta: {
         title: '编辑组货名称',
