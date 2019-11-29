@@ -182,6 +182,7 @@ export default {
         }
     },
     computed: {
+        // debug iOS上吸顶问题
         changePosition() {
             let baseParams = utils.getStore('baseParams')
             let statusBarHeight = (Number(baseParams.statusBarHeight) + 44) / 100
@@ -473,6 +474,8 @@ export default {
         }
     },
     activated() {
+        this.isStickyTop = false
+        this.flag = false
         utils.postMessage('changeStatus', 'light')
         this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
