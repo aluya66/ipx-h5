@@ -1,5 +1,7 @@
 import utils from 'utils'
-import { Dialog } from 'vant'
+import {
+    Dialog
+} from 'vant'
 
 export default {
     createOrder(groupGoods, totalPrice, groupCode) {
@@ -40,7 +42,12 @@ export default {
                 message: '商品数据有变动，请确认后再购买'
             }).then(() => {
                 // on close
-                window.globalVue.$router.push({ path: '/hall/groupListDetail', query: { groupId: groupCode } })
+                window.globalVue.$router.push({
+                    path: '/hall/groupListDetail',
+                    query: {
+                        groupId: groupCode
+                    }
+                })
             })
         } else {
             const params = {
@@ -50,7 +57,6 @@ export default {
                 discount: '1',
                 orderData: shopCarts
             }
-
             utils.postMessage('', params)
         }
     }

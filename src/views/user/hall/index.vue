@@ -198,9 +198,19 @@ export default {
             return utils.bottomOffset(offset)
         },
         handleClickTest() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'testOnline' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.$toast('功能即将开启，请耐心等待')
         },
         handleGoDelegate() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallLeague' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             const params = {
                 jumpUrl: 'goDelegate://'
             }
@@ -220,6 +230,11 @@ export default {
                 this.handleSelectItem(item)
             } else {
                 /// 详情？
+                window.sa.track('IPX_WEB', {
+                    page: 'userHall', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'hallClickGroupProductItem' // 按钮唯一标识，取个语义化且不重名的名字
+                })
                 const params = {
                     jumpUrl: 'productDetail://',
                     productCode: item.productCode
@@ -273,10 +288,20 @@ export default {
         },
         /// 切换栏目
         handleCollectList() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.menuIndex = 1
             this.handleResetOffset()
         },
         handleGroupList() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallGroupList' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.menuIndex = 0
             this.handleResetOffset()
         },
@@ -448,6 +473,7 @@ export default {
         }
     },
     activated() {
+        utils.postMessage('changeStatus', 'light')
         this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
         this.handleScroll()
