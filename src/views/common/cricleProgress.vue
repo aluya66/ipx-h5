@@ -201,8 +201,8 @@ export default {
                     }
                 }) // 实际进度
             chart.guide().html({
-                position: ['45%', '50%'],
-                html: `<div style="width: 120px;white-space: nowrap;text-align:center;"><p id="${text}" style="font-size: 48px;color: #2A2B33;margin:0;font-weight: bold;">0</p><p style="font-size: 36px;color: #B2B5C1;margin:0;">${actualText}</p></div>`
+                position: ['50%', '50%'],
+                html: `<div style="white-space: nowrap;text-align:center;"><p id="${text}" style="font-size: 30px;color: #2A2B33;margin:0;font-weight: bold;">0</p><p style="font-size: 22px;color: #B2B5C1;margin:0;margin-top: 4px;">${actualText}</p></div>`
             })
             chart.render()
         }
