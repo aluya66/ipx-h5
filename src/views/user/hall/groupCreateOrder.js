@@ -4,9 +4,10 @@ import {
 } from 'vant'
 
 export default {
-    createOrder(groupGoods, totalPrice, groupCode, isDetail) {
+    createOrder(groupGoods, groupCode, isDetail) {
         let shopCarts = []
         let products = []
+        let totalPrice = 0
         let batchNum = groupGoods.minBatchNum
         groupGoods.forEach((good, goodIndex) => {
             if (good.productShelves === 1) {
@@ -32,6 +33,7 @@ export default {
                 let selectSkus = []
                 productItem.colorSkuList.forEach(skuItem => {
                     skuItem.skuList.forEach(sku => {
+                        totalPrice += Number(sku.tshPrice) * Number(sku.num)
                         sku.mainPic = productItem.mainPic
                     })
                     let skus = skuItem.skuList.filter(sku => sku.num > 0)
@@ -70,7 +72,7 @@ export default {
         } else {
             const params = {
                 jumpUrl: 'createOrder://',
-                totalPrice: totalPrice,
+                totalPrice: totalPrice + '',
                 groupCode: groupCode,
                 discount: '1',
                 orderData: shopCarts

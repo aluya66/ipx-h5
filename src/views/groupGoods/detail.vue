@@ -30,7 +30,7 @@
         </swiper>
       </div>
       <div class="progress-title">
-        <p>秋装百搭组货</p>
+        <p>{{groupDetail.groupTitle}}</p>
       </div>
       <div class="group-progress">
         <template v-for="(item,index) in cricleLists">
