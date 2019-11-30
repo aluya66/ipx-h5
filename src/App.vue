@@ -51,10 +51,11 @@ export default {
                 data = window.IPX.postMessage(JSON.stringify(params))
                 results = JSON.parse(data).results
             } else {
-                // results = window.nativeInjectData
+                results = window.nativeInjectData
             }
             this.baseParams = (results && results.data) || testData
             this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 20
+            this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20 
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
         }

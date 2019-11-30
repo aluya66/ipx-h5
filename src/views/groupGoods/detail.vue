@@ -5,7 +5,11 @@
         <c-header
           slot="header"
           :left-arrow="true"
+          :style="marginTop"
         >
+        <template slot="left" tag="div">
+                <img class="header-img" :src="backImage" />
+        </template>
         </c-header>
         <swiper class="swiper-content">
           <swiper-slide
@@ -45,7 +49,7 @@
 
       <!--  人气排行-->
       <div class="popular-content">
-        <div class="title-content">
+        <div class="title-content" :style="{'backgroundImage': bgUrlList.popularity}">
           <p>本周累计人气</p>
         </div>
         <div class="number-scroll">
@@ -64,7 +68,7 @@
 
       <!-- 买手 -->
       <div class="popular-content">
-        <div class="title-content">
+        <div class="title-content" :style="{'backgroundImage': bgUrlList.koc}">
           <p>买手</p>
         </div>
         <div class="buyer">
@@ -79,7 +83,7 @@
 
       <!-- 搭配解析 -->
       <div class="popular-content">
-        <div class="title-content">
+        <div class="title-content" :style="{'backgroundImage': bgUrlList.analysis}">
           <p>搭配解析</p>
         </div>
         <div class="group-analys">
@@ -92,7 +96,7 @@
 
       <!-- 要点总结 -->
       <div class="popular-content">
-        <div class="title-content">
+        <div class="title-content" :style="{'backgroundImage': bgUrlList.important}">
           <p>要点总结</p>
         </div>
         <div class="group-important">
@@ -102,7 +106,7 @@
 
       <!-- 搭配清单 -->
       <div class="popular-content">
-        <div class="title-content">
+        <div class="title-content" :style="{'backgroundImage': bgUrlList.collocation}">
           <p>搭配清单</p>
         </div>
         <div class="collocation-list">
@@ -110,6 +114,7 @@
             class="product-cell"
             v-for="(item,index) in productList"
             :key="index"
+            @click="jumpToProduct(item)"
           >
             <img
               :src="item.mainPic"
@@ -156,13 +161,14 @@ export default {
     },
     data() {
         return {
+            backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
+            baseParams: {},
             popularNum: '',
             productList: [],
             groupDetail: {},
             groupGoodsKoc: {},
             popularArray: [],
             slidImages: [],
-            //   groupGoodsId: "",
             cricleLists: [
                 {
                     actualPercent: '',
@@ -179,7 +185,14 @@ export default {
                     actualText: '热销指数',
                     chartType: '3'
                 }
-            ]
+            ],
+            bgUrlList: {
+              popularity: 'url(' + require('../../themes/images/app/popularity@2x.png') + ')',
+              koc: 'url(' + require('../../themes/images/app/koc@2x.png') + ')',
+              analysis: 'url(' + require('../../themes/images/app/analysis@2x.png') + ')',
+              important: 'url(' + require('../../themes/images/app/essentials@2x.png') + ')',
+              collocation: 'url(' + require('../../themes/images/app/collocation@2x.png') + ')',
+            }
         }
     },
     activated() {
@@ -210,9 +223,25 @@ export default {
             return str + arr.join('，')
         }
     },
+    computed: {
+      marginTop() {
+        this.baseParams = utils.getStore('baseParams')
+        if(this.baseParams.isIphoneX) {
+          return 'top:0.44rem'
+        }
+        return 'top:0.2rem'
+      }
+    },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        jumpToProduct(product) {
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: product.productCode
+            }
+            utils.postMessage('', params)
         },
         handleCall() {
             window.sa.track('IPX_WEB', {
@@ -338,7 +367,12 @@ export default {
 .panel {
   .c-header {
     position: fixed;
-    top: 0;
+    .header-img {
+      display: block;
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+    }
   }
 }
 </style>
@@ -346,8 +380,8 @@ export default {
 <style lang='less' scoped>
 .panel {
   background-color: white;
-  height: calc(100vh - 51px);
-  overflow-y: scroll;
+  height: 100%;
+  overflow: auto;
   .header-top {
     .swiper-content {
       width: 100%;
@@ -400,9 +434,8 @@ export default {
     margin-bottom: 56px;
     .title-content {
       text-align: center;
-      background: url("../../themes/images/app/popularity@2x.png") no-repeat;
+      background-repeat: no-repeat;
       background-position: center;
-      //   background-size: length();
       height: 40px;
       padding-top: 10px;
       > p {
@@ -553,7 +586,7 @@ export default {
   justify-content: space-between;
   bottom: 0;
   width: 100%;
-  height: 49px;
+  // height: 49px;
   background: white;
   box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
   border-radius: 12px 12px 0px 0px;
