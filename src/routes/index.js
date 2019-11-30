@@ -19,7 +19,7 @@ const Route = (VueRouter) => {
                 console.log(savedPosition)
                 return savedPosition
             } else {
-                console.log(123)
+                console.log(document.body.scrollTop)
                 if (from.meta.keepAlive) {
                     from.meta.savedPosition = document.body.scrollTop
                 }

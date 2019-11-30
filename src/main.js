@@ -35,6 +35,7 @@ Vue.config.productionTip = false
 // 全局注册自定义组件
 registerComponent(Vue)
 
+const eventBus = new Vue()
 // 国际化支持
 const i18n = importI18n(Vue)
 
@@ -45,6 +46,7 @@ const globalVue = new Vue({
     router: route(VueRouter),
     render: h => h(App),
     beforeCreate () {
+        Vue.prototype.$eventBus = eventBus
         Vue.prototype.$api = serviceApi
         Vue.prototype.$toast = Toast
         Vue.prototype.$utils = globalUtils
@@ -55,5 +57,4 @@ const globalVue = new Vue({
           : process.env.VUE_APP_STATICFILE
     }
 })
-
 window.globalVue = globalVue

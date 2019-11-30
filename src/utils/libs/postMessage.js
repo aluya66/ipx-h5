@@ -17,7 +17,7 @@ export const postMessage = (method, data) => {
     }
     if (baseParams.platform === 'ios') {
         window.webkit.messageHandlers.IPX.postMessage(params)
-    } else if (baseParams.platform === 'android') {
+    } else if (baseParams.platform === 'android' && method !== 'changeStatus') {
         window.IPX.postMessage(JSON.stringify(params))
     }
 }
