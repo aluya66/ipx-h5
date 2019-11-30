@@ -19,7 +19,7 @@ export default {
             this.baseParams = this.$route.query
 
             const ua = navigator.userAgent
-            const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi)
+            const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
             const statusBarHeight = ua.match(/statusBarHeight\/(\d{2})/i)
 
             let params = {
@@ -47,6 +47,7 @@ export default {
 
             let results = {}
             let data = {}
+
             if (!isIos) {
                 data = window.IPX.postMessage(JSON.stringify(params))
                 results = JSON.parse(data).results
