@@ -12,7 +12,7 @@ export default {
     },
     component: () => import('@/views/home/index.vue'),
     children: [{
-        path: '/',
+        path: '/home/goods',
         name: 'goods',
         component: Goods,
         meta: {

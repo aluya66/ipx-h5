@@ -322,7 +322,7 @@ export default {
                     // this.$refs.grouplist.check()
                 }
 
-                let scrollTop = document.querySelector('.contain').scrollTop
+                let scrollTop = document.querySelector('.contain') && document.querySelector('.contain').scrollTop
                 let offsetTop = document.querySelector('.sticky-contain') && document.querySelector('.sticky-contain').offsetTop
                 this.isStickyTop = scrollTop >= offsetTop
                 if (!this.isStickyTop) {
