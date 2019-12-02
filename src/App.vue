@@ -19,7 +19,7 @@ export default {
             this.baseParams = this.$route.query
 
             const ua = navigator.userAgent
-            const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi)
+            const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
             const statusBarHeight = ua.match(/statusBarHeight\/(\d{2})/i)
 
             let params = {
@@ -33,7 +33,7 @@ export default {
             }
 
             let testData = {
-                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaOF6AH4/oPB8bsw/F2f13YiYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpOJ0+X+ccAG4ohzdE6/sXfcFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+X5y5lPfFWoPl1H5d5CYkkbRuMrEqbJ+demQC6k2QoR2kHHtpePlGRrmhLMQ4BOQRxnMQ+5RlcfrFUN6mNVKNbw',
+                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNoY5XacUphkz3FugYO/dTVYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpCdzENZIrBstxcqEOSnsp7wFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+VRYwbv0TqIxEe30WxzUDSb3VUQ8ubLbrxC0sOhvl0kA/aIYUbiVBFWz2E63myZ+RDOPKOXNS8Ao6/rV1o7BxnP',
                 'channel': 'WEB',
                 'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
                 'app_version': '1.2.0',
@@ -47,6 +47,7 @@ export default {
 
             let results = {}
             let data = {}
+
             if (!isIos) {
                 data = window.IPX.postMessage(JSON.stringify(params))
                 results = JSON.parse(data).results
@@ -55,6 +56,7 @@ export default {
             }
             this.baseParams = (results && results.data) || testData
             this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 20
+            this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
         }

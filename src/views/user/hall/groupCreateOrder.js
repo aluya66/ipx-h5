@@ -1,10 +1,27 @@
 import utils from 'utils'
-import { Dialog } from 'vant'
+import {
+    Dialog
+} from 'vant'
 
 export default {
-    createOrder(groupGoods, totalPrice, groupCode) {
+    createOrder(groupGoods, groupCode, isDetail) {
         let shopCarts = []
-        let products = groupGoods
+        let products = []
+        let totalPrice = 0
+        let batchNum = groupGoods.minBatchNum
+        groupGoods.forEach((good, goodIndex) => {
+            if (good.productShelves === 1) {
+                good.colorSkuList.filter((item) => {
+                    item.skuList.filter((skuItem) => {
+                        return skuItem.num >= batchNum && skuItem.entityStock >= skuItem.num
+                    })
+                    return item.skuList.length > 0
+                })
+                if (good.colorSkuList.length > 0) {
+                    products.push(good)
+                }
+            }
+        })
         let designerIds = []
         products.forEach(item => {
             designerIds.push(item.designer.id)
@@ -13,15 +30,17 @@ export default {
             let arr = products.filter(item => item.designer.id === idStr)
             let skuArr = []
             arr.forEach(productItem => {
+                let selectSkus = []
                 productItem.colorSkuList.forEach(skuItem => {
-                    // skuItem.mainPic = productItem.mainPic
                     skuItem.skuList.forEach(sku => {
+                        totalPrice += Number(sku.tshPrice) * Number(sku.num)
                         sku.mainPic = productItem.mainPic
                     })
                     let skus = skuItem.skuList.filter(sku => sku.num > 0)
-                    productItem.selectSku = skus
+                    selectSkus = selectSkus.concat(skus)
                     skuArr = skuArr.concat(skus)
                 })
+                productItem.selectSku = selectSkus
             })
             let designerObj = arr[0].designer
             if (skuArr.length > 0) {
@@ -33,22 +52,31 @@ export default {
                 shopCarts.push(obj)
             }
         })
+
         if (shopCarts.length <= 0) {
-            Dialog.alert({
-                message: '商品数据有变动，请确认后再购买'
-            }).then(() => {
-                // on close
-                window.globalVue.$router.push({ path: '/hall/groupListDetail', query: { groupId: groupCode } })
-            })
+            if (isDetail) {
+                window.globalVue.$toast('没有满足购买条件的商品')
+            } else {
+                Dialog.alert({
+                    message: '商品数据有变动，请确认后再购买'
+                }).then(() => {
+                    // on close
+                    window.globalVue.$router.push({
+                        path: '/hall/groupListDetail',
+                        query: {
+                            groupId: groupCode
+                        }
+                    })
+                })
+            }
         } else {
             const params = {
                 jumpUrl: 'createOrder://',
-                totalPrice: totalPrice,
+                totalPrice: totalPrice + '',
                 groupCode: groupCode,
                 discount: '1',
                 orderData: shopCarts
             }
-
             utils.postMessage('', params)
         }
     }

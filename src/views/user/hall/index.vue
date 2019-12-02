@@ -182,6 +182,7 @@ export default {
         }
     },
     computed: {
+        // debug iOS上吸顶问题
         changePosition() {
             let baseParams = utils.getStore('baseParams')
             let statusBarHeight = (Number(baseParams.statusBarHeight) + 44) / 100
@@ -198,9 +199,19 @@ export default {
             return utils.bottomOffset(offset)
         },
         handleClickTest() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'testOnline' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.$toast('功能即将开启，请耐心等待')
         },
         handleGoDelegate() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallLeague' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             const params = {
                 jumpUrl: 'goDelegate://'
             }
@@ -220,6 +231,11 @@ export default {
                 this.handleSelectItem(item)
             } else {
                 /// 详情？
+                window.sa.track('IPX_WEB', {
+                    page: 'userHall', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'hallClickGroupProductItem' // 按钮唯一标识，取个语义化且不重名的名字
+                })
                 const params = {
                     jumpUrl: 'productDetail://',
                     productCode: item.productCode
@@ -273,10 +289,20 @@ export default {
         },
         /// 切换栏目
         handleCollectList() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.menuIndex = 1
             this.handleResetOffset()
         },
         handleGroupList() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallGroupList' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.menuIndex = 0
             this.handleResetOffset()
         },
@@ -297,12 +323,12 @@ export default {
                 }
 
                 let scrollTop = document.querySelector('.contain').scrollTop
-                let offsetTop = document.querySelector('#stickyContain').offsetTop
+                let offsetTop = document.querySelector('.sticky-contain') && document.querySelector('.sticky-contain').offsetTop
                 this.isStickyTop = scrollTop >= offsetTop
                 if (!this.isStickyTop) {
                     this.offsetY = offsetTop
                 } else {
-                    if (this.offsetY + 60 * window.devicePixelRatio <= scrollTop) {
+                    if (this.offsetY + 200 * window.devicePixelRatio <= scrollTop) {
                         this.flag = true
                     } else {
                         this.flag = false
@@ -387,7 +413,7 @@ export default {
                         ids: idsArr
                     }
                     this.$api.hall.deleteCollects(params).then(res => {
-                        this.$toast('已删除')
+                        this.$toast('删除样衣成功')
                         this.datas = this.datas.filter(function (item) {
                             return idsArr.indexOf(item.collectId) < 0
                         })
@@ -436,7 +462,7 @@ export default {
                     groupGoodsIds: idsArr
                 }
                 this.$api.hall.deleteGroupGoods(params).then(res => {
-                    this.$toast('已删除')
+                    this.$toast('删除组货衣杆成功')
                     this.groupDatas = this.groupDatas.filter(function (item) {
                         return idsArr.indexOf(item.groupGoodsId) < 0
                     })
@@ -448,6 +474,9 @@ export default {
         }
     },
     activated() {
+        this.isStickyTop = false
+        this.flag = false
+        utils.postMessage('changeStatus', 'light')
         this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
         this.handleScroll()
