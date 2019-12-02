@@ -323,7 +323,7 @@ export default {
                 }
 
                 let scrollTop = document.querySelector('.contain').scrollTop
-                let offsetTop = document.querySelector('#stickyContain').offsetTop
+                let offsetTop = document.querySelector('.sticky-contain') && document.querySelector('.sticky-contain').offsetTop
                 this.isStickyTop = scrollTop >= offsetTop
                 if (!this.isStickyTop) {
                     this.offsetY = offsetTop
@@ -413,7 +413,7 @@ export default {
                         ids: idsArr
                     }
                     this.$api.hall.deleteCollects(params).then(res => {
-                        this.$toast('已删除')
+                        this.$toast('删除样衣成功')
                         this.datas = this.datas.filter(function (item) {
                             return idsArr.indexOf(item.collectId) < 0
                         })
@@ -462,7 +462,7 @@ export default {
                     groupGoodsIds: idsArr
                 }
                 this.$api.hall.deleteGroupGoods(params).then(res => {
-                    this.$toast('已删除')
+                    this.$toast('删除组货衣杆成功')
                     this.groupDatas = this.groupDatas.filter(function (item) {
                         return idsArr.indexOf(item.groupGoodsId) < 0
                     })
