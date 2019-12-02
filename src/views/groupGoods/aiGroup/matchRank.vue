@@ -53,9 +53,6 @@ export default {
             rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png')]
         }
     },
-    computed() {
-
-    },
     methods: {
         handleToDetail(item) {
             window.sa.track('IPX_WEB', {
