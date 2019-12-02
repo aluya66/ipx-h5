@@ -37,7 +37,7 @@ export default {
                 'channel': 'WEB',
                 'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
                 'app_version': '1.2.0',
-                'platform': 'ios',
+                'platform': 'web',
                 'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
                 'mobile_model': 'ELE-AL00',
                 'os_version': '9',
