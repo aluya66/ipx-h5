@@ -1,7 +1,6 @@
 <template>
    <layout-view class="header-bg">
     <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
-        <div slot="title" v-show="showTitle" >最潮搭配TOP10</div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
         </template>
@@ -9,7 +8,7 @@
    <div class="contain" >
        <p class="top-title">最潮搭配TOP10</p>
        <div class="rank" :style="getListContainHeight()">
-           <div class="rank-content" v-for="(item,index) in rankData" :key="item" @click="handleToDetail(item)">
+           <div class="rank-content" v-for="(item,index) in rankData" :key="item+index" @click="handleToDetail(item)">
                <div class="rank-contain">
                     <img class="mainImage" :src="item.groupImg" alt="">
                     <div class="infoContain">
@@ -21,7 +20,7 @@
                                 <p>&nbsp; 热销指数 {{item.hotIndexNum}}% &nbsp;</p>
                             </div>
                         </div>
-                        <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">183920</p>
+                        <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">{{item.grandTotalFocus}}</p>
                         <section class="call" @click.stop="handleCall(item)">打call</section>
                     </div>
                     <section class="rankImage" v-show="index<3">
@@ -47,7 +46,7 @@ export default {
     },
     data () {
         return {
-            showTitle: false,
+            // showTitle: false,
             rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
@@ -85,18 +84,11 @@ export default {
             this.$api.groupGoods.postCall(params).then(res => {
                 if (res.code === 0) {
                     this.$toast('打call成功')
+                    item.grandTotalFocus += 1
                 }
             }).catch(() => {
 
             })
-        },
-        // 监听滚动
-        handleScroll () {
-            window.addEventListener('scroll', () => {
-                let scrollTop = document.querySelector('.contain').scrollTop
-                let offsetTop = document.querySelector('.rank').offsetTop
-                this.showTitle = scrollTop >= offsetTop
-            }, true)
         },
         getListContainHeight() {
             let offsetStr = utils.bottomOffset(0)
@@ -104,8 +96,8 @@ export default {
             return str
         },
         getContainHeight() {
-            this.baseParams = utils.getStore('baseParams')
-            let statusBarHeight = Number(this.baseParams.statusBarHeight)
+            let baseParams = utils.getStore('baseParams')
+            let statusBarHeight = Number(baseParams.statusBarHeight)
             let wHeight = window.screen.height
             return (wHeight - statusBarHeight - 115) / 100
         },
@@ -128,10 +120,6 @@ export default {
     },
     activated() {
         this.handleRequest()
-        this.handleScroll()
-    },
-    destroyed () {
-        window.removeEventListener('scroll') // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>
@@ -280,6 +268,10 @@ export default {
                     .btn-select(69px,36px,true);
                     bottom: 0;
                     right: 0;
+                }
+                .call-disable {
+                    background: @color-c7;
+                    color: @color-c2
                 }
             }
         }

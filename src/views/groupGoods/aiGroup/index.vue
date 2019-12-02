@@ -82,9 +82,6 @@ export default {
             titleIndex: 0,
             screenWidth: document.body.clientWidth,
             allDatas: [],
-            designers: [],
-            datas: [],
-            footerData: [],
             footerTitles: ['推荐指数', '时尚指数', '热销指数'],
             swiperOption: {
                 slidesPerView: 'auto',
@@ -203,6 +200,8 @@ export default {
     activated() {
         utils.postMessage('changeStatus', 'light')
         let params = utils.getStore('searchParams')
+        this.allDatas = []
+        this.curDesigner = {}
         this.$api.groupGoods.searchGroup(params).then(res => {
             if (res instanceof Array) {
                 this.allDatas = res

@@ -146,16 +146,14 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'startGroup' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            let labels = []
             let allCategory = JSON.parse(JSON.stringify(this.curCategory))
             allCategory.forEach(item => {
                 item.labels = item.labels.filter(item => item.isSelected === true)
-                labels = labels.concat(item.labels)
             })
-            let arr = labels.filter(item => item.isSelected === true)
-            if (arr.length > 0) {
+            allCategory = allCategory.filter( item => item.labels.length > 0)
+            if (allCategory.length > 0) {
                 const params = {
-                    labels: arr,
+                    labels: allCategory,
                     searchType: this.currentTab + 1
                     // pageNo: 1,
                     // pageSize: 100
@@ -189,14 +187,20 @@ export default {
                             item.imageUrl = this.customerGroupList[index].icon
                         })
                     }
-                    this.allLabels = this.allLabels.concat(kindItem.labels)
-                    this.allLabels = this.allLabels.map((item) => {
-                        return {
-                            ...item,
-                            isSelected: false
-                        }
-                    })
-
+                    kindItem.labels = kindItem.labels.map((item, index) => {
+                            // item.imageUrl = this.season[index].icon
+                            return {
+                                ...item,
+                                isSelected :false
+                            }
+                        })
+                    // this.allLabels = this.allLabels.concat(kindItem.labels)
+                    // this.allLabels = this.allLabels.map((item) => {
+                    //     return {
+                    //         ...item,
+                    //         isSelected: false
+                    //     }
+                    // })
                     // const labelCode = kindItem.labelCategoryCode // 类别code
                     // switch (labelCode) {
                     // case '1': // 品类
