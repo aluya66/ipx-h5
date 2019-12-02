@@ -17,11 +17,11 @@
         <p>样衣列表</p>
       </div>
       <div class="list-content">
-        <div class="product-cell" v-for="(item, index) in groupGoodsRecords" :key="item.productCode" @click="jumpToProduct(item)">
-          <img :src="item.mainPic" alt="" />
+        <div class="product-cell" v-for="(item, index) in groupGoodsRecords" :key="item.productCode" >
+          <img :src="item.mainPic" alt="" @click="jumpToProduct(item)"/>
           <div class="product-info">
-            <p :class="[item.disabled ? 'disableTitle' : '']">{{ item.productName }}</p>
-            <div class="sku-list">
+            <p :class="[item.disabled ? 'disableTitle' : '']" @click="jumpToProduct(item)">{{ item.productName }}</p>
+            <div class="sku-list" @click="jumpToProduct(item)">
               <p
                 for=""
                 v-for="(sku, i) in item.colorSkuList"
@@ -402,7 +402,7 @@ export default {
 }
 .footer-content {
   background-color: white;
-  height: 49px;
+  // height: 49px;
   width: 100%;
   position: fixed;
   bottom: 0;
