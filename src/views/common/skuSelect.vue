@@ -140,9 +140,7 @@ export default {
             colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
                 seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum)
             })
-            this.seletedDetailsItem.colorSkuList[
-                colorSkusIndex
-            ].seletedColorSkuNum = seletedColorSkuNum
+            this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
 
             colorSkuList.forEach((item, index) => {
                 seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
