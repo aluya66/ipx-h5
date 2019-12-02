@@ -320,6 +320,7 @@ export default {
                     item.skuList.forEach((skuItem, skuIndex) => {
                         let sku = {
                             num: skuItem.num,
+                            productName: good.productName,
                             productAtrNumber: good.productAtrNumber,
                             productCode: good.productCode,
                             productSkuCode: skuItem.productSkuCode,
