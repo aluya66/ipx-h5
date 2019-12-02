@@ -162,7 +162,6 @@ export default {
     data() {
         return {
             backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
-            baseParams: {},
             popularNum: '',
             productList: [],
             groupDetail: {},
@@ -187,11 +186,11 @@ export default {
                 }
             ],
             bgUrlList: {
-              popularity: 'url(' + require('../../themes/images/app/popularity@2x.png') + ')',
-              koc: 'url(' + require('../../themes/images/app/koc@2x.png') + ')',
-              analysis: 'url(' + require('../../themes/images/app/analysis@2x.png') + ')',
-              important: 'url(' + require('../../themes/images/app/essentials@2x.png') + ')',
-              collocation: 'url(' + require('../../themes/images/app/collocation@2x.png') + ')',
+                popularity: 'url(' + require('../../themes/images/app/popularity@2x.png') + ')',
+                koc: 'url(' + require('../../themes/images/app/koc@2x.png') + ')',
+                analysis: 'url(' + require('../../themes/images/app/analysis@2x.png') + ')',
+                important: 'url(' + require('../../themes/images/app/essentials@2x.png') + ')',
+                collocation: 'url(' + require('../../themes/images/app/collocation@2x.png') + ')'
             }
         }
     },
@@ -224,20 +223,20 @@ export default {
         }
     },
     computed: {
-      marginTop() {
-        this.baseParams = utils.getStore('baseParams')
-        if(this.baseParams.isIphoneX) {
-          return 'top:0.44rem'
+        marginTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'top:0.44rem'
+            }
+            return 'top:0.2rem'
         }
-        return 'top:0.2rem'
-      }
     },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
         jumpToProduct(product) {
-          window.sa.track('IPX_WEB', {
+            window.sa.track('IPX_WEB', {
                 page: 'groupDetail', // 页面名字
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'editItemClick' // 按钮唯一标识，取个语义化且不重名的名字

@@ -129,10 +129,6 @@ export default {
             }
         }
     },
-    activated() {
-        console.log(this.seletedDetailsItem)
-        // debugger
-    },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
@@ -150,7 +146,8 @@ export default {
                 seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
             })
 
-            this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+            this.$set(this.seletedDetailsItem, seletedColorSkuSumNum, seletedColorSkuSumNum)
+            // this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
             // debugger
         },
         onPointClicked() {
