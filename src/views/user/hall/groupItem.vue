@@ -4,20 +4,20 @@
         <section class="header">
             <p><span>{{groupGood.name}}</span><span v-if='false'>{{`上装 &nbsp;${groupGood.topsSkuCount || 0} ；下装&nbsp; ${groupGood.bottomsSkuCount || 0}`}}</span></p>
         </section>
-        <div class="list-contain">
+        <div class="list-contain" @click.stop="handleCheckDetail">
             <img class="pole" src="@/themes/images/groupGoods/pic_koc_clothes_hanger.png" alt="">
             <div class="group-contain">
                 <div class="p-contain" v-for="(product,index) in getColorSkuList" :key="product.productCode + index">
                     <img src="@/themes/images/groupGoods/pic_hook.png" alt="">
-                    <img class="productSize" :src='product.imgUrl' alt="" @click.stop="handleSelectImg(product)">
+                    <img class="productSize" :src='product.imgUrl' alt="">
                 </div>
             </div>
         </div>
         <section class="footer">
             <p>￥<span>{{parseInt(groupGood.totalPrice).toFixed(2) || 0.00}}</span></p>
             <div class="action">
-                <section :class='["default", !manageState ? "inManage" :""]' @click="handleCheckDetail">查看详情</section>
-                <section class="select" v-show="!manageState" @click="handleBuy">一键采购</section>
+                <!-- <section :class='["default", !manageState ? "inManage" :""]' @click="handleCheckDetail">查看详情</section> -->
+                <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">一键采购</section>
             </div>
         </section>
     </div>
@@ -75,8 +75,7 @@ export default {
             }
             utils.postMessage('', params)
         },
-        handleCheckDetail(e) {
-            e.stopPropagation()
+        handleCheckDetail() {
             window.sa.track('IPX_WEB', {
                 page: 'userHall', // 页面名字
                 type: 'click', // 固定参数，表明是点击事件
@@ -89,8 +88,7 @@ export default {
                 }
             })
         },
-        handleBuy(e) {
-            e.stopPropagation()
+        handleBuy() {
             window.sa.track('IPX_WEB', {
                 page: 'userHall', // 页面名字
                 type: 'click', // 固定参数，表明是点击事件

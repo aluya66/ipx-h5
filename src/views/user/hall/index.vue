@@ -394,6 +394,7 @@ export default {
                         this.finished = false
                     }
                 } else {
+                    this.datas = []
                     this.finished = true
                 }
             }).catch(() => {
@@ -446,6 +447,7 @@ export default {
                         this.finished = false
                     }
                 } else {
+                    this.groupDatas = []
                     this.finished = true
                 }
             }).catch(() => {

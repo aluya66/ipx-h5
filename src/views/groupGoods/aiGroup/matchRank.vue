@@ -8,7 +8,8 @@
    <div class="contain" >
        <p class="top-title">最潮搭配TOP10</p>
        <div class="rank" :style="getListContainHeight()">
-           <div class="rank-content" v-for="(item,index) in rankData" :key="item+index" @click="handleToDetail(item)">
+            <empty-view class="empty" v-if="rankData.length <= 0" emptyDesc='暂无数据' emptyType="error" />
+            <div class="rank-content" v-else v-for="(item,index) in rankData" :key="item+index" @click="handleToDetail(item)">
                <div class="rank-contain">
                     <img class="mainImage" :src="item.groupImg" alt="">
                     <div class="infoContain">
@@ -37,9 +38,11 @@
 
 <script>
 import utils from 'utils'
+import EmptyView from '../../error/emptyView.vue'
+
 export default {
     components: {
-
+        EmptyView
     },
     props: {
 
@@ -134,6 +137,11 @@ export default {
 .contain {
     overflow: auto;
     height: 100%;
+}
+.empty {
+    margin-top: 24px;
+    border-radius: 12px 12px 0px 0px;
+    padding-top: 112px;
 }
 .header-bg {
     background-image :url('../../../themes/images/groupGoods/bg_koc_recommend_top.png');
