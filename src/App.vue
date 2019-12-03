@@ -33,7 +33,7 @@ export default {
             }
 
             let testData = {
-                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaMabPP85P89K5Z4ipZe8r0+IVaudh6PyYaUtcHrDAUtuVIxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLmc01KYccN+/W4fRKmlyjHS2XOJzD4KchKb0eFelVeidKU79QkJNsKdfqVtLb3iaLib0b+phfeX+plgblaIyWybESN6JZ8Ev472q10DfzyS6fC8t/TRTt3YA0WECSY8+eQiwGSNzdOur/2AfLSa8DC+JvO/322eYJup2KLBjk/ey5i467AUsf8mCJ8Xl7nxjvp+f6hcyIuQqy9gHM/nZces3R7SaGijWd/e5J1UCaGRLMRoD5U/OM6EIHr7l3goWYMhnk7vOwozApS+USsV1SrJXDmBFsUXvtr0f2LUcvWxNA==',
+                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaMo+Zw0mekc/sNNZhtVDPatIVaudh6PyYaUtcHrDAUtuVIxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLmc01KYccN+/W4fRKmlyjHS2XOJzD4KchKb0eFelVeidKU79QkJNsKdfqVtLb3iaLib0b+phfeX+plgblaIyWybESN6JZ8Ev472q10DfzyS6fC8t/TRTt3YA0WECSY8+eQiwGSNzdOur/2AfLSa8DC+JvO/322eYJv/FgimH7iYXnDSj3S9m98lCJ8Xl7nxjvp+f6hcyIuQqy9gHM/nZceseYDeJvelHfy4UJJDbh8dzcFe/dhAnBaMwaNoJaqPfyyU9JGfAMYzCO9h/jXM67Jbl/7VEBqwZYsCnM2uGDKLkA==',
                 'channel': 'WEB',
                 'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
                 'app_version': '1.2.0',

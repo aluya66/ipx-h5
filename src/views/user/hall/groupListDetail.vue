@@ -86,6 +86,7 @@ export default {
     },
     activated() {
         this.showSku = false
+        this.isDialog = false
         this.getGroupDetail()
         utils.postMessage('changeStatus', 'default')
     },
@@ -185,7 +186,7 @@ export default {
                 let seletedColorSkuNum = 0
                 item.skuList.forEach((skuItem, skuIndex) => {
                     skuItem.skuValue = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
-                    skuItem.num = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
+                    // skuItem.num = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
                     seletedColorSkuNum = Number(skuItem.skuValue) + Number(seletedColorSkuNum)
                 })
                 item.seletedColorSkuNum = seletedColorSkuNum

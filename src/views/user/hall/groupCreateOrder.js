@@ -6,14 +6,15 @@ import {
 export default {
     createOrder(groupGoods, groupCode, isDetail) {
         let shopCarts = []
+        let oldGoods = JSON.parse(JSON.stringify(groupGoods))
         let products = []
         let totalPrice = 0
-        let batchNum = groupGoods.minBatchNum
-        groupGoods.forEach((good, goodIndex) => {
+        oldGoods.forEach((good, goodIndex) => {
+            let batchNum = good.minBatchNum
             if (good.productShelves === 1) {
-                good.colorSkuList.filter((item) => {
-                    item.skuList.filter((skuItem) => {
-                        return skuItem.num >= batchNum && skuItem.entityStock >= skuItem.num
+                good.colorSkuList = good.colorSkuList.filter((item) => {
+                    item.skuList = item.skuList.filter((skuItem) => {
+                        return (skuItem.num >= batchNum) && (skuItem.entityStock >= skuItem.num)
                     })
                     return item.skuList.length > 0
                 })
@@ -24,7 +25,10 @@ export default {
         })
         let designerIds = []
         products.forEach(item => {
-            designerIds.push(item.designer.id)
+            let index = designerIds.indexOf(item.designer.id)
+            if (index < 0) {
+                designerIds.push(item.designer.id)
+            }
         })
         designerIds.forEach(idStr => {
             let arr = products.filter(item => item.designer.id === idStr)
