@@ -260,12 +260,11 @@ export default {
                     font-size:18px;
                     font-weight:bold;
                     color:@color-c1;
-                    line-height:22px;
-                    vertical-align: middle;
+                    line-height:16px;
+                    vertical-align: initial;
                     margin: 0;
                     img {
-
-                        width: 16;height: 16px;
+                        width: 16px;height: 16px;
                     }
                 }
                 .call {

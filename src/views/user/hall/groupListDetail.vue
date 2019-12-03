@@ -65,7 +65,6 @@
 import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
 import utils from 'utils'
-import { Dialog } from 'vant'
 export default {
     components: {
         skuSelect
