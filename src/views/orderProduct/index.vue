@@ -229,6 +229,12 @@ export default {
         }
     },
     activated () {
+        // 上报页面事件
+        window.sa.track('IPX_WEB', {
+            page: 'orderProduct',
+            type: 'pageView',
+            event: 'pageView'
+        })
         this.baseParams = utils.getStore('baseParams') || {}
         this.token = utils.getStore('token') || ''
         if (this.baseParams.platform === 'ios') {
@@ -240,12 +246,6 @@ export default {
         this.handleRequestUserManagers()
     },
     mounted () {
-        // 上报页面事件
-        window.sa.track('IPX_WEB', {
-            page: 'orderProduct',
-            type: 'pageView',
-            event: 'pageView'
-        })
         this.handleScroll()
     },
     destroyed () {
