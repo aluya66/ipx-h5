@@ -36,7 +36,7 @@
               >
                 {{ sku | selectSkuStr }}
               </p>
-              <p class="tips">{{ item | tipStr }}</p>
+              <p class="tips">{{tipStr(item)}}</p>
             </div>
             <p :class="[item.disabled ? 'disablePrice' : 'price']">¥{{ item.spuTshPrice }}</p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
@@ -105,37 +105,43 @@ export default {
                 arr.push(item.attrSpecValue)
             })
             return str + arr.join('，')
-        },
-        tipStr(value) {
-            if (value.productShelves === 0) {
-                value.disabled = true
-                return '商品已失效' // 下架 置灰
-            }
-            let batchNum = value.minBatchNum
-            let stockAll = 0
-            let isChanged = false
-            let isEnough = false
-            value.colorSkuList.forEach((item, index) => {
-                item.skuList.forEach((skuItem, skuIndex) => {
-                    if (skuItem.entityStock === 0 && skuItem.num !== 0) {
-                        isChanged = true
-                    }
-                    if (skuItem.num >= batchNum && skuItem.entityStock >= skuItem.num) {
-                        isEnough = true
-                    }
-                    stockAll += skuItem.entityStock
+        }
+    },
+    computed: {
+        tipStr() {
+            return function(value) {
+                if (value.productShelves === 0) {
+                    value.disabled = true
+                    return '商品已失效' // 下架 置灰
+                }
+                let batchNum = value.minBatchNum
+                let stockAll = 0
+                let isChanged = false
+                let isEnough = false
+                value.colorSkuList.forEach((item, index) => {
+                    item.skuList.forEach((skuItem, skuIndex) => {
+                        if (skuItem.entityStock === 0 && skuItem.num !== 0) {
+                            isChanged = true
+                        }
+                        if (skuItem.num >= batchNum && skuItem.entityStock >= skuItem.num) {
+                            isEnough = true
+                        }
+                        stockAll += skuItem.entityStock
+                    })
                 })
-            })
-            if (stockAll === 0 || stockAll < batchNum) {
-                value.disabled = true
-                return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
-            }
-            if (!isEnough && stockAll >= batchNum) {
-                return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
-            }
-            if (isChanged && isEnough) {
-                // this.dialogAlert(true)
-                return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
+                if (stockAll === 0 || stockAll < batchNum) {
+                    value.disabled = true
+                    this.dialogAlert(true)
+                    return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
+                }
+                if (!isEnough && stockAll >= batchNum) {
+                    this.dialogAlert(true)
+                    return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
+                }
+                if (isChanged && isEnough) {
+                    this.dialogAlert(true)
+                    return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
+                }
             }
         }
     },
