@@ -150,7 +150,7 @@ export default {
             allCategory.forEach(item => {
                 item.labels = item.labels.filter(item => item.isSelected === true)
             })
-            allCategory = allCategory.filter( item => item.labels.length > 0)
+            allCategory = allCategory.filter(item => item.labels.length > 0)
             if (allCategory.length > 0) {
                 const params = {
                     labels: allCategory,
@@ -188,12 +188,12 @@ export default {
                         })
                     }
                     kindItem.labels = kindItem.labels.map((item, index) => {
-                            // item.imageUrl = this.season[index].icon
-                            return {
-                                ...item,
-                                isSelected :false
-                            }
-                        })
+                        // item.imageUrl = this.season[index].icon
+                        return {
+                            ...item,
+                            isSelected: false
+                        }
+                    })
                     // this.allLabels = this.allLabels.concat(kindItem.labels)
                     // this.allLabels = this.allLabels.map((item) => {
                     //     return {

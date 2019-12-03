@@ -293,10 +293,10 @@ export default {
                     this.groupGoodsKoc = res.groupGoodsKoc
                     this.slidImages = res.detailImgs
                     this.cricleLists[0].actualPercent =
-            this.groupDetail.fashionIndexNum + ''
+            Number(this.groupDetail.fashionIndexNum) + ''
                     this.cricleLists[1].actualPercent =
-            this.groupDetail.adviceIndexNum + ''
-                    this.cricleLists[2].actualPercent = this.groupDetail.hotIndexNum + ''
+            Number(this.groupDetail.adviceIndexNum) + ''
+                    this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
                 })
                 .catch(err => {
                     console.log(err)
@@ -311,7 +311,7 @@ export default {
             let params = {}
             let groupInfos = []
             let groupProductInfo = {
-                name: '测试组货完成',
+                name: this.groupDetail.groupTitle,
                 groupCode: this.groupDetail.groupCode
             }
             let groupProducts = []
