@@ -17,7 +17,6 @@ export default {
     // 获取配置参数
         getBaseCofing () {
             this.baseParams = this.$route.query
-
             const ua = navigator.userAgent
             const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
             const statusBarHeight = ua.match(/statusBarHeight\/(\d{2})/i)
@@ -33,7 +32,7 @@ export default {
             }
 
             let testData = {
-                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaMabPP85P89K5Z4ipZe8r0+IVaudh6PyYaUtcHrDAUtuVIxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLmc01KYccN+/W4fRKmlyjHS2XOJzD4KchKb0eFelVeidKU79QkJNsKdfqVtLb3iaLib0b+phfeX+plgblaIyWybESN6JZ8Ev472q10DfzyS6fC8t/TRTt3YA0WECSY8+eQiwGSNzdOur/2AfLSa8DC+JvO/322eYJup2KLBjk/ey5i467AUsf8mCJ8Xl7nxjvp+f6hcyIuQqy9gHM/nZces3R7SaGijWd/e5J1UCaGRLMRoD5U/OM6EIHr7l3goWYMhnk7vOwozApS+USsV1SrJXDmBFsUXvtr0f2LUcvWxNA==',
+                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNQceLH3dxQ2w/kHEszPGyjYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpDt/P2FVazQI8xsZNtevQQcFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+V6MbvrJ5cZXZLUImuL4Ks8+WwoB42k3BbG0i3LR3Ie/aBuCX9szB5h18eatgN119CbHPZ5hGX3hJrRD6K+7IRf',
                 'channel': 'WEB',
                 'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
                 'app_version': '1.2.0',
@@ -47,9 +46,8 @@ export default {
 
             let results = {}
             let data = {}
-
             if (!isIos) {
-                data = window.IPX.postMessage(JSON.stringify(params))
+                data = window.IPX && window.IPX.postMessage(JSON.stringify(params))
                 results = JSON.parse(data).results
             } else {
                 results = window.nativeInjectData
