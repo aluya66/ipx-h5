@@ -17,10 +17,16 @@
         <p>样衣列表</p>
       </div>
       <div class="list-content">
-        <div class="product-cell" v-for="(item, index) in groupGoodsRecords" :key="item.productCode" >
-          <img :src="item.mainPic" alt="" @click="jumpToProduct(item)"/>
+        <div
+          class="product-cell"
+          v-for="(item, index) in groupGoodsRecords"
+          :key="item.productCode"
+        >
+          <img :src="item.mainPic" alt="" @click="jumpToProduct(item)" />
           <div class="product-info">
-            <p :class="[item.disabled ? 'disableTitle' : '']" @click="jumpToProduct(item)">{{ item.productName }}</p>
+            <p :class="[item.disabled ? 'disableTitle' : '']" @click="jumpToProduct(item)">
+              {{ item.productName }}
+            </p>
             <div class="sku-list" @click="jumpToProduct(item)">
               <p
                 for=""
@@ -72,7 +78,7 @@ export default {
             colorSkuAction: '',
             groupDetail: {}, // 组货基本信息
             groupGoodsRecords: [], // 商品列表数据源
-
+            isDialog: false,
             seletedDetailsItem: {}, // sku数据源
             seletedItemIndex: '' // 选择调整商品下标
         }
@@ -127,13 +133,25 @@ export default {
                 return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
             }
             if (isChanged && isEnough) {
-                return '部分商品库存变更' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
+                // this.dialogAlert(true)
+                return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
             }
         }
     },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        dialogAlert(isDialog) {
+            if (!this.isDialog && isDialog) {
+                this.isDialog = true
+                Dialog.alert({
+                    title: '商品信息变更',
+                    message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
+                    confirmButtonText: '我知道了'
+                }).then(() => {
+                })
+            }
         },
         jumpToProduct(product) {
             const params = {
@@ -160,6 +178,7 @@ export default {
                 let seletedColorSkuNum = 0
                 item.skuList.forEach((skuItem, skuIndex) => {
                     skuItem.skuValue = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
+                    skuItem.num = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
                     seletedColorSkuNum = Number(skuItem.skuValue) + Number(seletedColorSkuNum)
                 })
                 item.seletedColorSkuNum = seletedColorSkuNum
@@ -245,11 +264,7 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            order.createOrder(
-                this.groupGoodsRecords,
-                this.groupGoodsId,
-                true
-            )
+            order.createOrder(this.groupGoodsRecords, this.groupGoodsId, true)
         }
     }
 }

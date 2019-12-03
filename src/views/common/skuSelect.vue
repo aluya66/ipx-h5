@@ -148,7 +148,6 @@ export default {
 
             this.$set(this.seletedDetailsItem, seletedColorSkuSumNum, seletedColorSkuSumNum)
             // this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
-            // debugger
         },
         onPointClicked() {
             this.$emit('pointClick', this.seletedDetailsItem)
