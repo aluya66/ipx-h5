@@ -9,13 +9,12 @@
             </div>
         </div>
         <template slot="left" tag="div">
-                <img class="header-img" :src="backImage" />
-</template>
+            <img class="header-img" :src="backImage" />
+        </template>
 
-<template slot="right">
-<p style="color:#fff" @click="handleToHall">
-    前往展厅</p>
-</template>
+        <template slot="right">
+             <p style="color:#fff" @click="handleToHall">前往展厅</p>
+        </template>
         </c-header>
         <empty-view class="empty" v-if="titleIndex == 1" />
         <div v-else class="contain" :style="getBottomOffset()">
