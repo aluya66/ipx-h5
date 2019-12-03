@@ -55,6 +55,12 @@ export default {
         }
     },
     activated () {
+        // 上报页面事件
+        window.sa.track('IPX_WEB', {
+            page: 'styleShare',
+            type: 'pageView',
+            event: 'pageView'
+        })
         this.participantCode = this.$route.query.participantCode
         this.bookActivityCode = this.$route.query.bookActivityCode
         this.getSharemeasuresList()
@@ -69,12 +75,6 @@ export default {
         }
     },
     mounted () {
-        // 上报页面事件
-        window.sa.track('IPX_WEB', {
-            page: 'styleShare',
-            type: 'pageView',
-            event: 'pageView'
-        })
         setTimeout(() => {
             console.log(document.querySelector('.van-pull-refresh'))
 
