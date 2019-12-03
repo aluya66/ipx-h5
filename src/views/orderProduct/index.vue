@@ -19,7 +19,7 @@
           <img src="@/themes/images/app/icon-me-apply-gray@3x.png" alt="">
           <p v-if="!inScroll">报名参会</p>
         </div>
-        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck" v-if="testProductsStatus && products && products.length > 0">
+        <div :class="['bottomBtn','testBtn',inScroll?'applyScroll':'applyScrollStop']" @click="handleCheck(true)" v-if="testProductsStatus && products && products.length > 0">
           <img src="@/themes/images/app/icon-me-survey-gray@3x.png" alt="">
           <p v-if="!inScroll">免费测款</p>
         </div>
@@ -112,13 +112,15 @@ export default {
             this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
         },
         // 免费测款
-        handleCheck () {
-            // 上报按钮事件
-            window.sa.track('IPX_WEB', {
-                page: 'orderProduct',
-                type: 'click',
-                event: 'freeCheckStyle'
-            })
+        handleCheck (flag) {
+            if (flag) {
+                // 上报按钮事件
+                window.sa.track('IPX_WEB', {
+                    page: 'orderProduct',
+                    type: 'click',
+                    event: 'freeCheckStyle'
+                })
+            }
             this.token = utils.getStore('token') || ''
             if (this.token) {
                 this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
