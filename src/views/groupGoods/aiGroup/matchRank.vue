@@ -191,6 +191,7 @@ export default {
                 margin-top: 0;
             }
             .mainImage {
+                display: block;
                 width: 114px;
                 height: 129px;
                 object-fit: cover;
