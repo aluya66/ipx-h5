@@ -1,6 +1,6 @@
 <template>
   <layout-view style="padding-top:0">
-    <div class="panel">
+    <div class="panel" :style="getBottomOffset(49)" >
       <div class="header-top">
         <c-header
           slot="header"

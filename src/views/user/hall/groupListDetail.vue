@@ -3,10 +3,10 @@
     <c-header slot="header" :left-arrow="true">
       <div slot="title">组货清单详情</div>
       <template slot="right" tag="div">
-        <span class="header-save">保存</span>
+        <span class="header-save" @click="save">保存</span>
       </template>
     </c-header>
-    <div class="panel">
+    <div class="panel" :style="getBottomOffset(49)">
       <div class="top-content">
         <span>组货名称</span>
         <p>{{ groupName }}</p>
@@ -36,7 +36,7 @@
               >
                 {{ sku | selectSkuStr }}
               </p>
-              <p class="tips">{{tipStr(item)}}</p>
+              <p class="tips">{{ tipStr(item) }}</p>
             </div>
             <p :class="[item.disabled ? 'disablePrice' : 'price']">¥{{ item.spuTshPrice }}</p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
@@ -150,6 +150,10 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
+        save() {
+            this.$toast.success('已保存')
+            this.$router.go(-1)
+        },
         dialogAlert(isDialog) {
             if (!this.isDialog && isDialog) {
                 this.isDialog = true
@@ -157,8 +161,7 @@ export default {
                     title: '商品信息变更',
                     message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
                     confirmButtonText: '我知道了'
-                }).then(() => {
-                })
+                }).then(() => {})
             }
         },
         jumpToProduct(product) {
