@@ -17,6 +17,7 @@
         </template>
         </c-header>
         <empty-view class="empty" v-if="titleIndex == 1" />
+        <empty-view class="empty" v-else-if="titleIndex == 0 && allDatas.length <= 0" emptyType="error" emptyDesc="暂无搜索结果" />
         <div v-else class="contain" :style="getBottomOffset()">
             <p class="c-title">推荐买手</p>
             <swiper class="d-swiper" :options="dSwiperOption">
