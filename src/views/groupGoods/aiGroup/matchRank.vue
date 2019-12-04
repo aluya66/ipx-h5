@@ -50,7 +50,7 @@ export default {
     data () {
         return {
             // showTitle: false,
-            showList:false,
+            showList: false,
             rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
@@ -119,9 +119,9 @@ export default {
             event: 'pageView' // 固定参数，不用改
         })
         this.showList = false
-        setTimeout(()=>{
+        setTimeout(() => {
             this.showList = true
-        },300)
+        }, 300)
     },
     activated() {
         this.handleRequest()

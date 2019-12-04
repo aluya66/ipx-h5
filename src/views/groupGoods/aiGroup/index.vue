@@ -77,8 +77,8 @@ export default {
     },
     data() {
         return {
-            showDesigner:false,
-            showGroup:false,
+            showDesigner: false,
+            showGroup: false,
             curDesigner: {},
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             titleIndex: 0,
@@ -200,15 +200,14 @@ export default {
         })
         this.showGroup = false
         this.showDesigner = false
-        setTimeout(()=>{
+        setTimeout(() => {
             this.showDesigner = true
-        },300)
-        setTimeout(()=>{
+        }, 300)
+        setTimeout(() => {
             this.showGroup = true
-        },600)
+        }, 600)
     },
     activated() {
-        
         utils.postMessage('changeStatus', 'light')
         let params = utils.getStore('searchParams')
         this.allDatas = []

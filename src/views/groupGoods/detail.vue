@@ -1,6 +1,6 @@
 <template>
   <layout-view style="padding-top:0">
-    <div class="panel" :style="getBottomOffset(49)" >
+    <div class="panel" :style="getBottomOffset(49)" v-if="showList">
       <div class="header-top">
         <c-header
           slot="header"
@@ -168,6 +168,7 @@ export default {
             groupGoodsKoc: {},
             popularArray: [],
             slidImages: [],
+            showList: false,
             cricleLists: [
                 {
                     actualPercent: '',
@@ -205,6 +206,10 @@ export default {
             type: 'pageView',
             event: 'pageView'
         })
+        this.showList = false
+        setTimeout(() => {
+            this.showList = true
+        }, 300)
     },
     watch: {
         popularNum(val) {

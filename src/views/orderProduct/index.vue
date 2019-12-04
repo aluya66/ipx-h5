@@ -247,7 +247,7 @@ export default {
         this.handleScroll()
     },
     destroyed () {
-        window.removeEventListener('scroll',()=>{},true) // 离开当前组件别忘记移除事件监听哦
+        window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>
