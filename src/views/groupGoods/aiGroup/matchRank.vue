@@ -8,7 +8,7 @@
    <div class="contain" >
        <p class="top-title">最潮搭配TOP10</p>
        <div class="rank" :style="getListContainHeight()">
-            <empty-view class="empty" v-if="rankData.length <= 0" emptyDesc='暂无数据' emptyType="error" />
+            <empty-view class="empty" v-if="rankData.length <= 0" emptyDesc='正在统计排行榜，请稍后再查看哦～' emptyType="error" />
             <div class="rank-content" v-else v-for="(item,index) in rankData" :key="item+index" @click="handleToDetail(item)">
                <div class="rank-contain">
                     <img class="mainImage" :src="item.groupImg" alt="">
