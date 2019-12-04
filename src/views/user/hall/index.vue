@@ -62,7 +62,7 @@
             finished-text="已到底，没有更多数据"
             @load="handleMore"
         >
-            <div class="item" v-for="item in datas" :key="item.productCode" @click="handleSelectProduct(item)">
+            <div class="item" v-for="item in datas" :key="item.productCode" @click.stop="handleSelectProduct(item)">
                 <img class="itemSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
@@ -116,7 +116,7 @@ export default {
     },
     data () {
         return {
-            showList: false,
+            showList:false,
             isFromWeb: true,
             isInSearch: false,
             searchKey: '',
@@ -230,7 +230,7 @@ export default {
         handleSelectProduct(item) {
             if (this.isManageState) {
                 this.handleSelectItem(item)
-            } else {
+            } else if(this.menuIndex === 1) {
                 /// 详情？
                 window.sa.track('IPX_WEB', {
                     page: 'userHall', // 页面名字
@@ -242,6 +242,18 @@ export default {
                     productCode: item.productCode
                 }
                 utils.postMessage('', params)
+            } else if(this.menuIndex === 0) {
+                window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallGroupDetail' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.$router.push({
+                path: '/hall/groupListDetail',
+                query: {
+                    groupId: item.groupGoodsId
+                }
+            })
             }
         },
         /// 选择单个样衣
@@ -491,12 +503,12 @@ export default {
             event: 'pageView' // 固定参数，不用改
         })
         this.showList = false
-        setTimeout(() => {
+        setTimeout(()=>{
             this.showList = true
-        }, 300)
+        },300)
     },
     deactivated () {
-        window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
+        window.removeEventListener('scroll',()=>{},true) // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>
