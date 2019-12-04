@@ -312,6 +312,7 @@ export default {
         .van-info {
           top: 1px;
           right: 12px;
+          z-index: 100;
         }
         &.van-tab--active {
           span {
