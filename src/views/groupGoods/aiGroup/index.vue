@@ -159,7 +159,7 @@ export default {
         },
         // 获取百分比
         getPercent(item, index) {
-            let arr = [item.adviceIndexNum, item.fashionIndexNum, item.hotIndexNum]
+            let arr = [parseInt(item.adviceIndexNum), parseInt(item.fashionIndexNum), parseInt(item.hotIndexNum)]
             return arr[index]
         },
         // 判断是不是当前设计师
@@ -202,14 +202,14 @@ export default {
         handleRequest() {
             utils.postMessage('changeStatus', 'light')
             let params = utils.getStore('searchParams')
-            
+
             this.$api.groupGoods.searchGroup(params).then(res => {
                 if (res instanceof Array) {
                     this.allDatas = res
                     if (this.allDatas.length > 0) {
                         this.curDesigner = this.allDatas[0]
                     }
-                }else {
+                } else {
                     this.allDatas = []
                     this.curDesigner = {}
                 }
@@ -401,13 +401,18 @@ export default {
         position: relative;
         span:first-child {
             position: relative;
-            display: inline;
+            // width: 60%;
+            max-width: 60%;
+            display: inline-block;
             font-size: 18px;
             font-weight: 500;
             color: @color-c1;
             line-height: 50px;
             z-index: 2;
             padding-left: 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             &:after {
                 content: "";
                 width: 100%;
@@ -416,7 +421,7 @@ export default {
                 position: absolute;
                 display: inline-block;
                 left: 0;
-                top: 15px;
+                top: 30px;
                 z-index: -1; // border-top: 8px
             }
         }

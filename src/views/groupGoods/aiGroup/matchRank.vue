@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">{{item.grandTotalFocus}}</p>
-                        <section class="call" @click.stop="handleCall(item)">打call</section>
+                        <section :class='["call",item.ishaveVoted === 1?"call-disable":""]' @click.stop="handleCall(item)">打call</section>
                     </div>
                     <section class="rankImage" v-show="index<3">
                         <img  :src="rankImg[index]" alt="">
@@ -83,9 +83,10 @@ export default {
                 }
             }
             this.$api.groupGoods.postCall(params).then(res => {
-                if (res.code === 0) {
+                if (res instanceof Object) {
                     this.$toast('打call成功')
-                    item.grandTotalFocus += 1
+                    item.grandTotalFocus = res.popularityCount
+                    item.ishaveVoted = 1
                 }
             }).catch(() => {
 

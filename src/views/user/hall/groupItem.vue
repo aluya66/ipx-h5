@@ -121,15 +121,21 @@ export default {
             p {
                 line-height: 50px;
                 position: relative;
+
                 span:first-child {
+
                     position: relative;
-                    display: inline;
+                    display: inline-block;
+                    max-width: 60%;
                     font-size: 18px;
                     font-weight: 500;
                     color: @color-c1;
                     line-height: 50px;
                     z-index: 2;
                     padding-left: 0;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
                     &:after {
                         content: "";
                         width: 100%;
@@ -138,7 +144,7 @@ export default {
                         position: absolute;
                         display: inline-block;
                         left: 0;
-                        top: 14px;
+                        top: 30px;
                         z-index: -1; // border-top: 8px
                     }
                 }
