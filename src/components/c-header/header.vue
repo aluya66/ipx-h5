@@ -75,7 +75,7 @@ export default create({
         }
     },
     activated () {
-       
+
     },
     computed: {
         curTitle () {

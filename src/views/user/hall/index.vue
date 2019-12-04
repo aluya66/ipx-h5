@@ -116,7 +116,7 @@ export default {
     },
     data () {
         return {
-            showList:false,
+            showList: false,
             isFromWeb: true,
             isInSearch: false,
             searchKey: '',
@@ -491,12 +491,12 @@ export default {
             event: 'pageView' // 固定参数，不用改
         })
         this.showList = false
-        setTimeout(()=>{
+        setTimeout(() => {
             this.showList = true
-        },300)
+        }, 300)
     },
     deactivated () {
-        window.removeEventListener('scroll',()=>{},true) // 离开当前组件别忘记移除事件监听哦
+        window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>
