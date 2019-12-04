@@ -205,7 +205,7 @@ export default {
         },300)
         setTimeout(()=>{
             this.showGroup = true
-        },600)
+        },500)
     },
     activated() {
         

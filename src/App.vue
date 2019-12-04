@@ -17,9 +17,8 @@ export default {
     // 获取配置参数
         getBaseCofing () {
             this.baseParams = this.$route.query
-            const ua = navigator.userAgent
+            // const ua = navigator.userAgent
             const isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-            const statusBarHeight = ua.match(/statusBarHeight\/(\d{2})/i)
 
             let params = {
                 success: true,
@@ -41,7 +40,9 @@ export default {
                 'mobile_model': 'ELE-AL00',
                 'os_version': '9',
                 'lat': '100.156161',
-                'lng': '100.156161'
+                'lng': '100.156161',
+                'statusBarHeight':20,
+                'isIphoneX':false
             }
 
             let results = {}
@@ -53,7 +54,6 @@ export default {
                 results = window.nativeInjectData
             }
             this.baseParams = (results && results.data) || testData
-            this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 20
             this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20 && isIos
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
