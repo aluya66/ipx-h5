@@ -288,7 +288,7 @@ export default {
   margin-bottom: 80px;
   .van-tabs__wrap {
     height: initial;
-    overflow: initial;
+    overflow: visible;//initial;
     .van-tabs__nav {
       margin-left: 16px;
       padding-bottom: 0;

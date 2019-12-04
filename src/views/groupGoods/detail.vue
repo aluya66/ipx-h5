@@ -1,6 +1,6 @@
 <template>
   <layout-view style="padding-top:0">
-    <div class="panel" :style="getBottomOffset(49)" v-if="showList">
+    <div class="panel" :style="getBottomOffset(49)">
       <div class="header-top">
         <c-header
           slot="header"
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="call-commit">
-          <button @click="handleCall">给他打call</button>
+          <button @click="handleCall">给它打call</button>
         </div>
       </div>
 
@@ -100,7 +100,9 @@
           <p>要点总结</p>
         </div>
         <div class="group-important">
-          <p>{{groupDetail.groupDesc}}</p>
+          <template v-for="(str,strIndex) in importList" >
+            <p :key="strIndex">● {{str}}</p>
+          </template>
         </div>
       </div>
 
@@ -165,6 +167,7 @@ export default {
             popularNum: '',
             productList: [],
             groupDetail: {},
+            importList: [],
             groupGoodsKoc: {},
             popularArray: [],
             slidImages: [],
@@ -302,6 +305,8 @@ export default {
                     this.cricleLists[1].actualPercent =
             Number(this.groupDetail.adviceIndexNum) + ''
                     this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
+                    this.importList = this.groupDetail.groupDesc.split('\n')
+                    // debugger
                 })
                 .catch(err => {
                     console.log(err)
@@ -347,7 +352,8 @@ export default {
                             title: '添加成功',
                             message: '该组货方案已添加至我的展厅',
                             confirmButtonText: '编辑组货方案',
-                            cancelButtonText: '继续逛逛'
+                            cancelButtonText: '继续逛逛',
+                            confirmButtonColor: '#007AFF'
                         })
                             .then(() => {
                                 window.sa.track('IPX_WEB', {
@@ -423,12 +429,14 @@ export default {
   }
   .progress-title {
     text-align: center;
-    margin-top: 16px;
+    // margin-top: 16px;
+    margin: 16px 16px 0;
     > p {
       font-size: 18px;
       font-weight: 500;
       color: rgba(42, 43, 51, 1);
       line-height: 26px;
+      // .ellipsis();
     }
   }
   .group-progress {
@@ -510,7 +518,7 @@ export default {
         line-height: 22px;
       }
       .discribe {
-        margin-top: 4px;
+        margin: 4px 16px 0;
         font-size: 12px;
         font-weight: 400;
         color: @color-c3;

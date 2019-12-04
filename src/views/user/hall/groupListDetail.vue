@@ -303,7 +303,8 @@ export default {
     font-size: 16px;
     font-weight: 500;
     color: @color-c1;
-    margin-top: 10px;
+    margin: 10px 32px 0 0;
+    .ellipsis();
   }
   > span {
     font-size: 14px;
