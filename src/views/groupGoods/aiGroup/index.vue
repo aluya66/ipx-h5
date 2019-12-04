@@ -10,11 +10,12 @@
         </div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
-        </template>
+</template>
 
-        <template slot="right">
-             <p style="color:#fff" @click="handleToHall">前往展厅</p>
-        </template>
+<template slot="right">
+<p style="color:#fff" @click="handleToHall">
+    前往展厅</p>
+</template>
         </c-header>
         <empty-view class="empty" v-if="titleIndex == 1" />
         <empty-view class="empty" v-else-if="titleIndex == 0 && allDatas.length <= 0" emptyType="error" emptyDesc="暂无搜索结果" />
@@ -77,8 +78,8 @@ export default {
     },
     data() {
         return {
-            showDesigner:false,
-            showGroup:false,
+            showDesigner: false,
+            showGroup: false,
             curDesigner: {},
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             titleIndex: 0,
@@ -123,6 +124,13 @@ export default {
                         this.curDesigner = this.allDatas[i]
                     }
                 }
+            }
+        }
+    },
+    watch: {
+        '$route' (to, from) {
+            if (from.name === 'groupGoods' && to.name === 'aiGroup') {
+                this.handleRequest()
             }
         }
     },
@@ -190,6 +198,24 @@ export default {
             this.$router.push({
                 path: '/groupGoods/aiGroup/matchRank'
             })
+        },
+        handleRequest() {
+            utils.postMessage('changeStatus', 'light')
+            let params = utils.getStore('searchParams')
+            
+            this.$api.groupGoods.searchGroup(params).then(res => {
+                if (res instanceof Array) {
+                    this.allDatas = res
+                    if (this.allDatas.length > 0) {
+                        this.curDesigner = this.allDatas[0]
+                    }
+                }else {
+                    this.allDatas = []
+                    this.curDesigner = {}
+                }
+            }).catch(() => {
+
+            })
         }
     },
     mounted() {
@@ -200,29 +226,15 @@ export default {
         })
         this.showGroup = false
         this.showDesigner = false
-        setTimeout(()=>{
+        setTimeout(() => {
             this.showDesigner = true
-        },300)
-        setTimeout(()=>{
+        }, 300)
+        setTimeout(() => {
             this.showGroup = true
-        },500)
+        }, 500)
     },
-    activated() {
-        
-        utils.postMessage('changeStatus', 'light')
-        let params = utils.getStore('searchParams')
-        this.allDatas = []
-        this.curDesigner = {}
-        this.$api.groupGoods.searchGroup(params).then(res => {
-            if (res instanceof Array) {
-                this.allDatas = res
-                if (this.allDatas.length > 0) {
-                    this.curDesigner = this.allDatas[0]
-                }
-            }
-        }).catch(() => {
-
-        })
+    created() {
+        this.handleRequest()
     }
 }
 </script>
