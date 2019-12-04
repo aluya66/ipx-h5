@@ -56,7 +56,7 @@
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
             :style="getBottomOffset(0)"
-            v-if="menuIndex == 1"
+            v-if="menuIndex == 1 && showList"
             v-model="loading"
             :finished="finished"
             finished-text="已到底，没有更多数据"
@@ -73,7 +73,7 @@
             ref="grouplist"
             :class='["groupList", isStickyTop?"enableScroll":"disableScroll"]'
             :style="getBottomOffset(0)"
-            v-if="menuIndex == 0"
+            v-if="menuIndex == 0 && showList"
             v-model="loading"
             :finished="finished"
             finished-text="已到底，没有更多数据"
@@ -116,6 +116,7 @@ export default {
     },
     data () {
         return {
+            showList:false,
             isFromWeb: true,
             isInSearch: false,
             searchKey: '',
@@ -489,6 +490,10 @@ export default {
             type: 'pageView', // 固定参数，不用改
             event: 'pageView' // 固定参数，不用改
         })
+        this.showList = false
+        setTimeout(()=>{
+            this.showList = true
+        },300)
     },
     deactivated () {
         window.removeEventListener('scroll',()=>{},true) // 离开当前组件别忘记移除事件监听哦

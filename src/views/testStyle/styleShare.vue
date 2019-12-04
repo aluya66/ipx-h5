@@ -68,10 +68,8 @@ export default {
         this.baseParams = utils.getStore('baseParams')
         let statusBarHeight = this.baseParams.statusBarHeight || 0
         let statusBarHeightSum = Number(statusBarHeight) / 100
-        if (this.baseParams.platform === 'ios') {
-            if (Number(this.baseParams.statusBarHeight) > 20) {
-                this.paddingTop = (Number(statusBarHeightSum)) + 'rem'
-            }
+        if (this.baseParams.isIphoneX) {
+            this.paddingTop = (Number(statusBarHeightSum)) + 'rem'
         }
     },
     mounted () {

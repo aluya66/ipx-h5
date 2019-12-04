@@ -20,13 +20,13 @@
         <empty-view class="empty" v-else-if="titleIndex == 0 && allDatas.length <= 0" emptyType="error" emptyDesc="暂无搜索结果" />
         <div v-else class="contain" :style="getBottomOffset()">
             <p class="c-title">推荐买手</p>
-            <swiper class="d-swiper" :options="dSwiperOption">
+            <swiper v-if="showDesigner" class="d-swiper" ref="designerSwiper" :options="dSwiperOption">
                 <swiper-slide class="designer-contain" v-for="item in allDatas" :key="item.groupGoodsKoc.kocCode">
                     <img :class='["designer-header",getIsCurrentDesigner(item)?"designer-header-select":"designer-header-default"]' :src="item.groupGoodsKoc.headPic" alt="">
                     <p :class='["designer-name",getIsCurrentDesigner(item)?"designer-name-select":"designer-name-default"]'>{{item.groupGoodsKoc.kocNickName}}</p>
                 </swiper-slide>
             </swiper>
-            <swiper class="swiper" ref="groupSwiper" :options="swiperOption">
+            <swiper v-if="showGroup" class="swiper" ref="groupSwiper" :options="swiperOption">
                 <swiper-slide class="slide" v-for="item in curDesigner.groupGoodList" :key="item.groupCode" >
                     <section class="box-header">
                         <p><span>{{item.groupTitle}}</span></p>
@@ -77,6 +77,8 @@ export default {
     },
     data() {
         return {
+            showDesigner:false,
+            showGroup:false,
             curDesigner: {},
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             titleIndex: 0,
@@ -96,7 +98,7 @@ export default {
                         })
                         let groupList = this.curDesigner.groupGoodList
                         let swiper = this.$refs.groupSwiper.swiper
-                        let i = swiper.activeIndex
+                        let i = swiper.clickedIndex
                         this.$router.push({
                             path: '/groupDetail',
                             query: {
@@ -116,8 +118,8 @@ export default {
                             type: 'click', // 固定参数，表明是点击事件
                             event: 'clickBuyerHeader' // 按钮唯一标识，取个语义化且不重名的名字
                         })
-                        let swiper = this.$refs.groupSwiper.swiper
-                        let i = swiper.activeIndex
+                        let swiper = this.$refs.designerSwiper.swiper
+                        let i = swiper.clickedIndex
                         this.curDesigner = this.allDatas[i]
                     }
                 }
@@ -196,8 +198,17 @@ export default {
             type: 'pageView', // 固定参数，不用改
             event: 'pageView' // 固定参数，不用改
         })
+        this.showGroup = false
+        this.showDesigner = false
+        setTimeout(()=>{
+            this.showDesigner = true
+        },300)
+        setTimeout(()=>{
+            this.showGroup = true
+        },600)
     },
     activated() {
+        
         utils.postMessage('changeStatus', 'light')
         let params = utils.getStore('searchParams')
         this.allDatas = []

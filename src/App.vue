@@ -54,7 +54,7 @@ export default {
             }
             this.baseParams = (results && results.data) || testData
             this.baseParams.statusBarHeight = statusBarHeight ? statusBarHeight[1] : 20
-            this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20
+            this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20 && isIos
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
         }

@@ -237,10 +237,8 @@ export default {
         })
         this.baseParams = utils.getStore('baseParams') || {}
         this.token = utils.getStore('token') || ''
-        if (this.baseParams.platform === 'ios') {
-            if (Number(this.baseParams.statusBarHeight) >= 40) {
-                this.footerHeight = (Number(37) / 100) + 'rem'
-            }
+        if (this.baseParams.isIphoneX) {
+            this.footerHeight = (Number(37) / 100) + 'rem'
         }
         this.handleRequestMain()
         this.handleRequestUserManagers()
@@ -249,7 +247,7 @@ export default {
         this.handleScroll()
     },
     destroyed () {
-        window.removeEventListener('scroll') // 离开当前组件别忘记移除事件监听哦
+        window.removeEventListener('scroll',()=>{},true) // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>

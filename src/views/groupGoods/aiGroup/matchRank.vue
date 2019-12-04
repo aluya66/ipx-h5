@@ -7,7 +7,7 @@
    </c-header>
    <div class="contain" >
        <p class="top-title">最潮搭配TOP10</p>
-       <div class="rank" :style="getListContainHeight()">
+       <div class="rank" v-if="showList" :style="getListContainHeight()">
             <empty-view class="empty" v-if="rankData.length <= 0" emptyDesc='正在统计排行榜，请稍后再查看哦～' emptyType="error" />
             <div class="rank-content" v-else v-for="(item,index) in rankData" :key="item+index" @click="handleToDetail(item)">
                <div class="rank-contain">
@@ -50,6 +50,7 @@ export default {
     data () {
         return {
             // showTitle: false,
+            showList:false,
             rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
@@ -117,6 +118,10 @@ export default {
             type: 'pageView', // 固定参数，不用改
             event: 'pageView' // 固定参数，不用改
         })
+        this.showList = false
+        setTimeout(()=>{
+            this.showList = true
+        },300)
     },
     activated() {
         this.handleRequest()

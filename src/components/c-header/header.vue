@@ -75,17 +75,7 @@ export default create({
         }
     },
     activated () {
-        // this.baseParams = utils.getStore('baseParams')
-        // // this.baseParams.statusBarHeight = 44;
-        // let statusBarHeight = Number(this.baseParams.statusBarHeight) / 100
-        // if (this.baseParams.platform === 'ios') {
-        //     if (Number(this.baseParams.statusBarHeight) > 20) {
-        //         // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
-        //         // alert(this.paddingTop)
-        //     }
-        // } else {
-        //     this.paddingTop = statusBarHeight + 'rem'
-        // }
+       
     },
     computed: {
         curTitle () {
