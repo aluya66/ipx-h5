@@ -41,8 +41,8 @@ export default {
                 'os_version': '9',
                 'lat': '100.156161',
                 'lng': '100.156161',
-                'statusBarHeight':20,
-                'isIphoneX':false
+                'statusBarHeight': 20,
+                'isIphoneX': false
             }
 
             let results = {}

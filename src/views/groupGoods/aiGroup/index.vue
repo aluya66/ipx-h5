@@ -205,7 +205,7 @@ export default {
         }, 300)
         setTimeout(() => {
             this.showGroup = true
-        },500)
+        }, 500)
     },
     activated() {
         utils.postMessage('changeStatus', 'light')

@@ -347,7 +347,8 @@ export default {
                             title: '添加成功',
                             message: '该组货方案已添加至我的展厅',
                             confirmButtonText: '编辑组货方案',
-                            cancelButtonText: '继续逛逛'
+                            cancelButtonText: '继续逛逛',
+                            confirmButtonColor: '#007AFF'
                         })
                             .then(() => {
                                 window.sa.track('IPX_WEB', {
