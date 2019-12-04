@@ -202,14 +202,14 @@ export default {
         handleRequest() {
             utils.postMessage('changeStatus', 'light')
             let params = utils.getStore('searchParams')
-            
+
             this.$api.groupGoods.searchGroup(params).then(res => {
                 if (res instanceof Array) {
                     this.allDatas = res
                     if (this.allDatas.length > 0) {
                         this.curDesigner = this.allDatas[0]
                     }
-                }else {
+                } else {
                     this.allDatas = []
                     this.curDesigner = {}
                 }

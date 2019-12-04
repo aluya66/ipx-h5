@@ -213,22 +213,16 @@ export default {
 <style lang='less' scoped>
 canvas#mountNode1 {
   border-radius: 5px;
-  //   background-color: #1890ff;
-  //   background-image: linear-gradient(#246bff, #2797ff);
   width: 100%;
   height: 113px;
 }
 canvas#mountNode2 {
   border-radius: 5px;
-  //   background-color: #1890ff;
-  //   background-image: linear-gradient(#246bff, #2797ff);
   width: 100%;
   height: 113px;
 }
 canvas#mountNode3 {
   border-radius: 5px;
-  //   background-color: #1890ff;
-  //   background-image: linear-gradient(#246bff, #2797ff);
   width: 100%;
   height: 113px;
 }
