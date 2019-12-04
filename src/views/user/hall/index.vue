@@ -490,8 +490,8 @@ export default {
             event: 'pageView' // 固定参数，不用改
         })
     },
-    destroyed () {
-        window.removeEventListener('scroll') // 离开当前组件别忘记移除事件监听哦
+    deactivated () {
+        window.removeEventListener('scroll',()=>{},true) // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>
