@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="call-commit">
-          <button @click="handleCall">给他打call</button>
+          <button @click="handleCall">给它打call</button>
         </div>
       </div>
 
