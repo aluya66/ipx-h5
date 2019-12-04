@@ -4,7 +4,7 @@
       <div slot="title">编辑组货名称</div>
     </c-header>
     <div class="panel">
-      <van-field v-model="groupName" clearable placeholder="请输入组货名称" />
+      <van-field v-model="groupName" clearable placeholder="请输入组货名称" maxlength="20" />
       <button @click="commit">完成</button>
     </div>
   </layout-view>
