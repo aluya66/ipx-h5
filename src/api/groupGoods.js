@@ -65,5 +65,5 @@ export const groupWeekPopular = params => Http.fetch(`${context}/v1/group/goods/
 // 打call
 export const postCall = params => Http.fetch(`${context}/v1/group/goods/popularity`, params, {
     method: 'post',
-    hasErrMsg: true
+    hasErrMsg: false
 })
