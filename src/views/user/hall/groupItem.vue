@@ -14,7 +14,7 @@
             </div>
         </div>
         <section class="footer">
-            <p>¥<span>{{parseInt(groupGood.totalPrice).toFixed(2) || 0.00}}</span></p>
+            <p>¥<span>{{groupGood.totalPrice}}</span></p>
             <div class="action">
                 <!-- <section :class='["default", !manageState ? "inManage" :""]' @click="handleCheckDetail">查看详情</section> -->
                 <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">一键采购</section>

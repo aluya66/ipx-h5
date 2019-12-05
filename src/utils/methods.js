@@ -11,7 +11,25 @@ export const bottomOffset = (offset) => {
         return `padding-bottom:${y}px !important`
     }
 }
+// 四舍五入，保留位数为roundDigit
+export const roundFun = (numberRound, roundDigit) => {
+    if (numberRound >= 0) {
+        let tempNumber = parseInt((numberRound * Math.pow(10, roundDigit) + 0.5)) / Math.pow(10, roundDigit)
+        var xsd = tempNumber.toString().split('.')
+        if (xsd.length === 1) {
+            tempNumber = tempNumber.toString() + '.00'
+            return tempNumber
+        }
+        if (xsd.length > 1) {
+            if (xsd[1].length < 2) {
+                tempNumber = tempNumber.toString() + '0'
+            }
+            return tempNumber
+        }
+    }
+}
 
 export default {
-    bottomOffset
+    bottomOffset,
+    roundFun
 }
