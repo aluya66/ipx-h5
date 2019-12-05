@@ -45,11 +45,6 @@
                   <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
                   <!-- :value="Number(skuItem.entityStock) > 0 ? skuItem.selectedNum : 0" -->
                   <!-- v-model="skuItem.skuValue" -->
-                  <!-- <div class="stepper-option">
-                    <img class="reduce" src="@/themes/images/app/number_reduce@3x.png" alt="" @click="changSelectedNum(colorSkusIndex, skuIndex)">
-                    <input type="text" class="inputNum" min="0" maxlength="skuItem.entityStock" v-model="skuItem.skuValue">
-                    <img class="plus" src="@/themes/images/app/number_plus@3x.png" alt="" @click="changSelectedNum(colorSkusIndex, skuIndex)">
-                  </div> -->
                   <van-stepper
                     :min="0"
                     :max="skuItem.entityStock"
@@ -308,7 +303,7 @@ export default {
     margin-bottom: 80px;
     .van-tabs__wrap {
       height: initial;
-      overflow: initial;
+      // overflow: initial;
       .van-tabs__nav {
         margin-left: 16px;
         padding-bottom: 0;
@@ -330,6 +325,7 @@ export default {
             background-color: #f4f5f7;
           }
           .van-info {
+            position: absolute;
             top: 1px;
             right: 12px;
           }
