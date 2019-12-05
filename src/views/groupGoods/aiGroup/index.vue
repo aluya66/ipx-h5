@@ -122,6 +122,8 @@ export default {
                         let swiper = this.$refs.designerSwiper.swiper
                         let i = swiper.clickedIndex
                         this.curDesigner = this.allDatas[i]
+                        let gSwiper = this.$refs.groupSwiper.swiper
+                        gSwiper.slideTo(0,0,false)
                     }
                 }
             }
