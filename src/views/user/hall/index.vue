@@ -1,26 +1,19 @@
 <template>
-    <layout-view class="hall-bg">
+<layout-view class="hall-bg">
     <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true" :pageOutStatus="!isFromWeb">
         <div v-show="!isInSearch" slot="title">我的展厅</div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage"  />
-        </template>
-        <template slot="right" tag="div">
-            <div class='searchContain' v-show="isInSearch">
-                <form action="/">
-                    <search
-                        v-model="searchKey"
-                        :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"'
-                        show-action
-                        shape="round"
-                        :left-icon="headerSearchImg_gray"
-                        @cancel="handleCancel"
-                        @input="handleRefresh"
-                    />
-                </form>
-            </div>
-            <img class="header-img"  v-show="!isInSearch" :src="headerSearchImg" @click="handleClickSearchIcon" />
-        </template>
+</template>
+
+<template slot="right" tag="div">
+<div class='searchContain' v-show="isInSearch">
+    <form action="/">
+        <search v-model="searchKey" :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"' show-action shape="round" :left-icon="headerSearchImg_gray" @cancel="handleCancel" @input="handleRefresh" />
+    </form>
+</div>
+<img class="header-img" v-show="!isInSearch" :src="headerSearchImg" @click="handleClickSearchIcon" />
+</template>
     </c-header>
     <div class="contain">
         <div class="test-agcency-contain">
@@ -40,19 +33,20 @@
             </div>
         </div>
 
-        <div id="stickyContain" class="sticky-contain" :style="changePosition" >
-                <div class="menu">
-                    <section :class='["menu-item" ,menuIndex == 0 ?"item-select":"item-default"]' @click="handleGroupList">组货清单
-                        <span v-if="menuIndex == 0"></span>
-                    </section>
-                    <section :class='["menu-item",menuIndex == 1 ?"item-select":"item-default"]' @click="handleCollectList">收藏样衣
-                        <span v-if="menuIndex == 1"></span>
-                    </section>
-                </div>
-                <div class="manage" @click="handleManage">{{isManageState?"完成":"管理"}}</div>
-
+        
+        <div class="stickyList">
+            <div id="stickyContain" class="sticky-contain">
+            <div class="menu">
+                <section :class='["menu-item" ,menuIndex == 0 ?"item-select":"item-default"]' @click="handleGroupList">组货清单
+                    <span v-if="menuIndex == 0"></span>
+                </section>
+                <section :class='["menu-item",menuIndex == 1 ?"item-select":"item-default"]' @click="handleCollectList">收藏样衣
+                    <span v-if="menuIndex == 1"></span>
+                </section>
+            </div>
+            <div class="manage" @click="handleManage">{{isManageState?"完成":"管理"}}</div>
         </div>
-        <list
+            <list
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
             :style="getBottomOffset(0)"
@@ -84,22 +78,27 @@
                 <img class="groupSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
             </div>
         </list>
+        </div>
+        
         <manage-view ref="manageView">
-            <template>
-                <div class="deleteContain">
-                    <div class="select" @click="handleSelectAll">
-                        <p><img :src="isSelectAll?select_sel:select_def" alt=""><span>全选</span></p>
-                    </div>
-                    <section class="deleteBtn" @click="handleDeletes" >删除{{selectItems.length>0?`(${selectItems.length})` : '' }}</section>
-                </div>
-            </template>
+<template>
+<div class="deleteContain">
+    <div class="select" @click="handleSelectAll">
+        <p><img :src="isSelectAll?select_sel:select_def" alt=""><span>全选</span></p>
+    </div>
+    <section class="deleteBtn" @click="handleDeletes">删除{{selectItems.length>0?`(${selectItems.length})` : '' }}</section>
+</div>
+</template>
         </manage-view>
     </div>
     </layout-view>
 </template>
 
 <script>
-import { List, Search } from 'vant'
+import {
+    List,
+    Search
+} from 'vant'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 import utils from 'utils'
@@ -114,9 +113,9 @@ export default {
     props: {
 
     },
-    data () {
+    data() {
         return {
-            showList:false,
+            showList: false,
             isFromWeb: true,
             isInSearch: false,
             searchKey: '',
@@ -188,15 +187,15 @@ export default {
             let baseParams = utils.getStore('baseParams')
             let statusBarHeight = (Number(baseParams.statusBarHeight) + 44) / 100
             if (this.isStickyTop && this.flag) {
-                return `position:fixed;top:${statusBarHeight}rem`
+                // return `position:fixed;top:${statusBarHeight}rem`
             } else {
-                return `position:sticky;top:0`
+                // return `position:relative;top:0`
             }
         }
     },
     methods: {
         // 是否iPhoneX底部
-        getBottomOffset (offset) {
+        getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
         handleClickTest() {
@@ -230,7 +229,7 @@ export default {
         handleSelectProduct(item) {
             if (this.isManageState) {
                 this.handleSelectItem(item)
-            } else if(this.menuIndex === 1) {
+            } else if (this.menuIndex === 1) {
                 /// 详情？
                 window.sa.track('IPX_WEB', {
                     page: 'userHall', // 页面名字
@@ -242,18 +241,18 @@ export default {
                     productCode: item.productCode
                 }
                 utils.postMessage('', params)
-            } else if(this.menuIndex === 0) {
+            } else if (this.menuIndex === 0) {
                 window.sa.track('IPX_WEB', {
-                page: 'userHall', // 页面名字
-                type: 'click', // 固定参数，表明是点击事件
-                event: 'hallGroupDetail' // 按钮唯一标识，取个语义化且不重名的名字
-            })
-            this.$router.push({
-                path: '/hall/groupListDetail',
-                query: {
-                    groupId: item.groupGoodsId
-                }
-            })
+                    page: 'userHall', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'hallGroupDetail' // 按钮唯一标识，取个语义化且不重名的名字
+                })
+                this.$router.push({
+                    path: '/hall/groupListDetail',
+                    query: {
+                        groupId: item.groupGoodsId
+                    }
+                })
             }
         },
         /// 选择单个样衣
@@ -288,7 +287,7 @@ export default {
             }
         },
         /// 全选
-        handleSelectAll () {
+        handleSelectAll() {
             this.isSelectAll = !this.isSelectAll
             if (this.isSelectAll && this.menuIndex === 1) {
                 this.selectItems = JSON.parse(JSON.stringify(this.datas))
@@ -319,7 +318,7 @@ export default {
             this.menuIndex = 0
             this.handleResetOffset()
         },
-        handleResetOffset () {
+        handleResetOffset() {
             if (this.isStickyTop) {
                 this.$nextTick(() => {
                     document.querySelector('.contain').scrollTop = this.offsetY
@@ -327,7 +326,7 @@ export default {
             }
         },
         // 监听滚动
-        handleScroll () {
+        handleScroll() {
             window.addEventListener('scroll', () => {
                 if (this.menuIndex === 1) {
                     this.$refs.productlist.check()
@@ -340,6 +339,7 @@ export default {
                 this.isStickyTop = scrollTop >= offsetTop
                 if (!this.isStickyTop) {
                     this.offsetY = offsetTop
+                    this.flag = false
                 } else {
                     if (this.offsetY + 200 * window.devicePixelRatio <= scrollTop) {
                         this.flag = true
@@ -349,15 +349,15 @@ export default {
                 }
             }, true)
         },
-        resetParams () {
+        resetParams() {
             this.pageNo = 1
             this.finished = false
             this.loading = false
         },
-        setSuccessStatus () {
+        setSuccessStatus() {
             this.loading = false
         },
-        setFailureStatus () {
+        setFailureStatus() {
             this.pageNo -= 1
             this.finished = true
             this.loading = false
@@ -385,7 +385,7 @@ export default {
                 }
             }
         },
-        handleRequest () {
+        handleRequest() {
             const params = {
                 pageNo: this.pageNo,
                 pageSize: this.pageSize,
@@ -414,7 +414,7 @@ export default {
                 this.setFailureStatus()
             })
         },
-        handleDeletes () {
+        handleDeletes() {
             if (this.menuIndex === 0) {
                 this.handleGroupDeletes()
             } else {
@@ -428,7 +428,7 @@ export default {
                     }
                     this.$api.hall.deleteCollects(params).then(res => {
                         this.$toast('删除样衣成功')
-                        this.datas = this.datas.filter(function (item) {
+                        this.datas = this.datas.filter(function(item) {
                             return idsArr.indexOf(item.collectId) < 0
                         })
                         this.selectItems = []
@@ -438,7 +438,7 @@ export default {
                 }
             }
         },
-        handleRequestForGroupList () {
+        handleRequestForGroupList() {
             const params = {
                 pageNo: this.pageNo,
                 pageSize: this.pageSize,
@@ -467,7 +467,7 @@ export default {
                 this.setFailureStatus()
             })
         },
-        handleGroupDeletes () {
+        handleGroupDeletes() {
             let idsArr = []
             if (this.selectItems.length > 0) {
                 this.selectItems.forEach(item => {
@@ -478,7 +478,7 @@ export default {
                 }
                 this.$api.hall.deleteGroupGoods(params).then(res => {
                     this.$toast('删除组货衣杆成功')
-                    this.groupDatas = this.groupDatas.filter(function (item) {
+                    this.groupDatas = this.groupDatas.filter(function(item) {
                         return idsArr.indexOf(item.groupGoodsId) < 0
                     })
                     this.selectItems = []
@@ -503,92 +503,91 @@ export default {
             event: 'pageView' // 固定参数，不用改
         })
         this.showList = false
-        setTimeout(()=>{
+        setTimeout(() => {
             this.showList = true
-        },300)
+        }, 300)
     },
-    deactivated () {
-        window.removeEventListener('scroll',()=>{},true) // 离开当前组件别忘记移除事件监听哦
+    deactivated() {
+        window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
     }
 }
 </script>
 
 <style lang="less">
-    .searchContain {
-        .van-search {
-            height: 46px;
-            margin-left: 0px;
-            width:calc(100vw - 55px);
-            background: rgba(0,0,0,0) !important;
-        }
+.searchContain {
+    .van-search {
+        height: 46px;
+        margin-left: 0px;
+        width: calc(100vw - 55px);
+        background: rgba(0, 0, 0, 0) !important;
+    }
+    .van-search__action {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        padding-right: 0;
+    }
+}
 
-        .van-search__action {
-            color: #fff;
-            font-size:14px;
-            font-weight:500;
-            line-height:20px;
-            padding-right: 0;
-        }
+.product-list {
+    display: flex; // height: 100%;
+    background: #fff;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 16px; // overflow: auto;
+    justify-content: space-between;
+    margin-top: -12px;
+    .van-list__finished-text {
+        width: 100%;
     }
-    .product-list {
-        display: flex;
-        // height: 100%;
-        background: #fff;
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 0 16px;
-        // overflow: auto;
-        justify-content: space-between;
-        margin-top: -12px;
-        .van-list__finished-text {
-            width: 100%;
-        }
-        .van-loading__text {
-            width: 100%;
-        }
-        .van-list__loading {
-            width: 100%;
-            height: 44px;
-        }
-        .van-loading__spinner--circular {
-            width: 16px !important;
-            height: 16px !important;
-        }
+    .van-loading__text {
+        width: 100%;
     }
+    .van-list__loading {
+        width: 100%;
+        height: 44px;
+    }
+    .van-loading__spinner--circular {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
 </style>
+
 <style lang='less' scoped>
 .header-img {
-  display: inline-block;
-  vertical-align: middle;
-  width: 26px;
-  height: 26px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 26px;
+    height: 26px;
 }
+
 .hall-bg {
-    background-image :url('../../../themes/images/app/bg_exhibition_top.png');
-    background-repeat:no-repeat;
-    background-size:100% 212px;
+    background-image: url('../../../themes/images/app/bg_exhibition_top.png');
+    background-repeat: no-repeat;
+    background-size: 100% 212px;
 }
 
 .hall-header {
-    background: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
 }
+
 .test-agcency-contain {
     height: 138px;
     position: relative;
     z-index: 3;
-    background: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
 }
 
 .contain {
-    position: relative;
-    // background: #fff;
-    height: 100%;//calc(100vh - 124px)  ;
-    overflow: scroll;
-
+    position: relative; // background: #fff;
+    height: 100%; //calc(100vh - 124px)  ;
+    overflow: auto;
     .enableScroll {
         overflow: visible;
     }
-    .disableScroll{
+    .disableScroll {
         overflow: visible !important;
     }
     .groupList {
@@ -626,16 +625,16 @@ export default {
                 height: 20px;
             }
             img {
-                object-fit:cover;
+                object-fit: cover;
                 width: 100%;
                 height: 220px;
-                border-radius:4px;
+                border-radius: 4px;
             }
             p {
                 margin: 5px 5px 0;
                 line-height: 20px;
-                color:@color-c1;
-                border-radius:4px;
+                color: @color-c1;
+                border-radius: 4px;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
@@ -644,7 +643,7 @@ export default {
                 margin: 6px 5px 2px;
                 line-height: 19px;
                 font-size: @f16;
-                font-weight:bold;
+                font-weight: bold;
                 padding-bottom: 12px;
             }
         }
@@ -653,11 +652,11 @@ export default {
         width: calc(50vw - 21.5px);
         height: 92px;
         margin-top: 20px;
-        border-radius:8px;
+        border-radius: 8px;
         display: flex;
         flex-direction: row;
         position: relative;
-        box-shadow:0px 2px 16px 0px rgba(33,44,98,0.06);
+        box-shadow: 0px 2px 16px 0px rgba(33, 44, 98, 0.06);
         img {
             object-fit: scale-down;
             position: absolute;
@@ -668,13 +667,13 @@ export default {
             margin-left: 16px;
             margin-top: 4px;
             font-size: 12px;
-            line-height:16px;
+            line-height: 16px;
             color: @color-c4;
             &:first-child {
-                font-size:18px;
-                font-weight:500;
-                color:@color-c1;
-                line-height:26px;
+                font-size: 18px;
+                font-weight: 500;
+                color: @color-c1;
+                line-height: 26px;
                 margin: 16px 0 0 16px;
             }
         }
@@ -690,13 +689,13 @@ export default {
         background: @color-pink;
         p {
             &:last-child {
-                color:@color-rc;
+                color: @color-rc;
             }
         }
     }
     .sticky-contain {
         width: 100%;
-        position:sticky;
+        position: sticky;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -712,17 +711,17 @@ export default {
             align-items: center;
             margin-left: 16px;
             .menu-item {
-                font-size:20px;
-                font-weight:500;
-                line-height:28px;
+                font-size: 20px;
+                font-weight: 500;
+                line-height: 28px;
                 position: relative;
                 &:last-child {
                     margin-left: 24px;
                 }
                 span {
-                    width:12px;
-                    height:12px;
-                    background:rgba(250,217,97,1);
+                    width: 12px;
+                    height: 12px;
+                    background: rgba(250, 217, 97, 1);
                     border-radius: 6px;
                     position: absolute;
                     top: 0;
@@ -731,17 +730,17 @@ export default {
                 }
             }
             .item-default {
-                color:@color-c1
+                color: @color-c1
             }
             .item-select {
-                color:@color-ec
+                color: @color-ec
             }
         }
         .manage {
-            width:52px;
-            height:28px;
-            border-radius:16px;
-            border:1px solid @color-c5;
+            width: 52px;
+            height: 28px;
+            border-radius: 16px;
+            border: 1px solid @color-c5;
             text-align: center;
             line-height: 26px;
             margin-right: 13px;
@@ -755,9 +754,8 @@ export default {
         padding: 0 16px;
         height: 49px;
         .select {
-            font-size:11px;
-            color:@color-c1;
-            // height: 49px;
+            font-size: 11px;
+            color: @color-c1; // height: 49px;
             // line-height: 49px;
             // vertical-align: middle;
             text-align: center;
@@ -770,14 +768,14 @@ export default {
             }
         }
         .deleteBtn {
-            width:78px;
+            width: 78px;
             height: 40px;
             border-radius: 20px;
-            background:@color-rc;
-            color:#fff;
-            font-size:14px;
-            font-weight:500;
-            line-height:40px;
+            background: @color-rc;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 40px;
             text-align: center
         }
     }

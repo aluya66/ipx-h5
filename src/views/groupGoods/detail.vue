@@ -269,7 +269,7 @@ export default {
             this.$api.groupGoods
                 .postCall(params)
                 .then(res => {
-                    if (res.code === 0) {
+                    if (res instanceof Object) {
                         this.$toast('打call成功')
                         this.getWeekData()
                     }

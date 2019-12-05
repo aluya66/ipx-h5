@@ -78,9 +78,7 @@ export default {
                 event: 'rankCall' // 按钮唯一标识，取个语义化且不重名的名字
             })
             const params = {
-                vo: {
                     groupCode: item.groupCode
-                }
             }
             this.$api.groupGoods.postCall(params).then(res => {
                 if (res instanceof Object) {
