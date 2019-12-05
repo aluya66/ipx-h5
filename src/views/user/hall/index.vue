@@ -33,7 +33,6 @@
             </div>
         </div>
 
-        
         <div class="stickyList">
             <div id="stickyContain" class="sticky-contain">
             <div class="menu">
@@ -60,7 +59,7 @@
                 <img class="itemSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
-                <h3>¥{{parseInt(item.tshPrice).toFixed(2)}}</h3>
+                <h3>¥{{handlePrice(item.tshPrice)}}</h3>
             </div>
         </list>
         <list
@@ -79,7 +78,7 @@
             </div>
         </list>
         </div>
-        
+
         <manage-view ref="manageView">
 <template>
 <div class="deleteContain">
@@ -182,6 +181,9 @@ export default {
         }
     },
     methods: {
+        handlePrice(price){
+            return utils.roundFun(price,2) || 0.00
+        },
         // 是否iPhoneX底部
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
