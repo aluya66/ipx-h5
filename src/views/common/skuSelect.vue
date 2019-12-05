@@ -1,5 +1,5 @@
 <template>
-  <van-sku v-model="showSku" :sku="sku">
+  <van-sku v-model="showSku" :sku="sku" class="my-sku-content">
     <template slot="sku-header">
       <div class="van-sku-header van-hairline--bottom">
         <div class="van-sku-header__img-wrap">
@@ -45,6 +45,11 @@
                   <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
                   <!-- :value="Number(skuItem.entityStock) > 0 ? skuItem.selectedNum : 0" -->
                   <!-- v-model="skuItem.skuValue" -->
+                  <!-- <div class="stepper-option">
+                    <img class="reduce" src="@/themes/images/app/number_reduce@3x.png" alt="" @click="changSelectedNum(colorSkusIndex, skuIndex)">
+                    <input type="text" class="inputNum" min="0" maxlength="skuItem.entityStock" v-model="skuItem.skuValue">
+                    <img class="plus" src="@/themes/images/app/number_plus@3x.png" alt="" @click="changSelectedNum(colorSkusIndex, skuIndex)">
+                  </div> -->
                   <van-stepper
                     :min="0"
                     :max="skuItem.entityStock"
@@ -67,7 +72,7 @@
 
     <template slot="sku-stepper">{{ goodsId }}</template>
     <template slot="sku-actions">
-      <div class="van-sku-actions" :style="getBottomOffset(0)">
+      <div class="van-sku-actions" :style="getBottomOffset(2)">
         <van-button
           square
           size="large"
@@ -167,13 +172,6 @@ export default {
   text-align: center;
   background-color: #ffebed;
 }
-
-.van-info {
-  top: 1px;
-  right: 12px;
-  z-index: 1000;
-}
-
 .sku-card {
   width: calc(100vw - 32px);
   // height: 200px;
@@ -204,7 +202,8 @@ export default {
       .batch-price {
         font-size: 12px;
         font-weight: bold;
-        color: #b2b5c1;
+        color: @color-c4;
+        font-family: "alibabaBold";
       }
     }
     .flex-right {
@@ -215,122 +214,176 @@ export default {
         color: #8a8c99;
         margin-right: 20px;
       }
+      .stepper-option {
+          height: 24px;
+          background: red;
+        > img {
+          width: 24px;
+          height: 24px;
+        }
+        .inputNum {
+          width: 48px;
+          height: 24px;
+          background: #F4F5F7;
+        }
+      }
     }
   }
 }
 </style>
 
 <style lang="less">
-.van-sku-actions {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-shrink: 0;
-  flex-shrink: 0;
-  padding: 5px 16px;
-  box-shadow: 0 -1px 6px 0 rgba(33, 44, 98, 0.06);
-  .van-button {
-    font-size: 16px;
-    font-weight: 500;
-    color: #ffffff;
-    width: 100%;
-    height: 40px;
-    border-radius: 20px;
-    background: #3c5cf6;
-    &.forbidColor {
+.my-sku-content {
+  .van-sku-actions {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    padding: 5px 16px;
+    box-shadow: 0 -1px 6px 0 rgba(33, 44, 98, 0.06);
+    .van-button {
+      font-size: 16px;
+      font-weight: 500;
       color: #ffffff;
-      background-color: #d5d6de;
-    }
-  }
-}
-
-.van-popup--bottom.van-popup--round {
-  border-radius: 8px 8px 0 0;
-}
-
-.van-sku-header {
-  .van-sku-header__img-wrap {
-    width: 88px;
-    height: 88px;
-    img {
       width: 100%;
-      height: 100%;
-      border-radius: 4px;
-    }
-  }
-
-  .van-sku-header__goods-info {
-    margin-top: 14px;
-    .van-sku__goods-price {
-      color: #f53030;
-      font-size: 14px;
-      font-weight: 400;
-      .van-sku__price-num {
-        font-size: 20px;
-        font-weight: bold;
-        color: #f53030;
+      height: 40px;
+      border-radius: 20px;
+      background: #3c5cf6;
+      &.forbidColor {
+        color: #ffffff;
+        background-color: #d5d6de;
       }
     }
-    .van-sku-header-item {
-      font-size: 12px;
-      color: #2a2b33;
-      margin-top: 4px;
+  }
+
+  .van-popup--bottom.van-popup--round {
+    border-radius: 8px 8px 0 0;
+  }
+
+  .van-sku-header {
+    .van-sku-header__img-wrap {
+      width: 88px;
+      height: 88px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+      }
     }
-    .van-sku__stock {
-      color: #b2b5c1;
+
+    .van-sku-header__goods-info {
+      margin-top: 14px;
+      .van-sku__goods-price {
+        color: #f53030;
+        font-size: 14px;
+        font-weight: 400;
+        font-family: "alibabaRegular";
+        .van-sku__price-num {
+          font-size: 20px;
+          font-weight: bold;
+          color: #f53030;
+          font-family: "alibabaBold";
+        }
+      }
+      .van-sku-header-item {
+        font-size: 12px;
+        color: #2a2b33;
+        margin-top: 4px;
+      }
+      .van-sku__stock {
+        color: #b2b5c1;
+      }
     }
   }
-}
 
-.van-hairline--bottom::after,
-.van-hairline--top-bottom::after,
-.van-hairline-unset--top-bottom::after {
-  border: 0;
-}
+  .van-hairline--bottom::after,
+  .van-hairline--top-bottom::after,
+  .van-hairline-unset--top-bottom::after {
+    border: 0;
+  }
 
-.sku-group-tabs {
-  margin-top: 26px;
-  margin-bottom: 80px;
-  .van-tabs__wrap {
-    height: initial;
-    overflow: initial;
-    .van-tabs__nav {
-      margin-left: 16px;
-      padding-bottom: 0;
-      .van-tab {
-        flex: initial;
-        position: relative;
-        margin-right: 12px;
-        flex-basis: auto !important;
-        min-width: initial;
-        margin-top: 12px;
-        span {
-          font-size: 12px;
-          font-weight: 500;
-          color: #2a2b33;
-          width: 74px;
-          height: 28px;
-          line-height: 28px;
-          border-radius: 14px;
-          background-color: #f4f5f7;
-        }
-        .van-info {
-          top: 1px;
-          right: 12px;
-        }
-        &.van-tab--active {
+  .sku-group-tabs {
+    margin-top: 25px;
+    margin-bottom: 80px;
+    .van-tabs__wrap {
+      height: initial;
+      overflow: initial;
+      .van-tabs__nav {
+        margin-left: 16px;
+        padding-bottom: 0;
+        .van-tab {
+          flex: initial;
+          position: relative;
+          margin-right: 12px;
+          flex-basis: auto !important;
+          min-width: initial;
+          margin-top: 12px;
           span {
-            border: solid 1px #3c5cf6;
-            background-color: #ebeeff;
-            color: #3c5cf6;
+            font-size: 12px;
+            font-weight: 500;
+            color: #2a2b33;
+            width: 74px;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 14px;
+            background-color: #f4f5f7;
+          }
+          .van-info {
+            top: 1px;
+            right: 12px;
+          }
+          &.van-tab--active {
+            span {
+              border: solid 1px #3c5cf6;
+              background-color: #ebeeff;
+              color: #3c5cf6;
+            }
           }
         }
-        .van-ellipsis {
+        .van-tabs__line {
+          height: 0;
         }
       }
-      .van-tabs__line {
-        height: 0;
+    }
+  }
+  .flex-right {
+    .van-stepper {
+      > input {
+        width: 48px;
+        background-color: #F4F5F7;
+        font-size: 14px;
+        font-family: 'alibabaBold';
+        font-weight: bold;
       }
+    }
+    .van-stepper__minus {
+      background: url('../../themes/images/app/number_reduce@3x.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      // width: 24px;
+      // height: 24px;
+    }
+    .van-stepper__minus--disabled {
+      background: url('../../themes/images/app/number_reduce_unable@3x.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .van-stepper__plus {
+      background: url('../../themes/images/app/number_plus@3x.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .van-stepper__plus--disabled {
+      background: url('../../themes/images/app/number_plus_unable@3x.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .van-stepper__minus::before, .van-stepper__plus::before, .van-stepper__minus::after, .van-stepper__plus::after {
+      background-color: transparent;
+    }
+    .van-stepper__input {
+      height: 24px;
     }
   }
 }

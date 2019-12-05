@@ -33,7 +33,6 @@
             </div>
         </div>
 
-        
         <div class="stickyList">
             <div id="stickyContain" class="sticky-contain">
             <div class="menu">
@@ -79,7 +78,7 @@
             </div>
         </list>
         </div>
-        
+
         <manage-view ref="manageView">
 <template>
 <div class="deleteContain">

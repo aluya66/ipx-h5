@@ -1,7 +1,7 @@
 <template>
   <layout-view>
     <c-header slot="header" :left-arrow="true">
-      <div slot="title">组货清单详情</div>
+      <div slot="title">编辑组货清单</div>
       <template slot="right" tag="div">
         <span class="header-save" @click="save">保存</span>
       </template>
@@ -40,7 +40,7 @@
               </p>
               <p class="tips">{{ tipStr(item) }}</p>
             </div>
-            <p :class="[item.disabled ? 'disablePrice' : 'price']">¥{{ item.spuTshPrice }}</p>
+            <p :class="[item.disabled ? 'disablePrice' : 'price']"><span class="yen">¥</span>{{ item.spuTshPrice }}</p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
           </div>
         </div>
@@ -162,7 +162,8 @@ export default {
                 Dialog.alert({
                     title: '商品信息变更',
                     message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
-                    confirmButtonText: '我知道了'
+                    confirmButtonText: '我知道了',
+                    confirmButtonColor: '#007AFF'
                 }).then(() => {})
             }
         },
@@ -404,15 +405,29 @@ export default {
       }
       .price {
         font-size: 18px;
-        font-weight: 500;
+        font-weight: bold;
         color: @color-rc;
         margin-top: 8px;
+        font-family: 'alibabaBold';
       }
       .disablePrice {
         font-size: 18px;
-        font-weight: 500;
+        font-weight: bold;
         color: @color-c4;
         margin-top: 8px;
+        font-family: 'alibabaBold';
+        .yen {
+          font-size: 12px;
+          font-weight: 400;
+          color: @color-c4;
+          font-family: 'alibabaRegular';
+        }
+      }
+      .yen {
+        font-size: 12px;
+        font-weight: 400;
+        color: @color-rc;
+        font-family: 'alibabaRegular';
       }
       > button {
         width: 80px;
@@ -453,10 +468,12 @@ export default {
       font-size: 12px;
       font-weight: 400;
       color: @color-rc;
+      font-family: 'alibabaRegular';
     }
     .price {
       font-size: 18px;
-      font-weight: 500;
+      font-weight: bold;
+      font-family: 'alibabaBold';
       color: @color-rc;
       margin-bottom: 16px;
     }
