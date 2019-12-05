@@ -9,8 +9,10 @@
     <div class="panel" :style="getBottomOffset(49)">
       <div class="top-content">
         <span>组货名称</span>
-        <p>{{ groupName }}</p>
-        <button @click="changeGroupName">更改</button>
+        <div class="group-name">
+          <p>{{ groupName }}</p>
+          <button @click="changeGroupName">更改</button>
+        </div>
       </div>
       <div class="list-title">
         <div class="dot"></div>
@@ -295,29 +297,32 @@ export default {
   margin-top: -1px;
 }
 .top-content {
-  padding: 16px 12px;
+  padding: 16px 0 16px 12px;
   background: white;
   box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
   border-radius: 8px;
-  > p {
-    font-size: 16px;
-    font-weight: 500;
-    color: @color-c1;
-    margin: 10px 32px 0 0;
-    .ellipsis();
+  .group-name {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    > p {
+      font-size: 16px;
+      font-weight: 500;
+      color: @color-c1;
+      .ellipsis();
+    }
+    > button {
+      font-size: 14px;
+      font-weight: 500;
+      color: @color-ec;
+      width: 20%;
+      background: none;
+    }
   }
   > span {
     font-size: 14px;
     font-weight: 500;
     color: @color-c3;
-  }
-  > button {
-    font-size: 14px;
-    font-weight: 500;
-    color: @color-ec;
-    float: right;
-    transform: translateY(-16px);
-    background: none;
   }
 }
 .list-title {
