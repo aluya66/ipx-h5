@@ -23,7 +23,7 @@
           <van-tab :key="colorSkusIndex" :name="colorSkusItem.attrColorValue">
             <div slot="title">
               {{ colorSkusItem.attrColorValue }}
-              <div class="van-info" v-if="colorSkusItem.seletedColorSkuNum > 0">
+              <div class="icon-info" v-if="colorSkusItem.seletedColorSkuNum > 0">
                 {{
                   colorSkusItem.seletedColorSkuNum > 99
                     ? colorSkusItem.seletedColorSkuNum + "+"
@@ -210,8 +210,8 @@ export default {
         margin-right: 20px;
       }
       .stepper-option {
-          height: 24px;
-          background: red;
+        height: 24px;
+        background: red;
         > img {
           width: 24px;
           height: 24px;
@@ -219,7 +219,7 @@ export default {
         .inputNum {
           width: 48px;
           height: 24px;
-          background: #F4F5F7;
+          background: #f4f5f7;
         }
       }
     }
@@ -324,10 +324,19 @@ export default {
             border-radius: 14px;
             background-color: #f4f5f7;
           }
-          .van-info {
+          .icon-info {
             position: absolute;
-            top: 1px;
-            right: 12px;
+            background-color: @color-rc;
+            color: white;
+            width: 15px;
+            height: 15px;
+            border-radius: 10px;
+            top: -5px;
+            right: 5px;
+            line-height: 14px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 12px;
             z-index: 100;
           }
           &.van-tab--active {
@@ -348,35 +357,38 @@ export default {
     .van-stepper {
       > input {
         width: 48px;
-        background-color: #F4F5F7;
+        background-color: #f4f5f7;
         font-size: 14px;
-        font-family: 'alibabaBold';
+        font-family: "alibabaBold";
         font-weight: bold;
       }
     }
     .van-stepper__minus {
-      background: url('../../themes/images/app/number_reduce@3x.png');
+      background: url("../../themes/images/app/number_reduce@3x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
       // width: 24px;
       // height: 24px;
     }
     .van-stepper__minus--disabled {
-      background: url('../../themes/images/app/number_reduce_unable@3x.png');
+      background: url("../../themes/images/app/number_reduce_unable@3x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
     }
     .van-stepper__plus {
-      background: url('../../themes/images/app/number_plus@3x.png');
+      background: url("../../themes/images/app/number_plus@3x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
     }
     .van-stepper__plus--disabled {
-      background: url('../../themes/images/app/number_plus_unable@3x.png');
+      background: url("../../themes/images/app/number_plus_unable@3x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
     }
-    .van-stepper__minus::before, .van-stepper__plus::before, .van-stepper__minus::after, .van-stepper__plus::after {
+    .van-stepper__minus::before,
+    .van-stepper__plus::before,
+    .van-stepper__minus::after,
+    .van-stepper__plus::after {
       background-color: transparent;
     }
     .van-stepper__input {
