@@ -2,21 +2,13 @@
   <layout-view style="padding-top:0">
     <div class="panel" :style="getBottomOffset(49)">
       <div class="header-top">
-        <c-header
-          slot="header"
-          :left-arrow="true"
-          :style="marginTop"
-        >
-        <template slot="left" tag="div">
-                <img class="header-img" :src="backImage" />
-        </template>
+        <c-header slot="header" :left-arrow="true" :style="marginTop">
+          <template slot="left" tag="div">
+            <img class="header-img" :src="backImage" />
+          </template>
         </c-header>
         <swiper class="swiper-content">
-          <swiper-slide
-            class="swiper-slide"
-            v-for="(img,index) in slidImages"
-            :key="index"
-          >
+          <swiper-slide class="swiper-slide" v-for="(img, index) in slidImages" :key="index">
             <video
               controls="controls"
               style=""
@@ -25,19 +17,18 @@
               playsinline=""
               :src="img"
               v-if="img.endsWith('.mp4')"
-            >暂时不支持播放该视频</video>
-            <img
-              :src="img"
-              v-else
             >
+              暂时不支持播放该视频
+            </video>
+            <img :src="img" v-else />
           </swiper-slide>
         </swiper>
       </div>
       <div class="progress-title">
-        <p>{{groupDetail.groupTitle}}</p>
+        <p>{{ groupDetail.groupTitle }}</p>
       </div>
       <div class="group-progress">
-        <template v-for="(item,index) in cricleLists">
+        <template v-for="(item, index) in cricleLists">
           <progress-cricle
             :key="index"
             :actualPercent="item.actualPercent"
@@ -49,101 +40,91 @@
 
       <!--  人气排行-->
       <div class="popular-content">
-        <div class="title-content" :style="{'backgroundImage': bgUrlList.popularity}">
+        <div class="title-content" :style="{ backgroundImage: bgUrlList.popularity }">
           <p>本周累计人气</p>
         </div>
         <div class="number-scroll">
-          <div
-            class="number"
-            v-for="(item,index) in popularArray"
-            :key="index"
-          >
-            <p>{{item}}</p>
+          <div class="number" v-for="(item, index) in popularArray" :key="index">
+            <p>{{ item }}</p>
           </div>
         </div>
         <div class="call-commit">
-          <button @click="handleCall">给它打call</button>
+          <button @click="handleCall" :disabled="isVoted">给它打call</button>
         </div>
       </div>
 
       <!-- 买手 -->
       <div class="popular-content">
-        <div class="title-content" :style="{'backgroundImage': bgUrlList.koc}">
+        <div class="title-content" :style="{ backgroundImage: bgUrlList.koc }">
           <p>买手</p>
         </div>
         <div class="buyer">
-          <img
-            :src="groupGoodsKoc.headPic"
-            alt=""
-          >
-          <p class="author">{{groupGoodsKoc.kocNickName}}</p>
-          <p class="discribe">{{groupGoodsKoc.kocDesc}}</p>
+          <img :src="groupGoodsKoc.headPic" alt="" />
+          <p class="author">{{ groupGoodsKoc.kocNickName }}</p>
+          <p class="discribe">{{ groupGoodsKoc.kocDesc }}</p>
         </div>
       </div>
 
       <!-- 搭配解析 -->
       <div class="popular-content">
-        <div class="title-content" :style="{'backgroundImage': bgUrlList.analysis}">
+        <div class="title-content" :style="{ backgroundImage: bgUrlList.analysis }">
           <p>搭配解析</p>
         </div>
         <div class="group-analys">
-          <img
-            :src="groupDetail.analysisImg"
-            alt=""
-          >
+          <img :src="groupDetail.analysisImg" alt="" />
         </div>
       </div>
 
       <!-- 要点总结 -->
       <div class="popular-content">
-        <div class="title-content" :style="{'backgroundImage': bgUrlList.important}">
+        <div class="title-content" :style="{ backgroundImage: bgUrlList.important }">
           <p>要点总结</p>
         </div>
         <div class="group-important">
-          <template v-for="(str,strIndex) in importList" >
-            <p :key="strIndex">● {{str}}</p>
-          </template>
+          <div class="paragraph" v-for="(str, strIndex) in importList" :key="strIndex">
+            <span>●</span>
+            <p>{{ str }}</p>
+          </div>
         </div>
       </div>
 
       <!-- 搭配清单 -->
       <div class="popular-content">
-        <div class="title-content" :style="{'backgroundImage': bgUrlList.collocation}">
+        <div class="title-content" :style="{ backgroundImage: bgUrlList.collocation }">
           <p>搭配清单</p>
         </div>
         <div class="collocation-list">
           <div
             class="product-cell"
-            v-for="(item,index) in productList"
+            v-for="(item, index) in productList"
             :key="index"
             @click="jumpToProduct(item)"
           >
-            <img
-              :src="item.mainPic"
-              alt=""
-            >
+            <img :src="item.mainPic" alt="" />
             <div class="product-info">
-              <p>{{item.productName}}</p>
+              <p>{{ item.productName }}</p>
               <div class="sku-list">
-                <p
-                  for=""
-                  v-for="(sku,i) in item.colorSkuList"
-                  :key="i"
-                >{{sku | selectSkuStr}}</p>
+                <p for="" v-for="(sku, i) in item.colorSkuList" :key="i">
+                  {{ sku | selectSkuStr }}
+                </p>
               </div>
-              <div class="price">¥ <span>{{item.spuTshPrice}}</span></div>
+              <div class="price">
+                ¥ <span>{{ item.spuTshPrice }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
 
-    <div class="footer" :style="getBottomOffset(0)" >
-      <div class="
+    <div class="footer" :style="getBottomOffset(0)">
+      <div
+        class="
       price"
-    >¥<span>{{groupDetail.totalPrice}}</span></div>
-    <button @click="addHall">添加至展厅</button>
+      >
+        ¥<span>{{ groupDetail.totalPrice }}</span>
+      </div>
+      <button @click="addHall">添加至展厅</button>
     </div>
   </layout-view>
 </template>
@@ -172,6 +153,7 @@ export default {
             popularArray: [],
             slidImages: [],
             showList: false,
+            isVoted: false,
             cricleLists: [
                 {
                     actualPercent: '',
@@ -270,6 +252,7 @@ export default {
                 .postCall(params)
                 .then(res => {
                     if (res instanceof Object) {
+                        this.isVoted = true
                         this.$toast('打call成功')
                         this.getWeekData()
                     }
@@ -300,12 +283,11 @@ export default {
                     this.productList = res.groupGoodsSpus
                     this.groupGoodsKoc = res.groupGoodsKoc
                     this.slidImages = res.detailImgs
-                    this.cricleLists[0].actualPercent =
-            Number(this.groupDetail.fashionIndexNum) + ''
-                    this.cricleLists[1].actualPercent =
-            Number(this.groupDetail.adviceIndexNum) + ''
+                    this.cricleLists[0].actualPercent = Number(this.groupDetail.fashionIndexNum) + ''
+                    this.cricleLists[1].actualPercent = Number(this.groupDetail.adviceIndexNum) + ''
                     this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
                     this.importList = this.groupDetail.groupDesc.split('\n')
+                    this.isVoted = this.groupDetail.ishaveVoted === 1
                     // debugger
                 })
                 .catch(err => {
@@ -393,7 +375,7 @@ export default {
 }
 </style>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .panel {
   background-color: white;
   height: 100%;
@@ -491,15 +473,15 @@ export default {
       > button {
         width: 187px;
         height: 50px;
-        background: linear-gradient(
-          135deg,
-          rgba(85, 122, 244, 1) 0%,
-          rgba(114, 79, 255, 1) 100%
-        );
+        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
         border-radius: 25px;
         font-size: 16px;
         font-weight: 500;
         color: white;
+      }
+      > button:disabled {
+        background: @color-c7;
+        color: @color-c2;
       }
     }
     .buyer {
@@ -510,6 +492,7 @@ export default {
         height: 96px;
         border-radius: 48px;
         margin-bottom: 8px;
+        object-fit: cover;
       }
       .author {
         font-size: 16px;
@@ -534,11 +517,17 @@ export default {
     }
     .group-important {
       margin: 20px 16px 0;
-      > p {
-        font-size: 16px;
-        font-weight: 400;
-        color: @color-c1;
-        line-height: 22px;
+      .paragraph {
+        display: flex;
+        > span {
+          line-height: 22px;
+        }
+        > p {
+          font-size: 16px;
+          font-weight: 400;
+          color: @color-c1;
+          line-height: 22px;
+        }
       }
     }
     .collocation-list {
@@ -624,11 +613,7 @@ export default {
   > button {
     width: 110px;
     height: 40px;
-    background: linear-gradient(
-      135deg,
-      rgba(85, 122, 244, 1) 0%,
-      rgba(114, 79, 255, 1) 100%
-    );
+    background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
     border-radius: 20px;
     font-size: 14px;
     font-weight: bold;
