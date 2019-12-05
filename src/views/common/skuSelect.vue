@@ -145,7 +145,6 @@ export default {
             colorSkuList.forEach((item, index) => {
                 seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
             })
-
             this.$set(this.seletedDetailsItem, seletedColorSkuSumNum, seletedColorSkuSumNum)
             // this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
         },
@@ -167,6 +166,12 @@ export default {
   line-height: 32px;
   text-align: center;
   background-color: #ffebed;
+}
+
+.van-info {
+  top: 1px;
+  right: 12px;
+  z-index: 1000;
 }
 
 .sku-card {
@@ -288,7 +293,7 @@ export default {
   margin-bottom: 80px;
   .van-tabs__wrap {
     height: initial;
-    overflow: visible;//initial;
+    overflow: initial;
     .van-tabs__nav {
       margin-left: 16px;
       padding-bottom: 0;
@@ -312,7 +317,6 @@ export default {
         .van-info {
           top: 1px;
           right: 12px;
-          z-index: 100;
         }
         &.van-tab--active {
           span {

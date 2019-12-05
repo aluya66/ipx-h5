@@ -253,8 +253,9 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         this.isVoted = true
+                        this.popularNum = res.data.popularityCount
                         this.$toast('打call成功')
-                        this.getWeekData()
+                        // this.getWeekData()
                     }
                 })
                 .catch(() => {})
