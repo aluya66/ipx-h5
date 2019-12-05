@@ -89,6 +89,7 @@ export default {
     activated() {
         this.showSku = false
         this.isDialog = false
+        this.groupGoodsRecords = []
         this.getGroupDetail()
         utils.postMessage('changeStatus', 'default')
     },
