@@ -14,7 +14,7 @@
             </div>
         </div>
         <section class="footer">
-            <p>¥<span>{{handlePrice(groupGood.totalPrice)}}</span></p>
+            <p>¥<span>{{groupGood.totalPrice}}</span></p>
             <div class="action">
                 <!-- <section :class='["default", !manageState ? "inManage" :""]' @click="handleCheckDetail">查看详情</section> -->
                 <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">一键采购</section>
@@ -63,9 +63,6 @@ export default {
         }
     },
     methods: {
-        handlePrice(price){
-            return utils.roundFun(price,2) || 0.00
-        },
         handleSelectImg(product) {
             window.sa.track('IPX_WEB', {
                 page: 'userHall', // 页面名字

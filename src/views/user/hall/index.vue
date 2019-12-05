@@ -59,7 +59,7 @@
                 <img class="itemSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
-                <h3>¥{{handlePrice(item.tshPrice)}}</h3>
+                <h3>¥{{item.tshPrice}}</h3>
             </div>
         </list>
         <list
@@ -181,9 +181,6 @@ export default {
         }
     },
     methods: {
-        handlePrice(price){
-            return utils.roundFun(price,2) || 0.00
-        },
         // 是否iPhoneX底部
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
