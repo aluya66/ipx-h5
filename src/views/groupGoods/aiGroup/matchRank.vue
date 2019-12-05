@@ -264,6 +264,7 @@ export default {
                 .hot {
                     font-size:18px;
                     font-weight:bold;
+                    font-family: 'alibabaBold';
                     color:@color-c1;
                     line-height:16px;
                     vertical-align: initial;

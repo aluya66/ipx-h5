@@ -345,7 +345,7 @@ export default {
         color: rgba(255, 255, 255, 1);
         text-align: center;
         line-height: 45px;
-        background: rgba(60, 92, 246, 1);
+        background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
         border-radius: 25px;
         margin: 7px 0;
     }

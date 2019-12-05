@@ -465,6 +465,7 @@ export default {
             margin-top: 11px;
             line-height: 26px;
             font-size: 18px;
+            font-family: 'alibabaBold';
             font-weight: bold;
             color: @color-c1;
             span {

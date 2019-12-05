@@ -9,11 +9,11 @@
 /* 
 @font-face {font-family: "PingFangRegular";
   src: url('PingFang\ Regular.ttf')
-}
+}*/
 
 @font-face {font-family: "alibabaRegular";
-  src: url('alibaba\ font-Regular.otf')
-}*/
+  src: url('./AlibabaSans-Regular.otf')
+}
 
 @font-face {font-family: "alibabaBold";
   src: url('alibaba\ font-Bold.otf')

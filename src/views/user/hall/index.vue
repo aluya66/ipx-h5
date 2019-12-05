@@ -60,7 +60,7 @@
                 <img class="itemSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
-                <h3>￥{{parseInt(item.tshPrice).toFixed(2)}}</h3>
+                <h3>¥{{parseInt(item.tshPrice).toFixed(2)}}</h3>
             </div>
         </list>
         <list
@@ -181,18 +181,6 @@ export default {
             this.handleRefresh()
         }
     },
-    computed: {
-        // debug iOS上吸顶问题
-        changePosition() {
-            let baseParams = utils.getStore('baseParams')
-            let statusBarHeight = (Number(baseParams.statusBarHeight) + 44) / 100
-            if (this.isStickyTop && this.flag) {
-                // return `position:fixed;top:${statusBarHeight}rem`
-            } else {
-                // return `position:relative;top:0`
-            }
-        }
-    },
     methods: {
         // 是否iPhoneX底部
         getBottomOffset(offset) {
@@ -293,6 +281,8 @@ export default {
                 this.selectItems = JSON.parse(JSON.stringify(this.datas))
             } else if (this.isSelectAll && this.menuIndex === 0) {
                 this.selectItems = JSON.parse(JSON.stringify(this.groupDatas))
+            } else {
+                this.selectItems = []
             }
         },
         /// 点击管理
@@ -644,6 +634,7 @@ export default {
                 line-height: 19px;
                 font-size: @f16;
                 font-weight: bold;
+                font-family: 'alibabaBold';
                 padding-bottom: 12px;
             }
         }
