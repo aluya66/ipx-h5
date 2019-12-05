@@ -303,17 +303,17 @@ export default {
     margin-bottom: 80px;
     .van-tabs__wrap {
       height: initial;
-      // overflow: initial;
+      overflow: initial;
       .van-tabs__nav {
         margin-left: 16px;
         padding-bottom: 0;
         .van-tab {
           flex: initial;
           position: relative;
-          margin-right: 12px;
+          // margin-right: 12px;
           flex-basis: auto !important;
           min-width: initial;
-          margin-top: 12px;
+          // margin-top: 12px;
           span {
             font-size: 12px;
             font-weight: 500;
@@ -328,6 +328,7 @@ export default {
             position: absolute;
             top: 1px;
             right: 12px;
+            z-index: 100;
           }
           &.van-tab--active {
             span {
