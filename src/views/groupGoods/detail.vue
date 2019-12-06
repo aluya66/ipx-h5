@@ -82,8 +82,8 @@
         </div>
         <div class="group-important">
           <div class="paragraph" v-for="(str, strIndex) in importList" :key="strIndex">
-            <span>●</span>
-            <p>{{ str }}</p>
+            <div class="circle"></div>
+            <p>{{ str | trim }}</p>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
             :key="index"
             @click="jumpToProduct(item)"
           >
-            <img :src="item.mainPic" alt="" />
+            <img :src="goodPicture(item)" alt="" />
             <div class="product-info">
               <p>{{ item.productName }}</p>
               <div class="sku-list">
@@ -181,8 +181,13 @@ export default {
         }
     },
     activated() {
+        this.productList = []
+        this.importList = []
+        this.slidImages = []
+        this.isVoted = false
         this.getGroupDetail()
         this.getWeekData()
+    // this.getFirstphoto()
     },
     mounted() {
     // 上报页面事件
@@ -219,9 +224,38 @@ export default {
                 return 'top:0.44rem'
             }
             return 'top:0.2rem'
+        },
+        goodPicture() {
+            return function(good) {
+                return good.colorSkuList[0].imgUrl
+            }
         }
     },
     methods: {
+    // getFirstphoto() {
+    // var video, output
+    // var scale = 0.8
+    // var initialize = function() {
+    //     output = document.getElementsByClassName('swiper-slide')
+    //     video = document.getElementById('video')
+    //     video.addEventListener('loadeddata', captureImage)
+    //     debugger
+    // }
+    // var captureImage = function() {
+    //     debugger
+    //     var canvas = document.createElement('canvas')
+    //     canvas.width = video.videoWidth * scale
+    //     canvas.height = video.videoHeight * scale
+    //     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
+
+        //     var img = document.createElement('img')
+        //     img.src = canvas.toDataURL('image/png')
+        //     img.width = 400
+        //     img.height = 300
+        //     output.appendChild(img)
+        // }
+        // initialize()
+        // },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -251,12 +285,9 @@ export default {
             this.$api.groupGoods
                 .postCall(params)
                 .then(res => {
-                    if (res instanceof Object) {
-                        this.isVoted = true
-                        this.popularNum = res.data.popularityCount
-                        this.$toast('打call成功')
-                        // this.getWeekData()
-                    }
+                    this.$toast('打call成功')
+                    this.isVoted = true
+                    this.getWeekData()
                 })
                 .catch(() => {})
         },
@@ -287,9 +318,8 @@ export default {
                     this.cricleLists[0].actualPercent = Number(this.groupDetail.fashionIndexNum) + ''
                     this.cricleLists[1].actualPercent = Number(this.groupDetail.adviceIndexNum) + ''
                     this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
-                    this.importList = this.groupDetail.groupDesc.split('\n')
+                    this.importList = this.groupDetail.groupDesc.trim().split('\n')
                     this.isVoted = this.groupDetail.ishaveVoted === 1
-                    // debugger
                 })
                 .catch(err => {
                     console.log(err)
@@ -520,14 +550,22 @@ export default {
       margin: 20px 16px 0;
       .paragraph {
         display: flex;
-        > span {
-          line-height: 22px;
+        .circle {
+          flex: 1 0 auto;
+          background-color: #2a2b33;
+          margin-right: 8px;
+          margin-top: 8px;
+          width: 4px;
+          height: 4px;
+          border-radius: 2px;
         }
         > p {
+          line-height: 22px;
           font-size: 16px;
           font-weight: 400;
           color: @color-c1;
           line-height: 22px;
+          margin-bottom: 8px;
         }
       }
     }
@@ -549,9 +587,9 @@ export default {
         }
         .product-info {
           margin-left: 12px;
-          // margin-right: 16px;
           width: calc(100vw - 150px);
           > p {
+            line-height: 22px;
             font-size: 16px;
             font-weight: 500;
             color: @color-c1;
@@ -560,8 +598,7 @@ export default {
           .sku-list {
             margin-top: 8px;
             margin-bottom: 16px;
-            height: 45px;
-            // max-height: 80px;
+            height: 38px;
             overflow: hidden;
             overflow-y: auto;
             > p {
@@ -577,10 +614,12 @@ export default {
             font-weight: 400;
             color: @color-rc;
             margin-bottom: 0;
+            font-family: "alibabaRegular";
             > span {
               font-size: 22px;
               font-weight: bold;
               color: @color-rc;
+              font-family: "alibabaBold";
             }
           }
         }
@@ -604,11 +643,13 @@ export default {
     font-weight: 400;
     color: rgba(245, 48, 48, 1);
     line-height: 49px;
+    font-family: "alibabaRegular";
     > span {
       font-size: 20px;
       font-weight: bold;
       color: rgba(245, 48, 48, 1);
       line-height: 49px;
+      font-family: "alibabaBold";
     }
   }
   > button {
