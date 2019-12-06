@@ -8,18 +8,20 @@
           </template>
         </c-header>
         <swiper class="swiper-content">
-          <swiper-slide class="swiper-slide" v-for="(img, index) in slidImages" :key="index">
+          <swiper-slide class="swiper-slide" v-for="img in slidImages" :key="img">
             <video
+              id="upvideo"
               controls="controls"
               style=""
-              preload="none"
+              preload="auto"
               webkit-playsinline="true"
               playsinline=""
-              :src="img"
+              :src="videoImg(img)"
               v-if="img.endsWith('.mp4')"
             >
               暂时不支持播放该视频
             </video>
+            <!-- <button v-if="img.endsWith('.mp4')"></button> -->
             <img :src="img" v-else />
           </swiper-slide>
         </swiper>
@@ -187,7 +189,6 @@ export default {
         this.isVoted = false
         this.getGroupDetail()
         this.getWeekData()
-    // this.getFirstphoto()
     },
     mounted() {
     // 上报页面事件
@@ -229,33 +230,26 @@ export default {
             return function(good) {
                 return good.colorSkuList[0].imgUrl
             }
+        },
+        videoImg() {
+            return function(url) {
+                var xhr = new XMLHttpRequest()
+                xhr.open('get', url, true)
+                xhr.responseType = 'blob'
+                xhr.onload = function() {
+                    if (this.status === 200) {
+                        // 获取视频文件大小
+                        console.log(this.response.size / 1000000 + 'MB')
+                        // 截取第一帧的图片,解决了获取图片时跨域
+                        let video = document.getElementById('upvideo')
+                        video.src = URL.createObjectURL(this.response)
+                    }
+                }
+                xhr.send()
+            }
         }
     },
     methods: {
-    // getFirstphoto() {
-    // var video, output
-    // var scale = 0.8
-    // var initialize = function() {
-    //     output = document.getElementsByClassName('swiper-slide')
-    //     video = document.getElementById('video')
-    //     video.addEventListener('loadeddata', captureImage)
-    //     debugger
-    // }
-    // var captureImage = function() {
-    //     debugger
-    //     var canvas = document.createElement('canvas')
-    //     canvas.width = video.videoWidth * scale
-    //     canvas.height = video.videoHeight * scale
-    //     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
-
-        //     var img = document.createElement('img')
-        //     img.src = canvas.toDataURL('image/png')
-        //     img.width = 400
-        //     img.height = 300
-        //     output.appendChild(img)
-        // }
-        // initialize()
-        // },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -320,6 +314,7 @@ export default {
                     this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
                     this.importList = this.groupDetail.groupDesc.trim().split('\n')
                     this.isVoted = this.groupDetail.ishaveVoted === 1
+                    // this.findvideocover();
                 })
                 .catch(err => {
                     console.log(err)
@@ -431,6 +426,13 @@ export default {
           top: 50%;
           transform: translateY(-50%);
         }
+        // > button {
+        //   width: 68px;
+        //   height: 68px;
+        //   background: url('../../themes/images/app/video_play@3x.png');
+        //   background-repeat: no-repeat;
+        //   background-size: 100% 100%;
+        // }
         > img {
           display: block;
           width: 100%;

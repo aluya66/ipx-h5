@@ -137,7 +137,7 @@ export default {
             flag: false,
             headerSearchImg: require('@/themes/images/app/icon_nav_search_white@2x.png'),
             headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
-            clearIcon:require('@/themes/images/app/control_delete.png'),
+            clearIcon: require('@/themes/images/app/control_delete.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
@@ -186,8 +186,8 @@ export default {
         }
     },
     methods: {
-        handleSearchClear (){
-            this.searchKey = ""
+        handleSearchClear () {
+            this.searchKey = ''
             this.handleRefresh()
         },
         // 是否iPhoneX底部
@@ -408,7 +408,7 @@ export default {
                     } else {
                         this.finished = true
                     }
-                }else {
+                } else {
                     this.finished = true
                 }
             }).catch(() => {
@@ -450,7 +450,7 @@ export default {
             this.$api.hall.getGroupGoods(params).then(res => {
                 this.setSuccessStatus()
                 if (res.code === 0) {
-                    if (res.data && res.data instanceof Array){
+                    if (res.data && res.data instanceof Array) {
                         if (this.pageNo === 1) {
                             this.groupDatas = res.data
                         } else {
@@ -461,7 +461,7 @@ export default {
                         } else {
                             this.finished = false
                         }
-                    }else {
+                    } else {
                         this.finished = true
                     }
                 } else {

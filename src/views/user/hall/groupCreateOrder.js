@@ -77,7 +77,7 @@ export default {
             const params = {
                 jumpUrl: 'createOrder://',
                 totalPrice: totalPrice + '',
-                groupCode: groupCode,
+                groupCode: groupCode + '',
                 discount: '1',
                 orderData: shopCarts
             }
