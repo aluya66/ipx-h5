@@ -384,19 +384,22 @@ export default {
 
             this.$api.hall.getHallCollectList(params).then(res => {
                 this.setSuccessStatus()
-                if (res.productList && res.productList instanceof Array) {
-                    if (this.pageNo === 1) {
-                        this.datas = res.productList
+                if (res.code === 0) {
+                    if (res.data.productList && res.data.productList instanceof Array) {
+                        if (this.pageNo === 1) {
+                            this.datas = res.data.productList
+                        } else {
+                            this.datas = this.datas.concat(res.data.productList)
+                        }
+                        if (res.data.productList.length < this.pageSize) {
+                            this.finished = true
+                        } else {
+                            this.finished = false
+                        }
                     } else {
-                        this.datas = this.datas.concat(res.productList)
-                    }
-                    if (res.productList.length < this.pageSize) {
                         this.finished = true
-                    } else {
-                        this.finished = false
                     }
-                } else {
-                    this.datas = []
+                }else {
                     this.finished = true
                 }
             }).catch(() => {
@@ -437,19 +440,22 @@ export default {
 
             this.$api.hall.getGroupGoods(params).then(res => {
                 this.setSuccessStatus()
-                if (res && res instanceof Array) {
-                    if (this.pageNo === 1) {
-                        this.groupDatas = res
-                    } else {
-                        this.groupDatas = this.groupDatas.concat(res)
-                    }
-                    if (res.length < this.pageSize) {
+                if (res.code === 0) {
+                    if (res.data && res.data instanceof Array){
+                        if (this.pageNo === 1) {
+                            this.groupDatas = res.data
+                        } else {
+                            this.groupDatas = this.groupDatas.concat(res.data)
+                        }
+                        if (res.data.length < this.pageSize) {
+                            this.finished = true
+                        } else {
+                            this.finished = false
+                        }
+                    }else {
                         this.finished = true
-                    } else {
-                        this.finished = false
                     }
                 } else {
-                    this.groupDatas = []
                     this.finished = true
                 }
             }).catch(() => {

@@ -8,7 +8,8 @@ const context = process.env.VUE_APP_serverPath
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getHallCollectList = params => Http.fetch(`${context}/v1/collect/list`, params, {
-    method: 'get'
+    method: 'get',
+    hasErrMsg: true
 })
 
 /**
@@ -26,7 +27,8 @@ export const deleteCollects = params => Http.fetch(`${context}/v1/collect/delete
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getGroupGoods = params => Http.fetch(`${context}/v1/group/goods`, params, {
-    method: 'get'
+    method: 'get',
+    hasErrMsg: true
     // mockFile: 'groupGoods'
 })
 
