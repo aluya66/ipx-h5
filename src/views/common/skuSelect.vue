@@ -3,7 +3,7 @@
     <template slot="sku-header">
       <div class="van-sku-header van-hairline--bottom">
         <div class="van-sku-header__img-wrap">
-          <img :src="seletedDetailsItem.mainPic" />
+          <img :src="goodPicture" />
         </div>
         <div class="van-sku-header__goods-info">
           <div class="van-sku__goods-price">
@@ -127,6 +127,11 @@ export default {
                 tree: [],
                 list: []
             }
+        }
+    },
+    computed: {
+        goodPicture() {
+            return this.seletedDetailsItem.colorSkuList[0].imgUrl
         }
     },
     methods: {
@@ -264,6 +269,7 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 4px;
+        object-fit: cover;
       }
     }
 

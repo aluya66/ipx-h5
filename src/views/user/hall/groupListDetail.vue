@@ -24,7 +24,7 @@
           v-for="(item, index) in groupGoodsRecords"
           :key="item.productCode"
         >
-          <img :src="item.mainPic" alt="" @click="jumpToProduct(item)" />
+          <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)" />
           <div class="product-info">
             <p :class="[item.disabled ? 'disableTitle' : '']" @click="jumpToProduct(item)">
               {{ item.productName }}
@@ -40,7 +40,9 @@
               </p>
               <p class="tips">{{ tipStr(item) }}</p>
             </div>
-            <p :class="[item.disabled ? 'disablePrice' : 'price']"><span class="yen">¥</span>{{ item.spuTshPrice }}</p>
+            <p :class="[item.disabled ? 'disablePrice' : 'price']">
+              <span class="yen">¥</span>{{ item.spuTshPrice }}
+            </p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
           </div>
         </div>
@@ -112,6 +114,11 @@ export default {
         }
     },
     computed: {
+        goodPicture() {
+            return function(good) {
+                return good.colorSkuList[0].imgUrl
+            }
+        },
         tipStr() {
             return function(value) {
                 if (value.productShelves === 0) {
@@ -279,7 +286,7 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            order.createOrder(this.groupGoodsRecords, this.groupGoodsId, true)
+            order.createOrder(this.groupGoodsRecords, this.groupDetail.groupGoodsId, true)
         }
     }
 }
@@ -369,20 +376,20 @@ export default {
       > p {
         font-size: 16px;
         font-weight: 500;
+        line-height: 22px;
         color: @color-c1;
         .ellipsis();
       }
       .disableTitle {
         font-size: 16px;
         font-weight: 500;
+        line-height: 22px;
         color: @color-c4;
         .ellipsis();
       }
       .sku-list {
-        margin-top: 8px;
-        height: 55px; //// 去掉
+        // margin-top: 8px;
         overflow: hidden;
-        overflow-y: auto; //// 去掉
         > p {
           font-size: 12px;
           font-weight: 400;
@@ -409,26 +416,26 @@ export default {
         font-weight: bold;
         color: @color-rc;
         margin-top: 8px;
-        font-family: 'alibabaBold';
+        font-family: "alibabaBold";
       }
       .disablePrice {
         font-size: 18px;
         font-weight: bold;
         color: @color-c4;
         margin-top: 8px;
-        font-family: 'alibabaBold';
+        font-family: "alibabaBold";
         .yen {
           font-size: 12px;
           font-weight: 400;
           color: @color-c4;
-          font-family: 'alibabaRegular';
+          font-family: "alibabaRegular";
         }
       }
       .yen {
         font-size: 12px;
         font-weight: 400;
         color: @color-rc;
-        font-family: 'alibabaRegular';
+        font-family: "alibabaRegular";
       }
       > button {
         width: 80px;
@@ -469,12 +476,12 @@ export default {
       font-size: 12px;
       font-weight: 400;
       color: @color-rc;
-      font-family: 'alibabaRegular';
+      font-family: "alibabaRegular";
     }
     .price {
       font-size: 18px;
       font-weight: bold;
-      font-family: 'alibabaBold';
+      font-family: "alibabaBold";
       color: @color-rc;
       margin-bottom: 16px;
     }
