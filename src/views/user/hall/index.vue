@@ -4,12 +4,16 @@
         <div v-show="!isInSearch" slot="title">我的展厅</div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage"  />
-</template>
+        </template>
 
 <template slot="right" tag="div">
 <div class='searchContain' v-show="isInSearch">
     <form action="/">
-        <search v-model="searchKey" :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"' show-action shape="round" :left-icon="headerSearchImg_gray" @cancel="handleCancel" @input="handleRefresh" />
+        <search v-model="searchKey" :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"' show-action shape="round" :left-icon="headerSearchImg_gray" :clearable="false" @cancel="handleCancel" @input="handleRefresh" >
+            <template slot="right-icon" >
+                <img :src="clearIcon" style="width:0.2rem;height:0.2rem;object-fit:cover" v-show="searchKey.length>0" alt="" @click="handleSearchClear" >
+            </template>
+        </search>
     </form>
 </div>
 <img class="header-img" v-show="!isInSearch" :src="headerSearchImg" @click="handleClickSearchIcon" />
@@ -133,6 +137,7 @@ export default {
             flag: false,
             headerSearchImg: require('@/themes/images/app/icon_nav_search_white@2x.png'),
             headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
+            clearIcon:require('@/themes/images/app/control_delete.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
             testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
@@ -181,6 +186,10 @@ export default {
         }
     },
     methods: {
+        handleSearchClear (){
+            this.searchKey = ""
+            this.handleRefresh()
+        },
         // 是否iPhoneX底部
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
@@ -522,6 +531,11 @@ export default {
         font-weight: 500;
         line-height: 20px;
         padding-right: 0;
+    }
+    .van-field__right-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
 
