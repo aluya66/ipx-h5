@@ -24,8 +24,8 @@
                         <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">{{item.grandTotalFocus}}</p>
                         <section :class='["call",item.ishaveVoted === 1?"call-disable":""]' @click.stop="handleCall(item)">打call</section>
                     </div>
-                    <section class="rankImage" v-show="index<3">
-                        <img  :src="rankImg[index]" alt="">
+                    <section class="rankImage">
+                        <img  :src="index>3?rankImg[3]:rankImg[index]" alt="">
                         <p>NO.{{index + 1}}</p>
                     </section>
                </div>
@@ -54,7 +54,7 @@ export default {
             rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
-            rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png')]
+            rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png'),require('@/themes/images/groupGoods/bg_No.4.png')]
         }
     },
     methods: {
@@ -213,7 +213,8 @@ export default {
                 p {
                     margin: 0;
                     text-align: center;
-                    line-height: 24px;
+                    // line-height: 24px;
+                    margin-top: 5px;
                     font-size:10px;
                     font-weight:500;
                     color:rgba(255,255,255,1);
