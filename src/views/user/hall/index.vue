@@ -399,7 +399,7 @@ export default {
                     } else {
                         this.finished = true
                     }
-                }else {
+                } else {
                     this.finished = true
                 }
             }).catch(() => {
@@ -441,7 +441,7 @@ export default {
             this.$api.hall.getGroupGoods(params).then(res => {
                 this.setSuccessStatus()
                 if (res.code === 0) {
-                    if (res.data && res.data instanceof Array){
+                    if (res.data && res.data instanceof Array) {
                         if (this.pageNo === 1) {
                             this.groupDatas = res.data
                         } else {
@@ -452,7 +452,7 @@ export default {
                         } else {
                             this.finished = false
                         }
-                    }else {
+                    } else {
                         this.finished = true
                     }
                 } else {

@@ -10,6 +10,7 @@
         <swiper class="swiper-content">
           <swiper-slide class="swiper-slide" v-for="(img, index) in slidImages" :key="index">
             <video
+              id="upvideo"
               controls="controls"
               style=""
               preload="none"
@@ -187,7 +188,6 @@ export default {
         this.isVoted = false
         this.getGroupDetail()
         this.getWeekData()
-    // this.getFirstphoto()
     },
     mounted() {
     // 上报页面事件
@@ -232,30 +232,29 @@ export default {
         }
     },
     methods: {
-    // getFirstphoto() {
-    // var video, output
-    // var scale = 0.8
-    // var initialize = function() {
-    //     output = document.getElementsByClassName('swiper-slide')
-    //     video = document.getElementById('video')
-    //     video.addEventListener('loadeddata', captureImage)
-    //     debugger
-    // }
-    // var captureImage = function() {
-    //     debugger
-    //     var canvas = document.createElement('canvas')
-    //     canvas.width = video.videoWidth * scale
-    //     canvas.height = video.videoHeight * scale
-    //     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height)
-
-        //     var img = document.createElement('img')
-        //     img.src = canvas.toDataURL('image/png')
-        //     img.width = 400
-        //     img.height = 300
-        //     output.appendChild(img)
-        // }
-        // initialize()
-        // },
+        findvideocover() {
+            let _this = this
+            this.$nextTick(() => {
+                let videos = _this.slidImages.filter(item => {
+                    return item.endsWith('.mp4')
+                })
+                let video = document.getElementById('upvideo')
+                let source = document.createElement('source')
+                source.src = videos[0]
+                source.type = 'video/mp4'
+                video.appendChild(source)
+                // video.addEventListener('loadeddata', function() {
+                debugger
+                var canvas = document.createElement('canvas')
+                canvas.width = '320'
+                canvas.height = '320'
+                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.width)
+                // var img = document.createElement('img')
+                let imgsrc = canvas.toDataURL('image/png')
+                _this.Videoframehandle(imgsrc.split(',')[1])
+                // })
+            })
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -320,6 +319,7 @@ export default {
                     this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
                     this.importList = this.groupDetail.groupDesc.trim().split('\n')
                     this.isVoted = this.groupDetail.ishaveVoted === 1
+                    this.findvideocover()
                 })
                 .catch(err => {
                     console.log(err)
