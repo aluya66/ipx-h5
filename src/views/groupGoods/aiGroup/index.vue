@@ -293,7 +293,6 @@ export default {
     .designer-name {
         text-align: center;
         font-size: 14px;
-        font-weight: 400;
         line-height: 20px;
         margin-top: 10px;
         white-space: nowrap;
@@ -303,9 +302,11 @@ export default {
     }
     .designer-name-default {
         color: @color-c3;
+        font-weight: 400;
     }
     .designer-name-select {
         color: @color-ec;
+        font-weight: 500;
     }
 }
 

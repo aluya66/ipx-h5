@@ -181,6 +181,8 @@ export default {
             this.selectItems = []
             this.isSelectAll = false
             this.isStickyTop = false
+            this.isInSearch = false
+            this.searchKey = ""
             this.resetParams()
             this.handleRefresh()
         }
@@ -495,6 +497,8 @@ export default {
     activated() {
         this.isStickyTop = false
         this.flag = false
+        this.isInSearch = false
+        this.searchKey = ""
         utils.postMessage('changeStatus', 'light')
         this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
@@ -531,6 +535,7 @@ export default {
         font-weight: 500;
         line-height: 20px;
         padding-right: 0;
+        background: rgba(255, 255, 255, 0)
     }
     .van-field__right-icon {
         display: flex;
@@ -583,7 +588,7 @@ export default {
 }
 
 .test-agcency-contain {
-    height: 138px;
+    height: 128px;
     position: relative;
     z-index: 3;
     background: rgba(0, 0, 0, 0);
@@ -678,6 +683,7 @@ export default {
             margin-top: 4px;
             font-size: 12px;
             line-height: 16px;
+            font-weight: 500;
             color: @color-c4;
             &:first-child {
                 font-size: 18px;
