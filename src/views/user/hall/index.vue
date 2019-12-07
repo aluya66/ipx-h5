@@ -408,7 +408,7 @@ export default {
                             this.finished = false
                         }
                     } else {
-                        if (this.pageNo === 1 || this.isInSearch) {
+                        if (this.pageNo === 1) {
                             this.datas = []
                         }
                         this.finished = true
@@ -467,7 +467,7 @@ export default {
                             this.finished = false
                         }
                     } else {
-                        if (this.pageNo === 1 || this.isInSearch) {
+                        if (this.pageNo === 1) {
                             this.groupDatas = []
                         }
                         this.finished = true
