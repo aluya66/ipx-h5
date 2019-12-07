@@ -1,12 +1,12 @@
 <template>
   <layout-view>
     <c-header slot="header" :left-arrow="true">
-      <div slot="title">编辑组货清单</div>
+      <div slot="title">编辑组货方案</div>
       <template slot="right" tag="div">
         <span class="header-save" @click="save">保存</span>
       </template>
     </c-header>
-    <div class="panel" :style="getBottomOffset(49)">
+    <div class="panel" :style="getBottomOffset(69)">
       <div class="top-content">
         <span>组货名称</span>
         <div class="group-name">
@@ -53,15 +53,14 @@
         </div>
         <button @click="goPay">立即采购</button>
       </div>
-
     </div>
-     <!-- sku选择 -->
-      <sku-select
-        :seletedDetailsItem="seletedDetailsItem"
-        :goodsId="goodsId"
-        :showSku="showSku"
-        @pointClick="skuCommit"
-      />
+    <!-- sku选择 -->
+    <sku-select
+      :seletedDetailsItem="seletedDetailsItem"
+      :goodsId="goodsId"
+      :showSku="showSku"
+      @pointClick="skuCommit"
+    />
   </layout-view>
 </template>
 
@@ -89,19 +88,17 @@ export default {
         }
     },
     activated() {
-        this.showSku = false
-        this.isDialog = false
-        this.groupGoodsRecords = []
-        this.getGroupDetail()
-        utils.postMessage('changeStatus', 'default')
-    },
-    mounted() {
     // 上报页面事件
         window.sa.track('IPX_WEB', {
             page: 'groupListDetail',
             type: 'pageView',
             event: 'pageView'
         })
+        this.showSku = false
+        this.isDialog = false
+        this.groupGoodsRecords = []
+        this.getGroupDetail()
+        utils.postMessage('changeStatus', 'default')
     },
     filters: {
         selectSkuStr(val) {
@@ -191,8 +188,13 @@ export default {
             this.seletedDetailsItem = {}
             this.colorSkuAction = '0'
             this.showSku = !this.showSku
-            this.seletedDetailsItem = item
             this.seletedItemIndex = index
+            this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
+            this.seletedDetailsItem = {
+                ...this.seletedDetailsItem,
+                seletedColorSkuSumNum: 0
+            }
+
             let { colorSkuList } = this.seletedDetailsItem
             let seletedColorSkuSumNum = 0
 
@@ -200,13 +202,11 @@ export default {
                 let seletedColorSkuNum = 0
                 item.skuList.forEach((skuItem, skuIndex) => {
                     skuItem.skuValue = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
-                    // skuItem.num = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
                     seletedColorSkuNum = Number(skuItem.skuValue) + Number(seletedColorSkuNum)
                 })
                 item.seletedColorSkuNum = seletedColorSkuNum
                 seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
             })
-
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
         },
         getGroupDetail() {
@@ -248,6 +248,7 @@ export default {
 
             this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
                 item.skuList.forEach((skuItem, skuIndex) => {
+                    skuItem.num = skuItem.skuValue
                     let sku = {
                         groupGoodsRecordId: '',
                         num: skuItem.skuValue,

@@ -54,7 +54,7 @@ export default {
             rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
-            rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png'),require('@/themes/images/groupGoods/bg_No.4.png')]
+            rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png'), require('@/themes/images/groupGoods/bg_No.4.png')]
         }
     },
     methods: {
