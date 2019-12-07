@@ -81,7 +81,7 @@ export default {
             showDesigner: false,
             showGroup: false,
             curDesigner: {},
-            backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             titleIndex: 0,
             screenWidth: document.body.clientWidth,
             allDatas: [],

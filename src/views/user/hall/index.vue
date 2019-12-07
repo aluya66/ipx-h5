@@ -135,10 +135,10 @@ export default {
             isStickyTop: false, // 是否吸顶
             offsetY: 0,
             flag: false,
-            headerSearchImg: require('@/themes/images/app/icon_nav_search_white@2x.png'),
+            headerSearchImg: require('@/themes/images/app/icon_nav_search_white@3x.png'),
             headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
             clearIcon: require('@/themes/images/app/control_delete.png'),
-            backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
