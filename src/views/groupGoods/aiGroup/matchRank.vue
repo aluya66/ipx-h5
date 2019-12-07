@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">{{item.grandTotalFocus}}</p>
-                        <section :class='["call",item.ishaveVoted === 1?"call-disable":""]' @click.stop="handleCall(item)">打call</section>
+                        <section :class='["call",item.ishaveVoted === 1?"call-disable":""]' @click.stop="handleCall(item)">{{item.ishaveVoted === 1?"已call":"打call"}}</section>
                     </div>
                     <section class="rankImage">
                         <img  :src="index>3?rankImg[3]:rankImg[index]" alt="">
@@ -53,7 +53,7 @@ export default {
             showList: false,
             rankData: [],
             testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
-            backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png'), require('@/themes/images/groupGoods/bg_No.4.png')]
         }
     },

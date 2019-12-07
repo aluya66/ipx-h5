@@ -183,6 +183,7 @@ export default {
                 height: 170px;
                 margin: 0 30px;
                 overflow: scroll; // align-items: flex-start;
+                &::-webkit-scrollbar{display: none;}
                 .p-contain {
                     // width: calc(28.5vw - 28px);
                     // vertical-align: middle;
@@ -230,6 +231,7 @@ export default {
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
+
                 .default {
                     margin-right: 0;
                     .btn-select(96px,
@@ -237,9 +239,8 @@ export default {
                     false)
                 }
                 .select {
-                    .btn-select(96px,
-                    36px,
-                    true)
+                    font-weight: 500;
+                    .btn-select(96px,36px,true)
                 }
                 .inManage {
                     margin-right: 12px;

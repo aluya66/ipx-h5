@@ -81,7 +81,7 @@ export default {
             showDesigner: false,
             showGroup: false,
             curDesigner: {},
-            backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             titleIndex: 0,
             screenWidth: document.body.clientWidth,
             allDatas: [],
@@ -293,7 +293,6 @@ export default {
     .designer-name {
         text-align: center;
         font-size: 14px;
-        font-weight: 400;
         line-height: 20px;
         margin-top: 10px;
         white-space: nowrap;
@@ -303,9 +302,11 @@ export default {
     }
     .designer-name-default {
         color: @color-c3;
+        font-weight: 400;
     }
     .designer-name-select {
         color: @color-ec;
+        font-weight: 500;
     }
 }
 

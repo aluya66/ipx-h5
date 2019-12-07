@@ -135,10 +135,10 @@ export default {
             isStickyTop: false, // 是否吸顶
             offsetY: 0,
             flag: false,
-            headerSearchImg: require('@/themes/images/app/icon_nav_search_white@2x.png'),
+            headerSearchImg: require('@/themes/images/app/icon_nav_search_white@3x.png'),
             headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
             clearIcon: require('@/themes/images/app/control_delete.png'),
-            backImage: require('@/themes/images/app/icon_nav_back_white@2x.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
@@ -181,6 +181,8 @@ export default {
             this.selectItems = []
             this.isSelectAll = false
             this.isStickyTop = false
+            this.isInSearch = false
+            this.searchKey = ''
             this.resetParams()
             this.handleRefresh()
         }
@@ -329,7 +331,7 @@ export default {
                 if (this.menuIndex === 1) {
                     this.$refs.productlist.check()
                 } else {
-                    // this.$refs.grouplist.check()
+                    this.$refs.grouplist.check()
                 }
 
                 let scrollTop = document.querySelector('.contain') && document.querySelector('.contain').scrollTop
@@ -406,6 +408,9 @@ export default {
                             this.finished = false
                         }
                     } else {
+                        if (this.pageNo === 1) {
+                            this.datas = []
+                        }
                         this.finished = true
                     }
                 } else {
@@ -462,6 +467,9 @@ export default {
                             this.finished = false
                         }
                     } else {
+                        if (this.pageNo === 1) {
+                            this.groupDatas = []
+                        }
                         this.finished = true
                     }
                 } else {
@@ -495,6 +503,8 @@ export default {
     activated() {
         this.isStickyTop = false
         this.flag = false
+        this.isInSearch = false
+        this.searchKey = ''
         utils.postMessage('changeStatus', 'light')
         this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
@@ -531,6 +541,7 @@ export default {
         font-weight: 500;
         line-height: 20px;
         padding-right: 0;
+        background: rgba(255, 255, 255, 0)
     }
     .van-field__right-icon {
         display: flex;
@@ -583,7 +594,7 @@ export default {
 }
 
 .test-agcency-contain {
-    height: 138px;
+    height: 128px;
     position: relative;
     z-index: 3;
     background: rgba(0, 0, 0, 0);
@@ -678,6 +689,7 @@ export default {
             margin-top: 4px;
             font-size: 12px;
             line-height: 16px;
+            font-weight: 500;
             color: @color-c4;
             &:first-child {
                 font-size: 18px;
