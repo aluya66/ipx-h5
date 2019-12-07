@@ -54,14 +54,14 @@
         <button @click="goPay">立即采购</button>
       </div>
 
-      <!-- sku选择 -->
+    </div>
+     <!-- sku选择 -->
       <sku-select
         :seletedDetailsItem="seletedDetailsItem"
         :goodsId="goodsId"
         :showSku="showSku"
         @pointClick="skuCommit"
       />
-    </div>
   </layout-view>
 </template>
 
