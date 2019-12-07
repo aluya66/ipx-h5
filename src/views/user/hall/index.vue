@@ -328,8 +328,6 @@ export default {
         // 监听滚动
         handleScroll() {
             window.addEventListener('scroll', () => {
-                this.isInSearch = false
-                this.searchKey = ""
                 if (this.menuIndex === 1) {
                     this.$refs.productlist.check()
                 } else {
@@ -410,6 +408,9 @@ export default {
                             this.finished = false
                         }
                     } else {
+                        if (this.pageNo === 1 || this.isInSearch) {
+                            this.datas = []
+                        }
                         this.finished = true
                     }
                 } else {
@@ -466,6 +467,9 @@ export default {
                             this.finished = false
                         }
                     } else {
+                        if (this.pageNo === 1 || this.isInSearch) {
+                            this.groupDatas = []
+                        }
                         this.finished = true
                     }
                 } else {
