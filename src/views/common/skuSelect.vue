@@ -7,7 +7,7 @@
         </div>
         <div class="van-sku-header__goods-info">
           <div class="van-sku__goods-price">
-            &yen;
+            ¥
             <span class="van-sku__price-num">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
           <div class="van-sku-header-item">
@@ -83,81 +83,81 @@
 </template>
 
 <script>
-import utils from 'utils'
-import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from 'vant'
+import utils from "utils";
+import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from "vant";
 export default {
-    components: {
-        [Icon.name]: Icon,
-        [Dialog.Component.name]: Dialog.Component,
-        [Sku.name]: Sku,
-        [Button.name]: Button,
-        [Tab.name]: Tab,
-        [Tabs.name]: Tabs,
-        [Stepper.name]: Stepper
+  components: {
+    [Icon.name]: Icon,
+    [Dialog.Component.name]: Dialog.Component,
+    [Sku.name]: Sku,
+    [Button.name]: Button,
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs,
+    [Stepper.name]: Stepper
+  },
+  props: {
+    seletedDetailsItem: {
+      type: Object,
+      default() {
+        return {};
+      }
     },
-    props: {
-        seletedDetailsItem: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-        colorSkuAction: {
-            type: String,
-            default() {
-                return ''
-            }
-        },
-        goodsId: {
-            type: String,
-            default() {
-                return ''
-            }
-        },
-        showSku: {
-            type: Boolean,
-            default() {
-                return false
-            }
-        }
+    colorSkuAction: {
+      type: String,
+      default() {
+        return "";
+      }
     },
-    data() {
-        return {
-            sku: {
-                tree: [],
-                list: []
-            }
-        }
+    goodsId: {
+      type: String,
+      default() {
+        return "";
+      }
     },
-    computed: {
-        goodPicture() {
-            return this.seletedDetailsItem.colorSkuList[0].imgUrl
-        }
-    },
-    methods: {
-        getBottomOffset(offset) {
-            return utils.bottomOffset(offset)
-        },
-        changSelectedNum(colorSkusIndex, skuIndex) {
-            let { colorSkuList } = this.seletedDetailsItem
-            let seletedColorSkuNum = 0
-            let seletedColorSkuSumNum = 0
-            colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
-                seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum)
-            })
-            this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
-
-            colorSkuList.forEach((item, index) => {
-                seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
-            })
-            this.$set(this.seletedDetailsItem, seletedColorSkuSumNum, seletedColorSkuSumNum)
-            // this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
-        },
-        onPointClicked() {
-            this.$emit('pointClick', this.seletedDetailsItem)
-        }
+    showSku: {
+      type: Boolean,
+      default() {
+        return false;
+      }
     }
-}
+  },
+  data() {
+    return {
+      sku: {
+        tree: [],
+        list: []
+      }
+    };
+  },
+  computed: {
+    goodPicture() {
+      return this.seletedDetailsItem.colorSkuList[0].imgUrl;
+    }
+  },
+  methods: {
+    getBottomOffset(offset) {
+      return utils.bottomOffset(offset);
+    },
+    changSelectedNum(colorSkusIndex, skuIndex) {
+      let { colorSkuList } = this.seletedDetailsItem;
+      let seletedColorSkuNum = 0;
+      let seletedColorSkuSumNum = 0;
+      colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
+        seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum);
+      });
+      this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum;
+
+      colorSkuList.forEach((item, index) => {
+        seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum);
+      });
+      this.$set(this.seletedDetailsItem, seletedColorSkuSumNum, seletedColorSkuSumNum);
+      // this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+    },
+    onPointClicked() {
+      this.$emit("pointClick", this.seletedDetailsItem);
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -276,10 +276,9 @@ export default {
     .van-sku-header__goods-info {
       margin-top: 14px;
       .van-sku__goods-price {
-        color: #f53030;
-        font-size: 14px;
-        font-weight: 400;
-        font-family: "alibabaRegular";
+        .van-sku__price-symbol {
+          top: 8px;
+        }
         .van-sku__price-num {
           font-size: 20px;
           font-weight: bold;
