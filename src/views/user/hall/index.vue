@@ -328,10 +328,12 @@ export default {
         // 监听滚动
         handleScroll() {
             window.addEventListener('scroll', () => {
+                this.isInSearch = false
+                this.searchKey = ""
                 if (this.menuIndex === 1) {
                     this.$refs.productlist.check()
                 } else {
-                    // this.$refs.grouplist.check()
+                    this.$refs.grouplist.check()
                 }
 
                 let scrollTop = document.querySelector('.contain') && document.querySelector('.contain').scrollTop
