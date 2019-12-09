@@ -1,11 +1,14 @@
 <template>
   <layout-view>
     <c-header slot="header" :left-arrow="true">
-      <div slot="title">编辑组货方案</div>
+      <div class="title-header" slot="title">
+        编辑组货方案
+      </div>
       <template slot="right" tag="div">
         <span class="header-save" @click="save">保存</span>
       </template>
     </c-header>
+    <div class="line" :style="marginTop"></div>
     <div class="panel" :style="getBottomOffset(69)">
       <div class="top-content">
         <span>组货名称</span>
@@ -111,6 +114,13 @@ export default {
         }
     },
     computed: {
+        marginTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'top:0.88rem'
+            }
+            return 'top:0.64rem'
+        },
         goodPicture() {
             return function(good) {
                 return good.colorSkuList[0].imgUrl
@@ -250,7 +260,7 @@ export default {
                 item.skuList.forEach((skuItem, skuIndex) => {
                     skuItem.num = skuItem.skuValue
                     let sku = {
-                        groupGoodsRecordId: '',
+                        groupGoodsRecordId: skuItem.groupGoodsRecordId,
                         num: skuItem.skuValue,
                         productAtrNumber: this.seletedDetailsItem.productAtrNumber,
                         productCode: this.seletedDetailsItem.productCode,
@@ -267,6 +277,7 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         this.getGroupDetail()
+                        // this.groupGoodsRecords[this.seletedItemIndex] = this.seletedDetailsItem
                         this.$toast.success('已修改')
                     }
                 })
@@ -298,6 +309,13 @@ export default {
   font-size: 14px;
   font-weight: 400;
   color: @color-ec;
+}
+.line {
+  position: fixed;
+  width: 100%;
+  background-color: @color-c7;
+  height: 1px;
+  z-index: 100;
 }
 .panel {
   background-color: white;
@@ -331,7 +349,7 @@ export default {
   }
   > span {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     color: @color-c3;
   }
 }

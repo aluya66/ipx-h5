@@ -70,7 +70,7 @@
 
       <!-- 搭配解析 -->
       <div class="popular-content">
-        <div class="title-content" >
+        <div class="title-content">
           <span :style="{ backgroundImage: bgUrlList.analysis }">搭配解析</span>
         </div>
         <div class="group-analys">
@@ -80,7 +80,7 @@
 
       <!-- 要点总结 -->
       <div class="popular-content">
-        <div class="title-content" >
+        <div class="title-content">
           <span :style="{ backgroundImage: bgUrlList.important }">要点总结</span>
         </div>
         <div class="group-important">
@@ -93,7 +93,7 @@
 
       <!-- 搭配清单 -->
       <div class="popular-content">
-        <div class="title-content" >
+        <div class="title-content">
           <span :style="{ backgroundImage: bgUrlList.collocation }">搭配清单</span>
         </div>
         <div class="collocation-list">
@@ -149,6 +149,7 @@ export default {
         return {
             backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
             popularNum: '',
+            timer: '',
             productList: [],
             groupDetail: {},
             importList: [],
@@ -184,7 +185,7 @@ export default {
         }
     },
     activated() {
-        // 上报页面事件
+    // 上报页面事件
         window.sa.track('IPX_WEB', {
             page: 'groupDetail',
             type: 'pageView',
@@ -196,6 +197,7 @@ export default {
         this.isVoted = false
         this.getGroupDetail()
         this.getWeekData()
+        this.timeOutRequest()
     },
     mounted() {
         this.showList = false
@@ -266,6 +268,9 @@ export default {
             }
             utils.postMessage('', params)
         },
+        timeOutRequest() {
+            this.timer = setInterval(this.getWeekData, 30000)
+        },
         handleCall() {
             window.sa.track('IPX_WEB', {
                 page: 'groupDetail', // 页面名字
@@ -273,9 +278,7 @@ export default {
                 event: 'detailCall' // 按钮唯一标识，取个语义化且不重名的名字
             })
             const params = {
-                vo: {
-                    groupCode: this.groupDetail.groupCode
-                }
+                groupCode: this.groupDetail.groupCode
             }
             this.$api.groupGoods
                 .postCall(params)
@@ -384,6 +387,9 @@ export default {
                     console.log(err)
                 })
         }
+    },
+    destroyed() {
+        clearInterval(this.timer)
     }
 }
 </script>
