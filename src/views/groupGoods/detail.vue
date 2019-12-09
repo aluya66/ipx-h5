@@ -7,7 +7,7 @@
             <img class="header-img" :src="backImage" />
           </template>
         </c-header>
-        <swiper class="swiper-content">
+        <swiper class="swiper-content" ref="imageSwiper">
           <swiper-slide class="swiper-slide" v-for="img in slidImages" :key="img">
             <video
               id="upvideo"
@@ -198,6 +198,8 @@ export default {
         this.getGroupDetail()
         this.getWeekData()
         this.timeOutRequest()
+        let swiper = this.$refs.imageSwiper.swiper
+        swiper.slideTo(0, 0, false)
     },
     mounted() {
         this.showList = false

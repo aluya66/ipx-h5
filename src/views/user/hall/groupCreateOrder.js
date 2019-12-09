@@ -38,7 +38,7 @@ export default {
                 productItem.colorSkuList.forEach(skuItem => {
                     skuItem.skuList.forEach(sku => {
                         totalPrice += Number(sku.tshPrice) * Number(sku.num)
-                        sku.mainPic = productItem.mainPic
+                        sku.mainPic = sku.skuDefaultImg
                     })
                     let skus = skuItem.skuList.filter(sku => sku.num > 0)
                     selectSkus = selectSkus.concat(skus)
