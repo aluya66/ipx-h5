@@ -112,17 +112,17 @@ export default {
         }
     },
     mounted() {
-        window.sa.track('IPX_WEB', {
-            page: 'groupHotRank', // 页面名字
-            type: 'pageView', // 固定参数，不用改
-            event: 'pageView' // 固定参数，不用改
-        })
         this.showList = false
         setTimeout(() => {
             this.showList = true
         }, 300)
     },
     activated() {
+        window.sa.track('IPX_WEB', {
+            page: 'groupHotRank', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
         this.handleRequest()
     }
 }

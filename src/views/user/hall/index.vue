@@ -501,6 +501,15 @@ export default {
         }
     },
     activated() {
+        window.sa.track('IPX_WEB', {
+            page: 'userHall', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
+        this.showList = false
+        setTimeout(() => {
+            this.showList = true
+        }, 300)
         this.isStickyTop = false
         this.flag = false
         this.isInSearch = false
@@ -511,15 +520,7 @@ export default {
         this.handleScroll()
     },
     mounted() {
-        window.sa.track('IPX_WEB', {
-            page: 'userHall', // 页面名字
-            type: 'pageView', // 固定参数，不用改
-            event: 'pageView' // 固定参数，不用改
-        })
-        this.showList = false
-        setTimeout(() => {
-            this.showList = true
-        }, 300)
+        
     },
     deactivated() {
         window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦

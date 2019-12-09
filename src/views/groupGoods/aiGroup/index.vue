@@ -220,12 +220,14 @@ export default {
             })
         }
     },
-    mounted() {
+    activated(){
         window.sa.track('IPX_WEB', {
             page: 'groupFilterResult', // 页面名字
             type: 'pageView', // 固定参数，不用改
             event: 'pageView' // 固定参数，不用改
         })
+    },
+    mounted() {
         this.showGroup = false
         this.showDesigner = false
         setTimeout(() => {
