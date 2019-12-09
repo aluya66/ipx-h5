@@ -194,15 +194,15 @@ export default {
                                     )
                                 )
                                 .onUpdate(function(frame) {
-                                    document.getElementById(text).innerText =
-                    parseInt(frame * Number(actualPercent)) + '%'
+                                    document.getElementById(text).innerHTML =
+                    parseInt(frame * Number(actualPercent)) + '<span style="font-size: 0.08rem;font-weight:500;color: #2A2B33;margin:0;">%</span>'
                                 })
                         }
                     }
                 }) // 实际进度
             chart.guide().html({
                 position: ['50%', '50%'],
-                html: `<div style="white-space: nowrap;text-align:center;"><p id="${text}" style="font-size: 0.2rem;color: #2A2B33;margin:0;font-weight: bold;">&nbsp;</p><p style="font-size: 0.12rem;color: #B2B5C1;margin:0;margin-top: 0.04rem;">${actualText}</p></div>`
+                html: `<div style="white-space: nowrap;text-align:center;"><p id="${text}" style="font-size: 0.2rem;color: #2A2B33;margin:0;font-family: "alibabaBold";font-weight: bold;">&nbsp;</p><p style="font-size: 0.12rem;color: #B2B5C1;margin:0;margin-top: 0.04rem;">${actualText}</p></div>`
             })
             chart.render()
         }
@@ -210,7 +210,7 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 canvas#mountNode1 {
   border-radius: 5px;
   width: 100%;

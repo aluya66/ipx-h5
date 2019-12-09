@@ -520,7 +520,7 @@ export default {
         this.handleScroll()
     },
     mounted() {
-        
+
     },
     deactivated() {
         window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦

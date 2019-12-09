@@ -60,7 +60,7 @@
           </van-tab>
         </template>
       </van-tabs>
-      <div class="number-tip" v-if="seletedDetailsItem.seletedColorSkuSumNum <= 0">
+      <div class="number-tip" v-if="seletedDetailsItem.seletedColorSkuSumNum < 0">
         库存数量，不满足起批数量
       </div>
     </template>
@@ -73,10 +73,9 @@
           size="large"
           type="warning"
           @click="onPointClicked"
-          v-if="seletedDetailsItem.seletedColorSkuSumNum > 0"
           >确定</van-button
         >
-        <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button>
+        <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
       </div>
     </template>
   </van-sku>
