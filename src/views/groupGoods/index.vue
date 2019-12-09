@@ -123,17 +123,15 @@ export default {
             this.getSearchLists()
         }
     },
-    mounted() {
+    created() {
+        this.getSearchLists()
+    },
+    activated() {
         window.sa.track('IPX_WEB', {
             page: 'groupFilter', // 页面名字
             type: 'pageView', // 固定参数，不用改
             event: 'pageView' // 固定参数，不用改
         })
-    },
-    created() {
-        this.getSearchLists()
-    },
-    activated() {
         utils.postMessage('changeStatus', 'default')
     },
     methods: {
