@@ -183,6 +183,11 @@ export default {
             }
         },
         jumpToProduct(product) {
+            window.sa.track('IPX_WEB', {
+                page: 'groupListDetail', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'editItemClick' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             const params = {
                 jumpUrl: 'productDetail://',
                 productCode: product.productCode

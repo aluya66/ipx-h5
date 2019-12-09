@@ -7,7 +7,7 @@
         </div>
         <div class="van-sku-header__goods-info">
           <div class="van-sku__goods-price">
-            ¥
+            <span class="van-sku__price-symbol">¥</span>
             <span class="van-sku__price-num">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
           <div class="van-sku-header-item">
@@ -73,7 +73,7 @@
           size="large"
           type="warning"
           @click="onPointClicked"
-          >确定</van-button
+          >确定({{seletedDetailsItem.seletedColorSkuSumNum}})</van-button
         >
         <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
       </div>
@@ -177,12 +177,12 @@ export default {
   border: solid 0.5px #e1e2e6;
   background-color: #ffffff;
   margin-top: 16px;
-  padding: 6px 12px;
+  padding: 7px 12px;
   .sku-card-list {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     &:last-child {
       margin-bottom: 0;
     }
@@ -240,13 +240,13 @@ export default {
     padding: 5px 16px;
     box-shadow: 0 -1px 6px 0 rgba(33, 44, 98, 0.06);
     .van-button {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
       color: #ffffff;
       width: 100%;
       height: 40px;
       border-radius: 20px;
-      background: #3c5cf6;
+      background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
       &.forbidColor {
         color: #ffffff;
         background-color: #d5d6de;
@@ -262,6 +262,7 @@ export default {
     .van-sku-header__img-wrap {
       width: 88px;
       height: 88px;
+      margin: 20px 0;
       img {
         width: 100%;
         height: 100%;
@@ -273,13 +274,17 @@ export default {
     .van-sku-header__goods-info {
       margin-top: 14px;
       .van-sku__goods-price {
+          color: rgba(245, 48, 48, 1);
         .van-sku__price-symbol {
-          top: 8px;
+          // top: 8px;
+          vertical-align: bottom;
+          font-size: 14px;
+          color: rgba(245, 48, 48, 1);
         }
         .van-sku__price-num {
           font-size: 20px;
           font-weight: bold;
-          color: #f53030;
+          color: rgba(245, 48, 48, 1);
           font-family: "alibabaBold";
         }
       }
@@ -312,6 +317,7 @@ export default {
         .van-tab {
           flex: initial;
           position: relative;
+          padding: 0;
           // margin-right: 12px;
           flex-basis: auto !important;
           min-width: initial;
@@ -328,17 +334,17 @@ export default {
           }
           .icon-info {
             position: absolute;
-            background-color: @color-rc;
+            background-color: rgba(245, 48, 48, 1);
             color: white;
-            width: 15px;
-            height: 15px;
-            border-radius: 10px;
-            top: -5px;
-            right: 5px;
-            line-height: 14px;
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            top: -8px;
+            right: -5px;
+            line-height: 15px;
             text-align: center;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 10px;
             z-index: 100;
           }
           &.van-tab--active {
@@ -366,24 +372,24 @@ export default {
       }
     }
     .van-stepper__minus {
-      background: url("../../themes/images/app/number_reduce@3x.png");
+      background: url("../../themes/images/app/number_reduce@4x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
       // width: 24px;
       // height: 24px;
     }
     .van-stepper__minus--disabled {
-      background: url("../../themes/images/app/number_reduce_unable@3x.png");
+      background: url("../../themes/images/app/number_reduce_unable@4x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
     }
     .van-stepper__plus {
-      background: url("../../themes/images/app/number_plus@3x.png");
+      background: url("../../themes/images/app/number_plus@4x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
     }
     .van-stepper__plus--disabled {
-      background: url("../../themes/images/app/number_plus_unable@3x.png");
+      background: url("../../themes/images/app/number_plus_unable@4x.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
     }
