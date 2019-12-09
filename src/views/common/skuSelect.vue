@@ -130,7 +130,7 @@ export default {
     },
     computed: {
         goodPicture() {
-            return this.seletedDetailsItem.colorSkuList[0].imgUrl
+            return this.seletedDetailsItem.colorSkuList ? this.seletedDetailsItem.colorSkuList[0].imgUrl : ''
         }
     },
     methods: {
