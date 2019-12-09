@@ -220,7 +220,7 @@ export default {
             })
         }
     },
-    activated(){
+    activated() {
         window.sa.track('IPX_WEB', {
             page: 'groupFilterResult', // 页面名字
             type: 'pageView', // 固定参数，不用改
