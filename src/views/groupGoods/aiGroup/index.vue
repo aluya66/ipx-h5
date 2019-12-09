@@ -226,6 +226,10 @@ export default {
             type: 'pageView', // 固定参数，不用改
             event: 'pageView' // 固定参数，不用改
         })
+        let swiper = this.$refs.designerSwiper.swiper
+        swiper.slideTo(0, 0, false)
+        let gSwiper = this.$refs.groupSwiper.swiper
+        gSwiper.slideTo(0, 0, false)
     },
     mounted() {
         this.showGroup = false
