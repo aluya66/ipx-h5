@@ -194,9 +194,19 @@ export default {
         // 切换菜单 ---智能组货
         handleSelectAi() {
             this.titleIndex = 1
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'aiGroup' // 按钮唯一标识，取个语义化且不重名的名字
+            })
         },
         // 查看TOP10
         handleToRank() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'goTopRank' // 按钮唯一标识，取个语义化且不重名的名字
+            })
             this.$router.push({
                 path: '/groupGoods/aiGroup/matchRank'
             })
