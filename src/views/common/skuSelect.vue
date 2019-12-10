@@ -7,9 +7,9 @@
           <img :src="goodPicture" />
         </div>
         <div class="van-sku-header__goods-info">
-          <div class="van-sku__goods-price">
-            <span class="van-sku__price-symbol">¥</span>
-            <span class="my-sku__price-num">{{ seletedDetailsItem.spuTshPrice }}</span>
+          <div class="my-goods-price" style="color: rgba(245, 48, 48, 1) !important;">
+            <span class="my-price-symbol">¥</span>
+            <span class="my-sku__price-num" style="font-family: alibabaBold;color: rgba(245, 48, 48, 1) !important;font-weight: bold;font-size: 0.2rem;">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
           <div class="van-sku-header-item">
             <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
@@ -40,7 +40,7 @@
               >
                 <div class="flex-left">
                   <p class="spec-name">{{ skuItem.attrSpecValue }}</p>
-                  <p class="space-price">&yen;{{ skuItem.tshPrice }}</p>
+                  <p class="space-price" style="font-family: alibabaBold;color: @color-c4 !important;font-weight: bold;font-size: 0.12rem;">&yen;{{ skuItem.tshPrice }}</p>
                 </div>
                 <div class="flex-right">
                   <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
@@ -275,9 +275,9 @@ export default {
 
       .van-sku-header__goods-info {
         margin-top: 14px;
-        .van-sku__goods-price {
+        .my-goods-price {
           color: rgba(245, 48, 48, 1);
-          .van-sku__price-symbol {
+          .my-price-symbol {
             // top: 8px;
             vertical-align: bottom;
             font-size: 14px;
