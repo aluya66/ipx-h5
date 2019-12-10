@@ -8,7 +8,7 @@
         <div class="van-sku-header__goods-info">
           <div class="van-sku__goods-price">
             <span class="van-sku__price-symbol">¥</span>
-            <span class="van-sku__price-num">{{ seletedDetailsItem.spuTshPrice }}</span>
+            <span class="my-sku__price-num">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
           <div class="van-sku-header-item">
             <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
@@ -39,7 +39,7 @@
               >
                 <div class="flex-left">
                   <p class="spec-name">{{ skuItem.attrSpecValue }}</p>
-                  <p class="batch-price">&yen;{{ skuItem.tshPrice }}</p>
+                  <p class="space-price">&yen;{{ skuItem.tshPrice }}</p>
                 </div>
                 <div class="flex-right">
                   <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
@@ -196,7 +196,7 @@ export default {
         font-weight: 500;
         color: #2a2b33;
       }
-      .batch-price {
+      .space-price {
         font-size: 12px;
         font-weight: bold;
         color: @color-c4;
@@ -268,6 +268,7 @@ export default {
         height: 100%;
         border-radius: 4px;
         object-fit: cover;
+        border:1px solid @color-c7;
       }
     }
 
@@ -281,7 +282,7 @@ export default {
           font-size: 14px;
           color: rgba(245, 48, 48, 1);
         }
-        .van-sku__price-num {
+        .my-sku__price-num {
           font-size: 20px;
           font-weight: bold;
           color: rgba(245, 48, 48, 1);
