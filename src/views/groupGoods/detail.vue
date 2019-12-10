@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="call-commit">
-          <button @click="handleCall" :disabled="isVoted">给它打call</button>
+          <button @click="handleCall" :disabled="isVoted">{{isVoted ? '已打call': '给它打call'}}</button>
         </div>
       </div>
 
@@ -191,6 +191,7 @@ export default {
             type: 'pageView',
             event: 'pageView'
         })
+        this.groupDetail = {}
         this.productList = []
         this.importList = []
         this.slidImages = []

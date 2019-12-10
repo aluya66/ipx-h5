@@ -8,7 +8,7 @@
         <span class="header-save" @click="save">保存</span>
       </template>
     </c-header>
-    <div class="line" :style="marginTop"></div>
+    <!-- <div class="line" :style="marginTop"></div> -->
     <div class="panel" :style="getBottomOffset(69)">
       <div class="top-content">
         <span>组货名称</span>
@@ -99,6 +99,7 @@ export default {
         })
         this.showSku = false
         this.isDialog = false
+        this.groupDetail = {}
         this.groupGoodsRecords = []
         this.getGroupDetail()
         utils.postMessage('changeStatus', 'default')
