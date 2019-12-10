@@ -331,7 +331,7 @@ export default {
     font-weight: 500;
     color: rgba(255, 255, 255, 1);
     line-height: 28px;
-    margin-top: 34px;
+    margin-top: 20x;
     margin-left: 16px;
     position: relative;
     width: 80px;
