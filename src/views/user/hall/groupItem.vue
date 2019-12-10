@@ -219,12 +219,13 @@ export default {
             p {
                 font-size: 14px; // font-family:ALIBABAFont-Regular,ALIBABAFont;
                 font-weight: 400;
-                line-height: 17px;
+                line-height: 24px;
                 font-family: 'alibabaRegular';
                 span {
+                    font-family: 'alibabaBold';
                     font-size: 20px;
-                    font-weight: 700;
-                    line-height: 17px;
+                    // font-weight: 700;
+                    line-height: 24px;
                 }
             }
             .action {
