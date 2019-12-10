@@ -1,4 +1,5 @@
 <template>
+<div class="mypanel">
   <van-sku v-model="showSku" :sku="sku" class="my-sku-content">
     <template slot="sku-header">
       <div class="van-sku-header van-hairline--bottom">
@@ -6,9 +7,9 @@
           <img :src="goodPicture" />
         </div>
         <div class="van-sku-header__goods-info">
-          <div class="van-sku__goods-price">
-            <span class="van-sku__price-symbol">¥</span>
-            <span class="my-sku__price-num">{{ seletedDetailsItem.spuTshPrice }}</span>
+          <div class="my-goods-price" style="color: rgba(245, 48, 48, 1) !important;">
+            <span class="my-price-symbol">¥</span>
+            <span class="my-sku__price-num" style="font-family: alibabaBold;color: rgba(245, 48, 48, 1) !important;font-weight: bold;font-size: 0.2rem;">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
           <div class="van-sku-header-item">
             <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
@@ -39,7 +40,7 @@
               >
                 <div class="flex-left">
                   <p class="spec-name">{{ skuItem.attrSpecValue }}</p>
-                  <p class="space-price">&yen;{{ skuItem.tshPrice }}</p>
+                  <p class="space-price" style="font-family: alibabaBold;color: @color-c4 !important;font-weight: bold;font-size: 0.12rem;">&yen;{{ skuItem.tshPrice }}</p>
                 </div>
                 <div class="flex-right">
                   <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
@@ -68,17 +69,14 @@
     <template slot="sku-stepper">{{ goodsId }}</template>
     <template slot="sku-actions">
       <div class="van-sku-actions" :style="getBottomOffset(2)">
-        <van-button
-          square
-          size="large"
-          type="warning"
-          @click="onPointClicked"
-          >确定({{seletedDetailsItem.seletedColorSkuSumNum}})</van-button
+        <van-button square size="large" type="warning" @click="onPointClicked"
+          >确定({{ seletedDetailsItem.seletedColorSkuSumNum }})</van-button
         >
         <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
       </div>
     </template>
   </van-sku>
+  </div>
 </template>
 
 <script>
@@ -130,7 +128,9 @@ export default {
     },
     computed: {
         goodPicture() {
-            return this.seletedDetailsItem.colorSkuList ? this.seletedDetailsItem.colorSkuList[0].imgUrl : ''
+            return this.seletedDetailsItem.colorSkuList
+                ? this.seletedDetailsItem.colorSkuList[0].imgUrl
+                : ''
         }
     },
     methods: {
@@ -230,178 +230,182 @@ export default {
 </style>
 
 <style lang="less">
-.my-sku-content {
-  .van-sku-actions {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-    padding: 5px 16px;
-    box-shadow: 0 -1px 6px 0 rgba(33, 44, 98, 0.06);
-    .van-button {
-      font-size: 14px;
-      font-weight: 500;
-      color: #ffffff;
-      width: 100%;
-      height: 40px;
-      border-radius: 20px;
-      background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-      &.forbidColor {
+.mypanel {
+  .my-sku-content {
+    .van-sku-actions {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-shrink: 0;
+      flex-shrink: 0;
+      padding: 5px 16px;
+      box-shadow: 0 -1px 6px 0 rgba(33, 44, 98, 0.06);
+      .van-button {
+        font-size: 14px;
+        font-weight: 500;
         color: #ffffff;
-        background-color: #d5d6de;
-      }
-    }
-  }
-
-  .van-popup--bottom.van-popup--round {
-    border-radius: 8px 8px 0 0;
-  }
-
-  .van-sku-header {
-    .van-sku-header__img-wrap {
-      width: 88px;
-      height: 88px;
-      margin: 20px 0;
-      img {
         width: 100%;
-        height: 100%;
-        border-radius: 4px;
-        object-fit: cover;
-        border:1px solid @color-c7;
+        height: 40px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
+        &.forbidColor {
+          color: #ffffff;
+          background-color: #d5d6de;
+        }
       }
     }
 
-    .van-sku-header__goods-info {
-      margin-top: 14px;
-      .van-sku__goods-price {
-          color: rgba(245, 48, 48, 1);
-        .van-sku__price-symbol {
-          // top: 8px;
-          vertical-align: bottom;
-          font-size: 14px;
-          color: rgba(245, 48, 48, 1);
-        }
-        .my-sku__price-num {
-          font-size: 20px;
-          font-weight: bold;
-          color: rgba(245, 48, 48, 1);
-          font-family: "alibabaBold";
+    .van-popup--bottom.van-popup--round {
+      border-radius: 8px 8px 0 0;
+    }
+
+    .van-sku-header {
+      .van-sku-header__img-wrap {
+        width: 88px;
+        height: 88px;
+        margin: 20px 0;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;
+          object-fit: cover;
+          border: 1px solid @color-c7;
         }
       }
-      .van-sku-header-item {
-        font-size: 12px;
-        color: #2a2b33;
-        margin-top: 4px;
-      }
-      .van-sku__stock {
-        color: #b2b5c1;
+
+      .van-sku-header__goods-info {
+        margin-top: 14px;
+        .my-goods-price {
+          color: rgba(245, 48, 48, 1);
+          .my-price-symbol {
+            // top: 8px;
+            vertical-align: bottom;
+            font-size: 14px;
+            color: rgba(245, 48, 48, 1);
+          }
+          .my-sku__price-num {
+            font-size: 20px;
+            font-weight: bold;
+            color: rgba(245, 48, 48, 1);
+            font-family: "alibabaBold";
+          }
+        }
+        .van-sku-header-item {
+          font-size: 12px;
+          color: #2a2b33;
+          margin-top: 4px;
+        }
+        .van-sku__stock {
+          color: #b2b5c1;
+        }
       }
     }
-  }
 
-  .van-hairline--bottom::after,
-  .van-hairline--top-bottom::after,
-  .van-hairline-unset--top-bottom::after {
-    border: 0;
-  }
+    .van-hairline--bottom::after,
+    .van-hairline--top-bottom::after,
+    .van-hairline-unset--top-bottom::after {
+      border: 0;
+    }
 
-  .sku-group-tabs {
-    margin-top: 25px;
-    margin-bottom: 80px;
-    .van-tabs__wrap {
-      height: initial;
-      overflow: initial;
-      .van-tabs__nav {
-        margin-left: 16px;
-        padding-bottom: 0;
-        .van-tab {
-          flex: initial;
-          position: relative;
-          padding: 0;
-          // margin-right: 12px;
-          flex-basis: auto !important;
-          min-width: initial;
-          // margin-top: 12px;
-          span {
-            font-size: 12px;
-            font-weight: 500;
-            color: #2a2b33;
-            width: 74px;
-            height: 28px;
-            line-height: 28px;
-            border-radius: 14px;
-            background-color: #f4f5f7;
-          }
-          .icon-info {
-            position: absolute;
-            background-color: rgba(245, 48, 48, 1);
-            color: white;
-            width: 16px;
-            height: 16px;
-            border-radius: 8px;
-            top: -8px;
-            right: -5px;
-            line-height: 15px;
-            text-align: center;
-            font-weight: 500;
-            font-size: 10px;
-            z-index: 100;
-          }
-          &.van-tab--active {
+    .sku-group-tabs {
+      margin-top: 25px;
+      margin-bottom: 80px;
+      .van-tabs__wrap {
+        height: initial;
+        overflow: initial;
+        .van-tabs__nav {
+          margin-left: 16px;
+          padding-bottom: 0;
+          .van-tab {
+            flex: initial;
+            position: relative;
+            padding: 0;
+            // margin-right: 12px;
+            flex-basis: auto !important;
+            min-width: initial;
+            // margin-top: 12px;
             span {
-              border: solid 1px #3c5cf6;
-              background-color: #ebeeff;
-              color: #3c5cf6;
+              font-size: 12px;
+              font-weight: 500;
+              color: #2a2b33;
+              width: 74px;
+              height: 28px;
+              line-height: 28px;
+              border-radius: 14px;
+              background-color: #f4f5f7;
+              text-align: center;
+            }
+            .icon-info {
+              position: absolute;
+              background-color: rgba(245, 48, 48, 1);
+              color: white;
+              width: 16px;
+              height: 16px;
+              border-radius: 8px;
+              top: -8px;
+              right: -5px;
+              line-height: 15px;
+              text-align: center;
+              font-weight: 500;
+              font-size: 10px;
+              z-index: 100;
+            }
+            &.van-tab--active {
+              span {
+                line-height: 26px;
+                border: solid 1px #3c5cf6;
+                background-color: #ebeeff;
+                color: #3c5cf6;
+              }
             }
           }
-        }
-        .van-tabs__line {
-          height: 0;
+          .van-tabs__line {
+            height: 0;
+          }
         }
       }
     }
-  }
-  .flex-right {
-    .van-stepper {
-      > input {
-        width: 48px;
-        background-color: #f4f5f7;
-        font-size: 14px;
-        font-family: "alibabaBold";
-        font-weight: bold;
+    .flex-right {
+      .van-stepper {
+        > input {
+          width: 48px;
+          background-color: #f4f5f7;
+          font-size: 14px;
+          font-family: "alibabaBold";
+          font-weight: bold;
+        }
       }
-    }
-    .van-stepper__minus {
-      background: url("../../themes/images/app/number_reduce@4x.png");
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      // width: 24px;
-      // height: 24px;
-    }
-    .van-stepper__minus--disabled {
-      background: url("../../themes/images/app/number_reduce_unable@4x.png");
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-    }
-    .van-stepper__plus {
-      background: url("../../themes/images/app/number_plus@4x.png");
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-    }
-    .van-stepper__plus--disabled {
-      background: url("../../themes/images/app/number_plus_unable@4x.png");
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-    }
-    .van-stepper__minus::before,
-    .van-stepper__plus::before,
-    .van-stepper__minus::after,
-    .van-stepper__plus::after {
-      background-color: transparent;
-    }
-    .van-stepper__input {
-      height: 24px;
+      .van-stepper__minus {
+        background: url("../../themes/images/app/number_reduce@4x.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        // width: 24px;
+        // height: 24px;
+      }
+      .van-stepper__minus--disabled {
+        background: url("../../themes/images/app/number_reduce_unable@4x.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .van-stepper__plus {
+        background: url("../../themes/images/app/number_plus@4x.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .van-stepper__plus--disabled {
+        background: url("../../themes/images/app/number_plus_unable@4x.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .van-stepper__minus::before,
+      .van-stepper__plus::before,
+      .van-stepper__minus::after,
+      .van-stepper__plus::after {
+        background-color: transparent;
+      }
+      .van-stepper__input {
+        height: 24px;
+      }
     }
   }
 }
