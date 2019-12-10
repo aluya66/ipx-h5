@@ -240,6 +240,7 @@ export default {
         if (this.baseParams.isIphoneX) {
             this.footerHeight = (Number(37) / 100) + 'rem'
         }
+        utils.postMessage('changeStatus', 'default')
         this.handleRequestMain()
         this.handleRequestUserManagers()
     },

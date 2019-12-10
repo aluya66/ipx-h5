@@ -4,7 +4,7 @@
     <div :class="['item-box', itemBoxClass]">
       <div :class="[itemClass?itemClass:'item-common',isSlot?'': item.isSelected? 'item-selected' : 'item-default']" v-for="(item,index) in items" :key="index" @click="handleSelect(item)" >
         <slot v-if="isSlot" name='selectItem' :item="item" ></slot>
-        {{isSlot  ?"":item.labelName}}
+        <p>{{isSlot  ?"":item.labelName}}</p>
       </div>
     </div>
   </div>
@@ -87,6 +87,18 @@ export default {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
+      .item-auto {
+        margin-bottom: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+        border-radius: 14px;
+        height: 28px;
+        margin-right: 11px;
+        p {
+          padding: 0 16px;
+        }
+      }
       .item-common {
         margin-bottom: 12px;
         margin-right: 11px;

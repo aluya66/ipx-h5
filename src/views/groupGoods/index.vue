@@ -6,7 +6,7 @@
     <c-tabs class="goods-group-tab" :tabs="tabs" :line-width="'0.08rem'" :line-height="'0.05rem'" :title-active-color="'#3C5CF6'" :title-inactive-color="'#2A2B33'" :border="true" @change="onChangeTab"></c-tabs>
     <!-- 客户特征开始 -->
     <div class="container" :style="getBottomOffset(75)" v-if="currentTab === 1">
-        <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.imageUrl.length > 0?"image-item":""'
+        <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.labelCategoryName === "消费偏好" ? "item-auto": item.imageUrl.length > 0?"image-item":""'
             sectionSubTitle="(可多选)">
             <template #selectItem='slotProps'>
                 <img class="image-img" :src="slotProps.item.imageUrl">
