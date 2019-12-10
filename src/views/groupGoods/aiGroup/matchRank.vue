@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <p class="hot"><img src="@/themes/images/groupGoods/icon_popularity_red.png" alt="">{{item.grandTotalFocus}}</p>
-                        <section :class='["call",item.ishaveVoted === 1?"call-disable":""]' @click.stop="handleCall(item)">{{item.ishaveVoted === 1?"已call":"打call"}}</section>
+                        <section :class='["call",item.ishaveVoted === 1?"call-disable":""]' @click.stop="handleCall(item)">{{item.ishaveVoted === 1?"已打call":"打call"}}</section>
                     </div>
                     <section class="rankImage">
                         <img  :src="index>3?rankImg[3]:rankImg[index]" alt="">
