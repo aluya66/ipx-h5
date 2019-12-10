@@ -6,7 +6,7 @@
     <van-number-keyboard safe-area-inset-bottom />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= VUE_APP_TITLE %></title>
-    <script src="../static/js/fastclick.min.js"></script>
+    <script src="static/js/fastclick.min.js"></script>
 
 
     <script type="text/javascript">
@@ -29,10 +29,10 @@
           y.parentNode.insertBefore(x, y);
         }
       })({
-        sdk_url: '../static/js/sensorsdata.min.js',
+        sdk_url: 'static/js/sensorsdata.min.js',
         name: 'sa',
         server_url:`https://sensorsdatauploading.yosar.com/sa?project=default`,
-        heatmap_url: "../static/js/heatmap.min.js",
+        heatmap_url: "static/js/heatmap.min.js",
         web_url:"https://sensorsdataadmin.yosar.com",
         use_app_track: true,
         is_track_single_page:true,
