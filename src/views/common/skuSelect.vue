@@ -9,7 +9,7 @@
         <div class="van-sku-header__goods-info">
           <div class="my-goods-price">
             <span class="my-price-symbol">¥</span>
-            <span class="my-sku__price-num" style="font-family: alibabaBold;color: rgba(245, 48, 48, 1);font-weight: bold;font-size: 20px;">{{ seletedDetailsItem.spuTshPrice }}</span>
+            <span class="my-sku__price-num" style="font-family: alibabaBold;color: rgba(245, 48, 48, 1);font-weight: bold;font-size: 0.2rem;">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
           <div class="van-sku-header-item">
             <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
@@ -40,7 +40,7 @@
               >
                 <div class="flex-left">
                   <p class="spec-name">{{ skuItem.attrSpecValue }}</p>
-                  <p class="space-price" style="font-family: alibabaBold;color: @color-c4;font-weight: bold;font-size: 12px;">&yen;{{ skuItem.tshPrice }}</p>
+                  <p class="space-price" style="font-family: alibabaBold;color: @color-c4;font-weight: bold;font-size: 0.12rem;">&yen;{{ skuItem.tshPrice }}</p>
                 </div>
                 <div class="flex-right">
                   <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
