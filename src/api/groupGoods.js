@@ -67,3 +67,8 @@ export const postCall = params => Http.fetch(`${context}/v1/group/goods/populari
     method: 'post',
     hasErrMsg: false
 })
+
+// 一键补货
+export const suplyGoods = params => Http.fetch(`${context}/v1/group/goods/replent`, params, {
+    method: 'get'
+})

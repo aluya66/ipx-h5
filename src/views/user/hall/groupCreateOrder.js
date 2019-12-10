@@ -11,14 +11,16 @@ export default {
         let totalPrice = 0
         oldGoods.forEach((good, goodIndex) => {
             let batchNum = good.minBatchNum
+            let selectSku = 0
             if (good.productShelves === 1) {
                 good.colorSkuList = good.colorSkuList.filter((item) => {
                     item.skuList = item.skuList.filter((skuItem) => {
-                        return (skuItem.num >= batchNum) && (skuItem.entityStock >= skuItem.num)
+                        selectSku += skuItem.num
+                        return (skuItem.num > 0) && (skuItem.entityStock >= skuItem.num)
                     })
                     return item.skuList.length > 0
                 })
-                if (good.colorSkuList.length > 0) {
+                if (good.colorSkuList.length > 0 && selectSku >= batchNum) {
                     products.push(good)
                 }
             }

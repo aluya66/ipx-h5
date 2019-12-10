@@ -134,6 +134,7 @@ export default {
                 }
                 let batchNum = value.minBatchNum
                 let stockAll = 0
+                let selectAll = 0
                 let isChanged = false
                 let isEnough = false
                 value.colorSkuList.forEach((item, index) => {
@@ -141,12 +142,13 @@ export default {
                         if (skuItem.entityStock === 0 && skuItem.num !== 0) {
                             isChanged = true
                         }
-                        if (skuItem.num >= batchNum && skuItem.entityStock >= skuItem.num) {
-                            isEnough = true
-                        }
+                        selectAll += skuItem.num
                         stockAll += skuItem.entityStock
                     })
                 })
+                if (selectAll >= batchNum) {
+                    isEnough = true
+                }
                 if (stockAll === 0 || stockAll < batchNum) {
                     value.disabled = true
                     this.dialogAlert(true)
