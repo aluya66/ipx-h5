@@ -12,7 +12,6 @@
             <video
               id="upvideo"
               controls="controls"
-              autoplay="autoplay"
               preload="auto"
               webkit-playsinline="true"
               playsinline=""
@@ -20,9 +19,7 @@
               v-if="img.endsWith('.mp4')"
             >
               暂时不支持播放该视频
-              <!-- <source :src="videoImg(img)" type="video/mp4"> -->
             </video>
-            <!-- <button v-if="img.endsWith('.mp4')"></button> -->
             <img :src="img" v-else />
           </swiper-slide>
         </swiper>
