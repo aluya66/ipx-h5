@@ -4,7 +4,7 @@
     <div class="panel">
       <div class="head">
         <img src="../../themes/images/app/invalid-name@3x.png" alt />
-        <c-header slot="header" :left-arrow="true" class="c-header-white"></c-header>
+        <c-header slot="header" :left-arrow="true" class="c-header-white" :style="marginTop"></c-header>
         <div class="content">
           <p>测款数据</p>
           <span>数据持续更新中</span>
@@ -29,6 +29,8 @@
 <script>
 import reportList from '@/views/common/reportList.vue'
 import components from 'components'
+import utils from 'utils'
+
 const { CTabs } = components
 export default {
     components: {
@@ -51,6 +53,15 @@ export default {
             bookActivityCode: '',
             curType: 0,
             testStyleList: []
+        }
+    },
+    computed: {
+        marginTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'top:0.44rem'
+            }
+            return 'top:0.2rem'
         }
     },
     activated () {

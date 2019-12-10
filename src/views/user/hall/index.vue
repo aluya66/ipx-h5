@@ -680,10 +680,12 @@ export default {
         position: relative;
         box-shadow: 0px 2px 16px 0px rgba(33, 44, 98, 0.06);
         img {
-            object-fit: scale-down;
+            object-fit: cover;
             position: absolute;
             right: 0;
             bottom: 0;
+            width: 56px;
+            height: 56px;
         }
         p {
             margin-left: 16px;
