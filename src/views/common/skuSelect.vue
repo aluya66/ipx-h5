@@ -7,8 +7,8 @@
           <img :src="goodPicture" />
         </div>
         <div class="van-sku-header__goods-info">
-          <div class="van-sku__goods-price">
-            <span class="van-sku__price-symbol">¥</span>
+          <div class="my-goods-price">
+            <span class="my-price-symbol">¥</span>
             <span class="my-sku__price-num">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
           <div class="van-sku-header-item">
@@ -275,9 +275,9 @@ export default {
 
       .van-sku-header__goods-info {
         margin-top: 14px;
-        .van-sku__goods-price {
+        .my-goods-price {
           color: rgba(245, 48, 48, 1);
-          .van-sku__price-symbol {
+          .my-price-symbol {
             // top: 8px;
             vertical-align: bottom;
             font-size: 14px;
