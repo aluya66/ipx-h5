@@ -33,16 +33,17 @@ window.sa.init({
     heatmap_url: '../utils/heatmap.min.js',
     // 如果神策后台版本及 `sensorsdata.min.js` 均是 1.10 及以上版本，这个参数不需要配置 web_url。 web_url 神策分析中点击分析及触达分析功能会用到此地址，代码生成工具会自动生成。
     web_url: 'https://sensorsdataadmin.yosar.com',
+    use_app_track: true,
+    is_track_single_page: true,
     heatmap: {
-    // 是否开启点击图，默认为 default 表示开启，自动采集 $WebClick 事件，可以设置 'not_collect' 表示关闭
-    // 需要 JSSDK 版本号大于 1.7
         clickmap: 'default',
-        // 是否开启触达注意力图，设置为 default 表示开启，自动采集 $WebStay 事件，设置 'not_collect' 表示关闭
-        // 需要 JSSDK 版本号大于 1.9.1
-        scroll_notice_map: 'not_collect'
+        scroll_notice_map: 'default',
+        scroll_delay_time: 4000
     }
 })
-window.sa.quick('autoTrack') // 用于采集 $pageview 事件
+window.sa.quick('autoTrack', {
+    Platform: 'H5'
+})
 
 Vue.use(preview)
 
