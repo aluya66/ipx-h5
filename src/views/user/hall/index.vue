@@ -392,7 +392,6 @@ export default {
                 productName: this.searchKey
             }
             this.loading = true
-
             this.$api.hall.getHallCollectList(params).then(res => {
                 this.setSuccessStatus()
                 if (res.code === 0) {
