@@ -12,7 +12,6 @@
             <video
               id="upvideo"
               controls="controls"
-              autoplay="autoplay"
               preload="auto"
               webkit-playsinline="true"
               playsinline=""
@@ -20,9 +19,7 @@
               v-if="img.endsWith('.mp4')"
             >
               暂时不支持播放该视频
-              <!-- <source :src="videoImg(img)" type="video/mp4"> -->
             </video>
-            <!-- <button v-if="img.endsWith('.mp4')"></button> -->
             <img :src="img" v-else />
           </swiper-slide>
         </swiper>
@@ -52,7 +49,7 @@
           </div>
         </div>
         <div class="call-commit">
-          <button @click="handleCall" :disabled="isVoted">给它打call</button>
+          <button @click="handleCall" :disabled="isVoted">{{isVoted ? '已打call': '给它打call'}}</button>
         </div>
       </div>
 
@@ -191,6 +188,7 @@ export default {
             type: 'pageView',
             event: 'pageView'
         })
+        this.groupDetail = {}
         this.productList = []
         this.importList = []
         this.slidImages = []
