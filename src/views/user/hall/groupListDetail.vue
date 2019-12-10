@@ -151,15 +151,12 @@ export default {
                 }
                 if (stockAll === 0 || stockAll < batchNum) {
                     value.disabled = true
-                    this.dialogAlert(true)
                     return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
                 }
                 if (!isEnough && stockAll >= batchNum) {
-                    this.dialogAlert(true)
                     return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
                 }
                 if (isChanged && isEnough) {
-                    this.dialogAlert(true)
                     return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
                 }
             }
