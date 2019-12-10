@@ -7,7 +7,7 @@
           <img :src="goodPicture" />
         </div>
         <div class="van-sku-header__goods-info">
-          <div class="my-goods-price">
+          <div class="my-goods-price" style="color: rgba(245, 48, 48, 1) !important;">
             <span class="my-price-symbol">¥</span>
             <span class="my-sku__price-num" style="font-family: alibabaBold;color: rgba(245, 48, 48, 1) !important;font-weight: bold;font-size: 0.2rem;">{{ seletedDetailsItem.spuTshPrice }}</span>
           </div>
