@@ -6,5 +6,5 @@ const moduleFiles = require.context('./', false, /\.js$/)
 const modules = utils.transModules(moduleFiles)
 
 export {
-  modules
+    modules
 }

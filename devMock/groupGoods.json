@@ -1,0 +1,36 @@
+{
+	"code": 0,
+	"data": {
+		"labelCategories": [{
+			"imageUrl": "",
+			"labelCategoryCode": "1",
+			"labelCategoryName": "品类",
+			"labels": [{
+				"id": 94903221,
+				"imageUrl": "",
+				"initial": "2",
+				"labelCode": "1",
+				"labelName": "T恤",
+				"labelType": 1
+			}, {
+				"id": 93389971,
+				"imageUrl": "",
+				"initial": "",
+				"labelCode": "2",
+				"labelName": "连衣裙",
+				"labelType": 2
+			}, {
+				"id": 6954314,
+				"imageUrl": "",
+				"initial": "",
+				"labelCode": "3",
+				"labelName": "牛仔裤",
+				"labelType": 86838666
+			}]
+		}],
+		"searchType": 85615405
+	},
+	"message": "mollit cupidatat in enim aliquip",
+	"success": false,
+	"totalCount": 3
+}

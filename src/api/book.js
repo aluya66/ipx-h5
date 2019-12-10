@@ -8,7 +8,7 @@ const context = process.env.VUE_APP_serverPath
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const bookMainInfo = params => Http.fetch(`${context}/v1/bookactivity/list`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -16,15 +16,15 @@ export const bookMainInfo = params => Http.fetch(`${context}/v1/bookactivity/lis
  * @param {*} params params数据对象
 */
 export const bookGoodsVote = params => Http.fetch(`${context}/v1/bookactivity/measurevote`, params, {
-  method: 'post',
-  hasErrMsg: true
+    method: 'post',
+    hasErrMsg: true
 })
 /**
  * 订货会，测款数据报告页面，投票列表查询
  * @param {*} params params数据对象
 */
 export const bookRankList = params => Http.fetch(`${context}/v1/bookactivity/votequery`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -33,7 +33,7 @@ export const bookRankList = params => Http.fetch(`${context}/v1/bookactivity/vot
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const bookApply = params => Http.fetch(`${context}/v1/bookactivity/participate`, params, {
-  method: 'post'
+    method: 'post'
 })
 
 /**
@@ -42,7 +42,7 @@ export const bookApply = params => Http.fetch(`${context}/v1/bookactivity/partic
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const bookApplyManagers = params => Http.fetch(`${context}/v1/bookactivity/tradeconfig`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -51,7 +51,7 @@ export const bookApplyManagers = params => Http.fetch(`${context}/v1/bookactivit
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getSharemeasuresList = params => Http.fetch(`${context}/v1/bookactivity/sharemeasures`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -60,5 +60,5 @@ export const getSharemeasuresList = params => Http.fetch(`${context}/v1/bookacti
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const bookShared = params => Http.fetch(`${context}/v1/bookactivity/shared`, params, {
-  method: 'get'
+    method: 'get'
 })

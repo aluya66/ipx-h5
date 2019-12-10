@@ -1,10 +1,10 @@
 <template>
-  <layout-view>
+  <layout-view style="padding-top:0">
     <!-- <c-list class="list-scroll"> -->
     <div class="panel">
       <div class="head">
         <img src="../../themes/images/app/invalid-name@3x.png" alt />
-        <c-header slot="header" :left-arrow="true" class="c-header-white"></c-header>
+        <c-header slot="header" :left-arrow="true" class="c-header-white" :style="marginTop"></c-header>
         <div class="content">
           <p>测款数据</p>
           <span>数据持续更新中</span>
@@ -29,61 +29,72 @@
 <script>
 import reportList from '@/views/common/reportList.vue'
 import components from 'components'
+import utils from 'utils'
+
 const { CTabs } = components
 export default {
-  components: {
-    CTabs,
-    reportList
-  },
-  data () {
-    return {
-      tabs: [
-        {
-          name: 0,
-          title: '我的测款数据'
-        },
-        {
-          name: 1,
-          title: '平台测款数据'
-        }
-      ],
-      participantCode: '',
-      bookActivityCode: '',
-      curType: 0,
-      testStyleList: []
-    }
-  },
-  activated () {
-    this.participantCode = this.$route.query.participantCode
-    this.bookActivityCode = this.$route.query.bookActivityCode
-    this.getRankList()
-  },
-  methods: {
-    getRankList () {
-      const params = {
-        bookVoteSearchType: this.curType,
-        participantCode: this.participantCode,
-        bookActivityCode: this.bookActivityCode
-      }
-      this.$api.book
-        .bookRankList(params)
-        .then(res => {
-          res.map((item, index) => {
-            if (index < 3) {
-              item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@3x.png') + ')'
-            }
-          })
-          this.testStyleList = res
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    components: {
+        CTabs,
+        reportList
     },
-    changeActive (val) {
-      this.curType = val
-      this.getRankList()
+    data () {
+        return {
+            tabs: [
+                {
+                    name: 0,
+                    title: '我的测款数据'
+                },
+                {
+                    name: 1,
+                    title: '平台测款数据'
+                }
+            ],
+            participantCode: '',
+            bookActivityCode: '',
+            curType: 0,
+            testStyleList: []
+        }
+    },
+    computed: {
+        marginTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'top:0.44rem'
+            }
+            return 'top:0.2rem'
+        }
+    },
+    activated () {
+        this.participantCode = this.$route.query.participantCode
+        this.bookActivityCode = this.$route.query.bookActivityCode
+        this.getRankList()
+    },
+    methods: {
+        getRankList () {
+            const params = {
+                bookVoteSearchType: this.curType,
+                participantCode: this.participantCode,
+                bookActivityCode: this.bookActivityCode
+            }
+            this.$api.book
+                .bookRankList(params)
+                .then(res => {
+                    res.map((item, index) => {
+                        if (index < 3) {
+                            item.topNumUrl = 'url(' + require('../../themes/images/app/rank' + index + '@3x.png') + ')'
+                        }
+                    })
+                    this.testStyleList = res
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        changeActive (val) {
+            this.curType = val
+            this.getRankList()
+        }
     }
-  }
 }
 </script>
 

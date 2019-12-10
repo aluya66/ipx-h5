@@ -7,7 +7,7 @@ const context = process.env.VUE_APP_serverPath
  * @param {*} params params数据对象 {shop_id: 2}
  */
 export const deliverCount = params => Http.fetch(`${context}/orders/deliver-count`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -15,5 +15,5 @@ export const deliverCount = params => Http.fetch(`${context}/orders/deliver-coun
  * @param {*} params params数据对象
  */
 export const getList = params => Http.fetch(`${context}/orders/list`, params, {
-  method: 'get'
+    method: 'get'
 })

@@ -21,60 +21,60 @@ import create from 'utils/create'
 import { List, PullRefresh } from 'vant'
 
 export default create({
-  name: 'list',
-  components: {
-    [List.name]: List,
-    [PullRefresh.name]: PullRefresh
-  },
-  props: {
-    listItems: {
-      type: Array,
-      default () {
-        return []
-      }
+    name: 'list',
+    components: {
+        [List.name]: List,
+        [PullRefresh.name]: PullRefresh
     },
-    loading: {
-      type: Boolean,
-      default: false
+    props: {
+        listItems: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        loading: {
+            type: Boolean,
+            default: false
+        },
+        error: {
+            type: Boolean,
+            default: false
+        },
+        finished: {
+            type: Boolean,
+            default: false
+        },
+        hasPullRefresh: {
+            type: Boolean,
+            default: false
+        }
     },
-    error: {
-      type: Boolean,
-      default: false
+    data () {
+        return {
+            isLoading: false
+        }
     },
-    finished: {
-      type: Boolean,
-      default: false
+    computed: {
+        mLoading: {
+            get: function () {
+                return this.loading
+            },
+            set: function () {
+            }
+        }
     },
-    hasPullRefresh: {
-      type: Boolean,
-      default: false
+    methods: {
+        loadMore () {
+            this.$emit('load-data')
+        },
+        onRefresh () { // 下拉刷新
+            setTimeout(() => {
+                this.isLoading = false
+                this.$emit('on-refresh')
+            }, 300)
+        }
     }
-  },
-  data () {
-    return {
-      isLoading: false
-    }
-  },
-  computed: {
-    mLoading: {
-      get: function () {
-        return this.loading
-      },
-      set: function () {
-      }
-    }
-  },
-  methods: {
-    loadMore () {
-      this.$emit('load-data')
-    },
-    onRefresh () { // 下拉刷新
-      setTimeout(() => {
-        this.isLoading = false
-        this.$emit('on-refresh')
-      }, 300)
-    }
-  }
 })
 </script>
 

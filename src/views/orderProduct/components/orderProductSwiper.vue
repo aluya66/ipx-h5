@@ -15,61 +15,61 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 require('swiper/dist/css/swiper.css')
 
 export default {
-  components: {
-    swiperSlide,
-    swiper
-  },
-  props: {
-    imageData: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
-  data () {
-    const self = this
-    return {
-      currentPage: 0,
-      percentValue: 0,
-      images: [],
-      swiperOption: {
-        slidesPerView: 'auto',
-        spaceBetween: 13 * window.devicePixelRatio,
-        centeredSlides: true,
-        on: {
-          // 滑动之后回调函数
-          progress: function (e) {
-            console.log(e)
-            console.log(self.percentValue, 'self.percentValue')
-            /* realIndex为滚动到当前的slide索引值 */
-            self.percentValue = e
-            // that.imgIndex = this.realIndex - 1
-          },
-          slideNextTransitionEnd (e) {
-            self.currentPage += 1
-          },
-          slidePrevTransitionEnd (e) {
-            self.currentPage -= 1
-          }
+    components: {
+        swiperSlide,
+        swiper
+    },
+    props: {
+        imageData: {
+            type: Array,
+            default () {
+                return []
+            }
         }
-      }
+    },
+    data () {
+        const self = this
+        return {
+            currentPage: 0,
+            percentValue: 0,
+            images: [],
+            swiperOption: {
+                slidesPerView: 'auto',
+                spaceBetween: 13 * window.devicePixelRatio,
+                centeredSlides: true,
+                on: {
+                    // 滑动之后回调函数
+                    progress: function (e) {
+                        console.log(e)
+                        console.log(self.percentValue, 'self.percentValue')
+                        /* realIndex为滚动到当前的slide索引值 */
+                        self.percentValue = e
+                        // that.imgIndex = this.realIndex - 1
+                    },
+                    slideNextTransitionEnd (e) {
+                        self.currentPage += 1
+                    },
+                    slidePrevTransitionEnd (e) {
+                        self.currentPage -= 1
+                    }
+                }
+            }
+        }
+    },
+    watch: {
+        imageData (val) {
+            this.images = val
+        }
+    },
+    created () {
+        this.images.length = 0
+        this.images = this.imageData
+    },
+    computed: {
+        productTitle () {
+            return this.imageData.length > 0 ? this.imageData[this.currentPage].productName : ''
+        }
     }
-  },
-  watch: {
-    imageData (val) {
-      this.images = val
-    }
-  },
-  created () {
-    this.images.length = 0
-    this.images = this.imageData
-  },
-  computed: {
-    productTitle () {
-      return this.imageData.length > 0 ? this.imageData[this.currentPage].productName : ''
-    }
-  }
 }
 </script>
 

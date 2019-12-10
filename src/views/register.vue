@@ -36,13 +36,13 @@
 import CheckVerify from './mixins/checkVerify'
 
 export default {
-  mixins: [CheckVerify],
-  data () {
-    return {
-      verify: ''
-    }
-  },
-  methods: {}
+    mixins: [CheckVerify],
+    data () {
+        return {
+            verify: ''
+        }
+    },
+    methods: {}
 }
 </script>
 

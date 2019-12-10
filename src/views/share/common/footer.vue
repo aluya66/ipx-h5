@@ -20,24 +20,22 @@
 <script>
 import utils from 'utils'
 export default {
-  data () {
-    return {
-      footerHeight: 0
+    data () {
+        return {
+            footerHeight: 0
+        }
+    },
+    methods: {
+        download () {
+            window.location.href = 'https://h5.yosar.com/pages/downLoad/'
+        }
+    },
+    created () {
+        this.baseParams = utils.getStore('baseParams')
+        if (this.baseParams.isIphoneX) {
+            this.footerHeight = (Number(37) / 100) + 'rem'
+        }
     }
-  },
-  methods: {
-    download () {
-      window.location.href = 'https://h5.yosar.com/pages/downLoad/'
-    }
-  },
-  created () {
-    this.baseParams = utils.getStore('baseParams')
-    if (this.baseParams.platform === 'ios') {
-      if (Number(this.baseParams.statusBarHeight) >= 40) {
-        this.footerHeight = (Number(37) / 100) + 'rem'
-      }
-    }
-  }
 }
 </script>
 

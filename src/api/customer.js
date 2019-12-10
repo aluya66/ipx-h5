@@ -7,5 +7,5 @@ const context = process.env.VUE_APP_serverPath
  * @param {*} params params数据对象
  */
 export const getCustom = params => Http.fetch(`${context}/custom`, params, {
-  method: 'get'
+    method: 'get'
 })

@@ -33,35 +33,35 @@
 
 <script>
 export default {
-  props: {
-    productList: {
-      type: Array,
-      default () {
-        return []
-      }
+    props: {
+        productList: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        disableClick: {
+            type: Boolean,
+            default () {
+                return true
+            }
+        },
+        isWxStatus: {
+            type: Boolean,
+            default () {
+                return false
+            }
+        }
     },
-    disableClick: {
-      type: Boolean,
-      default () {
-        return true
-      }
-    },
-    isWxStatus: {
-      type: Boolean,
-      default () {
-        return false
-      }
+    methods: {
+        selected (product) {
+            if (!this.isWxStatus) {
+                this.$toast('仅支持分享后在微信中投票哦')
+                return
+            }
+            this.$emit('selectClick', product)
+        }
     }
-  },
-  methods: {
-    selected (product) {
-      if (!this.isWxStatus) {
-        this.$toast('仅支持分享后在微信中投票哦')
-        return
-      }
-      this.$emit('selectClick', product)
-    }
-  }
 }
 </script>
 

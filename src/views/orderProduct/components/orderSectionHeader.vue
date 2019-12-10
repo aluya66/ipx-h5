@@ -7,24 +7,24 @@
 
 <script>
 export default {
-  components: {
+    components: {
 
-  },
-  props: {
-    title: {
-      type: String,
-      default: ''
     },
-    subTitle: {
-      type: String,
-      default: ''
-    }
-  },
-  data () {
-    return {
+    props: {
+        title: {
+            type: String,
+            default: ''
+        },
+        subTitle: {
+            type: String,
+            default: ''
+        }
+    },
+    data () {
+        return {
 
+        }
     }
-  }
 }
 </script>
 

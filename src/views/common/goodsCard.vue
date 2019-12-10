@@ -11,19 +11,19 @@
         <div class="flex-treble">
           <div>
             零售价：
-            <span class="price">￥{{item.common_price || 0}}</span>
+            <span class="price">¥{{item.common_price || 0}}</span>
           </div>
           <div>
             会员价：
-            <span class="price">￥{{item.retail_price || 0}}</span>
+            <span class="price">¥{{item.retail_price || 0}}</span>
           </div>
           <div>
             散批价：
-            <span class="price">￥{{item.trade_price || 0}}</span>
+            <span class="price">¥{{item.trade_price || 0}}</span>
           </div>
           <div>
             大批价：
-            <span class="price">￥{{item.big_trade_price || 0}}</span>
+            <span class="price">¥{{item.big_trade_price || 0}}</span>
           </div>
         </div>
         <div class="flex-sub">
@@ -43,28 +43,28 @@
 import CImage from 'components/c-image'
 
 export default {
-  name: 'v-goods-card',
-  data () {
-    return {}
-  },
-  props: {
-    item: {
-      type: Object,
-      default () {
+    name: 'v-goods-card',
+    data () {
         return {}
-      }
+    },
+    props: {
+        item: {
+            type: Object,
+            default () {
+                return {}
+            }
+        }
+    },
+
+    methods: {
+        wechatShare (val) {
+
+        }
+    },
+
+    components: {
+        CImage
     }
-  },
-
-  methods: {
-    wechatShare (val) {
-
-    }
-  },
-
-  components: {
-    CImage
-  }
 }
 </script>
 

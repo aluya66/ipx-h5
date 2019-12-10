@@ -1,6 +1,6 @@
 <template>
   <van-nav-bar
-    :class="bem()"
+    :class='bem()'
     :fixed="fixed"
     :title="curTitle"
     :left-text="leftText"
@@ -10,15 +10,14 @@
     :border="showBorderBottom"
     v-bind="$attrs"
     v-on="$listeners"
-    :style="{'padding-top': paddingTop}"
   >
     <div slot="left" v-if="$slots.left">
       <slot name="left"></slot>
     </div>
-    <div slot="title" v-if="$slots.title">
+    <div :style='themeLight' slot="title" v-if="$slots.title">
       <slot name="title"></slot>
     </div>
-    <div slot="right" v-if="$slots.right">
+    <div class="c-header-right" slot="right" v-if="$slots.right">
       <slot name="right"></slot>
     </div>
   </van-nav-bar>
@@ -30,101 +29,110 @@ import { NavBar } from 'vant'
 import utils from 'utils'
 
 export default create({
-  name: 'header',
-  inheritAttrs: false,
-  components: {
-    [NavBar.name]: NavBar
-  },
-  props: {
-    fixed: {
-      type: Boolean,
-      default: false
+    name: 'header',
+    inheritAttrs: false,
+    components: {
+        [NavBar.name]: NavBar
     },
-    title: {
-      type: String,
-      default: ''
-    },
-    leftText: {
-      type: String,
-      default: ''
-    },
-    rightText: {
-      type: String,
-      default: ''
-    },
-    leftArrow: {
-      type: Boolean,
-      default: true
-    },
-    showBorderBottom: {
-      type: Boolean,
-      default: false
-    },
-    pageOutStatus: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data () {
-    return {
-      baseParams: {},
-      paddingTop: 0
-    }
-  },
-  activated () {
-    this.baseParams = utils.getStore('baseParams')
-    // this.baseParams.statusBarHeight = 44;
-    let statusBarHeight = this.baseParams.statusBarHeight || 0
-    let statusBarHeightSum = Number(statusBarHeight) / 100
-    if (this.baseParams.platform === 'ios') {
-      this.paddingTop = statusBarHeightSum + 'rem'
-      // if (Number(this.baseParams.statusBarHeight) > 20) {
-      //   // this.paddingTop = (Number(statusBarHeight) - Number(0.2))   + 'rem'
-      //   // alert(this.paddingTop)
-      // }
-    } else if (this.baseParams.platform === 'android') {
-      this.paddingTop = statusBarHeightSum + 'rem'
-    }
-  },
-  computed: {
-    curTitle () {
-      if (this.$route.meta) {
-        const { title } = this.$route.meta
-        if (title) {
-          return this.translate(title, 'route')
+    props: {
+        isLight: {
+            type: Boolean,
+            default: true
+        },
+        fixed: {
+            type: Boolean,
+            default: false
+        },
+        title: {
+            type: String,
+            default: ''
+        },
+        leftText: {
+            type: String,
+            default: ''
+        },
+        rightText: {
+            type: String,
+            default: ''
+        },
+        leftArrow: {
+            type: Boolean,
+            default: true
+        },
+        showBorderBottom: {
+            type: Boolean,
+            default: false
+        },
+        pageOutStatus: {
+            type: Boolean,
+            default: false
         }
-      }
-      return this.title
+    },
+    data () {
+        return {
+            baseParams: {},
+            paddingTop: 0
+        }
+    },
+    activated () {
+
+    },
+    computed: {
+        curTitle () {
+            if (this.$route.meta) {
+                const { title } = this.$route.meta
+                if (title) {
+                    return this.translate(title, 'route')
+                }
+            }
+            return this.title
+        },
+        themeLight () {
+            if (this.isLight) {
+                return 'color:#2a2b33'
+            }
+            return 'color:#fff'
+        }
+    },
+    mounted () {
+    },
+    methods: {
+        onClickLeft () {
+            let method = 'page_out'
+            if (this.pageOutStatus) {
+                utils.postMessage(method, '')
+            } else {
+                this.$router.go(-1)
+            }
+        }
     }
-  },
-  mounted () {
-  },
-  methods: {
-    onClickLeft () {
-      let method = 'page_out'
-      if (this.pageOutStatus) {
-        utils.postMessage(method, '')
-      } else {
-        this.$router.go(-1)
-      }
-    }
-  }
 })
 </script>
 
 <style lang="less">
 .c-header {
-  height: auto;
-  margin-bottom: @f1;
-  .van-nav-bar__title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #2a2b33;
-    height: 46px;
-    line-height: 46px;
-  }
+    height: auto;
+    margin-bottom: @f1;
+    .van-nav-bar__title {
+        font-size: 18px;
+        font-weight: 600;
+        height: 44px;
+        line-height: 44px;
+        .title_light {
+            color: @color-c1;
+        }
+        .title_dart {
+            color: #fff
+        }
+    }
+
 }
 
+.c-header-right {
+    p {
+        margin: 0
+    }
+}
 .c-header-white{
   .van-icon-arrow-left {
     // background: url("../../themes/images/app/icon_next20_white1@3x.png");

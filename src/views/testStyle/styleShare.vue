@@ -35,111 +35,111 @@
 import shareList from '@/views/common/shareList'
 import utils from 'utils'
 export default {
-  components: {
-    shareList
-  },
-  data () {
-    return {
-      bannerCode: '',
-      participantCode: '',
-      bookActivityCode: '',
-      totalNum: '',
-      paddingTop: '',
-      list: [
-        {
-          mainPic: '',
-          productAtrNumber: '',
-          productCode: ''
+    components: {
+        shareList
+    },
+    data () {
+        return {
+            bannerCode: '',
+            participantCode: '',
+            bookActivityCode: '',
+            totalNum: '',
+            paddingTop: '',
+            list: [
+                {
+                    mainPic: '',
+                    productAtrNumber: '',
+                    productCode: ''
+                }
+            ]
         }
-      ]
-    }
-  },
-  activated () {
-    this.participantCode = this.$route.query.participantCode
-    this.bookActivityCode = this.$route.query.bookActivityCode
-    this.getSharemeasuresList()
-
-    this.baseParams = utils.getStore('baseParams')
-    let statusBarHeight = this.baseParams.statusBarHeight || 0
-    let statusBarHeightSum = Number(statusBarHeight) / 100
-    if (this.baseParams.platform === 'ios') {
-      if (Number(this.baseParams.statusBarHeight) > 20) {
-        this.paddingTop = (Number(statusBarHeightSum)) + 'rem'
-      }
-    }
-  },
-  mounted () {
-    setTimeout(() => {
-      // console.log(document.querySelector('.van-pull-refresh'))
-
-      // console.log(this.$refs.shareList.offsetHeight)
-      // document.querySelector('.list-scroll').style.height =
-      //   (this.$refs.shareList.offsetHeight - 880) + 'px'
-      // if (this.$refs.shareList.offsetHeight > 3000) {
-      //   document.querySelector('.van-pull-refresh').style.height =
-      //   (this.$refs.shareList.offsetHeight - 860) + 'px'
-      // } else {
-      //   document.querySelector('.van-pull-refresh').style.height =
-      //   (this.$refs.shareList.offsetHeight - 650) + 'px'
-      // }
-
-      // document.querySelector('.van-list').style.height =
-      // (this.$refs.shareList.offsetHeight - 600) + 'px'
-      // document.querySelector('.van-pull-refresh__track').style.height =
-      // (this.$refs.shareList.offsetHeight - 1000) + 'px'
-    }, 500)
-  },
-  methods: {
-    getSharemeasuresList () {
-      const params = {
-        participantCode: this.participantCode
-      }
-      this.$api.book
-        .getSharemeasuresList(params)
-        .then(res => {
-          this.list = res
-          this.totalNum = res.length || 0
-          if (this.list.length > 9) {
-            this.list = this.list.splice(0, 9)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
-    async bookShared () {
-      let params = {
-        participantCode: this.participantCode
-      }
-      await this.$api.book
-        .bookShared(params)
-        .then(res => {
-          console.log(res)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    activated () {
+        this.participantCode = this.$route.query.participantCode
+        this.bookActivityCode = this.$route.query.bookActivityCode
+        this.getSharemeasuresList()
+
+        this.baseParams = utils.getStore('baseParams')
+        let statusBarHeight = this.baseParams.statusBarHeight || 0
+        let statusBarHeightSum = Number(statusBarHeight) / 100
+        if (this.baseParams.platform === 'ios') {
+            if (Number(this.baseParams.statusBarHeight) > 20) {
+                this.paddingTop = (Number(statusBarHeightSum)) + 'rem'
+            }
+        }
     },
-    async shareWechat (type) {
-      // let url = window.location.host
-      let url = 'h5.yosar.com'
-      // type 1=好友 2=朋友圈
-      let method = 'one_key_share'
-      let params = {
-        type: String(type),
-        title: '我想邀请你一起做时尚买手',
-        url: `https://${url}/ipxhybrid/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
-        // shareImage: 'http://media.yosar.com/19/324/1574152045660',
-        description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
-      }
+    mounted () {
+        setTimeout(() => {
+            // console.log(document.querySelector('.van-pull-refresh'))
 
-      await this.bookShared()
+            // console.log(this.$refs.shareList.offsetHeight)
+            // document.querySelector('.list-scroll').style.height =
+            //   (this.$refs.shareList.offsetHeight - 880) + 'px'
+            // if (this.$refs.shareList.offsetHeight > 3000) {
+            //   document.querySelector('.van-pull-refresh').style.height =
+            //   (this.$refs.shareList.offsetHeight - 860) + 'px'
+            // } else {
+            //   document.querySelector('.van-pull-refresh').style.height =
+            //   (this.$refs.shareList.offsetHeight - 650) + 'px'
+            // }
 
-      console.log(JSON.stringify(params) + 'params')
+            // document.querySelector('.van-list').style.height =
+            // (this.$refs.shareList.offsetHeight - 600) + 'px'
+            // document.querySelector('.van-pull-refresh__track').style.height =
+            // (this.$refs.shareList.offsetHeight - 1000) + 'px'
+        }, 500)
+    },
+    methods: {
+        getSharemeasuresList () {
+            const params = {
+                participantCode: this.participantCode
+            }
+            this.$api.book
+                .getSharemeasuresList(params)
+                .then(res => {
+                    this.list = res
+                    this.totalNum = res.length || 0
+                    if (this.list.length > 9) {
+                        this.list = this.list.splice(0, 9)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        async bookShared () {
+            let params = {
+                participantCode: this.participantCode
+            }
+            await this.$api.book
+                .bookShared(params)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        async shareWechat (type) {
+            // let url = window.location.host
+            let url = 'h5.yosar.com'
+            // type 1=好友 2=朋友圈
+            let method = 'one_key_share'
+            let params = {
+                type: String(type),
+                title: '我想邀请你一起做时尚买手',
+                url: `https://${url}/ipxhybrid/oauth?bookActivityCode=${this.bookActivityCode}&participantCode=${this.participantCode}`,
+                // shareImage: 'http://media.yosar.com/19/324/1574152045660',
+                description: '这一季时尚选款，就听你的！为你偏爱的原创款式代言！'
+            }
 
-      utils.postMessage(method, params)
+            await this.bookShared()
+
+            console.log(JSON.stringify(params) + 'params')
+
+            utils.postMessage(method, params)
+        }
     }
-  }
 }
 </script>
 

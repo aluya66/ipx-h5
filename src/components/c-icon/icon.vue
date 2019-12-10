@@ -6,16 +6,16 @@
 import create from 'utils/create'
 
 export default create({
-  name: 'icon',
-  props: {
-    name: String,
-    extIcon: Boolean
-  },
-  methods: {
-    doEmit () {
-      this.$emit('click-icon')
+    name: 'icon',
+    props: {
+        name: String,
+        extIcon: Boolean
+    },
+    methods: {
+        doEmit () {
+            this.$emit('click-icon')
+        }
     }
-  }
 })
 </script>
 

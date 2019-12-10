@@ -7,19 +7,19 @@
 
 <script>
 export default {
-  data () {
-    return {
-      name: '店铺'
+    data () {
+        return {
+            name: '店铺'
+        }
+    },
+    mounted () {
+        console.log(5555)
+        this.name = '店铺1'
+    },
+    methods: {
+        btn () {
+            this.name = '店铺2'
+        }
     }
-  },
-  mounted () {
-    console.log(5555)
-    this.name = '店铺1'
-  },
-  methods: {
-    btn () {
-      this.name = '店铺2'
-    }
-  }
 }
 </script>

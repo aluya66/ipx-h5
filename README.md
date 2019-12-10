@@ -85,12 +85,12 @@ or
 
 - 2、配置`nginx`代理
 ```
-	location /dm-admin {
-		try_files $uri $uri/ /dm-admin/index.html;
+	location ~ ^/ipxhybrid {
+		try_files $uri $uri/ /ipxhybrid/index.html;
 	}
 
-	location /api {
-		proxy_pass  http://ip:port  /*线上框架后台服务域名及端口*/
+	location ~ ^/api-ipx {
+		proxy_pass http://portal.yosar.test/    /*线上框架后台服务域名及端口*/
 	}
 
 ```

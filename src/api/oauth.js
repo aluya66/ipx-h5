@@ -8,8 +8,8 @@ const context = 'https://openapi.yosar.com'
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getOauth = params => Http.fetch(`${context}/oauth`, params, {
-  method: 'get',
-  hasErrMsg: true
+    method: 'get',
+    hasErrMsg: true
 })
 
 /**
@@ -18,6 +18,6 @@ export const getOauth = params => Http.fetch(`${context}/oauth`, params, {
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getTicket = params => Http.fetch(`${context}/ticket`, params, {
-  method: 'get',
-  hasErrMsg: true
+    method: 'get',
+    hasErrMsg: true
 })

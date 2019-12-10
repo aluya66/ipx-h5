@@ -22,40 +22,40 @@ import { Search } from 'vant'
 import create from 'utils/create'
 
 export default create({
-  name: 'search',
-  inheritAttrs: false,
-  props: {
-    placeholder: {
-      type: String,
-      default: '请输入搜索关键词'
-    },
-    shape: {
-      type: String,
-      default: 'square'
-    },
-    bgColor: {
-      type: String,
-      default: '#ffffff'
-    },
-    rightAction: {
-      type: Boolean,
-      default: false
-    },
-    rightActionText: {
-      type: String,
-      default: '取消'
-    }
+    name: 'search',
+    inheritAttrs: false,
+    props: {
+        placeholder: {
+            type: String,
+            default: '请输入搜索关键词'
+        },
+        shape: {
+            type: String,
+            default: 'square'
+        },
+        bgColor: {
+            type: String,
+            default: '#ffffff'
+        },
+        rightAction: {
+            type: Boolean,
+            default: false
+        },
+        rightActionText: {
+            type: String,
+            default: '取消'
+        }
 
-  },
-  data () {
-    return {
-      value: ''
-    }
-  },
+    },
+    data () {
+        return {
+            value: ''
+        }
+    },
 
-  components: {
-    [Search.name]: Search
-  }
+    components: {
+        [Search.name]: Search
+    }
 })
 </script>
 
