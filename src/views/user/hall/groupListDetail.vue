@@ -393,6 +393,7 @@ export default {
       height: 106px;
       border-radius: 4px;
       object-fit: cover;
+      border:1px solid @color-c7;
     }
     .product-info {
       margin-left: 12px;
