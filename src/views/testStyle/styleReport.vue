@@ -29,6 +29,8 @@
 <script>
 import reportList from '@/views/common/reportList.vue'
 import components from 'components'
+import utils from 'utils'
+
 const { CTabs } = components
 export default {
     components: {
@@ -53,14 +55,14 @@ export default {
             testStyleList: []
         }
     },
-    computed:{
-      marginTop() {
-          let basepara = utils.getStore('baseParams')
-          if (basepara.isIphoneX) {
-              return 'top:0.44rem'
-          }
-          return 'top:0.2rem'
-      },
+    computed: {
+        marginTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'top:0.44rem'
+            }
+            return 'top:0.2rem'
+        }
     },
     activated () {
         this.participantCode = this.$route.query.participantCode
