@@ -424,7 +424,7 @@ export default {
         width: 100%;
         position: relative;
         overflow: hidden;
-        background-color: black;
+        // background-color: black;
         > video {
           display: block;
           width: 100%;
