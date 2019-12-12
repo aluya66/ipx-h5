@@ -62,7 +62,6 @@ export default {
     },
     watch: {
         items(val) {
-            debugger
             this.allItems = val
         }
     },
@@ -72,13 +71,8 @@ export default {
             this.$emit('onSelect', item)
         },
         handleExpand() {
-            // this.$set(this.dataSource, 'isExpand', !this.dataSource.isExpand)
-            // this.$emit('onExpand',this.dataSource)
-
             this.dataSource.isExpand = !this.dataSource.isExpand
             this.allItems = this.dataSource.isExpand ? this.items : this.items.slice(0, 8)
-            // this.$set(item, 'isSelected', !item.isSelected)
-            // this.$emit('onSelect', item)
         }
     },
     mounted() {
@@ -90,8 +84,7 @@ export default {
 <style lang='less' scoped>
 .bottom-line {
     section {
-      margin: 0 0;
-      background:linear-gradient(180deg,rgba(225,226,230,0) 0%,rgba(227,226,230,1) 0%,rgba(225,226,230,1) 100%);
+      background:#E1E2E6;
       height: 1px;
     }
     p {

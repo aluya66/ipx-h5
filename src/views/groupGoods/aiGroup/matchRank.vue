@@ -138,14 +138,7 @@ export default {
         height: 26px;
     }
 }
-.mainImage {
-    display: block;
-    width: 114px;
-    height: 129px;
-    object-fit: cover;
-    border-radius:8px;
-    border:1px solid rgba(244,245,247,1);
-}
+
 .contain {
     overflow: auto;
     height: 100%;
@@ -190,14 +183,18 @@ export default {
             padding: 16px;
             display: flex;
             flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            margin-top:44px;
+            justify-content: space-between;
+            // align-items: center;
             position: relative;
-            &:first-child {
-                margin-top: 0;
+            .mainImage {
+                display: block;
+                width: 114px;
+                min-width: 114px;
+                height: 128px;
+                object-fit: cover;
+                border-radius:8px;
+                border:1px solid rgba(244,245,247,1);
             }
-
             .rankImage {
                 position: absolute;
                 width: 32px;

@@ -199,14 +199,6 @@ export default {
                     }
                     kindItem.isExpand = false
                     kindItem.hasExpand = kindItem.labels.length > 8
-                    // debugger
-                    // if (kindItem.labelCategoryName === "风格") {
-                    //     debugger
-                    //     kindItem.isExpand = kindItem.labels.length > 8
-                    //     kindItem.hasExpand = kindItem.labels.length > 8
-                    // }else {
-                    //     kindItem.hasExpand = false
-                    // }
                     kindItem.labels = kindItem.labels.map((item, index) => {
                         // item.imageUrl = this.season[index].icon
                         return {
