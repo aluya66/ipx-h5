@@ -11,7 +11,7 @@
             <empty-view class="empty" v-if="rankData.length <= 0" emptyDesc='正在统计排行榜，请稍后再查看哦～' emptyType="error" />
             <div class="rank-content" v-else v-for="(item,index) in rankData" :key="item+index" @click="handleToDetail(item)">
                <div class="rank-contain">
-                    <img class="mainImage" :src="item.groupImg" alt="">
+                    <img class="mainImage" :src="item.groupImg" alt="" />
                     <div class="infoContain">
                         <div>
                             <h3>{{item.groupTitle}}</h3>
@@ -138,6 +138,14 @@ export default {
         height: 26px;
     }
 }
+.mainImage {
+    display: block;
+    width: 114px;
+    height: 129px;
+    object-fit: cover;
+    border-radius:8px;
+    border:1px solid rgba(244,245,247,1);
+}
 .contain {
     overflow: auto;
     height: 100%;
@@ -189,14 +197,7 @@ export default {
             &:first-child {
                 margin-top: 0;
             }
-            .mainImage {
-                display: block;
-                width: 114px;
-                height: 129px;
-                object-fit: cover;
-                border-radius:8px;
-                border:1px solid rgba(244,245,247,1);
-            }
+            
             .rankImage {
                 position: absolute;
                 width: 32px;

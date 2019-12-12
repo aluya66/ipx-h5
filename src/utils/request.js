@@ -199,6 +199,12 @@ export default {
             } else {
                 instance(options).then((res) => {
                     if (res.code !== 0) {
+                        if (res.code === 11) {
+                            let baseParams = utils.getStore('baseParams')
+                            baseParams.token = ''
+                            utils.setStore('baseParams', JSON.stringify(this.baseParams))
+                            utils.setStore('token', '')
+                        }
                         if (opt.hasErrMsg) {
                             resolve(res)
                         } else {

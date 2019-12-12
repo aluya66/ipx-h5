@@ -20,13 +20,13 @@
 
     <!-- 商品特征开始 -->
     <div class="container" :style="getBottomOffset(75)" v-if="currentTab === 0">
-      <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels"  :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0 ?"image-box category-box":""' :itemClass='item.imageUrl.length > 0 ?"image-item":""' sectionSubTitle="(可多选)">
-<template #selectItem="slotProps">
-<img class="image-img" :src="slotProps.item.imageUrl">
-<p class="image-name">{{slotProps.item.labelName}}</p>
-<img v-if="slotProps.item.isSelected" class="check-box-img" src="~images/groupGoods/selected_icon.png" />
-</template>
-      </select-box>
+        <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels"  :sectionTitle="item.labelCategoryName" :dataSource='item' :itemBoxClass='item.imageUrl.length > 0 ?"image-box category-box":""' :itemClass='item.imageUrl.length > 0 ?"image-item":""' sectionSubTitle="(可多选)">
+                <template #selectItem="slotProps">
+                    <img class="image-img" :src="slotProps.item.imageUrl">
+                    <p class="image-name">{{slotProps.item.labelName}}</p>
+                    <img v-if="slotProps.item.isSelected" class="check-box-img" src="~images/groupGoods/selected_icon.png" />
+                </template>
+        </select-box>
     </div>
     <!-- 商品特征结束 -->
     <div class="bottom-box" :style="getBottomOffset(0)">
@@ -135,6 +135,18 @@ export default {
         utils.postMessage('changeStatus', 'default')
     },
     methods: {
+        handleClickExpand(item) {
+            // this.curCategory.forEach(citem => {
+            //     if (item.labelCategoryName === citem.labelCategoryName) {
+            //         citem.isExpand = !citem.isExpand
+            //         this.$set(citem,'isExpand',!citem.isExpand)
+            //         debugger
+            //     }
+            // })
+            // this.$set(item,'isExpand',!item.isExpand)
+
+            item.isExpand = !item.isExpand
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -172,7 +184,7 @@ export default {
                 let ret = data.labels // 分类列表
                 this.curCategory = ret
 
-                ret && ret.length && ret.forEach((kindItem) => {
+                this.curCategory && this.curCategory.length && this.curCategory.forEach((kindItem) => {
                     if (kindItem.imageUrl === undefined) {
                         kindItem.imageUrl = ''
                     }
@@ -185,6 +197,16 @@ export default {
                             item.imageUrl = this.customerGroupList[index].icon
                         })
                     }
+                    kindItem.isExpand = false
+                    kindItem.hasExpand = kindItem.labels.length > 8
+                    // debugger
+                    // if (kindItem.labelCategoryName === "风格") {
+                    //     debugger
+                    //     kindItem.isExpand = kindItem.labels.length > 8
+                    //     kindItem.hasExpand = kindItem.labels.length > 8
+                    // }else {
+                    //     kindItem.hasExpand = false
+                    // }
                     kindItem.labels = kindItem.labels.map((item, index) => {
                         // item.imageUrl = this.season[index].icon
                         return {

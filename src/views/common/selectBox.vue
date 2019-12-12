@@ -2,10 +2,14 @@
   <div class="item-wrapper">
     <div class="title">{{sectionTitle}}<span>{{sectionSubTitle}}</span></div>
     <div :class="['item-box', itemBoxClass]">
-      <div :class="[itemClass?itemClass:'item-common',isSlot?'': item.isSelected? 'item-selected' : 'item-default']" v-for="(item,index) in items" :key="index" @click="handleSelect(item)" >
+      <div :class="[itemClass?itemClass:'item-common',isSlot?'': item.isSelected? 'item-selected' : 'item-default']" v-for="(item,index) in allItems" :key="index" @click="handleSelect(item)" >
         <slot v-if="isSlot" name='selectItem' :item="item" ></slot>
         <p>{{isSlot  ?"":item.labelName}}</p>
       </div>
+    </div>
+    <div class="bottom-line" v-if="dataSource.hasExpand" @click="handleExpand">
+      <section></section>
+      <p>{{dataSource.isExpand?"收起":"展开"}}<img :src='dataSource.isExpand?upImg:downImg' alt=""></p>
     </div>
   </div>
 </template>
@@ -16,6 +20,12 @@ export default {
 
     },
     props: {
+        dataSource: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
         sectionTitle: {
             type: String,
             default: ''
@@ -45,22 +55,62 @@ export default {
     },
     data () {
         return {
-
+            downImg: require('@/themes/images/app/control_drop_down.png'),
+            upImg: require('@/themes/images/app/control_drop_up.png'),
+            allItems: []
         }
     },
-    computed: {
-
+    watch: {
+        items(val) {
+            debugger
+            this.allItems = val
+        }
     },
     methods: {
         handleSelect(item) {
             this.$set(item, 'isSelected', !item.isSelected)
             this.$emit('onSelect', item)
+        },
+        handleExpand() {
+            // this.$set(this.dataSource, 'isExpand', !this.dataSource.isExpand)
+            // this.$emit('onExpand',this.dataSource)
+
+            this.dataSource.isExpand = !this.dataSource.isExpand
+            this.allItems = this.dataSource.isExpand ? this.items : this.items.slice(0, 8)
+            // this.$set(item, 'isSelected', !item.isSelected)
+            // this.$emit('onSelect', item)
         }
+    },
+    mounted() {
+        this.allItems = this.dataSource.isExpand ? this.items : this.items.slice(0, 8)
     }
 }
 </script>
 
 <style lang='less' scoped>
+.bottom-line {
+    section {
+      margin: 0 0;
+      background:linear-gradient(180deg,rgba(225,226,230,0) 0%,rgba(227,226,230,1) 0%,rgba(225,226,230,1) 100%);
+      height: 1px;
+    }
+    p {
+      font-size:12px;
+      font-weight:400;
+      color:#B2B5C1;
+      line-height:16px;
+      height:16px;
+      // vertical-align: middle;
+      text-align: center;
+      margin-top: 8px;
+      img {
+        vertical-align: bottom;
+        width: 16px;
+        height: 16px;
+        // display: block;
+      }
+    }
+}
 .item-wrapper {
     position: relative;
     margin-bottom: 32px;

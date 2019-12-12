@@ -299,6 +299,7 @@ export default {
         width: 48px;
         height: 48px;
         border-radius: 24px;
+        object-fit: cover
     }
     .designer-header-default {
         border: 1px solid rgba(255, 255, 255, 1);
