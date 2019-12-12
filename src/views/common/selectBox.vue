@@ -16,68 +16,68 @@
 
 <script>
 export default {
-  components: {
+    components: {
 
-  },
-  props: {
-    dataSource: {
-      type: Object,
-      default () {
-        return {}
-      }
     },
-    sectionTitle: {
-      type: String,
-      default: ''
+    props: {
+        dataSource: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
+        sectionTitle: {
+            type: String,
+            default: ''
+        },
+        sectionSubTitle: {
+            type: String,
+            default: ''
+        },
+        items: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        itemBoxClass: {
+            type: String,
+            default: ''
+        },
+        itemClass: {
+            type: String,
+            default: null
+        },
+        isSlot: {
+            type: Boolean,
+            default: false
+        }
     },
-    sectionSubTitle: {
-      type: String,
-      default: ''
+    data() {
+        return {
+            downImg: require('@/themes/images/app/control_drop_down.png'),
+            upImg: require('@/themes/images/app/control_drop_up.png'),
+            allItems: []
+        }
     },
-    items: {
-      type: Array,
-      default () {
-        return []
-      }
+    watch: {
+        items(val) {
+            this.allItems = val
+        }
     },
-    itemBoxClass: {
-      type: String,
-      default: ''
+    methods: {
+        handleSelect(item) {
+            this.$set(item, 'isSelected', !item.isSelected)
+            this.$emit('onSelect', item)
+        },
+        handleExpand() {
+            this.dataSource.isExpand = !this.dataSource.isExpand
+            this.allItems = this.dataSource.isExpand ? this.items : this.items.slice(0, 8)
+        }
     },
-    itemClass: {
-      type: String,
-      default: null
-    },
-    isSlot: {
-      type: Boolean,
-      default: false
+    mounted() {
+        this.allItems = this.dataSource.isExpand ? this.items : this.items.slice(0, 8)
     }
-  },
-  data() {
-    return {
-      downImg: require('@/themes/images/app/control_drop_down.png'),
-      upImg: require('@/themes/images/app/control_drop_up.png'),
-      allItems: []
-    }
-  },
-  watch: {
-    items(val) {
-      this.allItems = val
-    }
-  },
-  methods: {
-    handleSelect(item) {
-      this.$set(item, 'isSelected', !item.isSelected)
-      this.$emit('onSelect', item)
-    },
-    handleExpand() {
-      this.dataSource.isExpand = !this.dataSource.isExpand
-      this.allItems = this.dataSource.isExpand ? this.items : this.items.slice(0, 8)
-    }
-  },
-  mounted() {
-    this.allItems = this.dataSource.isExpand ? this.items : this.items.slice(0, 8)
-  }
 }
 </script>
 
