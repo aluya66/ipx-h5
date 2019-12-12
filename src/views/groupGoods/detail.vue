@@ -49,7 +49,9 @@
           </div>
         </div>
         <div class="call-commit">
-          <button @click="handleCall" :disabled="isVoted">{{isVoted ? '已打call': '给它打call'}}</button>
+          <button @click="handleCall" :disabled="isVoted">
+            {{ isVoted ? "已打call" : "给它打call" }}
+          </button>
         </div>
       </div>
 
@@ -109,7 +111,7 @@
                 </p>
               </div>
               <div class="price">
-                ¥ <span>{{ item.spuTshPrice }}</span>
+                ¥ <span>{{ cashFormat(item.spuTshPrice) }}</span>
               </div>
             </div>
           </div>
@@ -122,7 +124,7 @@
         class="
       price"
       >
-        ¥<span>{{ groupDetail.totalPrice }}</span>
+        ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
       </div>
       <button @click="addHall">添加至展厅</button>
     </div>
@@ -130,6 +132,7 @@
 </template>
 
 <script>
+import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
 import { Dialog } from 'vant'
 import progressCricle from '@/views/common/cricleProgress.vue'
@@ -253,6 +256,9 @@ export default {
         }
     },
     methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -411,31 +417,21 @@ export default {
   .header-top {
     .swiper-content {
       width: 100%;
-      height: 421px;
+      height: auto;
       position: relative;
       z-index: 0;
       .swiper-slide {
         width: 100%;
         position: relative;
         overflow: hidden;
-        background-color: black;
+        // background-color: black;
         > video {
           display: block;
           width: 100%;
           object-fit: cover;
-          height: auto;
+          max-height: 421px;
           position: relative;
-          top: 50%;
-          transform: translateY(-50%);
         }
-        // > button {
-        //   width: 68px;
-        //   height: 68px;
-        //   background: url('../../themes/images/app/video_play@3x.png');
-        //   background-repeat: no-repeat;
-        //   background-size: 100% 100%;
-        //   z-index: 100;
-        // }
         > img {
           display: block;
           width: 100%;
@@ -590,7 +586,7 @@ export default {
           height: 106px;
           border-radius: 4px;
           object-fit: cover;
-          border:1px solid @color-c7;
+          border: 1px solid @color-c7;
         }
         .product-info {
           margin-left: 12px;

@@ -1,12 +1,9 @@
 <template>
   <layout-view>
-    <c-header slot="header" :left-arrow="true">
+    <c-header class="my-header" slot="header" :left-arrow="true">
       <div class="title-header" slot="title">
         编辑组货方案
       </div>
-      <template slot="right" tag="div">
-        <span class="header-save" @click="save">保存</span>
-      </template>
     </c-header>
     <!-- <div class="line" :style="marginTop"></div> -->
     <div class="panel" :style="getBottomOffset(69)">
@@ -44,7 +41,7 @@
               <p class="tips">{{ tipStr(item) }}</p>
             </div>
             <p :class="[item.disabled ? 'disablePrice' : 'price']">
-              <span class="yen">¥</span>{{ item.spuTshPrice }}
+              ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
             </p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
           </div>
@@ -52,7 +49,8 @@
       </div>
       <div class="footer-content" :style="getBottomOffset(0)">
         <div class="total-price">
-          合计：<span class="yen">¥</span><span class="price">{{ groupDetail.totalPrice }}</span>
+          合计：<span class="yen">¥</span
+          ><span class="price">{{ cashFormat(groupDetail.totalPrice) }}</span>
         </div>
         <button @click="goPay">立即采购</button>
       </div>
@@ -70,6 +68,7 @@
 <script>
 import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
+import cash from './cashFormat.js'
 import utils from 'utils'
 import { Dialog } from 'vant'
 export default {
@@ -87,7 +86,8 @@ export default {
             groupGoodsRecords: [], // 商品列表数据源
             isDialog: false,
             seletedDetailsItem: {}, // sku数据源
-            seletedItemIndex: '' // 选择调整商品下标
+            seletedItemIndex: '', // 选择调整商品下标
+            isOrderSuply: false
         }
     },
     activated() {
@@ -101,7 +101,13 @@ export default {
         this.isDialog = false
         this.groupDetail = {}
         this.groupGoodsRecords = []
-        this.getGroupDetail()
+        if (this.$route.query.orderId !== undefined) {
+            this.isOrderSuply = true
+            this.suplyGoods()
+        } else {
+            this.isOrderSuply = false
+            this.getGroupDetail()
+        }
         utils.postMessage('changeStatus', 'default')
     },
     filters: {
@@ -164,12 +170,11 @@ export default {
         }
     },
     methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
-        },
-        save() {
-            this.$toast.success('已保存')
-            this.$router.go(-1)
         },
         dialogAlert(isDialog) {
             if (!this.isDialog && isDialog) {
@@ -224,6 +229,29 @@ export default {
             })
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
         },
+        suplyGoods() {
+            const params = {
+                orderCode: this.$route.params.orderId
+            }
+            this.$api.groupGoods
+                .suplyGoods(params)
+                .then(res => {
+                    const { groupGoodsRecords } = res
+
+                    this.groupDetail = res
+                    this.groupGoodsRecords = groupGoodsRecords
+                    this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
+                        return {
+                            ...item,
+                            disabled: false
+                        }
+                    })
+                    this.groupName = this.groupDetail.name
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         getGroupDetail() {
             // 获取组货详情列表
             const params = {
@@ -254,8 +282,12 @@ export default {
         skuCommit(seletedDetailsItem) {
             // sku修改 确定
             this.seletedDetailsItem = seletedDetailsItem
+            if (this.isOrderSuply) {
+                this.$toast.success('已修改')
+                this.showSku = false
+                return
+            }
             let groupProducts = []
-
             const params = {
                 groupGoodsId: this.groupDetail.groupGoodsId,
                 name: this.groupDetail.name
@@ -282,7 +314,6 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         this.getGroupDetail()
-                        // this.groupGoodsRecords[this.seletedItemIndex] = this.seletedDetailsItem
                         this.$toast.success('已修改')
                     }
                 })
@@ -310,10 +341,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.header-save {
-  font-size: 14px;
-  font-weight: 400;
-  color: @color-ec;
+.my-header {
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: @color-c7;
+  }
 }
 .line {
   position: fixed;
@@ -393,7 +430,7 @@ export default {
       height: 106px;
       border-radius: 4px;
       object-fit: cover;
-      border:1px solid @color-c7;
+      border: 1px solid @color-c7;
     }
     .product-info {
       margin-left: 12px;
@@ -437,23 +474,29 @@ export default {
         }
       }
       .price {
-        font-size: 18px;
-        font-weight: bold;
+        font-size: 12px;
+        font-weight: 400;
         color: @color-rc;
+        font-family: "alibabaRegular";
         margin-top: 8px;
-        font-family: "alibabaBold";
+        > span {
+          font-size: 18px;
+          font-weight: bold;
+          color: @color-rc;
+          font-family: "alibabaBold";
+        }
       }
       .disablePrice {
-        font-size: 18px;
-        font-weight: bold;
+        font-size: 12px;
+        font-weight: 400;
         color: @color-c4;
+        font-family: "alibabaRegular";
         margin-top: 8px;
-        font-family: "alibabaBold";
-        .yen {
-          font-size: 12px;
-          font-weight: 400;
+        > span {
+          font-size: 18px;
+          font-weight: bold;
           color: @color-c4;
-          font-family: "alibabaRegular";
+          font-family: "alibabaBold";
         }
       }
       .yen {
