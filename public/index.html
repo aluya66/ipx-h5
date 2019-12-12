@@ -3,15 +3,58 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <van-number-keyboard safe-area-inset-bottom />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>ipx_new</title>
+    <title><%= VUE_APP_TITLE %></title>
+<!--    <script type="text/javascript">-->
+<!--      // console.log(process.env.NODE_ENV, process.env.VUE_APP_BASEURLPATH)-->
+<!--      // let sensorsPath =  !process.env.NODE_ENV === 'development' ? process.env.VUE_APP_BASEURLPATH : '../';-->
+<!--      (function(para) {-->
+<!--        var p = para.sdk_url, n = para.name, w = window, d = document, s = 'script',x = null,y = null;-->
+<!--        if(typeof(w['sensorsDataAnalytic201505']) !== 'undefined') {-->
+<!--          return false;-->
+<!--        }-->
+<!--        w['sensorsDataAnalytic201505'] = n;-->
+<!--        w[n] = w[n] || function(a) {return function() {(w[n]._q = w[n]._q || []).push([a, arguments]);}};-->
+<!--        var ifs = ['track','quick','register','registerPage','registerOnce','trackSignup', 'trackAbtest', 'setProfile','setOnceProfile','appendProfile', 'incrementProfile', 'deleteProfile', 'unsetProfile', 'identify','login','logout','trackLink','clearAllRegister'];-->
+<!--        for (var i = 0; i < ifs.length; i++) {-->
+<!--          w[n][ifs[i]] = w[n].call(null, ifs[i]);-->
+<!--        }-->
+<!--        if (!w[n]._t) {-->
+<!--          x = d.createElement(s), y = d.getElementsByTagName(s)[0];-->
+<!--          x.async = 1;-->
+<!--          x.src = p;-->
+<!--          w[n].para = para;-->
+<!--          y.parentNode.insertBefore(x, y);-->
+<!--        }-->
+<!--      })({-->
+<!--        sdk_url: `../static/js/sensorsdata.min.js`,-->
+<!--        name: 'sa',-->
+<!--        server_url:`https://sensorsdatauploading.yosar.com/sa?project=default`,-->
+<!--        heatmap_url: `../static/js/heatmap.min.js`,-->
+<!--        web_url:"https://sensorsdataadmin.yosar.com",-->
+<!--        use_app_track: true,-->
+<!--        is_track_single_page:true,-->
+<!--        heatmap: {-->
+<!--          clickmap:'default',-->
+<!--          scroll_notice_map:'default',-->
+<!--          scroll_delay_time:4000,-->
+<!--        }-->
+<!--      });-->
+<!--      sa.quick('autoTrack', {-->
+<!--        Platform:'H5'-->
+<!--      });-->
+
+<!--    </script>-->
+
+    <script type="text/javascript">!function(e){function t(a){if(i[a])return i[a].exports;var n=i[a]={exports:{},id:a,loaded:!1};return e[a].call(n.exports,n,n.exports,t),n.loaded=!0,n.exports}var i={};return t.m=e,t.c=i,t.p="",t(0)}([function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=window;t["default"]=i.flex=function(normal,e,t){var a=e||100,n=t||1,r=i.document,o=navigator.userAgent,d=o.match(/Android[\S\s]+AppleWebkit\/(\d{3})/i),l=o.match(/U3\/((\d+|\.){5,})/i),c=l&&parseInt(l[1].split(".").join(""),10)>=80,p=navigator.appVersion.match(/(iphone|ipad|ipod)/gi),s=i.devicePixelRatio||1;p||d&&d[1]>534||c||(s=1);var u=normal?1:1/s,m=r.querySelector('meta[name="viewport"]');m||(m=r.createElement("meta"),m.setAttribute("name","viewport"),r.head.appendChild(m)),m.setAttribute("content","width=device-width,user-scalable=no,initial-scale="+u+",maximum-scale="+u+",minimum-scale="+u),r.documentElement.style.fontSize=normal?"50px": a/2*s*n+"px"},e.exports=t["default"]}]);  flex(false, 200, 1);</script>
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but ipx_new doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
+
     <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
   </body>
 </html>
+
+
+

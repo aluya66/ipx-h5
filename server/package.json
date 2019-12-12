@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node server.js",
+		"start-pm2": "pm2 start pm2start.json",
+		"stop-pm2": "pm2 stop all",
+		"restart-pm2": "pm2 restart all",
+		"delete-pm2": "pm2 delete all",
+		"check-pm2": "pm2 list"
+  },
+  "author": "redx <redx123@126.com> (https://github.com/redgang)",
+  "license": "MIT",
+  "dependencies": {
+    "address": "^1.0.3",
+    "koa": "^2.6.2",
+    "koa-static-server": "^1.4.0"
+  }
+}
