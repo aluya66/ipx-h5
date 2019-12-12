@@ -12,7 +12,6 @@
             <video
               id="upvideo"
               controls="controls"
-              autoplay="autoplay"
               preload="auto"
               webkit-playsinline="true"
               playsinline=""
@@ -20,9 +19,7 @@
               v-if="img.endsWith('.mp4')"
             >
               暂时不支持播放该视频
-              <!-- <source :src="videoImg(img)" type="video/mp4"> -->
             </video>
-            <!-- <button v-if="img.endsWith('.mp4')"></button> -->
             <img :src="img" v-else />
           </swiper-slide>
         </swiper>
@@ -52,7 +49,9 @@
           </div>
         </div>
         <div class="call-commit">
-          <button @click="handleCall" :disabled="isVoted">给它打call</button>
+          <button @click="handleCall" :disabled="isVoted">
+            {{ isVoted ? "已打call" : "给它打call" }}
+          </button>
         </div>
       </div>
 
@@ -112,7 +111,7 @@
                 </p>
               </div>
               <div class="price">
-                ¥ <span>{{ item.spuTshPrice }}</span>
+                ¥ <span v-format="'#,##0.00'">{{ Number(item.spuTshPrice) }}</span>
               </div>
             </div>
           </div>
@@ -125,7 +124,7 @@
         class="
       price"
       >
-        ¥<span>{{ groupDetail.totalPrice }}</span>
+        ¥<span v-format="'#,##0.00'">{{ Number(groupDetail.totalPrice) }}</span>
       </div>
       <button @click="addHall">添加至展厅</button>
     </div>
@@ -191,6 +190,7 @@ export default {
             type: 'pageView',
             event: 'pageView'
         })
+        this.groupDetail = {}
         this.productList = []
         this.importList = []
         this.slidImages = []
@@ -255,6 +255,29 @@ export default {
         }
     },
     methods: {
+    // 金额格式转化
+        // changeFormat(number, decimals = 0, decPoint = '.', thousandsSep = ',') {
+        //     number = (number + '').replace(/[^0-9+-Ee.]/g, '')
+        //     let n = !isFinite(+number) ? 0 : +number
+        //     let prec = !isFinite(+decimals) ? 0 : Math.abs(decimals)
+        //     let sep = typeof thousandsSep === 'undefined' ? ',' : thousandsSep
+        //     let dec = typeof decPoint === 'undefined' ? '.' : decPoint
+        //     let s = ''
+        //     let toFixedFix = function(n, prec) {
+        //         let k = Math.pow(10, prec)
+        //         return '' + Math.ceil(n * k) / k
+        //     }
+        //     s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.')
+        //     let re = /(-?\d+)(\d{3})/
+        //     while (re.test(s[0])) {
+        //         s[0] = s[0].replace(re, '$1' + sep + '$2')
+        //     }
+        //     if ((s[1] || '').length < prec) {
+        //         s[1] = s[1] || ''
+        //         s[1] += new Array(prec - s[1].length + 1).join('0')
+        //     }
+        //     return s.join(dec)
+        // },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -413,7 +436,7 @@ export default {
   .header-top {
     .swiper-content {
       width: 100%;
-      height: 421px;
+      height: auto;
       position: relative;
       z-index: 0;
       .swiper-slide {
@@ -425,19 +448,9 @@ export default {
           display: block;
           width: 100%;
           object-fit: cover;
-          height: auto;
+          max-height: 421px;
           position: relative;
-          top: 50%;
-          transform: translateY(-50%);
         }
-        // > button {
-        //   width: 68px;
-        //   height: 68px;
-        //   background: url('../../themes/images/app/video_play@3x.png');
-        //   background-repeat: no-repeat;
-        //   background-size: 100% 100%;
-        //   z-index: 100;
-        // }
         > img {
           display: block;
           width: 100%;
@@ -592,7 +605,7 @@ export default {
           height: 106px;
           border-radius: 4px;
           object-fit: cover;
-          border:1px solid @color-c7;
+          border: 1px solid @color-c7;
         }
         .product-info {
           margin-left: 12px;

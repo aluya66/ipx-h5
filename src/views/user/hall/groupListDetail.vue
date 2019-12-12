@@ -1,14 +1,11 @@
 <template>
   <layout-view>
-    <c-header slot="header" :left-arrow="true">
+    <c-header class="my-header" slot="header" :left-arrow="true">
       <div class="title-header" slot="title">
         编辑组货方案
       </div>
-      <template slot="right" tag="div">
-        <span class="header-save" @click="save">保存</span>
-      </template>
     </c-header>
-    <div class="line" :style="marginTop"></div>
+    <!-- <div class="line" :style="marginTop"></div> -->
     <div class="panel" :style="getBottomOffset(69)">
       <div class="top-content">
         <span>组货名称</span>
@@ -43,8 +40,8 @@
               </p>
               <p class="tips">{{ tipStr(item) }}</p>
             </div>
-            <p :class="[item.disabled ? 'disablePrice' : 'price']">
-              <span class="yen">¥</span>{{ item.spuTshPrice }}
+            <p :class="[item.disabled ? 'disablePrice' : 'price']" v-format="'#,##0.00'">
+              <span class="yen">¥</span>{{ Number(item.spuTshPrice) }}
             </p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
           </div>
@@ -52,7 +49,7 @@
       </div>
       <div class="footer-content" :style="getBottomOffset(0)">
         <div class="total-price">
-          合计：<span class="yen">¥</span><span class="price">{{ groupDetail.totalPrice }}</span>
+          合计：<span class="yen">¥</span><span class="price" v-format="'#,##0.00'">{{ Number(groupDetail.totalPrice) }}</span>
         </div>
         <button @click="goPay">立即采购</button>
       </div>
@@ -99,6 +96,7 @@ export default {
         })
         this.showSku = false
         this.isDialog = false
+        this.groupDetail = {}
         this.groupGoodsRecords = []
         this.getGroupDetail()
         utils.postMessage('changeStatus', 'default')
@@ -165,10 +163,6 @@ export default {
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
-        },
-        save() {
-            this.$toast.success('已保存')
-            this.$router.go(-1)
         },
         dialogAlert(isDialog) {
             if (!this.isDialog && isDialog) {
@@ -309,10 +303,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.header-save {
-  font-size: 14px;
-  font-weight: 400;
-  color: @color-ec;
+.my-header {
+  position: relative;
+   &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: @color-c7;
+  }
 }
 .line {
   position: fixed;
