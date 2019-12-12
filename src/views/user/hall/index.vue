@@ -561,7 +561,7 @@ export default {
     flex-wrap: wrap;
     padding: 0 16px; // overflow: auto;
     justify-content: space-between;
-    margin-top: -12px;
+    margin-top: -1px;
     .van-list__finished-text {
         width: 100%;
     }
