@@ -63,7 +63,7 @@
                 <img class="itemSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
                 <img :src="item.mainPic" alt="">
                 <p>{{item.productName}}</p>
-                <h3 v-format="'#,##0.00'">¥{{Number(item.tshPrice)}}</h3>
+                <h3 v-format="'¥#,##0.00'">{{Number(item.tshPrice)}}</h3>
             </div>
         </list>
         <list
