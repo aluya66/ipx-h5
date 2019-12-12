@@ -9,8 +9,8 @@
         <div class="van-sku-header__goods-info">
           <div class="my-goods-price" style="color: rgba(245, 48, 48, 1) !important;">
             <span class="my-price-symbol">¥</span>
-            <span class="my-sku__price-num"  v-format="'#,##0.00'"
-            style="font-family: alibabaBold;color: rgba(245, 48, 48, 1) !important;font-weight: bold;font-size: 0.2rem;">{{ Number(seletedDetailsItem.spuTshPrice) }}</span>
+            <span class="my-sku__price-num"
+            style="font-family: alibabaBold;color: rgba(245, 48, 48, 1) !important;font-weight: bold;font-size: 0.2rem;">{{ cashFormat(seletedDetailsItem.spuTshPrice) }}</span>
           </div>
           <div class="van-sku-header-item">
             <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
@@ -41,7 +41,7 @@
               >
                 <div class="flex-left">
                   <p class="spec-name">{{ skuItem.attrSpecValue }}</p>
-                  <p class="space-price"  v-format="'#,##0.00'" style="font-family: alibabaBold;color: @color-c4 !important;font-weight: bold;font-size: 0.12rem;">&yen;{{ Number(skuItem.tshPrice) }}</p>
+                  <p class="space-price" style="font-family: alibabaBold;color: @color-c4 !important;font-weight: bold;font-size: 0.12rem;">&yen;{{ cashFormat(skuItem.tshPrice) }}</p>
                 </div>
                 <div class="flex-right">
                   <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
 import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from 'vant'
 export default {
@@ -135,6 +136,9 @@ export default {
         }
     },
     methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },

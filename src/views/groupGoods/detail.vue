@@ -111,7 +111,7 @@
                 </p>
               </div>
               <div class="price">
-                ¥ <span v-format="'#,##0.00'">{{ Number(item.spuTshPrice) }}</span>
+                ¥ <span>{{ cashFormat(item.spuTshPrice) }}</span>
               </div>
             </div>
           </div>
@@ -124,7 +124,7 @@
         class="
       price"
       >
-        ¥<span v-format="'#,##0.00'">{{ Number(groupDetail.totalPrice) }}</span>
+        ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
       </div>
       <button @click="addHall">添加至展厅</button>
     </div>
@@ -132,6 +132,7 @@
 </template>
 
 <script>
+import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
 import { Dialog } from 'vant'
 import progressCricle from '@/views/common/cricleProgress.vue'
@@ -255,29 +256,9 @@ export default {
         }
     },
     methods: {
-    // 金额格式转化
-        // changeFormat(number, decimals = 0, decPoint = '.', thousandsSep = ',') {
-        //     number = (number + '').replace(/[^0-9+-Ee.]/g, '')
-        //     let n = !isFinite(+number) ? 0 : +number
-        //     let prec = !isFinite(+decimals) ? 0 : Math.abs(decimals)
-        //     let sep = typeof thousandsSep === 'undefined' ? ',' : thousandsSep
-        //     let dec = typeof decPoint === 'undefined' ? '.' : decPoint
-        //     let s = ''
-        //     let toFixedFix = function(n, prec) {
-        //         let k = Math.pow(10, prec)
-        //         return '' + Math.ceil(n * k) / k
-        //     }
-        //     s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.')
-        //     let re = /(-?\d+)(\d{3})/
-        //     while (re.test(s[0])) {
-        //         s[0] = s[0].replace(re, '$1' + sep + '$2')
-        //     }
-        //     if ((s[1] || '').length < prec) {
-        //         s[1] = s[1] || ''
-        //         s[1] += new Array(prec - s[1].length + 1).join('0')
-        //     }
-        //     return s.join(dec)
-        // },
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },

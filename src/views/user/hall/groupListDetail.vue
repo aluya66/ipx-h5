@@ -41,7 +41,7 @@
               <p class="tips">{{ tipStr(item) }}</p>
             </div>
             <p :class="[item.disabled ? 'disablePrice' : 'price']">
-              ¥<span v-format="'#,##0.00'">{{ Number(item.spuTshPrice) }}</span>
+              ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
             </p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
           </div>
@@ -50,7 +50,7 @@
       <div class="footer-content" :style="getBottomOffset(0)">
         <div class="total-price">
           合计：<span class="yen">¥</span
-          ><span class="price" v-format="'#,##0.00'">{{ Number(groupDetail.totalPrice) }}</span>
+          ><span class="price">{{ cashFormat(groupDetail.totalPrice) }}</span>
         </div>
         <button @click="goPay">立即采购</button>
       </div>
@@ -68,6 +68,7 @@
 <script>
 import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
+import cash from './cashFormat.js'
 import utils from 'utils'
 import { Dialog } from 'vant'
 export default {
@@ -100,13 +101,13 @@ export default {
         this.isDialog = false
         this.groupDetail = {}
         this.groupGoodsRecords = []
-        // if (this.$route.params.orderId !== '') {
-        //   this.isOrderSuply = true
-        //   this.suplyGoods()
-        // } else {
-        //   this.isOrderSuply = false
-        this.getGroupDetail()
-        // }
+        if (this.$route.query.orderId !== undefined) {
+            this.isOrderSuply = true
+            this.suplyGoods()
+        } else {
+            this.isOrderSuply = false
+            this.getGroupDetail()
+        }
         utils.postMessage('changeStatus', 'default')
     },
     filters: {
@@ -169,6 +170,9 @@ export default {
         }
     },
     methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -278,8 +282,12 @@ export default {
         skuCommit(seletedDetailsItem) {
             // sku修改 确定
             this.seletedDetailsItem = seletedDetailsItem
+            if (this.isOrderSuply) {
+                this.$toast.success('已修改')
+                this.showSku = false
+                return
+            }
             let groupProducts = []
-
             const params = {
                 groupGoodsId: this.groupDetail.groupGoodsId,
                 name: this.groupDetail.name
@@ -306,7 +314,6 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         this.getGroupDetail()
-                        // this.groupGoodsRecords[this.seletedItemIndex] = this.seletedDetailsItem
                         this.$toast.success('已修改')
                     }
                 })

@@ -197,7 +197,7 @@ export default {
             &:first-child {
                 margin-top: 0;
             }
-            
+
             .rankImage {
                 position: absolute;
                 width: 32px;

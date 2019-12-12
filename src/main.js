@@ -19,8 +19,6 @@ import serviceApi from 'api'
 
 // 将utils挂载vue上,全局使用
 import globalUtils from 'utils'
-// 数字格式化
-import format from 'vue-text-format'
 
 // 加入公共的全局methods方法
 import mixin from './views/mixins'
@@ -50,8 +48,6 @@ window.sa.quick('autoTrack', {
 Vue.use(preview)
 
 Vue.mixin(mixin)
-
-Vue.use(format)
 
 Vue.use(VueRouter)
 Vue.use(Layout)

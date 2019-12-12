@@ -14,7 +14,7 @@
             </div>
         </div>
         <section class="footer">
-            <p>¥<span v-format="'#,##0.00'">{{Number(groupGood.totalPrice)}}</span></p>
+            <p>¥<span>{{cashFormat(groupGood.totalPrice)}}</span></p>
             <div class="action">
                 <!-- <section :class='["default", !manageState ? "inManage" :""]' @click="handleCheckDetail">查看详情</section> -->
                 <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">一键采购</section>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
 import order from './groupCreateOrder'
 
@@ -63,6 +64,9 @@ export default {
         }
     },
     methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
         handleSelectImg(product) {
             window.sa.track('IPX_WEB', {
                 page: 'userHall', // 页面名字
