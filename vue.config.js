@@ -177,7 +177,7 @@ module.exports = {
       }
     },
     // 启用 CSS modules for all css / pre-processor files.
-    requireModuleExtension: false
+    modules: false
   },
   // 反向代理
   devServer: {
