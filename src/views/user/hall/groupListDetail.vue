@@ -40,8 +40,8 @@
               </p>
               <p class="tips">{{ tipStr(item) }}</p>
             </div>
-            <p :class="[item.disabled ? 'disablePrice' : 'price']" v-format="'#,##0.00'">
-              <span class="yen">¥</span>{{ Number(item.spuTshPrice) }}
+            <p :class="[item.disabled ? 'disablePrice' : 'price']">
+              ¥<span v-format="'#,##0.00'">{{ Number(item.spuTshPrice) }}</span>
             </p>
             <button @click="openSku(item, index)" :disabled="item.disabled">调整规格</button>
           </div>
@@ -49,7 +49,8 @@
       </div>
       <div class="footer-content" :style="getBottomOffset(0)">
         <div class="total-price">
-          合计：<span class="yen">¥</span><span class="price" v-format="'#,##0.00'">{{ Number(groupDetail.totalPrice) }}</span>
+          合计：<span class="yen">¥</span
+          ><span class="price" v-format="'#,##0.00'">{{ Number(groupDetail.totalPrice) }}</span>
         </div>
         <button @click="goPay">立即采购</button>
       </div>
@@ -84,7 +85,8 @@ export default {
             groupGoodsRecords: [], // 商品列表数据源
             isDialog: false,
             seletedDetailsItem: {}, // sku数据源
-            seletedItemIndex: '' // 选择调整商品下标
+            seletedItemIndex: '', // 选择调整商品下标
+            isOrderSuply: false
         }
     },
     activated() {
@@ -98,7 +100,13 @@ export default {
         this.isDialog = false
         this.groupDetail = {}
         this.groupGoodsRecords = []
+        // if (this.$route.params.orderId !== '') {
+        //   this.isOrderSuply = true
+        //   this.suplyGoods()
+        // } else {
+        //   this.isOrderSuply = false
         this.getGroupDetail()
+        // }
         utils.postMessage('changeStatus', 'default')
     },
     filters: {
@@ -217,6 +225,29 @@ export default {
             })
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
         },
+        suplyGoods() {
+            const params = {
+                orderCode: this.$route.params.orderId
+            }
+            this.$api.groupGoods
+                .suplyGoods(params)
+                .then(res => {
+                    const { groupGoodsRecords } = res
+
+                    this.groupDetail = res
+                    this.groupGoodsRecords = groupGoodsRecords
+                    this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
+                        return {
+                            ...item,
+                            disabled: false
+                        }
+                    })
+                    this.groupName = this.groupDetail.name
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         getGroupDetail() {
             // 获取组货详情列表
             const params = {
@@ -305,8 +336,8 @@ export default {
 <style lang="less" scoped>
 .my-header {
   position: relative;
-   &:after {
-    content: '';
+  &:after {
+    content: "";
     position: absolute;
     left: 0;
     width: 100%;
@@ -392,7 +423,7 @@ export default {
       height: 106px;
       border-radius: 4px;
       object-fit: cover;
-      border:1px solid @color-c7;
+      border: 1px solid @color-c7;
     }
     .product-info {
       margin-left: 12px;
@@ -436,23 +467,29 @@ export default {
         }
       }
       .price {
-        font-size: 18px;
-        font-weight: bold;
+        font-size: 12px;
+        font-weight: 400;
         color: @color-rc;
+        font-family: "alibabaRegular";
         margin-top: 8px;
-        font-family: "alibabaBold";
+        > span {
+          font-size: 18px;
+          font-weight: bold;
+          color: @color-rc;
+          font-family: "alibabaBold";
+        }
       }
       .disablePrice {
-        font-size: 18px;
-        font-weight: bold;
+        font-size: 12px;
+        font-weight: 400;
         color: @color-c4;
+        font-family: "alibabaRegular";
         margin-top: 8px;
-        font-family: "alibabaBold";
-        .yen {
-          font-size: 12px;
-          font-weight: 400;
+        > span {
+          font-size: 18px;
+          font-weight: bold;
           color: @color-c4;
-          font-family: "alibabaRegular";
+          font-family: "alibabaBold";
         }
       }
       .yen {
