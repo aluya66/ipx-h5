@@ -99,7 +99,7 @@ export default {
                 event: 'purchase' // 按钮唯一标识，取个语义化且不重名的名字
             })
             let code = this.groupGood.groupGoodsId + ''
-            order.createOrder(this.groupGood.groupGoodsRecords, code, false) // this.groupGood.totalPrice
+            order.createOrder(this.groupGood.name, this.groupGood.groupGoodsRecords, code, false) // this.groupGood.totalPrice
         }
     }
 }

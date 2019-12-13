@@ -334,7 +334,7 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            order.createOrder(this.groupGoodsRecords, this.groupDetail.groupGoodsId, true)
+            order.createOrder(this.groupDetail.name, this.groupGoodsRecords, this.groupDetail.groupGoodsId, true)
         }
     }
 }

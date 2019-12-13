@@ -4,7 +4,7 @@ import {
 } from 'vant'
 
 export default {
-    createOrder(groupGoods, groupCode, isDetail) {
+    createOrder(groupName, groupGoods, groupCode, isDetail) {
         let shopCarts = []
         let oldGoods = JSON.parse(JSON.stringify(groupGoods))
         let products = []
@@ -79,6 +79,7 @@ export default {
             const params = {
                 jumpUrl: 'createOrder://',
                 totalPrice: totalPrice + '',
+                groupName: groupName,
                 groupCode: groupCode + '',
                 discount: '1',
                 orderData: shopCarts
