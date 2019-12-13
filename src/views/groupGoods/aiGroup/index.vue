@@ -230,17 +230,6 @@ export default {
             })
         }
     },
-    activated() {
-        window.sa.track('IPX_WEB', {
-            page: 'groupFilterResult', // 页面名字
-            type: 'pageView', // 固定参数，不用改
-            event: 'pageView' // 固定参数，不用改
-        })
-        let swiper = this.$refs.designerSwiper.swiper
-        swiper.slideTo(0, 0, false)
-        let gSwiper = this.$refs.groupSwiper.swiper
-        gSwiper.slideTo(0, 0, false)
-    },
     mounted() {
         this.showGroup = false
         this.showDesigner = false
@@ -253,6 +242,22 @@ export default {
     },
     created() {
         this.handleRequest()
+    },
+    activated() {
+        window.sa.track('IPX_WEB', {
+            page: 'groupFilterResult', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
+        let swiper = this.$refs.designerSwiper && this.$refs.designerSwiper.swiper
+        if (swiper !== undefined) {
+            swiper.slideTo(0, 0, false)
+        }
+
+        let gSwiper = this.$refs.groupSwiper && this.$refs.groupSwiper.swiper
+        if (gSwiper !== undefined) {
+            gSwiper.slideTo(0, 0, false)
+        }
     }
 }
 </script>
@@ -420,8 +425,7 @@ export default {
         line-height: 50px;
         position: relative;
         span:first-child {
-            position: relative;
-            // width: 60%;
+            position: relative; // width: 60%;
             max-width: 60%;
             display: inline-block;
             font-size: 18px;
