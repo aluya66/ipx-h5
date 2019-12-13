@@ -9,7 +9,6 @@
 const path = require('path')
 const vConsolePlugin = require('vconsole-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin') // Gzip
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 // const pkg = require('./package.json')
 
@@ -24,12 +23,10 @@ const env = {
 console.log('======debug======', env.isDebug, '======themes======', env.themes, process.env.VUE_CMS_serverPath)
 
 module.exports = {
-    // process.env.VUE_APP_BASEURLPATH
     publicPath: !env.isDebug ? process.env.VUE_APP_BASEURLPATH : '/',
     outputDir: `dist${process.env.VUE_APP_BASEURLPATH}`,
     // 放置生成的静态资源(s、css、img、fonts)的(相对于 outputDir 的)目录(默认'')
     assetsDir: '',
-    // indexPath: 'index.html',
     chainWebpack: (config) => {
     /**
      * 删除懒加载模块的 prefetch preload，降低带宽压力
@@ -89,22 +86,7 @@ module.exports = {
             .when(process.env.NODE_ENV === 'development',
                 // sourcemap不包含列信息
                 config => config.devtool('cheap-source-map')
-            ).when(process.env.NODE_ENV !== 'development', (config) => {
-                config.optimization
-                    .minimizer([
-                        new UglifyJsPlugin({
-                            uglifyOptions: {
-                                // 移除 console
-                                // 其它优化选项 https://segmentfault.com/a/1190000010874406
-                                compress: {
-                                    drop_console: true,
-                                    drop_debugger: true
-                                    // pure_funcs: ['console.log']
-                                }
-                            }
-                        })
-                    ])
-            })
+            )
     },
     // 在 multi-page 模式下构建应用。每个“page”应该有一个对应的 JavaScript 入口文件
     pages: undefined,
@@ -174,9 +156,7 @@ module.exports = {
                     })
                 ]
             }
-        },
-        // 启用 CSS modules for all css / pre-processor files.
-        modules: false
+        }
     },
     // 反向代理
     devServer: {
