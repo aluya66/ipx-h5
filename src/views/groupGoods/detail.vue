@@ -2,7 +2,7 @@
   <layout-view style="padding-top:0">
     <div class="panel" :style="getBottomOffset(49)">
       <div class="header-top">
-        <c-header slot="header" :left-arrow="true" :style="marginTop">
+        <c-header slot="header" :left-arrow="true" :style="marginTop" :pageOutStatus="isNative">
           <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
           </template>
@@ -158,6 +158,7 @@ export default {
             slidImages: [],
             showList: false,
             isVoted: false,
+            isNative: false,
             cricleLists: [
                 {
                     actualPercent: '',
@@ -196,6 +197,10 @@ export default {
         this.importList = []
         this.slidImages = []
         this.isVoted = false
+        this.isNative = false
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         this.getGroupDetail()
         this.getWeekData()
         this.timeOutRequest()
