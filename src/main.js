@@ -28,21 +28,21 @@ import 'vue-photo-preview/dist/skin.css'
 
 window.sa = require('sa-sdk-javascript')
 window.sa.init({
-  server_url: 'https://sensorsdatauploading.yosar.com/sa?project=default',
-  // 如果神策代码中 `sensorsdata.min.js` 版本是 1.13.1 及以前版本，必须须配置 heatmap_url，高于此版本不需要配置。heatmap_url 神策分析中点击分析及触达分析功能代码，代码生成工具会自动生成。
-  heatmap_url: '../utils/heatmap.min.js',
-  // 如果神策后台版本及 `sensorsdata.min.js` 均是 1.10 及以上版本，这个参数不需要配置 web_url。 web_url 神策分析中点击分析及触达分析功能会用到此地址，代码生成工具会自动生成。
-  web_url: 'https://sensorsdataadmin.yosar.com',
-  use_app_track: true,
-  is_track_single_page: true,
-  heatmap: {
-    clickmap: 'default',
-    scroll_notice_map: 'default',
-    scroll_delay_time: 4000
-  }
+    server_url: 'https://sensorsdatauploading.yosar.com/sa?project=default',
+    // 如果神策代码中 `sensorsdata.min.js` 版本是 1.13.1 及以前版本，必须须配置 heatmap_url，高于此版本不需要配置。heatmap_url 神策分析中点击分析及触达分析功能代码，代码生成工具会自动生成。
+    heatmap_url: '../utils/heatmap.min.js',
+    // 如果神策后台版本及 `sensorsdata.min.js` 均是 1.10 及以上版本，这个参数不需要配置 web_url。 web_url 神策分析中点击分析及触达分析功能会用到此地址，代码生成工具会自动生成。
+    web_url: 'https://sensorsdataadmin.yosar.com',
+    use_app_track: true,
+    is_track_single_page: true,
+    heatmap: {
+        clickmap: 'default',
+        scroll_notice_map: 'default',
+        scroll_delay_time: 4000
+    }
 })
 window.sa.quick('autoTrack', {
-  Platform: 'H5'
+    Platform: 'H5'
 })
 
 Vue.use(preview)
@@ -60,21 +60,21 @@ const eventBus = new Vue()
 const i18n = importI18n(Vue)
 
 const globalVue = new Vue({
-  el: '#app',
-  i18n,
-  store, // 需要用到vuex时打开
-  router: route(VueRouter),
-  render: h => h(App),
-  beforeCreate () {
-    Vue.prototype.$eventBus = eventBus
-    Vue.prototype.$api = serviceApi
-    Vue.prototype.$toast = Toast
-    Vue.prototype.$utils = globalUtils
-    Vue.prototype.$defaultImg = require('images/img_default_photo.png')
-    Vue.prototype.$staticFile =
+    el: '#app',
+    i18n,
+    store, // 需要用到vuex时打开
+    router: route(VueRouter),
+    render: h => h(App),
+    beforeCreate () {
+        Vue.prototype.$eventBus = eventBus
+        Vue.prototype.$api = serviceApi
+        Vue.prototype.$toast = Toast
+        Vue.prototype.$utils = globalUtils
+        Vue.prototype.$defaultImg = require('images/img_default_photo.png')
+        Vue.prototype.$staticFile =
       process.env.NODE_ENV === 'production'
-        ? `${process.env.VUE_APP_BASEURLPATH}${process.env.VUE_APP_STATICFILE}`
-        : process.env.VUE_APP_STATICFILE
-  }
+          ? `${process.env.VUE_APP_BASEURLPATH}${process.env.VUE_APP_STATICFILE}`
+          : process.env.VUE_APP_STATICFILE
+    }
 })
 window.globalVue = globalVue

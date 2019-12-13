@@ -165,287 +165,287 @@ import vShareFooter from '../common/footer'
 
 import { Icon } from 'vant'
 export default {
-  components: {
-    [Icon.name]: Icon,
-    swiper,
-    swiperSlide,
-    vShareFooter
-  },
-  data () {
-    return {
-      showVideo: false,
-      prompt: true,
-      DialogVisible: false,
-      slide: [],
-      feed: {
-        keywords: []
-      },
-      loading: false,
-      palyShow: true,
-      activeName: 10,
-      comments: [],
-      swiperOption: {
-        pagination: {
-          el: '.swiper-pagination',
-          type: 'fraction'
-        }
-      }
+    components: {
+        [Icon.name]: Icon,
+        swiper,
+        swiperSlide,
+        vShareFooter
+    },
+    data () {
+        return {
+            showVideo: false,
+            prompt: true,
+            DialogVisible: false,
+            slide: [],
+            feed: {
+                keywords: []
+            },
+            loading: false,
+            palyShow: true,
+            activeName: 10,
+            comments: [],
+            swiperOption: {
+                pagination: {
+                    el: '.swiper-pagination',
+                    type: 'fraction'
+                }
+            }
 
-      //   pageOutStatus:
-    }
-  },
-  mounted: function () {
+            //   pageOutStatus:
+        }
+    },
+    mounted: function () {
     // 异步插入的图片
     // setTimeout(() => {
     //   // this.img1.push('1.jpg')
     //   this.$previewRefresh()
     // }, 2000);
     // 图片查看器打开后，打印本次查看器的实例（事件、方法、属性的示例）
-    this.$preview.on('imageLoadComplete', (e, item) => {
-      console.log('222222222222', this.$preview.self)
-    })
-  },
-  methods: {
-    download () {
-      this.DialogVisible = false
-      var u = navigator.userAgent
-      var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
-      var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
-      if (isiOS) {
-        window.open(
-          'https://apps.apple.com/cn/app/%E6%AF%8F%E6%97%A5%E5%B0%9A%E6%9D%A5/id1472490574'
-        )
-      } else if (isAndroid) {
-        // request
-        //   .get(
-        //     this.$config.api + `/api/v1/client-version/android`,
-        //     {},
-        //     {
-        //       validateStatus: status => status === 200
-        //     }
-        //   )
-        //   .then(response => {
-        //     if (
-        //       response &&
-        //       response.data &&
-        //       response.data.data &&
-        //       response.data.data.link
-        //     ) {
-        //       window.open(response.data.data.link)
-        //     }
-        //   })
-        //   .catch(err => {
-        //     this.$message({
-        //       message: err,
-        //       type: 'error'
-        //     })
-        //   })
-      }
+        this.$preview.on('imageLoadComplete', (e, item) => {
+            console.log('222222222222', this.$preview.self)
+        })
     },
-    getImg () {
-      let wrap = document.getElementById('content-html')
-      let imgTag = wrap.getElementsByTagName('img')
-      let jointImgs = wrap.getElementsByClassName('joint-img-margin')
-      if (jointImgs && jointImgs.length > 0) {
-        for (let j = 0; j < jointImgs.length; j++) {
-          jointImgs[j].parentNode.style.margin = '0'
-        }
-      }
-      for (let j = 0; j < imgTag.length; j++) {
-        if (imgTag[j].src !== '') {
-          // imgTag[j].remove()
-          imgTag[j].setAttribute('class', 'imgClass')
-        }
-      }
-      let imgs = wrap.getElementsByClassName('imgClass')
-      for (let i = 0; i < imgs.length; i++) {
-        imgs[i].setAttribute('width', '')
-        imgs[i].setAttribute('class', 'imgClass img_loading')
-        let width = parseFloat(imgs[i].getAttribute('data-w'))
-        let ratio = parseFloat(imgs[i].getAttribute('data-ratio'))
-        let Htmlwidth =
+    methods: {
+        download () {
+            this.DialogVisible = false
+            var u = navigator.userAgent
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+            if (isiOS) {
+                window.open(
+                    'https://apps.apple.com/cn/app/%E6%AF%8F%E6%97%A5%E5%B0%9A%E6%9D%A5/id1472490574'
+                )
+            } else if (isAndroid) {
+                // request
+                //   .get(
+                //     this.$config.api + `/api/v1/client-version/android`,
+                //     {},
+                //     {
+                //       validateStatus: status => status === 200
+                //     }
+                //   )
+                //   .then(response => {
+                //     if (
+                //       response &&
+                //       response.data &&
+                //       response.data.data &&
+                //       response.data.data.link
+                //     ) {
+                //       window.open(response.data.data.link)
+                //     }
+                //   })
+                //   .catch(err => {
+                //     this.$message({
+                //       message: err,
+                //       type: 'error'
+                //     })
+                //   })
+            }
+        },
+        getImg () {
+            let wrap = document.getElementById('content-html')
+            let imgTag = wrap.getElementsByTagName('img')
+            let jointImgs = wrap.getElementsByClassName('joint-img-margin')
+            if (jointImgs && jointImgs.length > 0) {
+                for (let j = 0; j < jointImgs.length; j++) {
+                    jointImgs[j].parentNode.style.margin = '0'
+                }
+            }
+            for (let j = 0; j < imgTag.length; j++) {
+                if (imgTag[j].src !== '') {
+                    // imgTag[j].remove()
+                    imgTag[j].setAttribute('class', 'imgClass')
+                }
+            }
+            let imgs = wrap.getElementsByClassName('imgClass')
+            for (let i = 0; i < imgs.length; i++) {
+                imgs[i].setAttribute('width', '')
+                imgs[i].setAttribute('class', 'imgClass img_loading')
+                let width = parseFloat(imgs[i].getAttribute('data-w'))
+                let ratio = parseFloat(imgs[i].getAttribute('data-ratio'))
+                let Htmlwidth =
           document.getElementById('content-html').clientWidth - 32
-        if (width > Htmlwidth) width = Htmlwidth
-        try {
-          if (imgs[i].getAttribute('src')) {
-            imgs[i].setAttribute('preview', '1')
-            imgs[i].setAttribute('data-src', imgs[i].getAttribute('src'))
-            imgs[i].setAttribute('large', imgs[i].getAttribute('src'))
-            imgs[i].setAttribute(
-              'src',
-              'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=='
-            )
-            // imgs[i].setAttribute("style", "width:" + width + "px;height:" + (width * ratio) + "px")
-            // 表情包样式
-            console.log()
-            if (imgs[i].style.maxWidth !== '40%') {
-              imgs[i].style.width = width + 'px'
-              imgs[i].style.height = width * ratio + 'px'
-            }
-          }
-        } catch (e) {
-          console.log('wrap', e)
-          console.log('wrap111', imgs[i].src)
-        }
-        if (
-          imgs[i].style.margin === '0px' &&
+                if (width > Htmlwidth) width = Htmlwidth
+                try {
+                    if (imgs[i].getAttribute('src')) {
+                        imgs[i].setAttribute('preview', '1')
+                        imgs[i].setAttribute('data-src', imgs[i].getAttribute('src'))
+                        imgs[i].setAttribute('large', imgs[i].getAttribute('src'))
+                        imgs[i].setAttribute(
+                            'src',
+                            'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=='
+                        )
+                        // imgs[i].setAttribute("style", "width:" + width + "px;height:" + (width * ratio) + "px")
+                        // 表情包样式
+                        console.log()
+                        if (imgs[i].style.maxWidth !== '40%') {
+                            imgs[i].style.width = width + 'px'
+                            imgs[i].style.height = width * ratio + 'px'
+                        }
+                    }
+                } catch (e) {
+                    console.log('wrap', e)
+                    console.log('wrap111', imgs[i].src)
+                }
+                if (
+                    imgs[i].style.margin === '0px' &&
           imgs[i].style.display === 'inline-block'
-        ) {
-          imgs[i].onload = function () {
-            imgs[i].style.backgroundImage = 'none'
-          }
-        }
-        // let id = imgs[i].getAttribute("data-id")
-        // let newItem = document.createElement('img');
-        // let width = parseFloat(imgs[i].getAttribute("data-w"))
-        // let parentDom = null
-        // parentDom = imgs[i].parentElement
-        // if (width > screen.availWidth) width = screen.availWidth
-        // let ratio = parseFloat(imgs[i].getAttribute("data-ratio"))
-        // newItem.className = "img_loading";
-        // newItem.id = "img_loading" + i;
-        // newItem.style.width = width + "px";
-        // newItem.style.height = (width * ratio) + "px";
-        // newItem.src = "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
-      }
-      let num = document.getElementsByClassName('imgClass').length
-      let img = document.getElementsByClassName('imgClass')
-      let n = 0
-      lazyload() // 页面载入完毕加载可是区域内的图片
-      window.onscroll = lazyload
-      function lazyload () {
-        // 监听页面滚动事件
-        let seeHeight = document.documentElement.clientHeight // 可见区域高度
+                ) {
+                    imgs[i].onload = function () {
+                        imgs[i].style.backgroundImage = 'none'
+                    }
+                }
+                // let id = imgs[i].getAttribute("data-id")
+                // let newItem = document.createElement('img');
+                // let width = parseFloat(imgs[i].getAttribute("data-w"))
+                // let parentDom = null
+                // parentDom = imgs[i].parentElement
+                // if (width > screen.availWidth) width = screen.availWidth
+                // let ratio = parseFloat(imgs[i].getAttribute("data-ratio"))
+                // newItem.className = "img_loading";
+                // newItem.id = "img_loading" + i;
+                // newItem.style.width = width + "px";
+                // newItem.style.height = (width * ratio) + "px";
+                // newItem.src = "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
+            }
+            let num = document.getElementsByClassName('imgClass').length
+            let img = document.getElementsByClassName('imgClass')
+            let n = 0
+            lazyload() // 页面载入完毕加载可是区域内的图片
+            window.onscroll = lazyload
+            function lazyload () {
+                // 监听页面滚动事件
+                let seeHeight = document.documentElement.clientHeight // 可见区域高度
 
-        let scrollTop =
+                let scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop // 滚动条距离顶部高度
-        for (let i = n; i < num; i++) {
-          img[i].src = img[i].getAttribute('data-src')
-          if (img[i].offsetTop < seeHeight + scrollTop) {
-            if (
-              img[i].getAttribute('src') ===
+                for (let i = n; i < num; i++) {
+                    img[i].src = img[i].getAttribute('data-src')
+                    if (img[i].offsetTop < seeHeight + scrollTop) {
+                        if (
+                            img[i].getAttribute('src') ===
               'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=='
-            ) {
-              img[i].src = img[i].getAttribute('data-src')
+                        ) {
+                            img[i].src = img[i].getAttribute('data-src')
+                        }
+                        n = i + 1
+                    }
+                }
             }
-            n = i + 1
-          }
-        }
-      }
-    },
-    showDialog () {
-      this.DialogVisible = true
-    },
-    handleClose () {
-      console.log('close event')
-    },
-    paly () {
-      let myVideo = this.$refs.video
-      // if (myVideo.paused) {
-      myVideo.play()
-      this.palyShow = false
-      this.showVideo = true
-      // }
-      // else {
-      //   myVideo.pause();
-      //   this.palyShow = true
-      // }
-    },
-    getFeed (id) {
-      let params = {
-        id: id
-      }
-      this.$api.news
-        .getNewsDetail(params)
-        .then(res => {
-          this.slide = []
-          this.feed = res.data
-          if (res.data.keywords) {
-            this.feed.keywords = res.data.keywords.split(',')
-          }
-          this.activeName = res.data.csort_id
-          // this.feed.release_time = this.$formatTime(this.feed.release_time)
-          if (this.activeName === 12) {
-            document.title = res.data.content
-            this.feed.summary = this.feed.content.replace(
-              /(\r\n|\n|\r)/gm,
-              '<br />'
-            )
-          } else {
-            document.title = res.data.title
-            this.feed.summary = this.feed.summary.replace(
-              /(\r\n|\n|\r)/gm,
-              '<br />'
-            )
-          }
-          this.feed.images.forEach(element => {
-            let list = {
-              src: element.image_src,
-              msrc: element.image_src,
-              alt: 'picture1',
-              title: 'Image Caption 1',
-              w: 600,
-              h: 400
-            }
-            this.slide.push(list)
-          })
-
-          if (this.activeName === 10) {
-            setTimeout(() => {
-              this.getImg()
-            })
-          }
-          if (this.activeName !== 13) {
-            // this.getComments(id);
-          } else {
-            setTimeout(() => {
-              this.prompt = false
-            }, 4500)
-          }
-          setTimeout(() => {
-            // this.img1.push('1.jpg')
-            this.$previewRefresh()
-            // let u = navigator.userAgent;
-            // let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-            // if (this.activeName === 11 && this.feed.video_src.substr(-4) === '.flv' && isAndroid) {
-            //   let flvjs = require('flv.js');
-            //   if (flvjs.default.isSupported()) {
-            //     var videoElement = document.getElementById('videoElement');
-            //     var flvPlayer = flvjs.default.createPlayer({
-            //       type: 'flv',
-            //       url: this.feed.video_src
-            //     });
-            //     flvPlayer.attachMediaElement(videoElement);
-            //     flvPlayer.load();
-            //     // flvPlayer.play();
-            //   }
+        },
+        showDialog () {
+            this.DialogVisible = true
+        },
+        handleClose () {
+            console.log('close event')
+        },
+        paly () {
+            let myVideo = this.$refs.video
+            // if (myVideo.paused) {
+            myVideo.play()
+            this.palyShow = false
+            this.showVideo = true
             // }
-          })
-          this.loading = false
-        })
-        .catch(err => {
-          console.log(err)
-        })
+            // else {
+            //   myVideo.pause();
+            //   this.palyShow = true
+            // }
+        },
+        getFeed (id) {
+            let params = {
+                id: id
+            }
+            this.$api.news
+                .getNewsDetail(params)
+                .then(res => {
+                    this.slide = []
+                    this.feed = res.data
+                    if (res.data.keywords) {
+                        this.feed.keywords = res.data.keywords.split(',')
+                    }
+                    this.activeName = res.data.csort_id
+                    // this.feed.release_time = this.$formatTime(this.feed.release_time)
+                    if (this.activeName === 12) {
+                        document.title = res.data.content
+                        this.feed.summary = this.feed.content.replace(
+                            /(\r\n|\n|\r)/gm,
+                            '<br />'
+                        )
+                    } else {
+                        document.title = res.data.title
+                        this.feed.summary = this.feed.summary.replace(
+                            /(\r\n|\n|\r)/gm,
+                            '<br />'
+                        )
+                    }
+                    this.feed.images.forEach(element => {
+                        let list = {
+                            src: element.image_src,
+                            msrc: element.image_src,
+                            alt: 'picture1',
+                            title: 'Image Caption 1',
+                            w: 600,
+                            h: 400
+                        }
+                        this.slide.push(list)
+                    })
+
+                    if (this.activeName === 10) {
+                        setTimeout(() => {
+                            this.getImg()
+                        })
+                    }
+                    if (this.activeName !== 13) {
+                        // this.getComments(id);
+                    } else {
+                        setTimeout(() => {
+                            this.prompt = false
+                        }, 4500)
+                    }
+                    setTimeout(() => {
+                        // this.img1.push('1.jpg')
+                        this.$previewRefresh()
+                        // let u = navigator.userAgent;
+                        // let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+                        // if (this.activeName === 11 && this.feed.video_src.substr(-4) === '.flv' && isAndroid) {
+                        //   let flvjs = require('flv.js');
+                        //   if (flvjs.default.isSupported()) {
+                        //     var videoElement = document.getElementById('videoElement');
+                        //     var flvPlayer = flvjs.default.createPlayer({
+                        //       type: 'flv',
+                        //       url: this.feed.video_src
+                        //     });
+                        //     flvPlayer.attachMediaElement(videoElement);
+                        //     flvPlayer.load();
+                        //     // flvPlayer.play();
+                        //   }
+                        // }
+                    })
+                    this.loading = false
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        showFeed () {
+            this.activeName = this.feed.activeName
+            // this.feed.release_time = this.$formatTime(this.feed.release_time)
+            if (this.activeName === 12) {
+                this.feed.summary = this.feed.content.replace(
+                    /(\r\n|\n|\r)/gm,
+                    '<br />'
+                )
+            } else {
+                this.feed.summary = this.feed.summary.replace(
+                    /(\r\n|\n|\r)/gm,
+                    '<br />'
+                )
+            }
+            this.loading = false
+        }
     },
-    showFeed () {
-      this.activeName = this.feed.activeName
-      // this.feed.release_time = this.$formatTime(this.feed.release_time)
-      if (this.activeName === 12) {
-        this.feed.summary = this.feed.content.replace(
-          /(\r\n|\n|\r)/gm,
-          '<br />'
-        )
-      } else {
-        this.feed.summary = this.feed.summary.replace(
-          /(\r\n|\n|\r)/gm,
-          '<br />'
-        )
-      }
-      this.loading = false
-    }
-  },
-  created () {
-    this.getFeed(this.$route.query.id)
+    created () {
+        this.getFeed(this.$route.query.id)
     // let script = document.createElement("script");
     // script.type = "text/javascript";
     // script.src = "//openinstall.io/openinstall.js?id=1324075754908866419";
@@ -461,7 +461,7 @@ export default {
     // setTimeout(() => {
     //   document.getElementsByClassName('-openinstall-banner')[0].style.display = 'block'
     // }, 3000);
-  }
+    }
 }
 </script>
 

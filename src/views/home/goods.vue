@@ -36,63 +36,63 @@ import components from 'components'
 const { CTabs, CSvg } = components
 
 export default {
-  components: {
+    components: {
     // GoodsList,
-    CTabs,
-    CSvg
-  },
-  data () {
-    return {
-      searchObj: {
-        search: ''
-      },
-      tabs: [
-        {
-          name: 1,
-          title: '出售中',
-          num: 0
-        },
-        {
-          name: 2,
-          title: '仓库中',
-          num: 0
+        CTabs,
+        CSvg
+    },
+    data() {
+        return {
+            searchObj: {
+                search: ''
+            },
+            tabs: [
+                {
+                    name: 1,
+                    title: '出售中',
+                    num: 0
+                },
+                {
+                    name: 2,
+                    title: '仓库中',
+                    num: 0
+                }
+            ],
+            curType: 1,
+            currentRate: 75,
+            rate: 90
         }
-      ],
-      curType: 1,
-      currentRate: 75,
-      rate: 90
-    }
-  },
-  watch: {
-    $route (val) {
-      if (val.name === 'goods') {
+    },
+    watch: {
+        $route(val) {
+            if (val.name === 'goods') {
+                this.getGoodsCounts()
+            }
+        }
+    },
+    created() {
         this.getGoodsCounts()
-      }
+    },
+    methods: {
+        getGoodsCounts(opt) {
+            const params = {
+                shop_id: 44
+            }
+            this.$api.goods.getCounts(params).then(res => {
+                this.$set(this.tabs[0], 'num', res.up)
+                this.$set(this.tabs[1], 'num', res.down)
+            })
+        },
+        changeActive(val) {
+            this.curType = val
+        },
+        onSearch(val) {
+            this.$set(this.searchObj, 'search', val)
+        },
+        onCancel(val) {
+            this.$set(this.searchObj, 'search', '')
+        }
     }
-  },
-  created () {
-    this.getGoodsCounts()
-  },
-  methods: {
-    getGoodsCounts (opt) {
-      const params = {
-        shop_id: 44
-      }
-      this.$api.goods.getCounts(params).then(res => {
-        this.$set(this.tabs[0], 'num', res.up)
-        this.$set(this.tabs[1], 'num', res.down)
-      })
-    },
-    changeActive (val) {
-      this.curType = val
-    },
-    onSearch (val) {
-      this.$set(this.searchObj, 'search', val)
-    },
-    onCancel (val) {
-      this.$set(this.searchObj, 'search', '')
-    }
-  }
 }
 </script>
 

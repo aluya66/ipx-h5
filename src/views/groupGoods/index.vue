@@ -40,222 +40,222 @@ import components from 'components'
 import SelectBox from '../common/selectBox.vue'
 import utils from 'utils'
 const {
-  CTabs
+    CTabs
 } = components
 export default {
-  components: {
-    CTabs,
-    SelectBox
-  },
-  data () {
-    return {
-      minPrice: '',
-      maxPrice: '',
-      categoryList: [], // 品类列表
-      season: [{
-        icon: require('@/themes/images/groupGoods/pic_spring.png')
-        // name: '春',
-        // isSelected: false
-      },
-      {
-        icon: require('@/themes/images/groupGoods/pic_summer.png')
-        // name: '夏',
-        // isSelected: false
-      },
-      {
-        icon: require('@/themes/images/groupGoods/pic_autumn.png')
-        // name: '秋',
-        // isSelected: false
-      },
-      {
-        icon: require('@/themes/images/groupGoods/pic_winter.png')
-        // name: '冬',
-        // isSelected: false
-      }
-      ],
-      customerGroupList: [{
-        icon: require('@/themes/images/groupGoods/shaonian.png')
-        // age: '18岁以下',
-        // isSelected: false
-      },
-      {
-        icon: require('@/themes/images/groupGoods/qingnian.png')
-        // age: '18~25岁',
-        // isSelected: false
-      },
-      {
-        icon: require('@/themes/images/groupGoods/haonian.png')
-        // age: '26~38岁',
-        // isSelected: false
-      },
-      {
-        icon: require('@/themes/images/groupGoods/zhongnian.png')
-        // age: '39~46岁',
-        // isSelected: false
-      },
-      {
-        icon: require('@/themes/images/groupGoods/laonian.png')
-        // age: '46岁以上',
-        // isSelected: false
-      }
-      ],
-      currentTab: 0,
-      tabs: [{
-        name: 0,
-        title: '商品特征'
-      },
-      {
-        name: 1,
-        title: '客户特征'
-      }
-      ],
-      headerSearchImg: require('@/themes/images/groupGoods/header_search.png'),
-      productCategory: [],
-      customerCategory: [],
-      allLabels: [],
-      curCategory: []
-    }
-  },
-  watch: {
-    currentTab (val) {
-      this.allLabels = []
-      this.curCategory = []
-      this.getSearchLists()
-    }
-  },
-  created () {
-    this.getSearchLists()
-  },
-  activated () {
-    window.sa.track('IPX_WEB', {
-      page: 'groupFilter', // 页面名字
-      type: 'pageView', // 固定参数，不用改
-      event: 'pageView' // 固定参数，不用改
-    })
-    utils.postMessage('changeStatus', 'default')
-  },
-  methods: {
-    handleClickExpand (item) {
-      // this.curCategory.forEach(citem => {
-      //     if (item.labelCategoryName === citem.labelCategoryName) {
-      //         citem.isExpand = !citem.isExpand
-      //         this.$set(citem,'isExpand',!citem.isExpand)
-      //         debugger
-      //     }
-      // })
-      // this.$set(item,'isExpand',!item.isExpand)
-
-      item.isExpand = !item.isExpand
+    components: {
+        CTabs,
+        SelectBox
     },
-    getBottomOffset (offset) {
-      return utils.bottomOffset(offset)
-    },
-    handleSubmit () {
-      window.sa.track('IPX_WEB', {
-        page: 'groupFilter', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'startGroup' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      let allCategory = JSON.parse(JSON.stringify(this.curCategory))
-      allCategory.forEach(item => {
-        item.labels = item.labels.filter(item => item.isSelected === true)
-      })
-      allCategory = allCategory.filter(item => item.labels.length > 0)
-      if (allCategory.length > 0) {
-        const params = {
-          labels: allCategory,
-          searchType: this.currentTab + 1
-          // pageNo: 1,
-          // pageSize: 100
-        }
-        utils.setStore('searchParams', params)
-        this.$router.push({
-          path: '/groupGoods/aiGroup'
-        })
-      } else {
-        this.$toast('至少选择一个标签进行组货')
-      }
-    },
-    getSearchLists () {
-      const params = {
-        searchType: this.currentTab + 1
-      }
-      this.$api.groupGoods.getSearchListsAjax(params).then((data) => {
-        let ret = data.labels // 分类列表
-        this.curCategory = ret
-
-        this.curCategory && this.curCategory.length && this.curCategory.forEach((kindItem) => {
-          if (kindItem.imageUrl === undefined) {
-            kindItem.imageUrl = ''
-          }
-          if (kindItem.imageUrl === '1') {
-            kindItem.labels.map((item, index) => {
-              item.imageUrl = this.season[index].icon
-            })
-          } else if (kindItem.imageUrl === '2') {
-            kindItem.labels.map((item, index) => {
-              item.imageUrl = this.customerGroupList[index].icon
-            })
-          }
-          kindItem.isExpand = false
-          kindItem.hasExpand = kindItem.labels.length > 8
-          kindItem.labels = kindItem.labels.map((item, index) => {
-            // item.imageUrl = this.season[index].icon
-            return {
-              ...item,
-              isSelected: false
+    data() {
+        return {
+            minPrice: '',
+            maxPrice: '',
+            categoryList: [], // 品类列表
+            season: [{
+                icon: require('@/themes/images/groupGoods/pic_spring.png')
+                // name: '春',
+                // isSelected: false
+            },
+            {
+                icon: require('@/themes/images/groupGoods/pic_summer.png')
+                // name: '夏',
+                // isSelected: false
+            },
+            {
+                icon: require('@/themes/images/groupGoods/pic_autumn.png')
+                // name: '秋',
+                // isSelected: false
+            },
+            {
+                icon: require('@/themes/images/groupGoods/pic_winter.png')
+                // name: '冬',
+                // isSelected: false
             }
-          })
-          // this.allLabels = this.allLabels.concat(kindItem.labels)
-          // this.allLabels = this.allLabels.map((item) => {
-          //     return {
-          //         ...item,
-          //         isSelected: false
-          //     }
-          // })
-          // const labelCode = kindItem.labelCategoryCode // 类别code
-          // switch (labelCode) {
-          // case '1': // 品类
-          //     this.categoryList = kindItem.labels.concat(kindItem.labels) // 选项列表
-          //     break
-          // }
-        })
-      })
+            ],
+            customerGroupList: [{
+                icon: require('@/themes/images/groupGoods/shaonian.png')
+                // age: '18岁以下',
+                // isSelected: false
+            },
+            {
+                icon: require('@/themes/images/groupGoods/qingnian.png')
+                // age: '18~25岁',
+                // isSelected: false
+            },
+            {
+                icon: require('@/themes/images/groupGoods/haonian.png')
+                // age: '26~38岁',
+                // isSelected: false
+            },
+            {
+                icon: require('@/themes/images/groupGoods/zhongnian.png')
+                // age: '39~46岁',
+                // isSelected: false
+            },
+            {
+                icon: require('@/themes/images/groupGoods/laonian.png')
+                // age: '46岁以上',
+                // isSelected: false
+            }
+            ],
+            currentTab: 0,
+            tabs: [{
+                name: 0,
+                title: '商品特征'
+            },
+            {
+                name: 1,
+                title: '客户特征'
+            }
+            ],
+            headerSearchImg: require('@/themes/images/groupGoods/header_search.png'),
+            productCategory: [],
+            customerCategory: [],
+            allLabels: [],
+            curCategory: []
+        }
     },
-    selectLabels (item, index, type) {
-      let isSelected = !item.isSelected
-      const target = this[type][index]
-      this.$set(target, 'isSelected', isSelected)
+    watch: {
+        currentTab(val) {
+            this.allLabels = []
+            this.curCategory = []
+            this.getSearchLists()
+        }
     },
-    onChangeTab (val) {
-      if (val === 1) {
+    created() {
+        this.getSearchLists()
+    },
+    activated() {
         window.sa.track('IPX_WEB', {
-          page: 'groupFilter', // 页面名字
-          type: 'click', // 固定参数，表明是点击事件
-          event: 'groupFilterClient' // 按钮唯一标识，取个语义化且不重名的名字
+            page: 'groupFilter', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
         })
-        this.customerGroupList = this.customerGroupList.map((item) => {
-          return {
-            ...item,
-            isSelected: false
-          }
-        })
-      } else {
-        window.sa.track('IPX_WEB', {
-          page: 'groupFilter', // 页面名字
-          type: 'click', // 固定参数，表明是点击事件
-          event: 'groupFilterProduct' // 按钮唯一标识，取个语义化且不重名的名字
-        })
-        this.season = this.season.map((item) => {
-          return {
-            ...item,
-            isSelected: false
-          }
-        })
-      }
-      this.currentTab = val
+        utils.postMessage('changeStatus', 'default')
+    },
+    methods: {
+        handleClickExpand(item) {
+            // this.curCategory.forEach(citem => {
+            //     if (item.labelCategoryName === citem.labelCategoryName) {
+            //         citem.isExpand = !citem.isExpand
+            //         this.$set(citem,'isExpand',!citem.isExpand)
+            //         debugger
+            //     }
+            // })
+            // this.$set(item,'isExpand',!item.isExpand)
+
+            item.isExpand = !item.isExpand
+        },
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        handleSubmit() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilter', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'startGroup' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            let allCategory = JSON.parse(JSON.stringify(this.curCategory))
+            allCategory.forEach(item => {
+                item.labels = item.labels.filter(item => item.isSelected === true)
+            })
+            allCategory = allCategory.filter(item => item.labels.length > 0)
+            if (allCategory.length > 0) {
+                const params = {
+                    labels: allCategory,
+                    searchType: this.currentTab + 1
+                    // pageNo: 1,
+                    // pageSize: 100
+                }
+                utils.setStore('searchParams', params)
+                this.$router.push({
+                    path: '/groupGoods/aiGroup'
+                })
+            } else {
+                this.$toast('至少选择一个标签进行组货')
+            }
+        },
+        getSearchLists() {
+            const params = {
+                searchType: this.currentTab + 1
+            }
+            this.$api.groupGoods.getSearchListsAjax(params).then((data) => {
+                let ret = data.labels // 分类列表
+                this.curCategory = ret
+
+                this.curCategory && this.curCategory.length && this.curCategory.forEach((kindItem) => {
+                    if (kindItem.imageUrl === undefined) {
+                        kindItem.imageUrl = ''
+                    }
+                    if (kindItem.imageUrl === '1') {
+                        kindItem.labels.map((item, index) => {
+                            item.imageUrl = this.season[index].icon
+                        })
+                    } else if (kindItem.imageUrl === '2') {
+                        kindItem.labels.map((item, index) => {
+                            item.imageUrl = this.customerGroupList[index].icon
+                        })
+                    }
+                    kindItem.isExpand = false
+                    kindItem.hasExpand = kindItem.labels.length > 8
+                    kindItem.labels = kindItem.labels.map((item, index) => {
+                        // item.imageUrl = this.season[index].icon
+                        return {
+                            ...item,
+                            isSelected: false
+                        }
+                    })
+                    // this.allLabels = this.allLabels.concat(kindItem.labels)
+                    // this.allLabels = this.allLabels.map((item) => {
+                    //     return {
+                    //         ...item,
+                    //         isSelected: false
+                    //     }
+                    // })
+                    // const labelCode = kindItem.labelCategoryCode // 类别code
+                    // switch (labelCode) {
+                    // case '1': // 品类
+                    //     this.categoryList = kindItem.labels.concat(kindItem.labels) // 选项列表
+                    //     break
+                    // }
+                })
+            })
+        },
+        selectLabels(item, index, type) {
+            let isSelected = !item.isSelected
+            const target = this[type][index]
+            this.$set(target, 'isSelected', isSelected)
+        },
+        onChangeTab(val) {
+            if (val === 1) {
+                window.sa.track('IPX_WEB', {
+                    page: 'groupFilter', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'groupFilterClient' // 按钮唯一标识，取个语义化且不重名的名字
+                })
+                this.customerGroupList = this.customerGroupList.map((item) => {
+                    return {
+                        ...item,
+                        isSelected: false
+                    }
+                })
+            } else {
+                window.sa.track('IPX_WEB', {
+                    page: 'groupFilter', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'groupFilterProduct' // 按钮唯一标识，取个语义化且不重名的名字
+                })
+                this.season = this.season.map((item) => {
+                    return {
+                        ...item,
+                        isSelected: false
+                    }
+                })
+            }
+            this.currentTab = val
+        }
     }
-  }
 }
 </script>
 

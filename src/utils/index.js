@@ -5,10 +5,10 @@ import base from './base'
 import validate from './validate'
 import methods from './methods'
 export default {
-  create,
-  transModules,
-  ...base,
-  ...libs,
-  ...validate,
-  ...methods
+    create,
+    transModules,
+    ...base,
+    ...libs,
+    ...validate,
+    ...methods
 }

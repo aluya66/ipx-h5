@@ -61,204 +61,204 @@
 import 'swiper/dist/css/swiper.css'
 
 import {
-  swiper,
-  swiperSlide
+    swiper,
+    swiperSlide
 } from 'vue-awesome-swiper'
 import EmptyView from '../../error/emptyView.vue'
 import utils from 'utils'
 
 export default {
-  components: {
-    swiper,
-    swiperSlide,
-    EmptyView
-  },
-  props: {
+    components: {
+        swiper,
+        swiperSlide,
+        EmptyView
+    },
+    props: {
 
-  },
-  data () {
-    return {
-      showDesigner: false,
-      showGroup: false,
-      curDesigner: {},
-      backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
-      titleIndex: 0,
-      screenWidth: document.body.clientWidth,
-      allDatas: [],
-      footerTitles: ['推荐指数', '时尚指数', '热销指数'],
-      swiperOption: {
-        slidesPerView: 'auto',
-        centeredSlides: true,
-        spaceBetween: 16 * window.devicePixelRatio,
-        on: {
-          click: () => {
+    },
+    data() {
+        return {
+            showDesigner: false,
+            showGroup: false,
+            curDesigner: {},
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
+            titleIndex: 0,
+            screenWidth: document.body.clientWidth,
+            allDatas: [],
+            footerTitles: ['推荐指数', '时尚指数', '热销指数'],
+            swiperOption: {
+                slidesPerView: 'auto',
+                centeredSlides: true,
+                spaceBetween: 16 * window.devicePixelRatio,
+                on: {
+                    click: () => {
+                        window.sa.track('IPX_WEB', {
+                            page: 'groupFilterResult', // 页面名字
+                            type: 'click', // 固定参数，表明是点击事件
+                            event: 'clickGroupMainPic' // 按钮唯一标识，取个语义化且不重名的名字
+                        })
+                        let groupList = this.curDesigner.groupGoodList
+                        let swiper = this.$refs.groupSwiper.swiper
+                        let i = swiper.clickedIndex
+                        this.$router.push({
+                            path: '/groupDetail',
+                            query: {
+                                groupCode: groupList[i].groupCode
+                            }
+                        })
+                    }
+                }
+            },
+            dSwiperOption: {
+                slidesPerView: 4.6,
+                spaceBetween: 24,
+                on: {
+                    click: () => {
+                        window.sa.track('IPX_WEB', {
+                            page: 'groupFilterResult', // 页面名字
+                            type: 'click', // 固定参数，表明是点击事件
+                            event: 'clickBuyerHeader' // 按钮唯一标识，取个语义化且不重名的名字
+                        })
+                        let swiper = this.$refs.designerSwiper.swiper
+                        let i = swiper.clickedIndex
+                        this.curDesigner = this.allDatas[i]
+                        let gSwiper = this.$refs.groupSwiper.swiper
+                        gSwiper.slideTo(0, 0, false)
+                    }
+                }
+            }
+        }
+    },
+    watch: {
+        '$route' (to, from) {
+            if (from.name === 'groupGoods' && to.name === 'aiGroup') {
+                this.handleRequest()
+            }
+        }
+    },
+    computed: {
+
+        getBoxSize() {
+            let width = this.screenWidth - 72 * window.devicePixelRatio
+            let height = width / (303 / 342) + (50 + 85) * window.devicePixelRatio
+            return `height:${height}px`
+        },
+        getImgHeight() {
+            let width = this.screenWidth - 72 * window.devicePixelRatio
+            let height = width / (303 / 342)
+            return `height:${height}px`
+        },
+        getBoxContainHeight() {
+            let width = this.screenWidth - 72 * window.devicePixelRatio
+            let height = width / (303 / 342) + 20 * window.devicePixelRatio
+            return `height:${height}px`
+        }
+    },
+    methods: {
+        getBottomOffset() {
+            let offsetStr = utils.bottomOffset(0)
+            return offsetStr
+        },
+        // 获取百分比
+        getPercent(item, index) {
+            let arr = [parseInt(item.adviceIndexNum), parseInt(item.fashionIndexNum), parseInt(item.hotIndexNum)]
+            return arr[index]
+        },
+        // 判断是不是当前设计师
+        getIsCurrentDesigner(item) {
+            return item === this.curDesigner
+        },
+        // 去展厅
+        handleToHall() {
             window.sa.track('IPX_WEB', {
-              page: 'groupFilterResult', // 页面名字
-              type: 'click', // 固定参数，表明是点击事件
-              event: 'clickGroupMainPic' // 按钮唯一标识，取个语义化且不重名的名字
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'clickToHall' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            let groupList = this.curDesigner.groupGoodList
-            let swiper = this.$refs.groupSwiper.swiper
-            let i = swiper.clickedIndex
             this.$router.push({
-              path: '/groupDetail',
-              query: {
-                groupCode: groupList[i].groupCode
-              }
+                path: '/user/hall',
+                query: {
+                    isFromWeb: true
+                }
             })
-          }
-        }
-      },
-      dSwiperOption: {
-        slidesPerView: 4.6,
-        spaceBetween: 24,
-        on: {
-          click: () => {
+        },
+        // 切换菜单 ---买手推荐
+        handleSelectRec() {
+            this.titleIndex = 0
             window.sa.track('IPX_WEB', {
-              page: 'groupFilterResult', // 页面名字
-              type: 'click', // 固定参数，表明是点击事件
-              event: 'clickBuyerHeader' // 按钮唯一标识，取个语义化且不重名的名字
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'recommendBuyer' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            let swiper = this.$refs.designerSwiper.swiper
-            let i = swiper.clickedIndex
-            this.curDesigner = this.allDatas[i]
-            let gSwiper = this.$refs.groupSwiper.swiper
-            gSwiper.slideTo(0, 0, false)
-          }
+        },
+        // 切换菜单 ---智能组货
+        handleSelectAi() {
+            this.titleIndex = 1
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'aiGroup' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+        },
+        // 查看TOP10
+        handleToRank() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilterResult', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'goTopRank' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.$router.push({
+                path: '/groupGoods/aiGroup/matchRank'
+            })
+        },
+        handleRequest() {
+            utils.postMessage('changeStatus', 'light')
+            let params = utils.getStore('searchParams')
+
+            this.$api.groupGoods.searchGroup(params).then(res => {
+                if (res instanceof Array) {
+                    this.allDatas = res
+                    if (this.allDatas.length > 0) {
+                        this.curDesigner = this.allDatas[0]
+                    }
+                } else {
+                    this.allDatas = []
+                    this.curDesigner = {}
+                }
+            }).catch(() => {
+
+            })
         }
-      }
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      if (from.name === 'groupGoods' && to.name === 'aiGroup') {
+    },
+    mounted() {
+        this.showGroup = false
+        this.showDesigner = false
+        setTimeout(() => {
+            this.showDesigner = true
+        }, 300)
+        setTimeout(() => {
+            this.showGroup = true
+        }, 500)
+    },
+    created() {
         this.handleRequest()
-      }
-    }
-  },
-  computed: {
-
-    getBoxSize () {
-      let width = this.screenWidth - 72 * window.devicePixelRatio
-      let height = width / (303 / 342) + (50 + 85) * window.devicePixelRatio
-      return `height:${height}px`
     },
-    getImgHeight () {
-      let width = this.screenWidth - 72 * window.devicePixelRatio
-      let height = width / (303 / 342)
-      return `height:${height}px`
-    },
-    getBoxContainHeight () {
-      let width = this.screenWidth - 72 * window.devicePixelRatio
-      let height = width / (303 / 342) + 20 * window.devicePixelRatio
-      return `height:${height}px`
-    }
-  },
-  methods: {
-    getBottomOffset () {
-      let offsetStr = utils.bottomOffset(0)
-      return offsetStr
-    },
-    // 获取百分比
-    getPercent (item, index) {
-      let arr = [parseInt(item.adviceIndexNum), parseInt(item.fashionIndexNum), parseInt(item.hotIndexNum)]
-      return arr[index]
-    },
-    // 判断是不是当前设计师
-    getIsCurrentDesigner (item) {
-      return item === this.curDesigner
-    },
-    // 去展厅
-    handleToHall () {
-      window.sa.track('IPX_WEB', {
-        page: 'groupFilterResult', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'clickToHall' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.$router.push({
-        path: '/user/hall',
-        query: {
-          isFromWeb: true
+    activated() {
+        window.sa.track('IPX_WEB', {
+            page: 'groupFilterResult', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
+        let swiper = this.$refs.designerSwiper && this.$refs.designerSwiper.swiper
+        if (swiper !== undefined) {
+            swiper.slideTo(0, 0, false)
         }
-      })
-    },
-    // 切换菜单 ---买手推荐
-    handleSelectRec () {
-      this.titleIndex = 0
-      window.sa.track('IPX_WEB', {
-        page: 'groupFilterResult', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'recommendBuyer' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-    },
-    // 切换菜单 ---智能组货
-    handleSelectAi () {
-      this.titleIndex = 1
-      window.sa.track('IPX_WEB', {
-        page: 'groupFilterResult', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'aiGroup' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-    },
-    // 查看TOP10
-    handleToRank () {
-      window.sa.track('IPX_WEB', {
-        page: 'groupFilterResult', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'goTopRank' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.$router.push({
-        path: '/groupGoods/aiGroup/matchRank'
-      })
-    },
-    handleRequest () {
-      utils.postMessage('changeStatus', 'light')
-      let params = utils.getStore('searchParams')
 
-      this.$api.groupGoods.searchGroup(params).then(res => {
-        if (res instanceof Array) {
-          this.allDatas = res
-          if (this.allDatas.length > 0) {
-            this.curDesigner = this.allDatas[0]
-          }
-        } else {
-          this.allDatas = []
-          this.curDesigner = {}
+        let gSwiper = this.$refs.groupSwiper && this.$refs.groupSwiper.swiper
+        if (gSwiper !== undefined) {
+            gSwiper.slideTo(0, 0, false)
         }
-      }).catch(() => {
-
-      })
     }
-  },
-  activated () {
-    window.sa.track('IPX_WEB', {
-      page: 'groupFilterResult', // 页面名字
-      type: 'pageView', // 固定参数，不用改
-      event: 'pageView' // 固定参数，不用改
-    })
-    let swiper = this.$refs.designerSwiper && this.$refs.designerSwiper.swiper
-    if (swiper !== undefined) {
-        swiper.slideTo(0, 0, false)
-    }
-    
-    let gSwiper = this.$refs.groupSwiper && this.$refs.groupSwiper.swiper
-    if (gSwiper !== undefined) {
-        gSwiper.slideTo(0, 0, false)
-    }
-  },
-  mounted () {
-    this.showGroup = false
-    this.showDesigner = false
-    setTimeout(() => {
-      this.showDesigner = true
-    }, 300)
-    setTimeout(() => {
-      this.showGroup = true
-    }, 500)
-  },
-  created () {
-    this.handleRequest()
-  }
 }
 </script>
 
@@ -425,8 +425,7 @@ export default {
         line-height: 50px;
         position: relative;
         span:first-child {
-            position: relative;
-            // width: 60%;
+            position: relative; // width: 60%;
             max-width: 60%;
             display: inline-block;
             font-size: 18px;

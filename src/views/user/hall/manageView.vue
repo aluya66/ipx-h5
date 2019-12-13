@@ -10,22 +10,22 @@
 <script>
 import utils from 'utils'
 export default {
-  data () {
-    return {
-      showCustomPopup: false
-    }
-  },
-  methods: {
-    showCustom () {
-      this.showCustomPopup = true
+    data () {
+        return {
+            showCustomPopup: false
+        }
     },
-    maskClick () {
-      this.showCustomPopup = false
-    },
-    getBottomOffset (offset) {
-      return utils.bottomOffset(offset)
+    methods: {
+        showCustom () {
+            this.showCustomPopup = true
+        },
+        maskClick () {
+            this.showCustomPopup = false
+        },
+        getBottomOffset (offset) {
+            return utils.bottomOffset(offset)
+        }
     }
-  }
 }
 </script>
 

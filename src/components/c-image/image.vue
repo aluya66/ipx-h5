@@ -20,31 +20,31 @@ import create from 'utils/create'
 import { Image, Lazyload, Loading } from 'vant'
 
 export default create({
-  name: 'image',
-  inheritAttrs: false,
-  components: {
-    [Image.name]: Image,
-    [Lazyload.name]: Lazyload,
-    [Loading.name]: Loading
-  },
-  props: {
-    posterUrl: {
-      type: String,
-      default: ''
+    name: 'image',
+    inheritAttrs: false,
+    components: {
+        [Image.name]: Image,
+        [Lazyload.name]: Lazyload,
+        [Loading.name]: Loading
     },
-    fit: {
-      type: String,
-      default: 'contain'
-    },
-    round: {
-      type: Boolean,
-      default: false
-    },
-    isLazy: {
-      type: Boolean,
-      default: false
+    props: {
+        posterUrl: {
+            type: String,
+            default: ''
+        },
+        fit: {
+            type: String,
+            default: 'contain'
+        },
+        round: {
+            type: Boolean,
+            default: false
+        },
+        isLazy: {
+            type: Boolean,
+            default: false
+        }
     }
-  }
 })
 </script>
 

@@ -37,36 +37,36 @@
 // import listSort from '../common/scroll-list.vue'
 
 export default {
-  data () {
-    return {
-      tabs: [{
-        title: 'Tab 1',
-        value: 'listCom_3'
-      }, {
-        title: 'Tab 2',
-        value: 'listCom_5'
-      }, {
-        title: 'Tab 3',
-        value: 'listCom_8'
-      }],
-      type: 3,
-      currentTab: 'listCom_3'
-    }
-  },
-  // computed: {
-  //   currentTabComponent () {
-  //     return listSort
-  //   }
-  // },
-  methods: {
-    handleClick (tab) {
-      this.currentTab = tab.value
-      const num = tab.value.split('_')
-      this.type = Number(num[1])
-    }
-  },
-  components: {
+    data () {
+        return {
+            tabs: [{
+                title: 'Tab 1',
+                value: 'listCom_3'
+            }, {
+                title: 'Tab 2',
+                value: 'listCom_5'
+            }, {
+                title: 'Tab 3',
+                value: 'listCom_8'
+            }],
+            type: 3,
+            currentTab: 'listCom_3'
+        }
+    },
+    // computed: {
+    //   currentTabComponent () {
+    //     return listSort
+    //   }
+    // },
+    methods: {
+        handleClick (tab) {
+            this.currentTab = tab.value
+            const num = tab.value.split('_')
+            this.type = Number(num[1])
+        }
+    },
+    components: {
     // listSort
-  }
+    }
 }
 </script>

@@ -85,80 +85,80 @@ import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
 import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from 'vant'
 export default {
-  components: {
-    [Icon.name]: Icon,
-    [Dialog.Component.name]: Dialog.Component,
-    [Sku.name]: Sku,
-    [Button.name]: Button,
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
-    [Stepper.name]: Stepper
-  },
-  props: {
-    seletedDetailsItem: {
-      type: Object,
-      default () {
-        return {}
-      }
+    components: {
+        [Icon.name]: Icon,
+        [Dialog.Component.name]: Dialog.Component,
+        [Sku.name]: Sku,
+        [Button.name]: Button,
+        [Tab.name]: Tab,
+        [Tabs.name]: Tabs,
+        [Stepper.name]: Stepper
     },
-    colorSkuAction: {
-      type: String,
-      default () {
-        return ''
-      }
+    props: {
+        seletedDetailsItem: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        colorSkuAction: {
+            type: String,
+            default() {
+                return ''
+            }
+        },
+        goodsId: {
+            type: String,
+            default() {
+                return ''
+            }
+        },
+        showSku: {
+            type: Boolean,
+            default() {
+                return false
+            }
+        }
     },
-    goodsId: {
-      type: String,
-      default () {
-        return ''
-      }
+    data() {
+        return {
+            sku: {
+                tree: [],
+                list: []
+            }
+        }
     },
-    showSku: {
-      type: Boolean,
-      default () {
-        return false
-      }
+    computed: {
+        goodPicture() {
+            return this.seletedDetailsItem.colorSkuList
+                ? this.seletedDetailsItem.colorSkuList[0].imgUrl
+                : ''
+        }
+    },
+    methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        changSelectedNum(colorSkusIndex, skuIndex) {
+            let { colorSkuList } = this.seletedDetailsItem
+            let seletedColorSkuNum = 0
+            let seletedColorSkuSumNum = 0
+            colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
+                seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum)
+            })
+            this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
+            colorSkuList.forEach((item, index) => {
+                seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
+            })
+            this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+        },
+        onPointClicked() {
+            this.$emit('pointClick', this.seletedDetailsItem)
+        }
     }
-  },
-  data () {
-    return {
-      sku: {
-        tree: [],
-        list: []
-      }
-    }
-  },
-  computed: {
-    goodPicture () {
-      return this.seletedDetailsItem.colorSkuList
-        ? this.seletedDetailsItem.colorSkuList[0].imgUrl
-        : ''
-    }
-  },
-  methods: {
-    cashFormat (price) {
-      return cash.changeFormat(price)
-    },
-    getBottomOffset (offset) {
-      return utils.bottomOffset(offset)
-    },
-    changSelectedNum (colorSkusIndex, skuIndex) {
-      let { colorSkuList } = this.seletedDetailsItem
-      let seletedColorSkuNum = 0
-      let seletedColorSkuSumNum = 0
-      colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
-        seletedColorSkuNum = Number(item.skuValue) + Number(seletedColorSkuNum)
-      })
-      this.seletedDetailsItem.colorSkuList[colorSkusIndex].seletedColorSkuNum = seletedColorSkuNum
-      colorSkuList.forEach((item, index) => {
-        seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
-      })
-      this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
-    },
-    onPointClicked () {
-      this.$emit('pointClick', this.seletedDetailsItem)
-    }
-  }
 }
 </script>
 

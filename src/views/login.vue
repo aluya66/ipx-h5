@@ -24,15 +24,15 @@
 import CheckVerify from './mixins/checkVerify'
 
 export default {
-  mixins: [CheckVerify],
-  data () {
-    return {
-      iphone: '',
-      verify: ''
+    mixins: [CheckVerify],
+    data () {
+        return {
+            iphone: '',
+            verify: ''
+        }
+    },
+    methods: {
     }
-  },
-  methods: {
-  }
 }
 </script>
 

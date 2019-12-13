@@ -9,7 +9,7 @@ import modules from './modules'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  strict: env.isDebug,
-  modules,
-  plugins: env.isDebug ? [createLogger()] : []
+    strict: env.isDebug,
+    modules,
+    plugins: env.isDebug ? [createLogger()] : []
 })

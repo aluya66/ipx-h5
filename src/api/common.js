@@ -8,7 +8,7 @@ const context = process.env.VUE_APP_serverPath
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const mockList = params => Http.fetch(`${context}/mockList`, params, {
-  mockFile: `list${params.type}`
+    mockFile: `list${params.type}`
 })
 
 /**
@@ -28,5 +28,5 @@ export const mockList = params => Http.fetch(`${context}/mockList`, params, {
  * @param {*} params params数据对象
  */
 export const checkLogin = params => Http.fetch(`${context}/user/checkLogin`, params, {
-  method: 'get'
+    method: 'get'
 })

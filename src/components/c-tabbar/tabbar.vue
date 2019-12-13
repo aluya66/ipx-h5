@@ -21,56 +21,56 @@ import create from 'utils/create'
 import { Tabbar, TabbarItem } from 'vant'
 
 export default create({
-  name: 'tabbar',
-  components: {
-    [Tabbar.name]: Tabbar,
-    [TabbarItem.name]: TabbarItem
-  },
-  props: {
-    routeLinks: {
-      type: Array,
-      default () {
-        return [{
-          title: '',
-          link: '/',
-          icon: ''
-        }]
-      }
+    name: 'tabbar',
+    components: {
+        [Tabbar.name]: Tabbar,
+        [TabbarItem.name]: TabbarItem
     },
-    fixed: {
-      type: Boolean,
-      default: false
-    },
-    customIcon: {
-      type: Object,
-      default () {
-        return {
-          normal: '',
-          active: ''
+    props: {
+        routeLinks: {
+            type: Array,
+            default () {
+                return [{
+                    title: '',
+                    link: '/',
+                    icon: ''
+                }]
+            }
+        },
+        fixed: {
+            type: Boolean,
+            default: false
+        },
+        customIcon: {
+            type: Object,
+            default () {
+                return {
+                    normal: '',
+                    active: ''
+                }
+            }
         }
-      }
-    }
-  },
-  data () {
-    return {
-      active: 0
-    }
-  },
-  created () {
-    this.changeTabBarActive()
-  },
-  updated () {
-    this.changeTabBarActive()
-  },
-  methods: {
-    changeTabbar (active) {
-      this.$store.commit('APP_DIRECTION', 'forward')
-      this.$router.push(this.routeLinks[active].link)
     },
-    // 判断路径
-    changeTabBarActive () {
-      this.active = this.routeLinks.findIndex(item => item.link === this.$route.path)
+    data () {
+        return {
+            active: 0
+        }
+    },
+    created () {
+        this.changeTabBarActive()
+    },
+    updated () {
+        this.changeTabBarActive()
+    },
+    methods: {
+        changeTabbar (active) {
+            this.$store.commit('APP_DIRECTION', 'forward')
+            this.$router.push(this.routeLinks[active].link)
+        },
+        // 判断路径
+        changeTabBarActive () {
+            this.active = this.routeLinks.findIndex(item => item.link === this.$route.path)
+        }
     }
-  }
 })
 </script>

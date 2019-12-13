@@ -8,8 +8,8 @@ const context = process.env.VUE_APP_serverPath
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getSearchListsAjax = params => Http.fetch(`${context}/v1/group/goods/search`, params, {
-  method: 'get',
-  hasErrMsg: false
+    method: 'get',
+    hasErrMsg: false
 })
 
 /**
@@ -17,8 +17,8 @@ export const getSearchListsAjax = params => Http.fetch(`${context}/v1/group/good
  * @param {*} params params数据对象
  */
 export const getGroupListDetail = params => Http.fetch(`${context}/v1/group/goods/detail`, params, {
-  method: 'get',
-  hasErrMsg: true
+    method: 'get',
+    hasErrMsg: true
 })
 
 /**
@@ -26,8 +26,8 @@ export const getGroupListDetail = params => Http.fetch(`${context}/v1/group/good
  * @param {*} params params数据对象
  */
 export const updateGroupListDetail = params => Http.fetch(`${context}/v1/group/goods`, params, {
-  method: 'put',
-  hasErrMsg: true
+    method: 'put',
+    hasErrMsg: true
 })
 
 /**
@@ -35,7 +35,7 @@ export const updateGroupListDetail = params => Http.fetch(`${context}/v1/group/g
  * @param {*} params params数据对象
  */
 export const getGroupDetail = params => Http.fetch(`${context}/v1/group/goods/info/detail`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 /**
@@ -43,32 +43,32 @@ export const getGroupDetail = params => Http.fetch(`${context}/v1/group/goods/in
  * @param {*} params params数据对象
  */
 export const groupGoods = params => Http.fetch(`${context}/v1/group/goods`, params, {
-  method: 'post',
-  hasErrMsg: true
+    method: 'post',
+    hasErrMsg: true
 })
 // 组货搜索
 export const searchGroup = params => Http.fetch(`${context}/v1/group/goods/info`, params, {
-  method: 'post',
-  hasErrMsg: false
+    method: 'post',
+    hasErrMsg: false
 })
 // 组货top10
 export const groupRank = params => Http.fetch(`${context}/v1/group/goods/top`, params, {
-  method: 'get',
-  hasErrMsg: false
+    method: 'get',
+    hasErrMsg: false
 })
 
 // 周累计人气
 export const groupWeekPopular = params => Http.fetch(`${context}/v1/group/goods/popularity`, params, {
-  method: 'get'
+    method: 'get'
 })
 
 // 打call
 export const postCall = params => Http.fetch(`${context}/v1/group/goods/popularity`, params, {
-  method: 'post',
-  hasErrMsg: false
+    method: 'post',
+    hasErrMsg: false
 })
 
 // 一键补货
 export const suplyGoods = params => Http.fetch(`${context}/v1/group/goods/replent`, params, {
-  method: 'get'
+    method: 'get'
 })

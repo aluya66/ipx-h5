@@ -30,78 +30,78 @@ import utils from 'utils'
 import order from './groupCreateOrder'
 
 export default {
-  components: {
+    components: {
 
-  },
-  props: {
-    groupGood: {
-      type: Object,
-      default () {
-        return {}
-      }
     },
-    manageState: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data () {
-    return {
-      colorList: []
-    }
-  },
-  computed: {
-    getColorSkuList () {
-      let products = this.groupGood.groupGoodsRecords
-      if (products instanceof Array && products.length > 0) {
-        let arr = []
-        this.groupGood.groupGoodsRecords.forEach(item => {
-          arr = arr.concat(item.colorSkuList)
-        })
-        return arr
-      }
-      return []
-    }
-  },
-  methods: {
-    cashFormat (price) {
-      return cash.changeFormat(price)
-    },
-    handleSelectImg (product) {
-      window.sa.track('IPX_WEB', {
-        page: 'userHall', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'hallClickGroupProductItem' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      const params = {
-        jumpUrl: 'productDetail://',
-        productCode: product.productCode
-      }
-      utils.postMessage('', params)
-    },
-    handleCheckDetail () {
-      window.sa.track('IPX_WEB', {
-        page: 'userHall', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'hallPurchase' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.$router.push({
-        path: '/hall/groupListDetail',
-        query: {
-          groupId: this.groupGood.groupGoodsId
+    props: {
+        groupGood: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
+        manageState: {
+            type: Boolean,
+            default: false
         }
-      })
     },
-    handleBuy () {
-      window.sa.track('IPX_WEB', {
-        page: 'userHall', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'purchase' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      let code = this.groupGood.groupGoodsId + ''
-      order.createOrder(this.groupGood.groupGoodsRecords, code, false) // this.groupGood.totalPrice
+    data() {
+        return {
+            colorList: []
+        }
+    },
+    computed: {
+        getColorSkuList() {
+            let products = this.groupGood.groupGoodsRecords
+            if (products instanceof Array && products.length > 0) {
+                let arr = []
+                this.groupGood.groupGoodsRecords.forEach(item => {
+                    arr = arr.concat(item.colorSkuList)
+                })
+                return arr
+            }
+            return []
+        }
+    },
+    methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
+        handleSelectImg(product) {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallClickGroupProductItem' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: product.productCode
+            }
+            utils.postMessage('', params)
+        },
+        handleCheckDetail() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallPurchase' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.$router.push({
+                path: '/hall/groupListDetail',
+                query: {
+                    groupId: this.groupGood.groupGoodsId
+                }
+            })
+        },
+        handleBuy() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'purchase' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            let code = this.groupGood.groupGoodsId + ''
+            order.createOrder(this.groupGood.groupGoodsRecords, code, false) // this.groupGood.totalPrice
+        }
     }
-  }
 }
 </script>
 

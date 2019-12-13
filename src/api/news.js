@@ -8,7 +8,7 @@ const context = process.env.VUE_APP_CMS_serverPath
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getNewsDetail = params => Http.fetch(`${context}/v1/cms/news/${params.id}`, '', {
-  method: 'get',
-  hasToken: true, // 不要token
-  hasErrMsg: true
+    method: 'get',
+    hasToken: true, // 不要token
+    hasErrMsg: true
 })

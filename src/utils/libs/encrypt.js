@@ -12,12 +12,12 @@ import utils from 'utils'
 const APPID = '100000000000000000'
 const APPKEY = 'dc5af4fb5bf04fd6' // sid_health_appkey_ver_1
 const SECRET = {
-  key: 'ssr5bvcr1va1fd29meitwk5m6n6yjamb'
+    key: 'ssr5bvcr1va1fd29meitwk5m6n6yjamb'
 }
 
 const md5Params = {
-  appkey: APPKEY,
-  qualify_type: 1
+    appkey: APPKEY,
+    qualify_type: 1
 }
 
 // const salt = getRandomNum();
@@ -71,9 +71,9 @@ export const getAuth = data => `appid="${APPID}",token="${setToken(data, APPKEY)
  * @example appkey=value&qualify_type=value&salt=value&smartid=value&key=secret value
  */
 export const getSign = data => md5(utils.serializeParam({
-  ...md5Params,
-  ...data,
-  ...SECRET
+    ...md5Params,
+    ...data,
+    ...SECRET
 }))
 
 /**
@@ -82,8 +82,8 @@ export const getSign = data => md5(utils.serializeParam({
 export const getAppKey = () => APPKEY
 
 export default {
-  getSign,
-  getAuth,
-  cryptoSha,
-  cryptoMd5
+    getSign,
+    getAuth,
+    cryptoSha,
+    cryptoMd5
 }

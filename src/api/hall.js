@@ -8,8 +8,8 @@ const context = process.env.VUE_APP_serverPath
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getHallCollectList = params => Http.fetch(`${context}/v1/collect/list`, params, {
-  method: 'get',
-  hasErrMsg: true
+    method: 'get',
+    hasErrMsg: true
 })
 
 /**
@@ -18,7 +18,7 @@ export const getHallCollectList = params => Http.fetch(`${context}/v1/collect/li
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const deleteCollects = params => Http.fetch(`${context}/v1/collect/delete`, params, {
-  method: 'put'
+    method: 'put'
 })
 
 /**
@@ -27,9 +27,9 @@ export const deleteCollects = params => Http.fetch(`${context}/v1/collect/delete
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getGroupGoods = params => Http.fetch(`${context}/v1/group/goods`, params, {
-  method: 'get',
-  hasErrMsg: true
-  // mockFile: 'groupGoods'
+    method: 'get',
+    hasErrMsg: true
+    // mockFile: 'groupGoods'
 })
 
 /**
@@ -38,6 +38,6 @@ export const getGroupGoods = params => Http.fetch(`${context}/v1/group/goods`, p
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const deleteGroupGoods = params => Http.fetch(`${context}/v1/group/goods/del`, params, {
-  method: 'put'
-  // mockFile: 'groupGoods'
+    method: 'put'
+    // mockFile: 'groupGoods'
 })

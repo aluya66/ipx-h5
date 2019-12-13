@@ -5,9 +5,9 @@ import store from './store'
 import postMessage from './postMessage'
 
 export default {
-  ...dateTime,
-  ...dom,
-  ...encrypt,
-  ...store,
-  ...postMessage
+    ...dateTime,
+    ...dom,
+    ...encrypt,
+    ...store,
+    ...postMessage
 }

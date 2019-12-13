@@ -17,17 +17,17 @@
 
 <script>
 export default {
-  components: {
+    components: {
 
-  },
-  props: {
+    },
+    props: {
 
-  },
-  data () {
-    return {
+    },
+    data () {
+        return {
 
+        }
     }
-  }
 }
 </script>
 

@@ -99,8 +99,8 @@
 
 <script>
 import {
-  List,
-  Search
+    List,
+    Search
 } from 'vant'
 import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
@@ -108,426 +108,426 @@ import groupItem from './groupItem.vue'
 import utils from 'utils'
 
 export default {
-  components: {
-    List,
-    ManageView,
-    groupItem,
-    Search
-  },
-  props: {
+    components: {
+        List,
+        ManageView,
+        groupItem,
+        Search
+    },
+    props: {
 
-  },
-  data () {
-    return {
-      showList: false,
-      isFromWeb: true,
-      isInSearch: false,
-      searchKey: '',
-      isManageState: false, // 是不是在管理状态
-      selectItems: [], // 保存选中的item
-      isSelectAll: false, // 是否点击选中全部
-      datas: [], // 样衣数据源
-      groupDatas: [], // 组货数据源
-      pageNo: 0, // 当前页码
-      pageSize: 10, // 每页请求数
-      finished: false, // 加载完标识
-      loading: false, // 加载更多标识
-      menuIndex: 0, // 栏目flag 1=样衣 0=组货清单
-      isStickyTop: false, // 是否吸顶
-      offsetY: 0,
-      flag: false,
-      headerSearchImg: require('@/themes/images/app/icon_nav_search_white@3x.png'),
-      headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
-      clearIcon: require('@/themes/images/app/control_delete.png'),
-      backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
-      testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
-      agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
-      select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
-      select_sel: require('../../../themes/images/groupGoods/selected_icon.png')
-    }
-  },
-  watch: {
-    datas (val) {
-      /// 全选状态下 全部选中
-      if (this.isSelectAll && this.menuIndex === 1) {
-        this.selectItems = JSON.parse(JSON.stringify(val))
-      }
     },
-    groupDatas (val) {
-      if (this.isSelectAll && this.menuIndex === 0) {
-        this.selectItems = JSON.parse(JSON.stringify(val))
-      }
-    },
-    selectItems (val) {
-      // 选中的数量跟数据源一样 标示为全选
-      if (this.selectItems.length > 0) {
-        this.isSelectAll = this.menuIndex === 1 ? this.selectItems.length === this.datas.length : this.selectItems.length === this.groupDatas.length
-      } else {
-        this.isSelectAll = false
-      }
-    },
-    /// 观察管理状态切换
-    isManageState (val) {
-      if (!val) {
-        this.selectItems = []
-        this.isSelectAll = false
-        this.$refs.manageView.maskClick()
-      } else {
-        this.$refs.manageView.showCustom()
-      }
-    },
-    /// 观察栏目切换
-    menuIndex (val) {
-      this.isManageState = false
-      this.selectItems = []
-      this.isSelectAll = false
-      this.isStickyTop = false
-      this.isInSearch = false
-      this.searchKey = ''
-      this.resetParams()
-      this.handleRefresh()
-    }
-  },
-  methods: {
-    cashFormat (price) {
-      return cash.changeFormat(price)
-    },
-    handleSearchClear () {
-      this.searchKey = ''
-      this.handleRefresh()
-    },
-    // 是否iPhoneX底部
-    getBottomOffset (offset) {
-      return utils.bottomOffset(offset)
-    },
-    handleClickTest () {
-      window.sa.track('IPX_WEB', {
-        page: 'userHall', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'testOnline' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.$toast('功能即将开启，请耐心等待')
-    },
-    handleGoDelegate () {
-      window.sa.track('IPX_WEB', {
-        page: 'userHall', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'hallLeague' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      const params = {
-        jumpUrl: 'goDelegate://'
-      }
-      utils.postMessage('', params)
-    },
-    // 搜索
-    handleClickSearchIcon () {
-      this.isInSearch = true
-    },
-    // 取消搜索
-    handleCancel () {
-      this.isInSearch = false
-    },
-    /// 点击商品
-    handleSelectProduct (item) {
-      if (this.isManageState) {
-        this.handleSelectItem(item)
-      } else if (this.menuIndex === 1) {
-        /// 详情？
-        window.sa.track('IPX_WEB', {
-          page: 'userHall', // 页面名字
-          type: 'click', // 固定参数，表明是点击事件
-          event: 'hallClickGroupProductItem' // 按钮唯一标识，取个语义化且不重名的名字
-        })
-        const params = {
-          jumpUrl: 'productDetail://',
-          productCode: item.productCode
+    data() {
+        return {
+            showList: false,
+            isFromWeb: true,
+            isInSearch: false,
+            searchKey: '',
+            isManageState: false, // 是不是在管理状态
+            selectItems: [], // 保存选中的item
+            isSelectAll: false, // 是否点击选中全部
+            datas: [], // 样衣数据源
+            groupDatas: [], // 组货数据源
+            pageNo: 0, // 当前页码
+            pageSize: 10, // 每页请求数
+            finished: false, // 加载完标识
+            loading: false, // 加载更多标识
+            menuIndex: 0, // 栏目flag 1=样衣 0=组货清单
+            isStickyTop: false, // 是否吸顶
+            offsetY: 0,
+            flag: false,
+            headerSearchImg: require('@/themes/images/app/icon_nav_search_white@3x.png'),
+            headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
+            clearIcon: require('@/themes/images/app/control_delete.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
+            testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
+            agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
+            select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
+            select_sel: require('../../../themes/images/groupGoods/selected_icon.png')
         }
-        utils.postMessage('', params)
-      } else if (this.menuIndex === 0) {
-        window.sa.track('IPX_WEB', {
-          page: 'userHall', // 页面名字
-          type: 'click', // 固定参数，表明是点击事件
-          event: 'hallGroupDetail' // 按钮唯一标识，取个语义化且不重名的名字
-        })
-        this.$router.push({
-          path: '/hall/groupListDetail',
-          query: {
-            groupId: item.groupGoodsId
-          }
-        })
-      }
     },
-    /// 选择单个样衣
-    handleSelectItem (item) {
-      let isContain = this.getSelectStatus(item)
-      if (!isContain) {
-        this.selectItems.push(item)
-      } else if (this.menuIndex === 1) {
-        // 收藏
-        this.selectItems = this.selectItems.filter(obj => obj.collectId !== item.collectId)
-      } else if (this.menuIndex === 0) {
-        // 组货
-        this.selectItems = this.selectItems.filter(obj => obj.groupGoodsId !== item.groupGoodsId)
-      }
-    },
-    /// 获取样衣是否被选中状态
-    getSelectStatus (item) {
-      if (this.menuIndex === 1) {
-        // 收藏
-        return this.selectItems.some(obj => {
-          if (obj.collectId === item.collectId) {
-            return true
-          }
-        })
-      } else {
-        // 组货
-        return this.selectItems.some(obj => {
-          if (obj.groupGoodsId === item.groupGoodsId) {
-            return true
-          }
-        })
-      }
-    },
-    /// 全选
-    handleSelectAll () {
-      this.isSelectAll = !this.isSelectAll
-      if (this.isSelectAll && this.menuIndex === 1) {
-        this.selectItems = JSON.parse(JSON.stringify(this.datas))
-      } else if (this.isSelectAll && this.menuIndex === 0) {
-        this.selectItems = JSON.parse(JSON.stringify(this.groupDatas))
-      } else {
-        this.selectItems = []
-      }
-    },
-    /// 点击管理
-    handleManage () {
-      this.isManageState = !this.isManageState
-    },
-    /// 切换栏目
-    handleCollectList () {
-      window.sa.track('IPX_WEB', {
-        page: 'userHall', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.menuIndex = 1
-      this.handleResetOffset()
-    },
-    handleGroupList () {
-      window.sa.track('IPX_WEB', {
-        page: 'userHall', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'hallGroupList' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.menuIndex = 0
-      this.handleResetOffset()
-    },
-    handleResetOffset () {
-      if (this.isStickyTop) {
-        this.$nextTick(() => {
-          document.querySelector('.contain').scrollTop = this.offsetY
-        })
-      }
-    },
-    // 监听滚动
-    handleScroll () {
-      window.addEventListener('scroll', () => {
-        if (this.menuIndex === 1) {
-          this.$refs.productlist.check()
-        } else {
-          this.$refs.grouplist.check()
-        }
-
-        let scrollTop = document.querySelector('.contain') && document.querySelector('.contain').scrollTop
-        let offsetTop = document.querySelector('.sticky-contain') && document.querySelector('.sticky-contain').offsetTop
-        this.isStickyTop = scrollTop >= offsetTop
-        if (!this.isStickyTop) {
-          this.offsetY = offsetTop
-          this.flag = false
-        } else {
-          if (this.offsetY + 200 * window.devicePixelRatio <= scrollTop) {
-            this.flag = true
-          } else {
-            this.flag = false
-          }
-        }
-      }, true)
-    },
-    resetParams () {
-      this.pageNo = 1
-      this.finished = false
-      this.loading = false
-    },
-    setSuccessStatus () {
-      this.loading = false
-    },
-    setFailureStatus () {
-      this.pageNo -= 1
-      this.finished = true
-      this.loading = false
-    },
-    // 刷新
-    handleRefresh () {
-      this.resetParams()
-      if (this.menuIndex === 1) {
-        this.handleRequest()
-      } else {
-        this.handleRequestForGroupList()
-      }
-    },
-    // 加载更多
-    handleMore () {
-      if (this.menuIndex === 1) {
-        if (this.datas.length > 0) {
-          this.pageNo += 1
-          this.handleRequest()
-        }
-      } else {
-        if (this.groupDatas.length > 0) {
-          this.pageNo += 1
-          this.handleRequestForGroupList()
-        }
-      }
-    },
-    handleRequest () {
-      const params = {
-        pageNo: this.pageNo,
-        pageSize: this.pageSize,
-        productName: this.searchKey
-      }
-      this.loading = true
-      this.$api.hall.getHallCollectList(params).then(res => {
-        this.setSuccessStatus()
-        if (res.code === 0) {
-          if (res.data.productList && res.data.productList instanceof Array) {
-            if (this.pageNo === 1) {
-              this.datas = res.data.productList
+    watch: {
+        datas(val) {
+            /// 全选状态下 全部选中
+            if (this.isSelectAll && this.menuIndex === 1) {
+                this.selectItems = JSON.parse(JSON.stringify(val))
+            }
+        },
+        groupDatas(val) {
+            if (this.isSelectAll && this.menuIndex === 0) {
+                this.selectItems = JSON.parse(JSON.stringify(val))
+            }
+        },
+        selectItems(val) {
+            // 选中的数量跟数据源一样 标示为全选
+            if (this.selectItems.length > 0) {
+                this.isSelectAll = this.menuIndex === 1 ? this.selectItems.length === this.datas.length : this.selectItems.length === this.groupDatas.length
             } else {
-              this.datas = this.datas.concat(res.data.productList)
+                this.isSelectAll = false
             }
-            if (res.data.productList.length < this.pageSize) {
-              this.finished = true
+        },
+        /// 观察管理状态切换
+        isManageState(val) {
+            if (!val) {
+                this.selectItems = []
+                this.isSelectAll = false
+                this.$refs.manageView.maskClick()
             } else {
-              this.finished = false
+                this.$refs.manageView.showCustom()
             }
-          } else {
-            if (this.pageNo === 1) {
-              this.datas = []
-            }
-            this.finished = true
-          }
-        } else {
-          this.finished = true
-        }
-      }).catch(() => {
-        this.setFailureStatus()
-      })
-    },
-    handleDeletes () {
-      if (this.menuIndex === 0) {
-        this.handleGroupDeletes()
-      } else {
-        let idsArr = []
-        if (this.selectItems.length > 0) {
-          this.selectItems.forEach(item => {
-            idsArr.push(parseInt(item.collectId))
-          })
-          const params = {
-            ids: idsArr
-          }
-          this.$api.hall.deleteCollects(params).then(res => {
-            this.$toast('删除样衣成功')
-            this.datas = this.datas.filter(function (item) {
-              return idsArr.indexOf(item.collectId) < 0
-            })
+        },
+        /// 观察栏目切换
+        menuIndex(val) {
+            this.isManageState = false
             this.selectItems = []
-          }).catch(() => {
-
-          })
+            this.isSelectAll = false
+            this.isStickyTop = false
+            this.isInSearch = false
+            this.searchKey = ''
+            this.resetParams()
+            this.handleRefresh()
         }
-      }
     },
-    handleRequestForGroupList () {
-      const params = {
-        pageNo: this.pageNo,
-        pageSize: this.pageSize,
-        searchKeyWord: this.searchKey
-      }
-      this.loading = true
+    methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
+        handleSearchClear () {
+            this.searchKey = ''
+            this.handleRefresh()
+        },
+        // 是否iPhoneX底部
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        handleClickTest() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'testOnline' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.$toast('功能即将开启，请耐心等待')
+        },
+        handleGoDelegate() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallLeague' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            const params = {
+                jumpUrl: 'goDelegate://'
+            }
+            utils.postMessage('', params)
+        },
+        // 搜索
+        handleClickSearchIcon() {
+            this.isInSearch = true
+        },
+        // 取消搜索
+        handleCancel() {
+            this.isInSearch = false
+        },
+        /// 点击商品
+        handleSelectProduct(item) {
+            if (this.isManageState) {
+                this.handleSelectItem(item)
+            } else if (this.menuIndex === 1) {
+                /// 详情？
+                window.sa.track('IPX_WEB', {
+                    page: 'userHall', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'hallClickGroupProductItem' // 按钮唯一标识，取个语义化且不重名的名字
+                })
+                const params = {
+                    jumpUrl: 'productDetail://',
+                    productCode: item.productCode
+                }
+                utils.postMessage('', params)
+            } else if (this.menuIndex === 0) {
+                window.sa.track('IPX_WEB', {
+                    page: 'userHall', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'hallGroupDetail' // 按钮唯一标识，取个语义化且不重名的名字
+                })
+                this.$router.push({
+                    path: '/hall/groupListDetail',
+                    query: {
+                        groupId: item.groupGoodsId
+                    }
+                })
+            }
+        },
+        /// 选择单个样衣
+        handleSelectItem(item) {
+            let isContain = this.getSelectStatus(item)
+            if (!isContain) {
+                this.selectItems.push(item)
+            } else if (this.menuIndex === 1) {
+                // 收藏
+                this.selectItems = this.selectItems.filter(obj => obj.collectId !== item.collectId)
+            } else if (this.menuIndex === 0) {
+                // 组货
+                this.selectItems = this.selectItems.filter(obj => obj.groupGoodsId !== item.groupGoodsId)
+            }
+        },
+        /// 获取样衣是否被选中状态
+        getSelectStatus(item) {
+            if (this.menuIndex === 1) {
+                // 收藏
+                return this.selectItems.some(obj => {
+                    if (obj.collectId === item.collectId) {
+                        return true
+                    }
+                })
+            } else {
+                // 组货
+                return this.selectItems.some(obj => {
+                    if (obj.groupGoodsId === item.groupGoodsId) {
+                        return true
+                    }
+                })
+            }
+        },
+        /// 全选
+        handleSelectAll() {
+            this.isSelectAll = !this.isSelectAll
+            if (this.isSelectAll && this.menuIndex === 1) {
+                this.selectItems = JSON.parse(JSON.stringify(this.datas))
+            } else if (this.isSelectAll && this.menuIndex === 0) {
+                this.selectItems = JSON.parse(JSON.stringify(this.groupDatas))
+            } else {
+                this.selectItems = []
+            }
+        },
+        /// 点击管理
+        handleManage() {
+            this.isManageState = !this.isManageState
+        },
+        /// 切换栏目
+        handleCollectList() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.menuIndex = 1
+            this.handleResetOffset()
+        },
+        handleGroupList() {
+            window.sa.track('IPX_WEB', {
+                page: 'userHall', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'hallGroupList' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.menuIndex = 0
+            this.handleResetOffset()
+        },
+        handleResetOffset() {
+            if (this.isStickyTop) {
+                this.$nextTick(() => {
+                    document.querySelector('.contain').scrollTop = this.offsetY
+                })
+            }
+        },
+        // 监听滚动
+        handleScroll() {
+            window.addEventListener('scroll', () => {
+                if (this.menuIndex === 1) {
+                    this.$refs.productlist.check()
+                } else {
+                    this.$refs.grouplist.check()
+                }
 
-      this.$api.hall.getGroupGoods(params).then(res => {
-        this.setSuccessStatus()
-        if (res.code === 0) {
-          if (res.data && res.data instanceof Array) {
-            if (this.pageNo === 1) {
-              this.groupDatas = res.data
-            } else {
-              this.groupDatas = this.groupDatas.concat(res.data)
-            }
-            if (res.data.length < this.pageSize) {
-              this.finished = true
-            } else {
-              this.finished = false
-            }
-          } else {
-            if (this.pageNo === 1) {
-              this.groupDatas = []
-            }
+                let scrollTop = document.querySelector('.contain') && document.querySelector('.contain').scrollTop
+                let offsetTop = document.querySelector('.sticky-contain') && document.querySelector('.sticky-contain').offsetTop
+                this.isStickyTop = scrollTop >= offsetTop
+                if (!this.isStickyTop) {
+                    this.offsetY = offsetTop
+                    this.flag = false
+                } else {
+                    if (this.offsetY + 200 * window.devicePixelRatio <= scrollTop) {
+                        this.flag = true
+                    } else {
+                        this.flag = false
+                    }
+                }
+            }, true)
+        },
+        resetParams() {
+            this.pageNo = 1
+            this.finished = false
+            this.loading = false
+        },
+        setSuccessStatus() {
+            this.loading = false
+        },
+        setFailureStatus() {
+            this.pageNo -= 1
             this.finished = true
-          }
-        } else {
-          this.finished = true
+            this.loading = false
+        },
+        // 刷新
+        handleRefresh() {
+            this.resetParams()
+            if (this.menuIndex === 1) {
+                this.handleRequest()
+            } else {
+                this.handleRequestForGroupList()
+            }
+        },
+        // 加载更多
+        handleMore() {
+            if (this.menuIndex === 1) {
+                if (this.datas.length > 0) {
+                    this.pageNo += 1
+                    this.handleRequest()
+                }
+            } else {
+                if (this.groupDatas.length > 0) {
+                    this.pageNo += 1
+                    this.handleRequestForGroupList()
+                }
+            }
+        },
+        handleRequest() {
+            const params = {
+                pageNo: this.pageNo,
+                pageSize: this.pageSize,
+                productName: this.searchKey
+            }
+            this.loading = true
+            this.$api.hall.getHallCollectList(params).then(res => {
+                this.setSuccessStatus()
+                if (res.code === 0) {
+                    if (res.data.productList && res.data.productList instanceof Array) {
+                        if (this.pageNo === 1) {
+                            this.datas = res.data.productList
+                        } else {
+                            this.datas = this.datas.concat(res.data.productList)
+                        }
+                        if (res.data.productList.length < this.pageSize) {
+                            this.finished = true
+                        } else {
+                            this.finished = false
+                        }
+                    } else {
+                        if (this.pageNo === 1) {
+                            this.datas = []
+                        }
+                        this.finished = true
+                    }
+                } else {
+                    this.finished = true
+                }
+            }).catch(() => {
+                this.setFailureStatus()
+            })
+        },
+        handleDeletes() {
+            if (this.menuIndex === 0) {
+                this.handleGroupDeletes()
+            } else {
+                let idsArr = []
+                if (this.selectItems.length > 0) {
+                    this.selectItems.forEach(item => {
+                        idsArr.push(parseInt(item.collectId))
+                    })
+                    const params = {
+                        ids: idsArr
+                    }
+                    this.$api.hall.deleteCollects(params).then(res => {
+                        this.$toast('删除样衣成功')
+                        this.datas = this.datas.filter(function(item) {
+                            return idsArr.indexOf(item.collectId) < 0
+                        })
+                        this.selectItems = []
+                    }).catch(() => {
+
+                    })
+                }
+            }
+        },
+        handleRequestForGroupList() {
+            const params = {
+                pageNo: this.pageNo,
+                pageSize: this.pageSize,
+                searchKeyWord: this.searchKey
+            }
+            this.loading = true
+
+            this.$api.hall.getGroupGoods(params).then(res => {
+                this.setSuccessStatus()
+                if (res.code === 0) {
+                    if (res.data && res.data instanceof Array) {
+                        if (this.pageNo === 1) {
+                            this.groupDatas = res.data
+                        } else {
+                            this.groupDatas = this.groupDatas.concat(res.data)
+                        }
+                        if (res.data.length < this.pageSize) {
+                            this.finished = true
+                        } else {
+                            this.finished = false
+                        }
+                    } else {
+                        if (this.pageNo === 1) {
+                            this.groupDatas = []
+                        }
+                        this.finished = true
+                    }
+                } else {
+                    this.finished = true
+                }
+            }).catch(() => {
+                this.setFailureStatus()
+            })
+        },
+        handleGroupDeletes() {
+            let idsArr = []
+            if (this.selectItems.length > 0) {
+                this.selectItems.forEach(item => {
+                    idsArr.push(parseInt(item.groupGoodsId))
+                })
+                const params = {
+                    groupGoodsIds: idsArr
+                }
+                this.$api.hall.deleteGroupGoods(params).then(res => {
+                    this.$toast('删除组货衣杆成功')
+                    this.groupDatas = this.groupDatas.filter(function(item) {
+                        return idsArr.indexOf(item.groupGoodsId) < 0
+                    })
+                    this.selectItems = []
+                }).catch(() => {
+
+                })
+            }
         }
-      }).catch(() => {
-        this.setFailureStatus()
-      })
     },
-    handleGroupDeletes () {
-      let idsArr = []
-      if (this.selectItems.length > 0) {
-        this.selectItems.forEach(item => {
-          idsArr.push(parseInt(item.groupGoodsId))
+    activated() {
+        window.sa.track('IPX_WEB', {
+            page: 'userHall', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
         })
-        const params = {
-          groupGoodsIds: idsArr
-        }
-        this.$api.hall.deleteGroupGoods(params).then(res => {
-          this.$toast('删除组货衣杆成功')
-          this.groupDatas = this.groupDatas.filter(function (item) {
-            return idsArr.indexOf(item.groupGoodsId) < 0
-          })
-          this.selectItems = []
-        }).catch(() => {
+        this.showList = false
+        setTimeout(() => {
+            this.showList = true
+        }, 300)
+        this.isStickyTop = false
+        this.flag = false
+        this.isInSearch = false
+        this.searchKey = ''
+        utils.postMessage('changeStatus', 'light')
+        this.isFromWeb = this.$route.query.isFromWeb || false
+        this.handleRefresh()
+        this.handleScroll()
+    },
+    mounted() {
 
-        })
-      }
+    },
+    deactivated() {
+        window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
     }
-  },
-  activated () {
-    window.sa.track('IPX_WEB', {
-      page: 'userHall', // 页面名字
-      type: 'pageView', // 固定参数，不用改
-      event: 'pageView' // 固定参数，不用改
-    })
-    this.showList = false
-    setTimeout(() => {
-      this.showList = true
-    }, 300)
-    this.isStickyTop = false
-    this.flag = false
-    this.isInSearch = false
-    this.searchKey = ''
-    utils.postMessage('changeStatus', 'light')
-    this.isFromWeb = this.$route.query.isFromWeb || false
-    this.handleRefresh()
-    this.handleScroll()
-  },
-  mounted () {
-
-  },
-  deactivated () {
-    window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
-  }
 }
 </script>
 

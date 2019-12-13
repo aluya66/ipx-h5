@@ -48,208 +48,208 @@ import utils from 'utils'
 
 const { CHeader } = components
 export default {
-  components: {
-    CHeader,
-    CFooter,
-    SectionHeader,
-    Swiper,
-    Check,
-    List,
-    StoreAddress,
-    ApplyPopup
-  },
-  props: {
+    components: {
+        CHeader,
+        CFooter,
+        SectionHeader,
+        Swiper,
+        Check,
+        List,
+        StoreAddress,
+        ApplyPopup
+    },
+    props: {
 
-  },
-  data () {
-    return {
-      token: '',
-      baseParams: '', // 基础配置
-      footerHeight: 0,
-      bannerCode: '',
-      participantCode: '', // 参会编号
-      inScroll: false,
-      oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
-      scrollTop: 0, // 记录当前的滚动距离
-      enableToTakePart: '1', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
-      haveSharedStatus: 0,
-      showPopup: false,
-      testProductsStatus: true,
-      delayedStatus: false,
-      lastPeriodRankStatus: false,
-      topImage: require('@/themes/images/app/main-name@3x.png'),
-      products: [], // 测款商品数据
-      testProducts: [], // 一键测款后的数据列表
-      managerTypes: [],
-      listsObject: {},
-      bookActivityCode: '' // 订货会数据编码
-    }
-  },
-  watch: {
-    scrollTop (newValue, oldValue) {
-      setTimeout(() => {
-        if (newValue === document.querySelector('.content').scrollTop) { // 延时执行后当newValue等于window.scrollY，代表滚动结束
-          this.oldScrollTop = newValue // 每次滚动结束后都要给oldScrollTop赋值
-          this.inScroll = false
-        };
-      }, 300) // 必须使用延时器，否则每次newValue和window.scrollY都相等，无法判断，20ms刚好大于watch的侦听周期，故延时20ms
-      if (this.oldScrollTop === oldValue) { // 每次滚动开始时oldScrollTop与oldValue相等
-        this.inScroll = true
-      }
-    }
-  },
-  methods: {
+    },
+    data () {
+        return {
+            token: '',
+            baseParams: '', // 基础配置
+            footerHeight: 0,
+            bannerCode: '',
+            participantCode: '', // 参会编号
+            inScroll: false,
+            oldScrollTop: 0, // 记录上一次滚动结束后的滚动距离
+            scrollTop: 0, // 记录当前的滚动距离
+            enableToTakePart: '1', // 订货会，是否能够参加，本期订货会（0：不能，已经参加过本期，1：可以，没有参加过本期）
+            haveSharedStatus: 0,
+            showPopup: false,
+            testProductsStatus: true,
+            delayedStatus: false,
+            lastPeriodRankStatus: false,
+            topImage: require('@/themes/images/app/main-name@3x.png'),
+            products: [], // 测款商品数据
+            testProducts: [], // 一键测款后的数据列表
+            managerTypes: [],
+            listsObject: {},
+            bookActivityCode: '' // 订货会数据编码
+        }
+    },
+    watch: {
+        scrollTop (newValue, oldValue) {
+            setTimeout(() => {
+                if (newValue === document.querySelector('.content').scrollTop) { // 延时执行后当newValue等于window.scrollY，代表滚动结束
+                    this.oldScrollTop = newValue // 每次滚动结束后都要给oldScrollTop赋值
+                    this.inScroll = false
+                };
+            }, 300) // 必须使用延时器，否则每次newValue和window.scrollY都相等，无法判断，20ms刚好大于watch的侦听周期，故延时20ms
+            if (this.oldScrollTop === oldValue) { // 每次滚动开始时oldScrollTop与oldValue相等
+                this.inScroll = true
+            }
+        }
+    },
+    methods: {
     // 查看测款报告
-    handleCheckResult () {
-      this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
+        handleCheckResult () {
+            this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
+        },
+        // 查看测款页
+        handleTestDetail () {
+            this.$router.push({ path: '/', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+        },
+        // 分享测款
+        handleShareTest () {
+            this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+        },
+        // 免费测款
+        handleCheck (flag) {
+            if (flag) {
+                // 上报按钮事件
+                window.sa.track('IPX_WEB', {
+                    page: 'orderProduct',
+                    type: 'click',
+                    event: 'freeCheckStyle'
+                })
+            }
+            this.token = utils.getStore('token') || ''
+            if (this.token) {
+                this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+            } else {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+            }
+        },
+        // 报名参加
+        handleApplySubmit (info) {
+            const params = {
+                participantCity: info.userCity,
+                participantName: info.userName,
+                participantPhone: info.userPhone,
+                tradeCode: info.manageCode,
+                bookActivityCode: this.bookActivityCode
+            }
+
+            console.log(params, 'params')
+            this.handleRequestApply(params)
+        },
+        // 点击报名弹框
+        handleApply () {
+            // 上报按钮事件
+            window.sa.track('IPX_WEB', {
+                page: 'orderProduct',
+                type: 'click',
+                event: 'enrollInMeeting'
+            })
+            if (this.token) {
+                if (this.enableToTakePart === 0) {
+                    this.$toast('已提交过报名信息，请勿重复提交')
+                } else {
+                    this.showPopup = !this.showPopup
+                }
+            } else {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+            }
+        },
+        // 监听滚动
+        handleScroll () {
+            window.addEventListener('scroll', () => {
+                this.scrollTop = document.querySelector('.content').scrollTop
+            }, true)
+        },
+        // 请求订购会主页
+        handleRequestMain () {
+            this.bannerCode = this.$route.query.bannerCode
+            const params = {
+                bannerCode: this.bannerCode,
+                bookDataQueryType: '0',
+                bookRankQueryType: '0'
+            }
+            this.$api.book.bookMainInfo(params).then((response) => {
+                this.participantCode = response.participantCode
+                this.enableToTakePart = response.enableToTakePart
+                this.bookActivityCode = response.bookActivityCode
+                this.haveSharedStatus = response.haveSharedStatus
+                // console.log(this.bookActivityCode, 'this.bookActivityCode')
+                // console.log(response.bookMeasureProds)
+                if (response.bookMeasureProds instanceof Array) {
+                    this.products = response.bookMeasureProds
+                    console.log(this.products)
+                    // this.products = JSON.parse(JSON.stringify(response.bookMeasureProds))
+                }
+                if (response.lastPeriodRank instanceof Object) {
+                    this.listsObject = response.lastPeriodRank
+
+                    if (this.listsObject.singleMeasureRankList.length > 0 || this.listsObject.categorySalesRankList.length > 0 || this.listsObject.singleSalesRankList.length > 0) {
+                        this.lastPeriodRankStatus = true
+                    }
+                }
+                if (response.mySharedProds instanceof Array) {
+                    this.testProducts = response.mySharedProds
+                    if (this.testProducts && this.testProducts.length > 0) {
+                        this.testProductsStatus = false
+                    }
+                }
+
+                this.delayedStatus = true
+            }).catch(() => {
+
+            })
+        },
+        // 提交报名
+        handleRequestApply (params) {
+            // 13632540770
+            this.$api.book.bookApply(params).then((response) => {
+                this.$toast.success('报名成功')
+                this.handleRequestMain()
+                this.showPopup = false
+            }).catch(() => {
+
+            })
+        },
+        // 请求经营类型
+        handleRequestUserManagers () {
+            this.$api.book.bookApplyManagers().then((response) => {
+                if (response instanceof Array) {
+                    this.managerTypes = response
+                }
+            }).catch(() => {
+
+            })
+        }
     },
-    // 查看测款页
-    handleTestDetail () {
-      this.$router.push({ path: '/', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
-    },
-    // 分享测款
-    handleShareTest () {
-      this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
-    },
-    // 免费测款
-    handleCheck (flag) {
-      if (flag) {
-        // 上报按钮事件
+    activated () {
+        // 上报页面事件
         window.sa.track('IPX_WEB', {
-          page: 'orderProduct',
-          type: 'click',
-          event: 'freeCheckStyle'
+            page: 'orderProduct',
+            type: 'pageView',
+            event: 'pageView'
         })
-      }
-      this.token = utils.getStore('token') || ''
-      if (this.token) {
-        this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
-      } else {
-        let method = 'user_authentication'
-        utils.postMessage(method, '')
-      }
-    },
-    // 报名参加
-    handleApplySubmit (info) {
-      const params = {
-        participantCity: info.userCity,
-        participantName: info.userName,
-        participantPhone: info.userPhone,
-        tradeCode: info.manageCode,
-        bookActivityCode: this.bookActivityCode
-      }
-
-      console.log(params, 'params')
-      this.handleRequestApply(params)
-    },
-    // 点击报名弹框
-    handleApply () {
-      // 上报按钮事件
-      window.sa.track('IPX_WEB', {
-        page: 'orderProduct',
-        type: 'click',
-        event: 'enrollInMeeting'
-      })
-      if (this.token) {
-        if (this.enableToTakePart === 0) {
-          this.$toast('已提交过报名信息，请勿重复提交')
-        } else {
-          this.showPopup = !this.showPopup
+        this.baseParams = utils.getStore('baseParams') || {}
+        this.token = utils.getStore('token') || ''
+        if (this.baseParams.isIphoneX) {
+            this.footerHeight = (Number(37) / 100) + 'rem'
         }
-      } else {
-        let method = 'user_authentication'
-        utils.postMessage(method, '')
-      }
-    },
-    // 监听滚动
-    handleScroll () {
-      window.addEventListener('scroll', () => {
-        this.scrollTop = document.querySelector('.content').scrollTop
-      }, true)
-    },
-    // 请求订购会主页
-    handleRequestMain () {
-      this.bannerCode = this.$route.query.bannerCode
-      const params = {
-        bannerCode: this.bannerCode,
-        bookDataQueryType: '0',
-        bookRankQueryType: '0'
-      }
-      this.$api.book.bookMainInfo(params).then((response) => {
-        this.participantCode = response.participantCode
-        this.enableToTakePart = response.enableToTakePart
-        this.bookActivityCode = response.bookActivityCode
-        this.haveSharedStatus = response.haveSharedStatus
-        // console.log(this.bookActivityCode, 'this.bookActivityCode')
-        // console.log(response.bookMeasureProds)
-        if (response.bookMeasureProds instanceof Array) {
-          this.products = response.bookMeasureProds
-          console.log(this.products)
-          // this.products = JSON.parse(JSON.stringify(response.bookMeasureProds))
-        }
-        if (response.lastPeriodRank instanceof Object) {
-          this.listsObject = response.lastPeriodRank
-
-          if (this.listsObject.singleMeasureRankList.length > 0 || this.listsObject.categorySalesRankList.length > 0 || this.listsObject.singleSalesRankList.length > 0) {
-            this.lastPeriodRankStatus = true
-          }
-        }
-        if (response.mySharedProds instanceof Array) {
-          this.testProducts = response.mySharedProds
-          if (this.testProducts && this.testProducts.length > 0) {
-            this.testProductsStatus = false
-          }
-        }
-
-        this.delayedStatus = true
-      }).catch(() => {
-
-      })
-    },
-    // 提交报名
-    handleRequestApply (params) {
-      // 13632540770
-      this.$api.book.bookApply(params).then((response) => {
-        this.$toast.success('报名成功')
+        utils.postMessage('changeStatus', 'default')
         this.handleRequestMain()
-        this.showPopup = false
-      }).catch(() => {
-
-      })
+        this.handleRequestUserManagers()
     },
-    // 请求经营类型
-    handleRequestUserManagers () {
-      this.$api.book.bookApplyManagers().then((response) => {
-        if (response instanceof Array) {
-          this.managerTypes = response
-        }
-      }).catch(() => {
-
-      })
+    mounted () {
+        this.handleScroll()
+    },
+    destroyed () {
+        window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
     }
-  },
-  activated () {
-    // 上报页面事件
-    window.sa.track('IPX_WEB', {
-      page: 'orderProduct',
-      type: 'pageView',
-      event: 'pageView'
-    })
-    this.baseParams = utils.getStore('baseParams') || {}
-    this.token = utils.getStore('token') || ''
-    if (this.baseParams.isIphoneX) {
-      this.footerHeight = (Number(37) / 100) + 'rem'
-    }
-    utils.postMessage('changeStatus', 'default')
-    this.handleRequestMain()
-    this.handleRequestUserManagers()
-  },
-  mounted () {
-    this.handleScroll()
-  },
-  destroyed () {
-    window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
-  }
 }
 </script>
 

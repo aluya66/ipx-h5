@@ -140,258 +140,258 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 require('swiper/dist/css/swiper.css')
 
 export default {
-  components: {
-    progressCricle,
-    swiperSlide,
-    swiper
-  },
-  data () {
-    return {
-      backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
-      popularNum: '',
-      timer: '',
-      productList: [],
-      groupDetail: {},
-      importList: [],
-      groupGoodsKoc: {},
-      popularArray: [],
-      slidImages: [],
-      showList: false,
-      isVoted: false,
-      cricleLists: [
-        {
-          actualPercent: '',
-          actualText: '时尚指数',
-          chartType: '1'
-        },
-        {
-          actualPercent: '',
-          actualText: '推荐指数',
-          chartType: '2'
-        },
-        {
-          actualPercent: '',
-          actualText: '热销指数',
-          chartType: '3'
-        }
-      ],
-      bgUrlList: {
-        popularity: 'url(' + require('../../themes/images/app/popularity@2x.png') + ')',
-        koc: 'url(' + require('../../themes/images/app/koc@2x.png') + ')',
-        analysis: 'url(' + require('../../themes/images/app/analysis@2x.png') + ')',
-        important: 'url(' + require('../../themes/images/app/essentials@2x.png') + ')',
-        collocation: 'url(' + require('../../themes/images/app/collocation@2x.png') + ')'
-      }
-    }
-  },
-  activated () {
-    // 上报页面事件
-    window.sa.track('IPX_WEB', {
-      page: 'groupDetail',
-      type: 'pageView',
-      event: 'pageView'
-    })
-    this.groupDetail = {}
-    this.productList = []
-    this.importList = []
-    this.slidImages = []
-    this.isVoted = false
-    this.getGroupDetail()
-    this.getWeekData()
-    this.timeOutRequest()
-    let swiper = this.$refs.imageSwiper.swiper
-    swiper.slideTo(0, 0, false)
-  },
-  mounted () {
-    this.showList = false
-    setTimeout(() => {
-      this.showList = true
-    }, 300)
-  },
-  watch: {
-    popularNum (val) {
-      let numStr = val + ''
-      this.popularArray = numStr.split('')
-    }
-  },
-  filters: {
-    selectSkuStr (val) {
-      let str = val.attrColorValue + '：'
-      let arr = []
-      val.skuList.forEach(item => {
-        arr.push(item.attrSpecValue)
-      })
-      return str + arr.join('，')
-    }
-  },
-  computed: {
-    marginTop () {
-      let basepara = utils.getStore('baseParams')
-      if (basepara.isIphoneX) {
-        return 'top:0.44rem'
-      }
-      return 'top:0.2rem'
+    components: {
+        progressCricle,
+        swiperSlide,
+        swiper
     },
-    goodPicture () {
-      return function (good) {
-        return good.colorSkuList[0].imgUrl
-      }
-    },
-    videoImg () {
-      return function (url) {
-        var xhr = new XMLHttpRequest()
-        xhr.open('get', url, true)
-        xhr.responseType = 'blob'
-        xhr.onload = function () {
-          if (this.status === 200) {
-            // 获取视频文件大小
-            console.log(this.response.size / 1000000 + 'MB')
-            // 截取第一帧的图片,解决了获取图片时跨域
-            let video = document.getElementById('upvideo')
-            video.src = URL.createObjectURL(this.response)
-          }
-        }
-        xhr.send()
-      }
-    }
-  },
-  methods: {
-    cashFormat (price) {
-      return cash.changeFormat(price)
-    },
-    getBottomOffset (offset) {
-      return utils.bottomOffset(offset)
-    },
-    jumpToProduct (product) {
-      const params = {
-        jumpUrl: 'productDetail://',
-        productCode: product.productCode
-      }
-      utils.postMessage('', params)
-    },
-    timeOutRequest () {
-      this.timer = setInterval(this.getWeekData, 30000)
-    },
-    handleCall () {
-      window.sa.track('IPX_WEB', {
-        page: 'groupDetail', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'detailCall' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      const params = {
-        groupCode: this.groupDetail.groupCode
-      }
-      this.$api.groupGoods
-        .postCall(params)
-        .then(res => {
-          this.$toast('打call成功')
-          this.isVoted = true
-          this.getWeekData()
-        })
-        .catch(() => {})
-    },
-    getWeekData () {
-      const params = {
-        groupCode: this.$route.query.groupCode
-      }
-      this.$api.groupGoods
-        .groupWeekPopular(params)
-        .then(res => {
-          this.popularNum = res.popularityCount
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    getGroupDetail () {
-      const params = {
-        groupCode: this.$route.query.groupCode
-      }
-      this.$api.groupGoods
-        .getGroupDetail(params)
-        .then(res => {
-          this.groupDetail = res
-          this.productList = res.groupGoodsSpus
-          this.groupGoodsKoc = res.groupGoodsKoc
-          this.slidImages = res.detailImgs
-          this.cricleLists[0].actualPercent = Number(this.groupDetail.fashionIndexNum) + ''
-          this.cricleLists[1].actualPercent = Number(this.groupDetail.adviceIndexNum) + ''
-          this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
-          this.importList = this.groupDetail.groupDesc.trim().split('\n')
-          this.isVoted = this.groupDetail.ishaveVoted === 1
-          // this.findvideocover();
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    addHall () {
-      window.sa.track('IPX_WEB', {
-        page: 'groupDetail', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'addTohall' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      let params = {}
-      let groupInfos = []
-      let groupProductInfo = {
-        name: this.groupDetail.groupTitle,
-        groupCode: this.groupDetail.groupCode
-      }
-      let groupProducts = []
-      this.productList.forEach((good, goodIndex) => {
-        good.colorSkuList.forEach((item, index) => {
-          item.skuList.forEach((skuItem, skuIndex) => {
-            let sku = {
-              num: skuItem.num,
-              productName: good.productName,
-              productAtrNumber: good.productAtrNumber,
-              productCode: good.productCode,
-              productSkuCode: skuItem.productSkuCode,
-              starasSkuCode: skuItem.starasSkuCode
+    data() {
+        return {
+            backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
+            popularNum: '',
+            timer: '',
+            productList: [],
+            groupDetail: {},
+            importList: [],
+            groupGoodsKoc: {},
+            popularArray: [],
+            slidImages: [],
+            showList: false,
+            isVoted: false,
+            cricleLists: [
+                {
+                    actualPercent: '',
+                    actualText: '时尚指数',
+                    chartType: '1'
+                },
+                {
+                    actualPercent: '',
+                    actualText: '推荐指数',
+                    chartType: '2'
+                },
+                {
+                    actualPercent: '',
+                    actualText: '热销指数',
+                    chartType: '3'
+                }
+            ],
+            bgUrlList: {
+                popularity: 'url(' + require('../../themes/images/app/popularity@2x.png') + ')',
+                koc: 'url(' + require('../../themes/images/app/koc@2x.png') + ')',
+                analysis: 'url(' + require('../../themes/images/app/analysis@2x.png') + ')',
+                important: 'url(' + require('../../themes/images/app/essentials@2x.png') + ')',
+                collocation: 'url(' + require('../../themes/images/app/collocation@2x.png') + ')'
             }
-            groupProducts.push(sku)
-          })
+        }
+    },
+    activated() {
+    // 上报页面事件
+        window.sa.track('IPX_WEB', {
+            page: 'groupDetail',
+            type: 'pageView',
+            event: 'pageView'
         })
-      })
-      groupProductInfo.groupGoodsRecords = groupProducts
-      groupInfos.push(groupProductInfo)
-      params.groupGoodsInfos = groupInfos
-      this.$api.groupGoods
-        .groupGoods(params)
-        .then(res => {
-          if (res.code === 0) {
-            let groupGoodsId = res.data.groupGoodsId
-            Dialog.confirm({
-              title: '添加成功',
-              message: '该组货方案已添加至我的展厅',
-              confirmButtonText: '编辑组货方案',
-              cancelButtonText: '继续逛逛',
-              confirmButtonColor: '#007AFF'
+        this.groupDetail = {}
+        this.productList = []
+        this.importList = []
+        this.slidImages = []
+        this.isVoted = false
+        this.getGroupDetail()
+        this.getWeekData()
+        this.timeOutRequest()
+        let swiper = this.$refs.imageSwiper.swiper
+        swiper.slideTo(0, 0, false)
+    },
+    mounted() {
+        this.showList = false
+        setTimeout(() => {
+            this.showList = true
+        }, 300)
+    },
+    watch: {
+        popularNum(val) {
+            let numStr = val + ''
+            this.popularArray = numStr.split('')
+        }
+    },
+    filters: {
+        selectSkuStr(val) {
+            let str = val.attrColorValue + '：'
+            let arr = []
+            val.skuList.forEach(item => {
+                arr.push(item.attrSpecValue)
             })
-              .then(() => {
-                window.sa.track('IPX_WEB', {
-                  page: 'groupDetail', // 页面名字
-                  type: 'click', // 固定参数，表明是点击事件
-                  event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
+            return str + arr.join('，')
+        }
+    },
+    computed: {
+        marginTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'top:0.44rem'
+            }
+            return 'top:0.2rem'
+        },
+        goodPicture() {
+            return function(good) {
+                return good.colorSkuList[0].imgUrl
+            }
+        },
+        videoImg() {
+            return function(url) {
+                var xhr = new XMLHttpRequest()
+                xhr.open('get', url, true)
+                xhr.responseType = 'blob'
+                xhr.onload = function() {
+                    if (this.status === 200) {
+                        // 获取视频文件大小
+                        console.log(this.response.size / 1000000 + 'MB')
+                        // 截取第一帧的图片,解决了获取图片时跨域
+                        let video = document.getElementById('upvideo')
+                        video.src = URL.createObjectURL(this.response)
+                    }
+                }
+                xhr.send()
+            }
+        }
+    },
+    methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        jumpToProduct(product) {
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: product.productCode
+            }
+            utils.postMessage('', params)
+        },
+        timeOutRequest() {
+            this.timer = setInterval(this.getWeekData, 30000)
+        },
+        handleCall() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupDetail', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'detailCall' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            const params = {
+                groupCode: this.groupDetail.groupCode
+            }
+            this.$api.groupGoods
+                .postCall(params)
+                .then(res => {
+                    this.$toast('打call成功')
+                    this.isVoted = true
+                    this.getWeekData()
                 })
-                this.$router.push({
-                  path: '/hall/groupListDetail',
-                  query: { groupId: groupGoodsId }
+                .catch(() => {})
+        },
+        getWeekData() {
+            const params = {
+                groupCode: this.$route.query.groupCode
+            }
+            this.$api.groupGoods
+                .groupWeekPopular(params)
+                .then(res => {
+                    this.popularNum = res.popularityCount
                 })
-              })
-              .catch(() => {
-                // on cancel
-              })
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        getGroupDetail() {
+            const params = {
+                groupCode: this.$route.query.groupCode
+            }
+            this.$api.groupGoods
+                .getGroupDetail(params)
+                .then(res => {
+                    this.groupDetail = res
+                    this.productList = res.groupGoodsSpus
+                    this.groupGoodsKoc = res.groupGoodsKoc
+                    this.slidImages = res.detailImgs
+                    this.cricleLists[0].actualPercent = Number(this.groupDetail.fashionIndexNum) + ''
+                    this.cricleLists[1].actualPercent = Number(this.groupDetail.adviceIndexNum) + ''
+                    this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
+                    this.importList = this.groupDetail.groupDesc.trim().split('\n')
+                    this.isVoted = this.groupDetail.ishaveVoted === 1
+                    // this.findvideocover();
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        addHall() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupDetail', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'addTohall' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            let params = {}
+            let groupInfos = []
+            let groupProductInfo = {
+                name: this.groupDetail.groupTitle,
+                groupCode: this.groupDetail.groupCode
+            }
+            let groupProducts = []
+            this.productList.forEach((good, goodIndex) => {
+                good.colorSkuList.forEach((item, index) => {
+                    item.skuList.forEach((skuItem, skuIndex) => {
+                        let sku = {
+                            num: skuItem.num,
+                            productName: good.productName,
+                            productAtrNumber: good.productAtrNumber,
+                            productCode: good.productCode,
+                            productSkuCode: skuItem.productSkuCode,
+                            starasSkuCode: skuItem.starasSkuCode
+                        }
+                        groupProducts.push(sku)
+                    })
+                })
+            })
+            groupProductInfo.groupGoodsRecords = groupProducts
+            groupInfos.push(groupProductInfo)
+            params.groupGoodsInfos = groupInfos
+            this.$api.groupGoods
+                .groupGoods(params)
+                .then(res => {
+                    if (res.code === 0) {
+                        let groupGoodsId = res.data.groupGoodsId
+                        Dialog.confirm({
+                            title: '添加成功',
+                            message: '该组货方案已添加至我的展厅',
+                            confirmButtonText: '编辑组货方案',
+                            cancelButtonText: '继续逛逛',
+                            confirmButtonColor: '#007AFF'
+                        })
+                            .then(() => {
+                                window.sa.track('IPX_WEB', {
+                                    page: 'groupDetail', // 页面名字
+                                    type: 'click', // 固定参数，表明是点击事件
+                                    event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
+                                })
+                                this.$router.push({
+                                    path: '/hall/groupListDetail',
+                                    query: { groupId: groupGoodsId }
+                                })
+                            })
+                            .catch(() => {
+                                // on cancel
+                            })
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+    },
+    deactivated() {
+        clearInterval(this.timer)
     }
-  },
-  deactivated () {
-    clearInterval(this.timer)
-  }
 }
 </script>
 

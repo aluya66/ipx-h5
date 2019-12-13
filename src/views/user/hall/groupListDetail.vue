@@ -72,271 +72,271 @@ import cash from './cashFormat.js'
 import utils from 'utils'
 import { Dialog } from 'vant'
 export default {
-  components: {
-    skuSelect
-  },
-  data () {
-    return {
-      showSku: false, // 是否弹出sku选择框
-      groupName: ' ', // 组货名称
-      groupGoodsId: '', // 组货id
-      goodsId: '',
-      colorSkuAction: '',
-      groupDetail: {}, // 组货基本信息
-      groupGoodsRecords: [], // 商品列表数据源
-      isDialog: false,
-      seletedDetailsItem: {}, // sku数据源
-      seletedItemIndex: '', // 选择调整商品下标
-      isOrderSuply: false
-    }
-  },
-  activated () {
+    components: {
+        skuSelect
+    },
+    data() {
+        return {
+            showSku: false, // 是否弹出sku选择框
+            groupName: ' ', // 组货名称
+            groupGoodsId: '', // 组货id
+            goodsId: '',
+            colorSkuAction: '',
+            groupDetail: {}, // 组货基本信息
+            groupGoodsRecords: [], // 商品列表数据源
+            isDialog: false,
+            seletedDetailsItem: {}, // sku数据源
+            seletedItemIndex: '', // 选择调整商品下标
+            isOrderSuply: false
+        }
+    },
+    activated() {
     // 上报页面事件
-    window.sa.track('IPX_WEB', {
-      page: 'groupListDetail',
-      type: 'pageView',
-      event: 'pageView'
-    })
-    this.showSku = false
-    this.isDialog = false
-    this.groupDetail = {}
-    this.groupGoodsRecords = []
-    if (this.$route.query.orderId !== undefined) {
-      this.isOrderSuply = true
-      this.suplyGoods()
-    } else {
-      this.isOrderSuply = false
-      this.getGroupDetail()
-    }
-    utils.postMessage('changeStatus', 'default')
-  },
-  filters: {
-    selectSkuStr (val) {
-      let str = val.attrColorValue + '：'
-      let arr = []
-      val.skuList.forEach(item => {
-        arr.push(item.attrSpecValue)
-      })
-      return str + arr.join('，')
-    }
-  },
-  computed: {
-    marginTop () {
-      let basepara = utils.getStore('baseParams')
-      if (basepara.isIphoneX) {
-        return 'top:0.88rem'
-      }
-      return 'top:0.64rem'
-    },
-    goodPicture () {
-      return function (good) {
-        return good.colorSkuList[0].imgUrl
-      }
-    },
-    tipStr () {
-      return function (value) {
-        if (value.productShelves === 0) {
-          value.disabled = true
-          return '商品已失效' // 下架 置灰
-        }
-        let batchNum = value.minBatchNum
-        let stockAll = 0
-        let selectAll = 0
-        let isChanged = false
-        let isEnough = false
-        value.colorSkuList.forEach((item, index) => {
-          item.skuList.forEach((skuItem, skuIndex) => {
-            if (skuItem.entityStock === 0 && skuItem.num !== 0) {
-              isChanged = true
-            }
-            selectAll += skuItem.num
-            stockAll += skuItem.entityStock
-          })
+        window.sa.track('IPX_WEB', {
+            page: 'groupListDetail',
+            type: 'pageView',
+            event: 'pageView'
         })
-        if (selectAll >= batchNum) {
-          isEnough = true
-        }
-        if (stockAll === 0 || stockAll < batchNum) {
-          value.disabled = true
-          return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
-        }
-        if (!isEnough && stockAll >= batchNum) {
-          return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
-        }
-        if (isChanged && isEnough) {
-          return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
-        }
-      }
-    }
-  },
-  methods: {
-    cashFormat (price) {
-      return cash.changeFormat(price)
-    },
-    getBottomOffset (offset) {
-      return utils.bottomOffset(offset)
-    },
-    dialogAlert (isDialog) {
-      if (!this.isDialog && isDialog) {
-        this.isDialog = true
-        Dialog.alert({
-          title: '商品信息变更',
-          message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
-          confirmButtonText: '我知道了',
-          confirmButtonColor: '#007AFF'
-        }).then(() => {})
-      }
-    },
-    jumpToProduct (product) {
-      window.sa.track('IPX_WEB', {
-        page: 'groupListDetail', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'editItemClick' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      const params = {
-        jumpUrl: 'productDetail://',
-        productCode: product.productCode
-      }
-      utils.postMessage('', params)
-    },
-    openSku (item, index) {
-      window.sa.track('IPX_WEB', {
-        page: 'groupListDetail', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'modifySku' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.seletedDetailsItem = {}
-      this.colorSkuAction = '0'
-      this.showSku = !this.showSku
-      this.seletedItemIndex = index
-      this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
-      this.seletedDetailsItem = {
-        ...this.seletedDetailsItem,
-        seletedColorSkuSumNum: 0
-      }
-
-      let { colorSkuList } = this.seletedDetailsItem
-      let seletedColorSkuSumNum = 0
-
-      colorSkuList.forEach((item, index) => {
-        let seletedColorSkuNum = 0
-        item.skuList.forEach((skuItem, skuIndex) => {
-          skuItem.skuValue = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
-          seletedColorSkuNum = Number(skuItem.skuValue) + Number(seletedColorSkuNum)
-        })
-        item.seletedColorSkuNum = seletedColorSkuNum
-        seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
-      })
-      this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
-    },
-    suplyGoods () {
-      const params = {
-        orderCode: this.$route.params.orderId
-      }
-      this.$api.groupGoods
-        .suplyGoods(params)
-        .then(res => {
-          const { groupGoodsRecords } = res
-
-          this.groupDetail = res
-          this.groupGoodsRecords = groupGoodsRecords
-          this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
-            return {
-              ...item,
-              disabled: false
-            }
-          })
-          this.groupName = this.groupDetail.name
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    getGroupDetail () {
-      // 获取组货详情列表
-      const params = {
-        groupGoodsId: this.$route.query.groupId
-      }
-      this.$api.groupGoods
-        .getGroupListDetail(params)
-        .then(res => {
-          if (res.code === 0) {
-            const { data } = res
-            const { groupGoodsRecords } = data
-
-            this.groupDetail = data
-            this.groupGoodsRecords = groupGoodsRecords
-            this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
-              return {
-                ...item,
-                disabled: false
-              }
-            })
-            this.groupName = this.groupDetail.name
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    skuCommit (seletedDetailsItem) {
-      // sku修改 确定
-      this.seletedDetailsItem = seletedDetailsItem
-      if (this.isOrderSuply) {
-        this.$toast.success('已修改')
         this.showSku = false
-        return
-      }
-      let groupProducts = []
-      const params = {
-        groupGoodsId: this.groupDetail.groupGoodsId,
-        name: this.groupDetail.name
-      }
-
-      this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-        item.skuList.forEach((skuItem, skuIndex) => {
-          skuItem.num = skuItem.skuValue
-          let sku = {
-            groupGoodsRecordId: skuItem.groupGoodsRecordId,
-            num: skuItem.skuValue,
-            productAtrNumber: this.seletedDetailsItem.productAtrNumber,
-            productCode: this.seletedDetailsItem.productCode,
-            productSkuCode: skuItem.productSkuCode,
-            starasSkuCode: skuItem.starasSkuCode
-          }
-          groupProducts.push(sku)
-        })
-      })
-      params.groupGoodsRecords = groupProducts
-
-      this.$api.groupGoods
-        .updateGroupListDetail(params)
-        .then(res => {
-          if (res.code === 0) {
+        this.isDialog = false
+        this.groupDetail = {}
+        this.groupGoodsRecords = []
+        if (this.$route.query.orderId !== undefined) {
+            this.isOrderSuply = true
+            this.suplyGoods()
+        } else {
+            this.isOrderSuply = false
             this.getGroupDetail()
-            this.$toast.success('已修改')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      this.showSku = false
+        }
+        utils.postMessage('changeStatus', 'default')
     },
-    changeGroupName () {
-      this.$router.push({
-        path: '/group/changeGroupName',
-        query: { name: this.groupName, groupGoodsId: this.groupDetail.groupGoodsId }
-      })
+    filters: {
+        selectSkuStr(val) {
+            let str = val.attrColorValue + '：'
+            let arr = []
+            val.skuList.forEach(item => {
+                arr.push(item.attrSpecValue)
+            })
+            return str + arr.join('，')
+        }
     },
-    goPay () {
-      window.sa.track('IPX_WEB', {
-        page: 'groupListDetail', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      order.createOrder(this.groupGoodsRecords, this.groupDetail.groupGoodsId, true)
+    computed: {
+        marginTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'top:0.88rem'
+            }
+            return 'top:0.64rem'
+        },
+        goodPicture() {
+            return function(good) {
+                return good.colorSkuList[0].imgUrl
+            }
+        },
+        tipStr() {
+            return function(value) {
+                if (value.productShelves === 0) {
+                    value.disabled = true
+                    return '商品已失效' // 下架 置灰
+                }
+                let batchNum = value.minBatchNum
+                let stockAll = 0
+                let selectAll = 0
+                let isChanged = false
+                let isEnough = false
+                value.colorSkuList.forEach((item, index) => {
+                    item.skuList.forEach((skuItem, skuIndex) => {
+                        if (skuItem.entityStock === 0 && skuItem.num !== 0) {
+                            isChanged = true
+                        }
+                        selectAll += skuItem.num
+                        stockAll += skuItem.entityStock
+                    })
+                })
+                if (selectAll >= batchNum) {
+                    isEnough = true
+                }
+                if (stockAll === 0 || stockAll < batchNum) {
+                    value.disabled = true
+                    return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
+                }
+                if (!isEnough && stockAll >= batchNum) {
+                    return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
+                }
+                if (isChanged && isEnough) {
+                    return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
+                }
+            }
+        }
+    },
+    methods: {
+        cashFormat(price) {
+            return cash.changeFormat(price)
+        },
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        dialogAlert(isDialog) {
+            if (!this.isDialog && isDialog) {
+                this.isDialog = true
+                Dialog.alert({
+                    title: '商品信息变更',
+                    message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
+                    confirmButtonText: '我知道了',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {})
+            }
+        },
+        jumpToProduct(product) {
+            window.sa.track('IPX_WEB', {
+                page: 'groupListDetail', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'editItemClick' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: product.productCode
+            }
+            utils.postMessage('', params)
+        },
+        openSku(item, index) {
+            window.sa.track('IPX_WEB', {
+                page: 'groupListDetail', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'modifySku' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.seletedDetailsItem = {}
+            this.colorSkuAction = '0'
+            this.showSku = !this.showSku
+            this.seletedItemIndex = index
+            this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
+            this.seletedDetailsItem = {
+                ...this.seletedDetailsItem,
+                seletedColorSkuSumNum: 0
+            }
+
+            let { colorSkuList } = this.seletedDetailsItem
+            let seletedColorSkuSumNum = 0
+
+            colorSkuList.forEach((item, index) => {
+                let seletedColorSkuNum = 0
+                item.skuList.forEach((skuItem, skuIndex) => {
+                    skuItem.skuValue = Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
+                    seletedColorSkuNum = Number(skuItem.skuValue) + Number(seletedColorSkuNum)
+                })
+                item.seletedColorSkuNum = seletedColorSkuNum
+                seletedColorSkuSumNum = Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
+            })
+            this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+        },
+        suplyGoods() {
+            const params = {
+                orderCode: this.$route.params.orderId
+            }
+            this.$api.groupGoods
+                .suplyGoods(params)
+                .then(res => {
+                    const { groupGoodsRecords } = res
+
+                    this.groupDetail = res
+                    this.groupGoodsRecords = groupGoodsRecords
+                    this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
+                        return {
+                            ...item,
+                            disabled: false
+                        }
+                    })
+                    this.groupName = this.groupDetail.name
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        getGroupDetail() {
+            // 获取组货详情列表
+            const params = {
+                groupGoodsId: this.$route.query.groupId
+            }
+            this.$api.groupGoods
+                .getGroupListDetail(params)
+                .then(res => {
+                    if (res.code === 0) {
+                        const { data } = res
+                        const { groupGoodsRecords } = data
+
+                        this.groupDetail = data
+                        this.groupGoodsRecords = groupGoodsRecords
+                        this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
+                            return {
+                                ...item,
+                                disabled: false
+                            }
+                        })
+                        this.groupName = this.groupDetail.name
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        skuCommit(seletedDetailsItem) {
+            // sku修改 确定
+            this.seletedDetailsItem = seletedDetailsItem
+            if (this.isOrderSuply) {
+                this.$toast.success('已修改')
+                this.showSku = false
+                return
+            }
+            let groupProducts = []
+            const params = {
+                groupGoodsId: this.groupDetail.groupGoodsId,
+                name: this.groupDetail.name
+            }
+
+            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
+                item.skuList.forEach((skuItem, skuIndex) => {
+                    skuItem.num = skuItem.skuValue
+                    let sku = {
+                        groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                        num: skuItem.skuValue,
+                        productAtrNumber: this.seletedDetailsItem.productAtrNumber,
+                        productCode: this.seletedDetailsItem.productCode,
+                        productSkuCode: skuItem.productSkuCode,
+                        starasSkuCode: skuItem.starasSkuCode
+                    }
+                    groupProducts.push(sku)
+                })
+            })
+            params.groupGoodsRecords = groupProducts
+
+            this.$api.groupGoods
+                .updateGroupListDetail(params)
+                .then(res => {
+                    if (res.code === 0) {
+                        this.getGroupDetail()
+                        this.$toast.success('已修改')
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            this.showSku = false
+        },
+        changeGroupName() {
+            this.$router.push({
+                path: '/group/changeGroupName',
+                query: { name: this.groupName, groupGoodsId: this.groupDetail.groupGoodsId }
+            })
+        },
+        goPay() {
+            window.sa.track('IPX_WEB', {
+                page: 'groupListDetail', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            order.createOrder(this.groupGoodsRecords, this.groupDetail.groupGoodsId, true)
+        }
     }
-  }
 }
 </script>
 

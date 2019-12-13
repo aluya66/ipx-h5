@@ -41,90 +41,90 @@ import utils from 'utils'
 import EmptyView from '../../error/emptyView.vue'
 
 export default {
-  components: {
-    EmptyView
-  },
-  props: {
+    components: {
+        EmptyView
+    },
+    props: {
 
-  },
-  data () {
-    return {
-      // showTitle: false,
-      showList: false,
-      rankData: [],
-      testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
-      backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
-      rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png'), require('@/themes/images/groupGoods/bg_No.4.png')]
+    },
+    data () {
+        return {
+            // showTitle: false,
+            showList: false,
+            rankData: [],
+            testImg: require('@/themes/images/groupGoods/groupInfoBg.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
+            rankImg: [require('@/themes/images/groupGoods/bg_No.1.png'), require('@/themes/images/groupGoods/bg_No.2.png'), require('@/themes/images/groupGoods/bg_No.3.png'), require('@/themes/images/groupGoods/bg_No.4.png')]
+        }
+    },
+    methods: {
+        handleToDetail(item) {
+            window.sa.track('IPX_WEB', {
+                page: 'groupHotRank', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'rankItemClick' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.$router.push({
+                path: '/groupDetail',
+                query: {
+                    groupCode: item.groupCode
+                }
+            })
+        },
+        handleCall(item) {
+            window.sa.track('IPX_WEB', {
+                page: 'groupHotRank', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'rankCall' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            const params = {
+                groupCode: item.groupCode
+            }
+            this.$api.groupGoods.postCall(params).then(res => {
+                if (res instanceof Object) {
+                    this.$toast('打call成功')
+                    item.grandTotalFocus = res.popularityCount
+                    item.ishaveVoted = 1
+                }
+            }).catch(() => {
+
+            })
+        },
+        getListContainHeight() {
+            let offsetStr = utils.bottomOffset(0)
+            let str = `min-height:${this.getContainHeight()}rem;${offsetStr}`
+            return str
+        },
+        getContainHeight() {
+            let baseParams = utils.getStore('baseParams')
+            let statusBarHeight = Number(baseParams.statusBarHeight)
+            let wHeight = window.screen.height
+            return (wHeight - statusBarHeight - 115) / 100
+        },
+        handleRequest() {
+            this.$api.groupGoods.groupRank().then(res => {
+                if (res instanceof Array) {
+                    this.rankData = res
+                }
+            }).catch(() => {
+
+            })
+        }
+    },
+    mounted() {
+        this.showList = false
+        setTimeout(() => {
+            this.showList = true
+        }, 300)
+    },
+    activated() {
+        window.sa.track('IPX_WEB', {
+            page: 'groupHotRank', // 页面名字
+            type: 'pageView', // 固定参数，不用改
+            event: 'pageView' // 固定参数，不用改
+        })
+        this.handleRequest()
     }
-  },
-  methods: {
-    handleToDetail (item) {
-      window.sa.track('IPX_WEB', {
-        page: 'groupHotRank', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'rankItemClick' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      this.$router.push({
-        path: '/groupDetail',
-        query: {
-          groupCode: item.groupCode
-        }
-      })
-    },
-    handleCall (item) {
-      window.sa.track('IPX_WEB', {
-        page: 'groupHotRank', // 页面名字
-        type: 'click', // 固定参数，表明是点击事件
-        event: 'rankCall' // 按钮唯一标识，取个语义化且不重名的名字
-      })
-      const params = {
-        groupCode: item.groupCode
-      }
-      this.$api.groupGoods.postCall(params).then(res => {
-        if (res instanceof Object) {
-          this.$toast('打call成功')
-          item.grandTotalFocus = res.popularityCount
-          item.ishaveVoted = 1
-        }
-      }).catch(() => {
-
-      })
-    },
-    getListContainHeight () {
-      let offsetStr = utils.bottomOffset(0)
-      let str = `min-height:${this.getContainHeight()}rem;${offsetStr}`
-      return str
-    },
-    getContainHeight () {
-      let baseParams = utils.getStore('baseParams')
-      let statusBarHeight = Number(baseParams.statusBarHeight)
-      let wHeight = window.screen.height
-      return (wHeight - statusBarHeight - 115) / 100
-    },
-    handleRequest () {
-      this.$api.groupGoods.groupRank().then(res => {
-        if (res instanceof Array) {
-          this.rankData = res
-        }
-      }).catch(() => {
-
-      })
-    }
-  },
-  mounted () {
-    this.showList = false
-    setTimeout(() => {
-      this.showList = true
-    }, 300)
-  },
-  activated () {
-    window.sa.track('IPX_WEB', {
-      page: 'groupHotRank', // 页面名字
-      type: 'pageView', // 固定参数，不用改
-      event: 'pageView' // 固定参数，不用改
-    })
-    this.handleRequest()
-  }
 }
 </script>
 

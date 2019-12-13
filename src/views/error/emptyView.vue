@@ -7,38 +7,38 @@
 
 <script>
 export default {
-  components: {
+    components: {
 
-  },
-  props: {
-    emptyType: {
-      type: String,
-      default: 'build'
     },
-    emptyDesc: {
-      type: String,
-      default: '业务建设中，敬请期待'
+    props: {
+        emptyType: {
+            type: String,
+            default: 'build'
+        },
+        emptyDesc: {
+            type: String,
+            default: '业务建设中，敬请期待'
+        }
+    },
+    data () {
+        return {
+            buildImg: require('@/themes/images/app/default_empty.png'),
+            errorImg: require('@/themes/images/app/default_no search copy@2x.png')
+        }
+    },
+    computed: {
+        getImage() {
+            switch (this.emptyType) {
+            case 'build':
+                return this.buildImg
+            case 'error':
+                return this.errorImg
+            default:
+                break
+            }
+            return this.buildImg
+        }
     }
-  },
-  data () {
-    return {
-      buildImg: require('@/themes/images/app/default_empty.png'),
-      errorImg: require('@/themes/images/app/default_no search copy@2x.png')
-    }
-  },
-  computed: {
-    getImage () {
-      switch (this.emptyType) {
-        case 'build':
-          return this.buildImg
-        case 'error':
-          return this.errorImg
-        default:
-          break
-      }
-      return this.buildImg
-    }
-  }
 }
 </script>
 

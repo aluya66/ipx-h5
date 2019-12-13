@@ -44,52 +44,52 @@
 
 <script>
 export default {
-  components: {},
-  props: {
-    products: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
-  data () {
-    return {
-      isTest: false
-    }
-  },
-  created () {
-    this.isTest = this.products.length > 0
-  },
-  watch: {
-    products (val) {
-      this.isTest = val.length > 0
-    }
-  },
-  methods: {
+    components: {},
+    props: {
+        products: {
+            type: Array,
+            default () {
+                return []
+            }
+        }
+    },
+    data () {
+        return {
+            isTest: false
+        }
+    },
+    created () {
+        this.isTest = this.products.length > 0
+    },
+    watch: {
+        products (val) {
+            this.isTest = val.length > 0
+        }
+    },
+    methods: {
     // 发起测款
-    handleCheck () {
-      // 上报按钮事件
-      window.sa.track('IPX_WEB', {
-        page: 'orderProduct',
-        type: 'click',
-        event: 'immediatelyFreeCheckStyle'
-      })
-      this.$emit('onCheck')
-    },
-    // 测款报告
-    handleCheckTestResult () {
-      this.$emit('onResult')
-    },
-    // 分享测款
-    handleShare () {
-      this.$emit('onShare')
-    },
-    // 查看测款详情页
-    handleCheckDetail () {
-      this.$emit('onDetail')
+        handleCheck () {
+            // 上报按钮事件
+            window.sa.track('IPX_WEB', {
+                page: 'orderProduct',
+                type: 'click',
+                event: 'immediatelyFreeCheckStyle'
+            })
+            this.$emit('onCheck')
+        },
+        // 测款报告
+        handleCheckTestResult () {
+            this.$emit('onResult')
+        },
+        // 分享测款
+        handleShare () {
+            this.$emit('onShare')
+        },
+        // 查看测款详情页
+        handleCheckDetail () {
+            this.$emit('onDetail')
+        }
     }
-  }
 }
 </script>
 

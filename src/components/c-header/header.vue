@@ -29,83 +29,83 @@ import { NavBar } from 'vant'
 import utils from 'utils'
 
 export default create({
-  name: 'header',
-  inheritAttrs: false,
-  components: {
-    [NavBar.name]: NavBar
-  },
-  props: {
-    isLight: {
-      type: Boolean,
-      default: true
+    name: 'header',
+    inheritAttrs: false,
+    components: {
+        [NavBar.name]: NavBar
     },
-    fixed: {
-      type: Boolean,
-      default: false
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    leftText: {
-      type: String,
-      default: ''
-    },
-    rightText: {
-      type: String,
-      default: ''
-    },
-    leftArrow: {
-      type: Boolean,
-      default: true
-    },
-    showBorderBottom: {
-      type: Boolean,
-      default: false
-    },
-    pageOutStatus: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data () {
-    return {
-      baseParams: {},
-      paddingTop: 0
-    }
-  },
-  activated () {
-
-  },
-  computed: {
-    curTitle () {
-      if (this.$route.meta) {
-        const { title } = this.$route.meta
-        if (title) {
-          return this.translate(title, 'route')
+    props: {
+        isLight: {
+            type: Boolean,
+            default: true
+        },
+        fixed: {
+            type: Boolean,
+            default: false
+        },
+        title: {
+            type: String,
+            default: ''
+        },
+        leftText: {
+            type: String,
+            default: ''
+        },
+        rightText: {
+            type: String,
+            default: ''
+        },
+        leftArrow: {
+            type: Boolean,
+            default: true
+        },
+        showBorderBottom: {
+            type: Boolean,
+            default: false
+        },
+        pageOutStatus: {
+            type: Boolean,
+            default: false
         }
-      }
-      return this.title
     },
-    themeLight () {
-      if (this.isLight) {
-        return 'color:#2a2b33'
-      }
-      return 'color:#fff'
+    data () {
+        return {
+            baseParams: {},
+            paddingTop: 0
+        }
+    },
+    activated () {
+
+    },
+    computed: {
+        curTitle () {
+            if (this.$route.meta) {
+                const { title } = this.$route.meta
+                if (title) {
+                    return this.translate(title, 'route')
+                }
+            }
+            return this.title
+        },
+        themeLight () {
+            if (this.isLight) {
+                return 'color:#2a2b33'
+            }
+            return 'color:#fff'
+        }
+    },
+    mounted () {
+    },
+    methods: {
+        onClickLeft () {
+            let method = 'page_out'
+            if (this.pageOutStatus) {
+                utils.postMessage(method, '')
+            } else {
+                this.$router.go(-1)
+            }
+        }
     }
-  },
-  mounted () {
-  },
-  methods: {
-    onClickLeft () {
-      let method = 'page_out'
-      if (this.pageOutStatus) {
-        utils.postMessage(method, '')
-      } else {
-        this.$router.go(-1)
-      }
-    }
-  }
 })
 </script>
 

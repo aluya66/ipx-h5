@@ -15,29 +15,29 @@ import create from 'utils/create'
 import { Tab, Tabs } from 'vant'
 
 export default create({
-  name: 'tabs',
-  inheritAttrs: false,
-  components: {
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs
-  },
-  props: {
-    tabs: {
-      type: Array,
-      default () {
-        return []
-      }
+    name: 'tabs',
+    inheritAttrs: false,
+    components: {
+        [Tab.name]: Tab,
+        [Tabs.name]: Tabs
     },
-    showBorder: {
-      type: Boolean,
-      default: true
+    props: {
+        tabs: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        showBorder: {
+            type: Boolean,
+            default: true
+        }
+    },
+    methods: {
+        setTitle (item) {
+            return item.num ? `${item.title}(${item.num})` : item.title
+        }
     }
-  },
-  methods: {
-    setTitle (item) {
-      return item.num ? `${item.title}(${item.num})` : item.title
-    }
-  }
 })
 </script>
 

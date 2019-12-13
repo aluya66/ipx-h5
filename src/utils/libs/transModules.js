@@ -5,6 +5,6 @@
  * @returns
  */
 export default moduleFiles => moduleFiles.keys().filter(v => v !== './index.js').reduce((mutations, key) => {
-  mutations[key.replace(/(^\.\/)|(\.js$)/g, '')] = moduleFiles(key).default || moduleFiles(key)
-  return mutations
+    mutations[key.replace(/(^\.\/)|(\.js$)/g, '')] = moduleFiles(key).default || moduleFiles(key)
+    return mutations
 }, {})

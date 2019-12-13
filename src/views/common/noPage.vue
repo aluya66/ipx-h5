@@ -12,14 +12,14 @@
 <script>
 import noPage from '../error/emptyView'
 export default {
-  data () {
-    return {}
-  },
-  components: {
-    noPage
-  },
-  created () {},
-  methods: {}
+    data() {
+        return {}
+    },
+    components: {
+        noPage
+    },
+    created() {},
+    methods: {}
 }
 </script>
 
