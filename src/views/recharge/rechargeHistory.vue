@@ -29,7 +29,6 @@ export default {
     },
     activated() {
         this.reportType = this.$route.query.type
-        alert(this.reportType)
         this.getRechargeHistory()
     },
     methods: {

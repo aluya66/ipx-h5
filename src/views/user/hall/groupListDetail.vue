@@ -158,6 +158,7 @@ export default {
             return function(value) {
                 if (value.productShelves === 0) {
                     value.disabled = true
+                    value.unablepay = true
                     return '商品已失效' // 下架 置灰
                 }
                 let batchNum = value.minBatchNum
@@ -179,9 +180,11 @@ export default {
                 }
                 if (stockAll === 0 || stockAll < batchNum) {
                     value.disabled = true
+                    value.unablepay = true
                     return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
                 }
                 if (!isEnough && stockAll >= batchNum) {
+                    value.unablepay = true
                     return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
                 }
                 if (isChanged && isEnough) {
@@ -267,7 +270,8 @@ export default {
                     this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
                         return {
                             ...item,
-                            disabled: false
+                            disabled: false,
+                            unablepay: false
                         }
                     })
                     this.groupName = this.groupDetail.name
@@ -293,7 +297,8 @@ export default {
                         this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
                             return {
                                 ...item,
-                                disabled: false
+                                disabled: false,
+                                unablepay: true
                             }
                         })
                         this.groupName = this.groupDetail.name
@@ -330,9 +335,12 @@ export default {
             params.groupGoodsRecords = groupProducts
             if (this.isOrderSuply) {
                 this.groupGoodsRecords.forEach((product, index) => {
+                    let unablepay = product.unablepay
                     product.colorSkuList.forEach((item, index) => {
                         item.skuList.forEach((skuItem, skuIndex) => {
-                            totalPrice += skuItem.tshPrice * skuItem.num
+                            if (!unablepay) {
+                                totalPrice += skuItem.tshPrice * skuItem.num
+                            }
                         })
                     })
                 })

@@ -1,19 +1,20 @@
 <template>
-  <layout-view>
-    <c-header slot="header" :left-arrow="true" :isLight="false">
+  <layout-view class="header-bg" >
+    <c-header class="my-header" slot="header" :left-arrow="true" :isLight="false">
       <div slot="title">我的余额</div>
       <template slot="left" tag="div">
         <img class="header-img" :src="backImage" />
       </template>
-      <template slot="right" tag="div">
-        <span>说明</span>
+      <template slot="right" tag="div" class="right">
+        <span style="font-size:0.14rem;font-weight:400;color: white;line-height:0.2rem;">说明</span>
       </template>
     </c-header>
-    <div class="panel">
+    <div class="panel" >
+
       <div class="account">
         <div class="account-info">
           <p class="title">余额（元）</p>
-          <p class="money">5500.00</p>
+          <p class="money">{{banlance.accAvailableMoney}}</p>
           <img src="@/themes/images/app/btn_to_use@3x.png" alt="" />
         </div>
       </div>
@@ -35,8 +36,8 @@
         <div class="data-list">
           <div class="recharge-cash" v-for="item in rechargeConfig" :key="item.rechargeConfigId">
             <p class="cash">{{item.chargeAmount}}<span>元</span></p>
-            <p class="desc" v-show="item.giveAmount !== undefined">赠送 {{item.giveAmount}}元</p>
-            <div class="discont" v-show="item.giveAmount !== undefined">
+            <p class="desc" v-show="item.giveAmount !== '0'">赠送 {{item.giveAmount}}元</p>
+            <div class="discont" v-show="item.giveAmount !== '0'">
               <span>限时优惠</span>
             </div>
           </div>
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     components: {},
     data() {
@@ -64,13 +66,20 @@ export default {
                     index: 1
                 }
             ],
-            rechargeConfig: []
+            rechargeConfig: [],
+            banlance: {}
         }
     },
     activated() {
+        this.rechargeConfig = []
+        this.banlance = {}
         this.rechargeInfo()
+        this.getBalance()
     },
     methods: {
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
         optionClick(index) {
             this.$router.push({
                 path: '/recharge/history',
@@ -85,18 +94,37 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
+        },
+        getBalance() {
+            this.$api.recharge.getBalance().then(res => {
+                this.banlance = res
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
-.panel {
-  position: relative;
-  .account {
-    background-image: url("../../themes/images/app/bg_pay_balance@3x.png");
+.header-bg {
+    background-image: url('../../themes/images/app/bg_pay_balance@3x.png');
     background-repeat: no-repeat;
     background-size: 100% 284px;
+    .my-header {
+      background: rgba(0, 0, 0, 0);
+    }
+}
+
+.panel {
+  position: relative;
+  height: calc(100vh - 60px);
+  overflow-y: scroll;
+  // top: -64px;
+  .account {
+    // background-image: url("../../themes/images/app/bg_pay_balance@3x.png");
+    // background-repeat: no-repeat;
+    // background-size: 100% 284px;
     height: 284px;
     .account-info {
         padding: 112px 20px 0 20px;
@@ -173,6 +201,7 @@ export default {
         background: @color-c8;
         border-radius: 8px;
         padding: 16px 0 16px 20px;
+        margin-bottom: 19px;
         .cash {
           font-size: 22px;
           font-family: "alibabaBold";
@@ -203,7 +232,8 @@ export default {
           );
           border-radius: 0px 8px 0px 8px;
           float: right;
-          transform: translateY(-58px);
+          text-align: center;
+          transform: translateY(-62px);
           > span {
             font-size: 10px;
             font-weight: 500;
