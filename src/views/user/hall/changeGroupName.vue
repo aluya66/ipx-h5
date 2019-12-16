@@ -4,51 +4,67 @@
       <div slot="title">编辑组货名称</div>
     </c-header>
     <div class="panel">
-      <van-field v-model="groupName" clearable placeholder="请输入组货名称" maxlength="20" />
+      <van-field
+        v-model="groupName"
+        clearable
+        placeholder="请输入组货名称"
+        maxlength="20"
+      />
       <button @click="commit">完成</button>
     </div>
   </layout-view>
 </template>
 
 <script>
-import { Field } from 'vant'
+import { Field } from "vant";
 // import utils from 'utils'
 export default {
-    components: {
-        [Field.name]: Field
-    },
-    data() {
-        return {
-            groupName: ''
-        }
-    },
-    activated() {
-        this.groupName = this.$route.query.name
-    },
-    methods: {
-        commit() {
-            if (this.groupName === '') {
-                this.$toast('请输入组货名称')
-                return
-            }
-            const params = {
-                groupGoodsId: this.$route.query.groupGoodsId,
-                name: this.groupName
-            }
-            this.$api.groupGoods
-                .updateGroupListDetail(params)
-                .then(res => {
-                    if (res.code === 0) {
-                        this.$toast.success('已修改')
-                        this.$router.go(-1)
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        }
+  components: {
+    [Field.name]: Field
+  },
+  data() {
+    return {
+      groupName: "",
+      isSuply: false
+    };
+  },
+  activated() {
+    this.groupName = this.$route.query.name;
+    this.isSuply = this.$route.query.isSuply;
+  },
+  beforeRouteLeave(to, from, next) {
+    to.query.groupName = this.groupName;
+    next();
+  },
+  methods: {
+    commit() {
+      if (this.groupName === "") {
+        this.$toast("请输入组货名称");
+        return;
+      }
+      if (this.isSuply) {
+        this.$toast.success("已修改");
+        this.$router.go(-1);
+        return;
+      }
+      const params = {
+        groupGoodsId: this.$route.query.groupGoodsId,
+        name: this.groupName
+      };
+      this.$api.groupGoods
+        .updateGroupListDetail(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.$toast.success("已修改");
+            this.$router.go(-1);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>
