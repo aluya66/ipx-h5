@@ -1,7 +1,7 @@
 <template>
   <layout-view>
     <c-header slot="header" :left-arrow="true" class="my-header">
-      <div slot="title">充值记录</div>
+      <div slot="title">{{reportType === 1 ? '充值记录':'支付记录'}}</div>
     </c-header>
     <div class="panel">
       <div class="content" v-for="item in reportList" :key="item.id">
@@ -28,7 +28,8 @@ export default {
         }
     },
     activated() {
-        // reportType = this.$route.query.reportType
+        this.reportType = this.$route.query.type
+        alert(this.reportType)
         this.getRechargeHistory()
     },
     methods: {
@@ -36,7 +37,7 @@ export default {
         getRechargeHistory() {
             const params = {
                 pageNum: 1,
-                detailOptType: 1
+                detailOptType: this.reportType
             }
             this.$api.recharge.getAccontHistory(params).then(res => {
                 this.reportList = res

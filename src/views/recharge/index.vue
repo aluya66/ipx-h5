@@ -21,8 +21,9 @@
         <div class="option">
           <div
             class="option-content"
-            v-for="(option, index) in optionInfo"
-            :key="index"
+            v-for="(option) in optionInfo"
+            :key="option.index"
+            @click="optionClick(option.index)"
           >
             <img :src="option.img" alt="" />
             <p>{{ option.title }}</p>
@@ -32,10 +33,10 @@
           <p>IPX充值</p>
         </div>
         <div class="data-list">
-          <div class="recharge-cash">
-            <p class="cash">3000<span>元</span></p>
-            <p class="desc" v-show="false">赠送 250.00元</p>
-            <div class="discont" v-show="false">
+          <div class="recharge-cash" v-for="item in rechargeConfig" :key="item.rechargeConfigId">
+            <p class="cash">{{item.chargeAmount}}<span>元</span></p>
+            <p class="desc" v-show="item.giveAmount !== undefined">赠送 {{item.giveAmount}}元</p>
+            <div class="discont" v-show="item.giveAmount !== undefined">
               <span>限时优惠</span>
             </div>
           </div>
@@ -54,13 +55,36 @@ export default {
             optionInfo: [
                 {
                     img: require('@/themes/images/app/icon_payment_record@3x.png'),
-                    title: '支付记录'
+                    title: '支付记录',
+                    index: 3
                 },
                 {
                     img: require('@/themes/images/app/icon_recharge_record@3x.png'),
-                    title: '充值记录'
+                    title: '充值记录',
+                    index: 1
                 }
-            ]
+            ],
+            rechargeConfig: []
+        }
+    },
+    activated() {
+        this.rechargeInfo()
+    },
+    methods: {
+        optionClick(index) {
+            this.$router.push({
+                path: '/recharge/history',
+                query: {
+                    type: index
+                }
+            })
+        },
+        rechargeInfo() {
+            this.$api.recharge.getRechargeInfo().then(res => {
+                this.rechargeConfig = res
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }
 }
