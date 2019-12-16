@@ -1,17 +1,17 @@
 <template>
   <layout-view>
-    <c-header slot="header" :left-arrow="true">
+    <c-header slot="header" :left-arrow="true" class="my-header">
       <div slot="title">充值记录</div>
     </c-header>
     <div class="panel">
-      <div class="content">
+      <div class="content" v-for="item in reportList" :key="item.id">
         <div class="title-content">
-          <p class="title">充值单号-344546577</p>
-          <p class="time">2019-12-08 18:50:00</p>
+          <p class="title">{{reportType === 1 ? '充值单号':'支付单号'}}-{{item.rltId}}</p>
+          <p class="time">{{item.creatTime}}</p>
         </div>
         <div class="balance-content">
-          <p class="banlance">+1,000.00</p>
-          <p class="total-cash">1,233,500.00</p>
+          <p class="banlance">{{reportType === 1 ? '+':'-'}}{{item.optAmount}}</p>
+          <p class="total-cash">{{item.detailAvailableMoney}}</p>
         </div>
       </div>
     </div>
@@ -21,14 +21,45 @@
 <script>
 export default {
     components: {},
-    props: {},
     data() {
-        return {}
+        return {
+            reportType: 1,
+            reportList: []
+        }
+    },
+    activated() {
+        // reportType = this.$route.query.reportType
+        this.getRechargeHistory()
+    },
+    methods: {
+        // 1 : 充值 ，2：提现 ，3 ：下单
+        getRechargeHistory() {
+            const params = {
+                pageNum: 1,
+                detailOptType: 1
+            }
+            this.$api.recharge.getAccontHistory(params).then(res => {
+                this.reportList = res
+            }).catch(err => {
+                console.log(err)
+            })
+        }
     }
 }
 </script>
 
 <style lang="less" scoped>
+.my-header {
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: @color-c7;
+  }
+}
 .panel {
   .content {
     display: flex;
@@ -71,7 +102,7 @@ export default {
     content: "";
     position: absolute;
     left: 16px;
-    width: 95%;
+    width: 100%;
     height: 1px;
     background: @color-c7;
   }

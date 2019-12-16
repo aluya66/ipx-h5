@@ -1,6 +1,6 @@
 <template>
   <layout-view>
-    <c-header class="my-header" slot="header" :left-arrow="true">
+    <c-header class="my-header" slot="header" :left-arrow="true" :pageOutStatus="isNative">
       <div class="title-header" slot="title">
         编辑组货方案
       </div>
@@ -87,7 +87,8 @@ export default {
             isDialog: false,
             seletedDetailsItem: {}, // sku数据源
             seletedItemIndex: '', // 选择调整商品下标
-            isOrderSuply: false
+            isOrderSuply: false,
+            isNative: false
         }
     },
     activated() {
@@ -98,13 +99,19 @@ export default {
             event: 'pageView'
         })
         this.showSku = false
+        this.isNative = false
         this.isDialog = false
         this.groupDetail = {}
         this.groupGoodsRecords = []
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         if (this.$route.query.orderId !== undefined) {
+            // alert(this.$route.query.orderId)
             this.isOrderSuply = true
             this.suplyGoods()
         } else {
+            // alert('33333')
             this.isOrderSuply = false
             this.getGroupDetail()
         }
@@ -231,7 +238,7 @@ export default {
         },
         suplyGoods() {
             const params = {
-                orderCode: this.$route.params.orderId
+                orderCode: this.$route.query.orderId
             }
             this.$api.groupGoods
                 .suplyGoods(params)
