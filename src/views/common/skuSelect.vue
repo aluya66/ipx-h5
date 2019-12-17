@@ -3,21 +3,27 @@
     <van-sku v-model="showSku" :sku="sku" class="my-sku-content">
       <template slot="sku-header">
         <div class="van-sku-header van-hairline--bottom">
-          <div class="van-sku-header__img-wrap">
-            <img :src="goodPicture" />
+          <div class="my-sku-header-info">
+            <img :src="goodPicture" alt="">
+            <div class="my-sku-info">
+              <p class="my-sku-price">
+                ¥<span>{{cashFormat(seletedDetailsItem.spuTshPrice)}}</span>
+              </p>
+              <p class="my-sku-describ">请调整颜色、尺码和数量</p>
+            </div>
           </div>
-          <div class="van-sku-header__goods-info">
+          <!-- <div class="van-sku-header__img-wrap">
+            <img :src="goodPicture" />
+          </div> -->
+          <!-- <div class="van-sku-header__goods-info">
             <div class="my-goods-price">
               <span class="my-price-symbol">¥</span>
               <span class="my-sku__price-num">{{
                 cashFormat(seletedDetailsItem.spuTshPrice)
               }}</span>
             </div>
-            <!-- <div class="van-sku-header-item"> -->
-            <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
-            <!-- </div> -->
             <div class="van-sku-header-item">请调整颜色、尺码和数量</div>
-          </div>
+          </div> -->
         </div>
       </template>
       <template slot="sku-group">
@@ -190,21 +196,41 @@ export default {
   text-align: center;
   background-color: #ffebed;
 }
-.my-goods-price {
-  color: @color-rc !important;
-  .my-price-symbol {
-    // top: 8px;
-    vertical-align: bottom;
-    font-size: 14px;
-    color: @color-rc !important;
+
+.my-sku-header-info {
+  height: 88px;
+  margin: 20px 0;
+  display: flex;
+  img {
+    width: 88px;
+    height: 88px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid @color-c7;
   }
-  .my-sku__price-num {
-    font-size: 20px;
-    font-weight: bold;
-    color: @color-rc !important;
-    font-family: "alibabaBold";
+  .my-sku-info {
+    margin: 36px 16px 0px 8px;
+    .my-sku-price {
+      font-size: 14px;
+      color: @color-rc;
+      font-family: "alibabaRegular";
+      line-height:24px;
+      > span {
+        font-size: 20px;
+        font-weight: bold;
+        color: @color-rc;
+        font-family: "alibabaBold";
+      }
+    }
+    .my-sku-describ {
+      font-size: 12px;
+      color: #2a2b33;
+      margin-top: 12px;
+    }
   }
+
 }
+
 .sku-card {
   width: calc(100vw - 32px);
   // height: 200px;
@@ -299,32 +325,32 @@ export default {
       border-radius: 8px 8px 0 0;
     }
 
-    .van-sku-header {
-      .van-sku-header__img-wrap {
-        width: 88px;
-        height: 88px;
-        margin: 20px 0;
-        img {
-          width: 100%;
-          height: 100%;
-          border-radius: 4px;
-          object-fit: cover;
-          border: 1px solid @color-c7;
-        }
-      }
+    // .van-sku-header {
+    //   .van-sku-header__img-wrap {
+    //     width: 88px;
+    //     height: 88px;
+    //     margin: 20px 0;
+    //     img {
+    //       width: 100%;
+    //       height: 100%;
+    //       border-radius: 4px;
+    //       object-fit: cover;
+    //       border: 1px solid @color-c7;
+    //     }
+    //   }
 
-      .van-sku-header__goods-info {
-        margin-top: 14px;
-        .van-sku-header-item {
-          font-size: 12px;
-          color: #2a2b33;
-          margin-top: 4px;
-        }
-        .van-sku__stock {
-          color: #b2b5c1;
-        }
-      }
-    }
+    //   .van-sku-header__goods-info {
+    //     margin-top: 14px;
+    //     .van-sku-header-item {
+    //       font-size: 12px;
+    //       color: #2a2b33;
+    //       margin-top: 4px;
+    //     }
+    //     .van-sku__stock {
+    //       color: #b2b5c1;
+    //     }
+    //   }
+    // }
 
     .van-hairline--bottom::after,
     .van-hairline--top-bottom::after,
