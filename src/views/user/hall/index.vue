@@ -24,7 +24,7 @@
             <div :class='["test-agency", "test"]' @click="handleClickTest">
                 <div>
                     <p>在线测款</p>
-                    <p>预测款式趋势</p>
+                    <p style="font-weight:400" >预测款式趋势</p>
                 </div>
                 <img :src="testImage" alt="" />
             </div>
