@@ -235,6 +235,9 @@ export default {
 </style>
 
 <style lang="less">
+.van-sku__goods-price {
+  color: @color-rc !important;
+}
 .mypanel {
   .my-sku-content {
     .van-sku-actions {
