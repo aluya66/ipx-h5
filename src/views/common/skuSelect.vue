@@ -7,10 +7,10 @@
           <img :src="goodPicture" />
         </div>
         <div class="van-sku-header__goods-info">
-          <div class="my-goods-price" style="color: rgba(245, 48, 48, 1) !important;">
+          <div class="my-goods-price" style="color: @color-rc !important;">
             <span class="my-price-symbol">¥</span>
             <span class="my-sku__price-num"
-            style="font-family: alibabaBold;color: rgba(245, 48, 48, 1) !important;font-weight: bold;font-size: 0.2rem;">{{ cashFormat(seletedDetailsItem.spuTshPrice) }}</span>
+            style="font-family: alibabaBold;color: @color-rc !important;font-weight: bold;font-size: 0.2rem;">{{ cashFormat(seletedDetailsItem.spuTshPrice) }}</span>
           </div>
           <div class="van-sku-header-item">
             <!-- <span class="van-sku__stock">{{seletedDetailsItem.minBatchNum}}件起批</span> -->
@@ -281,17 +281,17 @@ export default {
       .van-sku-header__goods-info {
         margin-top: 14px;
         .my-goods-price {
-          color: rgba(245, 48, 48, 1);
+          color: @color-rc !important;
           .my-price-symbol {
             // top: 8px;
             vertical-align: bottom;
             font-size: 14px;
-            color: rgba(245, 48, 48, 1);
+            color: @color-rc !important;
           }
           .my-sku__price-num {
             font-size: 20px;
             font-weight: bold;
-            color: rgba(245, 48, 48, 1);
+            color: @color-rc !important;
             font-family: "alibabaBold";
           }
         }
