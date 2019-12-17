@@ -41,7 +41,8 @@
       <!--  人气排行-->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.popularity }">本周累计人气</span>
+          <img :src="bgUrlList.popularity" alt="">
+          <span>本周累计人气</span>
         </div>
         <div class="number-scroll">
           <div class="number" v-for="(item, index) in popularArray" :key="index">
@@ -58,7 +59,8 @@
       <!-- 买手 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.koc }">买手</span>
+          <img :src="bgUrlList.koc" alt="">
+          <span>买手</span>
         </div>
         <div class="buyer">
           <img :src="groupGoodsKoc.headPic" alt="" />
@@ -70,7 +72,8 @@
       <!-- 搭配解析 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.analysis }">搭配解析</span>
+          <img :src="bgUrlList.analysis" alt="">
+          <span>搭配解析</span>
         </div>
         <div class="group-analys">
           <img :src="groupDetail.analysisImg" alt="" />
@@ -80,7 +83,8 @@
       <!-- 要点总结 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.important }">要点总结</span>
+          <img :src="bgUrlList.important" alt="">
+          <span>要点总结</span>
         </div>
         <div class="group-important">
           <div class="paragraph" v-for="(str, strIndex) in importList" :key="strIndex">
@@ -93,7 +97,8 @@
       <!-- 搭配清单 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.collocation }">搭配清单</span>
+          <img :src="bgUrlList.collocation" alt="">
+          <span>搭配清单</span>
         </div>
         <div class="collocation-list">
           <div
@@ -177,11 +182,11 @@ export default {
                 }
             ],
             bgUrlList: {
-                popularity: 'url(' + require('../../themes/images/app/popularity@2x.png') + ')',
-                koc: 'url(' + require('../../themes/images/app/koc@2x.png') + ')',
-                analysis: 'url(' + require('../../themes/images/app/analysis@2x.png') + ')',
-                important: 'url(' + require('../../themes/images/app/essentials@2x.png') + ')',
-                collocation: 'url(' + require('../../themes/images/app/collocation@2x.png') + ')'
+                popularity: require('../../themes/images/app/popularity@2x.png'),
+                koc: require('../../themes/images/app/koc@2x.png'),
+                analysis: require('../../themes/images/app/analysis@2x.png'),
+                important: require('../../themes/images/app/essentials@2x.png'),
+                collocation: require('../../themes/images/app/collocation@2x.png')
             }
         }
     },
@@ -206,6 +211,7 @@ export default {
         this.timeOutRequest()
         let swiper = this.$refs.imageSwiper.swiper
         swiper.slideTo(0, 0, false)
+        utils.postMessage('changeStatus', 'default')
     },
     mounted() {
         this.showList = false
@@ -470,15 +476,29 @@ export default {
     //   margin-top: 25px;
     margin-bottom: 56px;
     .title-content {
+      // background-color: blue;
+      position: relative;
       text-align: center;
       height: 40px;
       padding-top: 10px;
+      width: 100%;
+      > img {
+        position: absolute;
+        object-fit: cover;
+        height: 24px;
+        width: auto;
+        transform: translate(-50%, -4px);
+      }
       > span {
-        padding: 0 15px;
+        position: absolute;
+        // background-color: red;
+        // padding: 0 30px;
         font-size: 20px;
         font-weight: 600;
-        background-repeat: no-repeat;
-        background-size: 100% 90%;
+        transform: translateX(-50%);
+        // background-repeat: no-repeat;
+        // background-position-x: 50%;
+        // background-size: 90% 90%;
         color: @color-c1;
         line-height: 28px;
       }
