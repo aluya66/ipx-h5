@@ -12,18 +12,6 @@
               <p class="my-sku-describ">请调整颜色、尺码和数量</p>
             </div>
           </div>
-          <!-- <div class="van-sku-header__img-wrap">
-            <img :src="goodPicture" />
-          </div> -->
-          <!-- <div class="van-sku-header__goods-info">
-            <div class="my-goods-price">
-              <span class="my-price-symbol">¥</span>
-              <span class="my-sku__price-num">{{
-                cashFormat(seletedDetailsItem.spuTshPrice)
-              }}</span>
-            </div>
-            <div class="van-sku-header-item">请调整颜色、尺码和数量</div>
-          </div> -->
         </div>
       </template>
       <template slot="sku-group">
@@ -325,32 +313,14 @@ export default {
       border-radius: 8px 8px 0 0;
     }
 
-    // .van-sku-header {
-    //   .van-sku-header__img-wrap {
-    //     width: 88px;
-    //     height: 88px;
-    //     margin: 20px 0;
-    //     img {
-    //       width: 100%;
-    //       height: 100%;
-    //       border-radius: 4px;
-    //       object-fit: cover;
-    //       border: 1px solid @color-c7;
-    //     }
-    //   }
-
-    //   .van-sku-header__goods-info {
-    //     margin-top: 14px;
-    //     .van-sku-header-item {
-    //       font-size: 12px;
-    //       color: #2a2b33;
-    //       margin-top: 4px;
-    //     }
-    //     .van-sku__stock {
-    //       color: #b2b5c1;
-    //     }
-    //   }
-    // }
+    .van-sku-header {
+      .van-sku-header__goods-info {
+        margin-top: 14px;
+        .van-sku__goods-price {
+          color: none !important;
+        }
+      }
+    }
 
     .van-hairline--bottom::after,
     .van-hairline--top-bottom::after,

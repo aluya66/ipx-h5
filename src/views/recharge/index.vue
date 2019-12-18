@@ -6,7 +6,7 @@
         <img class="header-img" :src="backImage" />
       </template>
       <template slot="right" tag="div" class="right">
-        <span style="font-size:0.14rem;font-weight:400;color: white;line-height:0.2rem;">说明</span>
+        <span style="font-size:0.14rem;font-weight:400;color: white;line-height:0.2rem;" @click="toExplain">说明</span>
       </template>
     </c-header>
     <div class="panel" >
@@ -79,6 +79,11 @@ export default {
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        toExplain() {
+          this.$router.push({
+                path: '/recharge/explain'
+            })
         },
         optionClick(index) {
             this.$router.push({

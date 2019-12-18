@@ -473,10 +473,8 @@ export default {
     }
   }
   .popular-content {
-    //   margin-top: 25px;
     margin-bottom: 56px;
     .title-content {
-      // background-color: blue;
       position: relative;
       text-align: center;
       height: 40px;
@@ -491,14 +489,9 @@ export default {
       }
       > span {
         position: absolute;
-        // background-color: red;
-        // padding: 0 30px;
         font-size: 20px;
         font-weight: 600;
         transform: translateX(-50%);
-        // background-repeat: no-repeat;
-        // background-position-x: 50%;
-        // background-size: 90% 90%;
         color: @color-c1;
         line-height: 28px;
       }
