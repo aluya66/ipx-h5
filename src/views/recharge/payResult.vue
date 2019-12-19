@@ -33,12 +33,12 @@
 
 <script>
 export default {
-  components: {},
-  props: {},
-  data() {
-    return {};
-  }
-};
+    components: {},
+    props: {},
+    data() {
+        return {}
+    }
+}
 </script>
 
 <style lang="less" scoped>

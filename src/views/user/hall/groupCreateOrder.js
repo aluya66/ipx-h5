@@ -80,7 +80,7 @@ export default {
                 jumpUrl: 'createOrder://',
                 totalPrice: totalPrice + '',
                 groupName: groupName,
-                groupCode: groupCode === 'undefined' ? groupCode + '' : '',
+                groupCode: groupCode === 'undefined' ? '' : groupCode + '',
                 discount: '1',
                 orderData: shopCarts
             }

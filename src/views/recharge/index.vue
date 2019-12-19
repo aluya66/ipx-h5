@@ -81,7 +81,7 @@ export default {
             return utils.bottomOffset(offset)
         },
         toExplain() {
-          this.$router.push({
+            this.$router.push({
                 path: '/recharge/explain'
             })
         },
