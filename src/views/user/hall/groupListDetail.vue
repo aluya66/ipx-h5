@@ -51,6 +51,9 @@
             <p :class="[item.disabled ? 'disablePrice' : 'price']">
               ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
             </p>
+            <!-- <div :class='[item.disabled ? "adjust-btn-disabled":"adjust-btn"]' @click="openSku(item, index)">
+              调整规格
+            </div> -->
             <button @click="openSku(item, index)" :disabled="item.disabled">
               调整规格
             </button>
@@ -473,6 +476,7 @@ export default {
     height: 106px;
     margin-bottom: 32px;
     display: flex;
+    position: relative;
     > img {
       flex: none;
       width: 106px;
@@ -555,6 +559,7 @@ export default {
         font-family: "alibabaRegular";
       }
       > button {
+        position: absolute;
         width: 80px;
         height: 28px;
         background: @color-ec1;
@@ -562,8 +567,8 @@ export default {
         font-size: 12px;
         font-weight: 500;
         color: @color-ec;
-        float: right;
-        transform: translate(0, -25px);
+        right: 0;
+        bottom: -5px;
       }
       > button:disabled {
         background: rgba(249, 250, 252, 1);

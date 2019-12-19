@@ -15,7 +15,7 @@
         <div class="account-info">
           <p class="title">余额（元）</p>
           <p class="money">{{banlance.accAvailableMoney}}</p>
-          <img src="@/themes/images/app/btn_to_use@3x.png" alt="" />
+          <img src="@/themes/images/app/btn_to_use@3x.png" alt="" @click="toUse"/>
         </div>
       </div>
       <div class="content">
@@ -34,7 +34,7 @@
           <p>IPX充值</p>
         </div>
         <div class="data-list">
-          <div class="recharge-cash" v-for="item in rechargeConfig" :key="item.rechargeConfigId">
+          <div class="recharge-cash" v-for="item in rechargeConfig" :key="item.rechargeConfigId" @click="rechargeMoney(item)">
             <p class="cash">{{item.chargeAmount}}<span>元</span></p>
             <p class="desc" v-show="item.giveAmount !== '0'">赠送 {{item.giveAmount}}元</p>
             <div class="discont" v-show="item.giveAmount !== '0'">
@@ -106,6 +106,21 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
+        },
+        rechargeMoney(config) {
+            const params = {
+                jumpUrl: 'rechargePayWay://',
+                rechargeConfigId: config.rechargeConfigId,
+                chargeAmount: config.chargeAmount, // 充值金额
+                giveAmount: config.giveAmount // 赠送总额
+            }
+            utils.postMessage('', params)
+        },
+        toUse() {
+            const params = {
+                jumpUrl: 'toHome://'
+            }
+            utils.postMessage('', params)
         }
     }
 }
