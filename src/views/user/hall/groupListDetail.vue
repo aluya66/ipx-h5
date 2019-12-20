@@ -48,15 +48,14 @@
               </p>
               <p class="tips">{{ tipStr(item) }}</p>
             </div>
-            <p :class="[item.disabled ? 'disablePrice' : 'price']">
-              ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
-            </p>
-            <!-- <div :class='[item.disabled ? "adjust-btn-disabled":"adjust-btn"]' @click="openSku(item, index)">
-              调整规格
-            </div> -->
-            <button @click="openSku(item, index)" :disabled="item.disabled">
-              调整规格
-            </button>
+            <div class="footer-btn">
+              <p :class="[item.disabled ? 'disablePrice' : 'price']">
+                ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
+              </p>
+              <button @click="openSku(item, index)" :disabled="item.disabled">
+                调整规格
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -65,7 +64,7 @@
           合计：<span class="yen">¥</span
           ><span class="price">{{ cashFormat(groupDetail.totalPrice) }}</span>
         </div>
-        <button @click="goPay">立即采购</button>
+        <button @click="goPay">立即采购</button> 
       </div>
     </div>
     <!-- sku选择 -->
@@ -526,53 +525,54 @@ export default {
           height: 15px;
         }
       }
-      .price {
-        font-size: 12px;
-        font-weight: 400;
-        color: @color-rc;
-        font-family: "alibabaRegular";
-        margin-top: 8px;
-        > span {
-          font-size: 18px;
-          font-weight: bold;
+      .footer-btn {
+        display: flex;
+        justify-content: space-between;
+        .price {
+          font-size: 12px;
+          font-weight: 400;
           color: @color-rc;
-          font-family: "alibabaBold";
+          font-family: "alibabaRegular";
+          margin-top: 8px;
+          > span {
+            font-size: 18px;
+            font-weight: bold;
+            color: @color-rc;
+            font-family: "alibabaBold";
+          }
         }
-      }
-      .disablePrice {
-        font-size: 12px;
-        font-weight: 400;
-        color: @color-c4;
-        font-family: "alibabaRegular";
-        margin-top: 8px;
-        > span {
-          font-size: 18px;
-          font-weight: bold;
+        .disablePrice {
+          font-size: 12px;
+          font-weight: 400;
           color: @color-c4;
-          font-family: "alibabaBold";
+          font-family: "alibabaRegular";
+          margin-top: 8px;
+          > span {
+            font-size: 18px;
+            font-weight: bold;
+            color: @color-c4;
+            font-family: "alibabaBold";
+          }
         }
-      }
-      .yen {
-        font-size: 12px;
-        font-weight: 400;
-        color: @color-rc;
-        font-family: "alibabaRegular";
-      }
-      > button {
-        position: absolute;
-        width: 80px;
-        height: 28px;
-        background: @color-ec1;
-        border-radius: 18px;
-        font-size: 12px;
-        font-weight: 500;
-        color: @color-ec;
-        right: 0;
-        bottom: -5px;
-      }
-      > button:disabled {
-        background: rgba(249, 250, 252, 1);
-        color: @color-c4;
+        .yen {
+          font-size: 12px;
+          font-weight: 400;
+          color: @color-rc;
+          font-family: "alibabaRegular";
+        }
+        > button {
+          width: 80px;
+          height: 28px;
+          background: @color-ec1;
+          border-radius: 18px;
+          font-size: 12px;
+          font-weight: 500;
+          color: @color-ec;
+        }
+        > button:disabled {
+          background: rgba(249, 250, 252, 1);
+          color: @color-c4;
+        }
       }
     }
   }
