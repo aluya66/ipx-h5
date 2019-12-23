@@ -23,7 +23,9 @@ export default {
     data () {
         return {
             buildImg: require('@/themes/images/app/default_empty.png'),
-            errorImg: require('@/themes/images/app/default_no search copy@2x.png')
+            errorImg: require('@/themes/images/app/default_no search copy@2x.png'),
+            groupImg: require('@/themes/images/empty_Exhibition.png'),
+            hallImg: require('@/themes/images/empty_hall.png')
         }
     },
     computed: {
@@ -33,6 +35,10 @@ export default {
                 return this.buildImg
             case 'error':
                 return this.errorImg
+            case 'groupEmpty':
+                return this.groupImg
+            case 'hallEmpty':
+                return this.hallImg
             default:
                 break
             }
