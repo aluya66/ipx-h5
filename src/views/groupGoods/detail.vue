@@ -2,13 +2,22 @@
   <layout-view style="padding-top:0">
     <div class="panel" :style="getBottomOffset(49)">
       <div class="header-top">
-        <c-header slot="header" :left-arrow="true" :style="marginTop" :pageOutStatus="isNative">
+        <c-header
+          slot="header"
+          :left-arrow="true"
+          :style="marginTop"
+          :pageOutStatus="isNative"
+        >
           <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
           </template>
         </c-header>
         <swiper class="swiper-content" ref="imageSwiper">
-          <swiper-slide class="swiper-slide" v-for="img in slidImages" :key="img">
+          <swiper-slide
+            class="swiper-slide"
+            v-for="(img, index) in slidImages"
+            :key="img"
+          >
             <video
               id="upvideo"
               controls="controls"
@@ -20,7 +29,7 @@
             >
               暂时不支持播放该视频
             </video>
-            <img :src="img" v-else />
+            <img :src="img" v-else @click="previewSlide(slidImages, index)" />
           </swiper-slide>
         </swiper>
       </div>
@@ -41,11 +50,15 @@
       <!--  人气排行-->
       <div class="popular-content">
         <div class="title-content">
-          <img :src="bgUrlList.popularity" alt="">
+          <img :src="bgUrlList.popularity" alt="" />
           <span>本周累计人气</span>
         </div>
         <div class="number-scroll">
-          <div class="number" v-for="(item, index) in popularArray" :key="index">
+          <div
+            class="number"
+            v-for="(item, index) in popularArray"
+            :key="index"
+          >
             <p>{{ item }}</p>
           </div>
         </div>
@@ -59,7 +72,7 @@
       <!-- 买手 -->
       <div class="popular-content">
         <div class="title-content">
-          <img :src="bgUrlList.koc" alt="">
+          <img :src="bgUrlList.koc" alt="" />
           <span>买手</span>
         </div>
         <div class="buyer">
@@ -72,7 +85,7 @@
       <!-- 搭配解析 -->
       <div class="popular-content">
         <div class="title-content">
-          <img :src="bgUrlList.analysis" alt="">
+          <img :src="bgUrlList.analysis" alt="" />
           <span>搭配解析</span>
         </div>
         <div class="group-analys">
@@ -83,11 +96,15 @@
       <!-- 要点总结 -->
       <div class="popular-content">
         <div class="title-content">
-          <img :src="bgUrlList.important" alt="">
+          <img :src="bgUrlList.important" alt="" />
           <span>要点总结</span>
         </div>
         <div class="group-important">
-          <div class="paragraph" v-for="(str, strIndex) in importList" :key="strIndex">
+          <div
+            class="paragraph"
+            v-for="(str, strIndex) in importList"
+            :key="strIndex"
+          >
             <div class="circle"></div>
             <p>{{ str | trim }}</p>
           </div>
@@ -97,7 +114,7 @@
       <!-- 搭配清单 -->
       <div class="popular-content">
         <div class="title-content">
-          <img :src="bgUrlList.collocation" alt="">
+          <img :src="bgUrlList.collocation" alt="" />
           <span>搭配清单</span>
         </div>
         <div class="collocation-list">
@@ -139,7 +156,7 @@
 <script>
 import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
-import { Dialog } from 'vant'
+import { Dialog, ImagePreview } from 'vant'
 import progressCricle from '@/views/common/cricleProgress.vue'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 require('swiper/dist/css/swiper.css')
@@ -325,9 +342,12 @@ export default {
                     this.productList = res.groupGoodsSpus
                     this.groupGoodsKoc = res.groupGoodsKoc
                     this.slidImages = res.detailImgs
-                    this.cricleLists[0].actualPercent = Number(this.groupDetail.fashionIndexNum) + ''
-                    this.cricleLists[1].actualPercent = Number(this.groupDetail.adviceIndexNum) + ''
-                    this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
+                    this.cricleLists[0].actualPercent =
+            Number(this.groupDetail.fashionIndexNum) + ''
+                    this.cricleLists[1].actualPercent =
+            Number(this.groupDetail.adviceIndexNum) + ''
+                    this.cricleLists[2].actualPercent =
+            Number(this.groupDetail.hotIndexNum) + ''
                     this.importList = this.groupDetail.groupDesc.trim().split('\n')
                     this.isVoted = this.groupDetail.ishaveVoted === 1
                     // this.findvideocover();
@@ -342,6 +362,11 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'addTohall' // 按钮唯一标识，取个语义化且不重名的名字
             })
+            let token = utils.getStore('token')
+            if (token === 'undefined' || token === '') {
+              window.globalVue.$utils.postMessage('user_authentication', '')
+              return
+            }
             let params = {}
             let groupInfos = []
             let groupProductInfo = {
@@ -398,6 +423,19 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        previewSlide(slidImages, index) {
+          let imgs = slidImages.filters((item) => {
+            return !item.endsWith('.mp4')
+          })
+          ImagePreview({
+              images: imgs,
+              startPosition: index,
+              loop: false,
+              onClose() {
+                  // do something
+              }
+          })
         }
     },
     deactivated() {
@@ -524,7 +562,11 @@ export default {
       > button {
         width: 187px;
         height: 50px;
-        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
+        background: linear-gradient(
+          135deg,
+          rgba(85, 122, 244, 1) 0%,
+          rgba(114, 79, 255, 1) 100%
+        );
         border-radius: 25px;
         font-size: 16px;
         font-weight: 500;
@@ -676,7 +718,11 @@ export default {
   > button {
     width: 110px;
     height: 40px;
-    background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(85, 122, 244, 1) 0%,
+      rgba(114, 79, 255, 1) 100%
+    );
     border-radius: 20px;
     font-size: 14px;
     font-weight: bold;

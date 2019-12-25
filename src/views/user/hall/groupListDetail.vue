@@ -64,7 +64,7 @@
           合计：<span class="yen">¥</span
           ><span class="price">{{ cashFormat(groupDetail.totalPrice) }}</span>
         </div>
-        <button @click="goPay">立即采购</button> 
+        <button @click="goPay">立即采购</button>
       </div>
     </div>
     <!-- sku选择 -->
