@@ -49,11 +49,13 @@
             </div>
             <div class="manage" @click="handleManage">{{isManageState?"完成":"管理"}}</div>
         </div>
-            <list
+        <empty-view class="empty" style="padding-top:25%" v-if="menuIndex == 1 && datas.length <= 0" emptyType="hallEmpty" emptyDesc="" />
+        <empty-view class="empty" style="padding-top:25%" v-else-if="menuIndex == 0 && groupDatas.length <= 0" emptyType="groupEmpty" emptyDesc="" />
+        <list
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
             :style="getBottomOffset(0)"
-            v-if="menuIndex == 1 && showList"
+            v-else-if="menuIndex == 1 && showList"
             v-model="loading"
             :finished="finished"
             finished-text="已到底，没有更多数据"
@@ -70,7 +72,7 @@
             ref="grouplist"
             :class='["groupList", isStickyTop?"enableScroll":"disableScroll"]'
             :style="getBottomOffset(0)"
-            v-if="menuIndex == 0 && showList"
+            v-else-if="menuIndex == 0 && showList"
             v-model="loading"
             :finished="finished"
             finished-text="已到底，没有更多数据"
@@ -106,13 +108,14 @@ import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 import utils from 'utils'
-
+import EmptyView from '../../error/emptyView.vue'
 export default {
     components: {
         List,
         ManageView,
         groupItem,
-        Search
+        Search,
+        EmptyView
     },
     props: {
 
