@@ -1,5 +1,5 @@
 <template>
-<layout-view class="hall-bg">
+<layout-view class="hall-bg" :style="handleAdjustHeaderBg()">
     <c-header style="z-index:2" slot="header" class="hall-header" :isLight='false' :left-arrow="true" :pageOutStatus="!isFromWeb">
         <div v-show="!isInSearch" slot="title">我的展厅</div>
         <template slot="left" tag="div">
@@ -192,6 +192,12 @@ export default {
         }
     },
     methods: {
+        handleAdjustHeaderBg() {
+            let baseParams = utils.getStore('baseParams')
+            if (!baseParams.isIphoneX) {
+                return 'background-size:100% 1.98rem'
+            }
+        },
         cashFormat(price) {
             return cash.changeFormat(price)
         },

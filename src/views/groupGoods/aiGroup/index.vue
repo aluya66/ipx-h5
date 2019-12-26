@@ -1,5 +1,5 @@
 <template>
-<layout-view class="header-bg">
+<layout-view class="header-bg" :style="handleAdjustHeaderBg()">
     <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
         <div class="title" slot="title">
             <div class="titleContain">
@@ -155,6 +155,12 @@ export default {
         }
     },
     methods: {
+        handleAdjustHeaderBg() {
+            let baseParams = utils.getStore('baseParams')
+            if (!baseParams.isIphoneX) {
+                return 'background-size:100% 2.22rem'
+            }
+        },
         getBottomOffset() {
             let offsetStr = utils.bottomOffset(0)
             return offsetStr
