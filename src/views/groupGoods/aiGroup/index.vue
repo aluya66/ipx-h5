@@ -1,6 +1,6 @@
 <template>
 <layout-view class="header-bg" :style="handleAdjustHeaderBg()">
-    <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
+    <c-header class="header" slot="header" :left-arrow="true" :isLight='false' :pageOutStatus='!isFromWeb'>
         <div class="title" slot="title">
             <div class="titleContain">
                 <span :class='["title-slider",titleIndex==1?"title-slider-right":"title-slider-left"]'></span>
@@ -78,6 +78,7 @@ export default {
     },
     data() {
         return {
+            isFromWeb: false,
             showDesigner: false,
             showGroup: false,
             curDesigner: {},
@@ -221,7 +222,6 @@ export default {
         handleRequest() {
             utils.postMessage('changeStatus', 'light')
             let params = utils.getStore('searchParams')
-
             this.$api.groupGoods.searchGroup(params).then(res => {
                 if (res instanceof Array) {
                     this.allDatas = res
@@ -248,6 +248,7 @@ export default {
         }, 500)
     },
     created() {
+        this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRequest()
         this.$bus.$on('tokenCallBack', (routePath) => {
             if (routePath.indexOf('aiGroup') > -1) {

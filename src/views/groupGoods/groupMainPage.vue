@@ -1,9 +1,14 @@
 <template>
-<layout-view>
-    <c-header slot="header" :left-arrow="!isMainPage" :pageOutStatus='true'>
-        <div slot="title">智能组货</div>
+<layout-view style="background:#F9FAFC">
+    <c-header class="header" slot="header" :left-arrow="false" :pageOutStatus='true'>
+        <div class="title" slot="title">
+            <div class="titleContain">
+                <span :class='["title-slider",currentTab==1?"title-slider-right":"title-slider-left"]'></span>
+                <section :class='[currentTab==1?"title-default":"title-select"]' @click="handleLeft">商品特征</section>
+                <section :class='[currentTab==0?"title-default":"title-select"]' @click="handleRight">客户特征</section>
+            </div>
+        </div>
     </c-header>
-    <c-tabs class="goods-group-tab" :tabs="tabs" :line-width="'0.08rem'" :line-height="'0.05rem'" :title-active-color="'#3C5CF6'" :title-inactive-color="'#2A2B33'" :border="true" @change="onChangeTab"></c-tabs>
     <!-- 客户特征开始 -->
     <div class="container" :style="getBottomOffset(75)" v-if="currentTab === 1">
         <select-box v-for="item in curCategory" :key="item.id" :isSlot='item.imageUrl.length > 0' :items="item.labels" :sectionTitle="item.labelCategoryName" :itemBoxClass='item.imageUrl.length > 0?"image-box customer-box":""' :itemClass='item.labelCategoryName === "消费偏好" ? "item-auto": item.imageUrl.length > 0?"image-item":""'
@@ -29,27 +34,20 @@
         </select-box>
     </div>
     <!-- 商品特征结束 -->
-    <div class="bottom-box" :style="getBottomOffset(0)">
-      <div class="bottom-btn" @click="handleSubmit">{{"一键开启组货"}}</div>
-    </div>
+    <div class="bottom-btn" @click="handleSubmit">{{"一键开启组货"}}</div>
   </layout-view>
 </template>
 
 <script>
-import components from 'components'
 import SelectBox from '../common/selectBox.vue'
 import utils from 'utils'
-const {
-    CTabs
-} = components
+
 export default {
     components: {
-        CTabs,
         SelectBox
     },
     data() {
         return {
-            isMainPage: false,
             minPrice: '',
             maxPrice: '',
             categoryList: [], // 品类列表
@@ -125,7 +123,6 @@ export default {
         }
     },
     created() {
-        this.isMainPage = this.$route.query.isMainPage === '1'
         this.getSearchLists()
     },
     activated() {
@@ -171,16 +168,10 @@ export default {
                     // pageSize: 100
                 }
                 utils.setStore('searchParams', params)
-                if (this.isMainPage) {
-                    let href = window.location.href
-                    let addresses = href.split('groupGoods')
-                    utils.postMessage('page_in', { 'jumpUrl': addresses[0] + 'groupGoods/aiGroup' })
-                } else {
-                    this.$router.push({
-                        path: '/groupGoods/aiGroup',
-                        query: { 'isFromWeb': true }
-                    })
-                }
+
+                let href = window.location.href
+                let addresses = href.split('groupMain')
+                utils.postMessage('page_in', { 'jumpUrl': addresses[0] + 'groupGoods/aiGroup' })
             } else {
                 this.$toast('至少选择一个标签进行组货')
             }
@@ -236,33 +227,33 @@ export default {
             const target = this[type][index]
             this.$set(target, 'isSelected', isSelected)
         },
-        onChangeTab(val) {
-            if (val === 1) {
-                window.sa.track('IPX_WEB', {
-                    page: 'groupFilter', // 页面名字
-                    type: 'click', // 固定参数，表明是点击事件
-                    event: 'groupFilterClient' // 按钮唯一标识，取个语义化且不重名的名字
-                })
-                this.customerGroupList = this.customerGroupList.map((item) => {
-                    return {
-                        ...item,
-                        isSelected: false
-                    }
-                })
-            } else {
-                window.sa.track('IPX_WEB', {
-                    page: 'groupFilter', // 页面名字
-                    type: 'click', // 固定参数，表明是点击事件
-                    event: 'groupFilterProduct' // 按钮唯一标识，取个语义化且不重名的名字
-                })
-                this.season = this.season.map((item) => {
-                    return {
-                        ...item,
-                        isSelected: false
-                    }
-                })
-            }
-            this.currentTab = val
+        handleLeft() {
+            this.currentTab = 0
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilter', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'groupFilterProduct' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.season = this.season.map((item) => {
+                return {
+                    ...item,
+                    isSelected: false
+                }
+            })
+        },
+        handleRight() {
+            this.currentTab = 1
+            window.sa.track('IPX_WEB', {
+                page: 'groupFilter', // 页面名字
+                type: 'click', // 固定参数，表明是点击事件
+                event: 'groupFilterClient' // 按钮唯一标识，取个语义化且不重名的名字
+            })
+            this.customerGroupList = this.customerGroupList.map((item) => {
+                return {
+                    ...item,
+                    isSelected: false
+                }
+            })
         }
     }
 }
@@ -287,12 +278,65 @@ export default {
     width: 26px;
     height: 26px;
 }
-
+.header {
+    background: @color-c8;
+    height: 50px;
+    .title {
+        // margin: auto 0;
+        // height: 100%;
+        height: 40px;
+    }
+    .titleContain {
+        width: 160px;
+        height: 34px; // background: #fff;
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #E6E6E6;
+        position: relative;
+        margin: 6px auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        section {
+            display: inline-block;
+            width: 50%;
+            line-height: 32px;
+            height: 32px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 200;
+        }
+        .title-select {
+            color: #fff;
+        }
+        .title-default {
+            color: @color-c1;
+        }
+        .title-slider {
+            position: absolute;
+            top: 0;
+            transition: left 0.3s;
+            width: 80px;
+            height: 32px;
+            background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
+            border-radius: 16px;
+            z-index: 100;
+        }
+        .title-slider-left {
+            left: 0
+        }
+        .title-slider-right {
+            left: 80px;
+        }
+    }
+}
 .container {
     padding: 0 16px;
     height: 100%; //calc(100vh - 60px);
     overflow: auto;
     //   padding-bottom: 60px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
     background-color: #fff;
     .item-wrapper {
         position: relative;
@@ -347,18 +391,10 @@ export default {
     }
 }
 
-.bottom-box {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
-    //   padding-bottom: 27px;
-    background-color: #fff;
     .bottom-btn {
-        width: 343px;
+        position: fixed;
+        bottom: 16px;
+        width: 200px;
         height: 45px;
         font-size: 18px;
         font-family: PingFangSC-Medium, PingFang SC;
@@ -368,7 +404,9 @@ export default {
         line-height: 45px;
         background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
         border-radius: 25px;
-        margin: 7px 0;
+        margin: auto;
+        left:50%;
+        transform:translateX(-50%);
     }
-}
+
 </style>
