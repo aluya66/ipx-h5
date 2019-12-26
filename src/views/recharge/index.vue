@@ -68,88 +68,88 @@
 </template>
 
 <script>
-import utils from "utils";
+import utils from 'utils'
 export default {
-  components: {},
-  data() {
-    return {
-      backImage: require("@/themes/images/app/icon_nav_back_white@3x.png"),
-      optionInfo: [
-        {
-          img: require("@/themes/images/app/icon_payment_record@3x.png"),
-          title: "支付记录",
-          index: 3
+    components: {},
+    data() {
+        return {
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
+            optionInfo: [
+                {
+                    img: require('@/themes/images/app/icon_payment_record@3x.png'),
+                    title: '支付记录',
+                    index: 3
+                },
+                {
+                    img: require('@/themes/images/app/icon_recharge_record@3x.png'),
+                    title: '充值记录',
+                    index: 1
+                }
+            ],
+            rechargeConfig: [],
+            banlance: {}
+        }
+    },
+    activated() {
+        this.rechargeConfig = []
+        this.banlance = {}
+        this.rechargeInfo()
+        this.getBalance()
+    },
+    methods: {
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
         },
-        {
-          img: require("@/themes/images/app/icon_recharge_record@3x.png"),
-          title: "充值记录",
-          index: 1
+        toExplain() {
+            this.$router.push({
+                path: '/recharge/explain'
+            })
+        },
+        optionClick(index) {
+            this.$router.push({
+                path: '/recharge/history',
+                query: {
+                    type: index
+                }
+            })
+        },
+        rechargeInfo() {
+            this.$api.recharge
+                .getRechargeInfo()
+                .then(res => {
+                    this.rechargeConfig = res
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        getBalance() {
+            this.$api.recharge
+                .getBalance()
+                .then(res => {
+                    this.banlance = res
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        rechargeMoney(config) {
+            const params = {
+                jumpUrl: 'rechargePayWay://',
+                rechargeConfigId: config.rechargeConfigId + '',
+                chargeAmount: config.chargeAmount + '', // 充值金额
+                giveAmount: config.giveAmount + '' // 赠送总额
+            }
+            utils.postMessage('', params)
+        },
+        toUse() {
+            const params = {
+                jumpUrl: 'toHome://'
+            }
+            utils.postMessage('', params)
         }
-      ],
-      rechargeConfig: [],
-      banlance: {}
-    };
-  },
-  activated() {
-    this.rechargeConfig = [];
-    this.banlance = {};
-    this.rechargeInfo();
-    this.getBalance();
-  },
-  methods: {
-    getBottomOffset(offset) {
-      return utils.bottomOffset(offset);
-    },
-    toExplain() {
-      this.$router.push({
-        path: "/recharge/explain"
-      });
-    },
-    optionClick(index) {
-      this.$router.push({
-        path: "/recharge/history",
-        query: {
-          type: index
-        }
-      });
-    },
-    rechargeInfo() {
-      this.$api.recharge
-        .getRechargeInfo()
-        .then(res => {
-          this.rechargeConfig = res;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    getBalance() {
-      this.$api.recharge
-        .getBalance()
-        .then(res => {
-          this.banlance = res;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    rechargeMoney(config) {
-      const params = {
-        jumpUrl: "rechargePayWay://",
-        rechargeConfigId: config.rechargeConfigId + "",
-        chargeAmount: config.chargeAmount + "", // 充值金额
-        giveAmount: config.giveAmount + "" // 赠送总额
-      };
-      utils.postMessage("", params);
-    },
-    toUse() {
-      const params = {
-        jumpUrl: "toHome://"
-      };
-      utils.postMessage("", params);
     }
-  }
-};
+}
 </script>
 
 <style lang="less" scoped>

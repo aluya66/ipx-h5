@@ -364,8 +364,8 @@ export default {
             })
             let token = utils.getStore('token')
             if (token === 'undefined' || token === '') {
-              window.globalVue.$utils.postMessage('user_authentication', '')
-              return
+                window.globalVue.$utils.postMessage('user_authentication', '')
+                return
             }
             let params = {}
             let groupInfos = []
@@ -425,17 +425,17 @@ export default {
                 })
         },
         previewSlide(slidImages, index) {
-          let imgs = slidImages.filters((item) => {
-            return !item.endsWith('.mp4')
-          })
-          ImagePreview({
-              images: imgs,
-              startPosition: index,
-              loop: false,
-              onClose() {
-                  // do something
-              }
-          })
+            let imgs = slidImages.filters((item) => {
+                return !item.endsWith('.mp4')
+            })
+            ImagePreview({
+                images: imgs,
+                startPosition: index,
+                loop: false,
+                onClose() {
+                    // do something
+                }
+            })
         }
     },
     deactivated() {

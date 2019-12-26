@@ -49,8 +49,6 @@
             </div>
             <div class="manage" @click="handleManage">{{isManageState?"完成":"管理"}}</div>
         </div>
-        <!-- <empty-view class="empty" style="padding-top:25%" v-if="menuIndex == 1 && datas.length <= 0" emptyType="hallEmpty" emptyDesc="" />
-        <empty-view class="empty" style="padding-top:25%" v-else-if="menuIndex == 0 && groupDatas.length <= 0" emptyType="groupEmpty" emptyDesc="" /> -->
         <c-list
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
@@ -83,9 +81,11 @@
             listItems= groupDatas
             @load-data="handleMore"
         >
-            <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectProduct(item)">
+            <div class="groupItemContain" :class="{'groupItemContain-manage':isManageState}" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectProduct(item)">
+                <section class="groupIconContain">
+                    <img class="groupSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
+                </section>
                 <group-item :groupGood='item'/>
-                <img class="groupSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
             </div>
         </c-list>
         </div>
@@ -635,14 +635,31 @@ export default {
         margin-top: -1px;
         .groupItemContain {
             position: relative;
+            display: flex;
+            flex-direction: row;
+            align-content: flex-start;
+            transition: all 0.3s ease;
+            transform: translateX(0px)
+        }
+        .groupItemContain-manage {
+            transform: translateX(36px)
+        }
+        .groupIconContain {
+            vertical-align: middle;
+            text-align: center;
         }
         .groupSelIcon {
-            display: block;
-            position: absolute;
+            // display: block;
+            /* position: absolute;
             top: 15px;
-            right: 28px;
+            right: 28px; */
+            top:50%;
+            left: -20px;
+            transform:translateY(-50% - 80px);
+            position: absolute;
             width: 20px;
             height: 20px;
+            vertical-align: middle;
         }
     }
     .product-list {
