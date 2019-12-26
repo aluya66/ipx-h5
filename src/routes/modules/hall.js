@@ -3,7 +3,8 @@ export default {
     name: 'userHall',
     meta: {
         title: 'userHall',
-        keepAlive: true
+        keepAlive: true,
+        requireAuth: true
     },
     component: () => import('@/views/user/hall/index.vue')
 }

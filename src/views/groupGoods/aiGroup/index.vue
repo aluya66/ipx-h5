@@ -181,6 +181,7 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'clickToHall' // 按钮唯一标识，取个语义化且不重名的名字
             })
+
             this.$router.push({
                 path: '/user/hall',
                 query: {
@@ -248,6 +249,11 @@ export default {
     },
     created() {
         this.handleRequest()
+        this.$bus.$on('tokenCallBack', (routePath) => {
+            if (routePath.indexOf('aiGroup') > -1) {
+                this.handleRequest()
+            }
+        })
     },
     activated() {
         window.sa.track('IPX_WEB', {

@@ -49,17 +49,20 @@
             </div>
             <div class="manage" @click="handleManage">{{isManageState?"完成":"管理"}}</div>
         </div>
-        <empty-view class="empty" style="padding-top:25%" v-if="menuIndex == 1 && datas.length <= 0" emptyType="hallEmpty" emptyDesc="" />
-        <empty-view class="empty" style="padding-top:25%" v-else-if="menuIndex == 0 && groupDatas.length <= 0" emptyType="groupEmpty" emptyDesc="" />
-        <list
+        <!-- <empty-view class="empty" style="padding-top:25%" v-if="menuIndex == 1 && datas.length <= 0" emptyType="hallEmpty" emptyDesc="" />
+        <empty-view class="empty" style="padding-top:25%" v-else-if="menuIndex == 0 && groupDatas.length <= 0" emptyType="groupEmpty" emptyDesc="" /> -->
+        <c-list
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
             :style="getBottomOffset(0)"
-            v-else-if="menuIndex == 1 && showList"
-            v-model="loading"
+            v-if="menuIndex == 1 && showList"
+            :loading="loading"
             :finished="finished"
             finished-text="已到底，没有更多数据"
-            @load="handleMore"
+            emptyType="hallEmpty"
+            listItems= datas
+            :isWaterFall = "true"
+            @load-data="handleMore"
         >
             <div class="item" v-for="item in datas" :key="item.productCode" @click.stop="handleSelectProduct(item)">
                 <img class="itemSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
@@ -67,22 +70,24 @@
                 <p>{{item.productName}}</p>
                 <h3>¥{{cashFormat(item.tshPrice)}}</h3>
             </div>
-        </list>
-        <list
+        </c-list>
+        <c-list
             ref="grouplist"
             :class='["groupList", isStickyTop?"enableScroll":"disableScroll"]'
             :style="getBottomOffset(0)"
             v-else-if="menuIndex == 0 && showList"
-            v-model="loading"
+            :loading="loading"
             :finished="finished"
             finished-text="已到底，没有更多数据"
-            @load="handleMore"
+            emptyType="groupEmpty"
+            listItems= groupDatas
+            @load-data="handleMore"
         >
             <div class="groupItemContain" v-for="item in groupDatas" :key="item.groupGoodsId" @click="handleSelectProduct(item)">
                 <group-item :groupGood='item'/>
                 <img class="groupSelIcon" v-show="isManageState" :src="isManageState?getSelectStatus(item)?select_sel:select_def : ''" alt="" >
             </div>
-        </list>
+        </c-list>
         </div>
 
         <manage-view ref="manageView">
@@ -101,21 +106,21 @@
 
 <script>
 import {
-    List,
     Search
 } from 'vant'
 import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 import utils from 'utils'
-import EmptyView from '../../error/emptyView.vue'
+// import Clist from 'components/c-list/list.vue'
+// import EmptyView from '../../error/emptyView.vue'
 export default {
     components: {
-        List,
+        // Clist,
         ManageView,
         groupItem,
-        Search,
-        EmptyView
+        Search
+        // EmptyView
     },
     props: {
 

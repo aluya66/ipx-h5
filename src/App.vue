@@ -12,6 +12,15 @@ export default {
     },
     created () {
         this.getBaseCofing()
+        // 接受原生的token回调
+        window.getNativeToken = (token) => {
+            let baseParams = utils.getStore('baseParams')
+            baseParams.token = token
+            utils.setStore('baseParams', JSON.stringify(baseParams))
+            utils.setStore('token', baseParams.token)
+            let routePath = window.globalVue.$route.path
+            window.globalVue.$bus.$emit('tokenCallBack', routePath)
+        }
     },
     methods: {
     // 获取配置参数
@@ -31,7 +40,7 @@ export default {
             }
 
             let testData = {
-                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNmFOnyAobay7CpvTSaMDRhIVaudh6PyYZOcOP7sU5sfVIxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLk+mtgbkTUo4YSC+ImZUQSNknBdbvdf+XD3OEjtKzY7IpvR4V6VV6J0pTv1CQk2wp1+pW0tveJouIizLKYv1O6Osr6WYBeRgpV4jeK9jP/bOijmzOJ48xwjHYeoGxRkQKzodU9bMVP+gqgIG6+56aWeuSYV4JV9RuKc27/H3KB+KDCRMzG2CWX9BtFinj84ch48cLB23AkFQhBWLZ/OwnSPJz+cqJqw6wcoggR3ubOzFl/UvaOF0O65MRJjxeidOaUvYBzP52XHrHCMkoY7EZ5Mm99S6EFE3MkVnF/259ch0gq3E8SA/syjD2hal9uNu0DrxZOrZR1I+I3V0So1OWIa9H9i1HL1sTQ=',
+                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaMbz5FHrULB7un4gLbCTuKEYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCgZFekPT2FJ1/ipswehle8RkIxgGjOnSc3vdYmVKL6+rGhirA4CL8PDsL4v/SLnDZHhOOR+KzbrK7KQkvgRa2Wdovl6d3ciNSQarmvUhq+gCWYR0aAO9tLf2ioLv+h2/eiZcGm1/f1gxEwd6aEURtUYLZijnZ2IBpMsnDdj3+k7jgk5Q/vSo9C4FHB4U9QIHbvmbqCNNewLErT/wUTNYH2SUl7ydBseZlkSnfYdp16WjBLKjnIS7OwXzVWhaXkf3m0mT/lSheyJxazS+YSQm7hRpqY8dfLnLcg==',
                 'channel': 'WEB',
                 'app_id': '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
                 'app_version': '1.2.0',
