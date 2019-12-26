@@ -5,19 +5,18 @@
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage"  />
         </template>
-
-<template slot="right" tag="div">
-<div class='searchContain' v-show="isInSearch">
-    <form action="/">
-        <search v-model="searchKey" :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"' show-action shape="round" :left-icon="headerSearchImg_gray" :clearable="false" @cancel="handleCancel" @input="handleRefresh" >
-            <template slot="right-icon" >
-                <img :src="clearIcon" style="width:0.2rem;height:0.2rem;object-fit:cover" v-show="searchKey.length>0" alt="" @click="handleSearchClear" >
-            </template>
-        </search>
-    </form>
-</div>
-<img class="header-img" v-show="!isInSearch" :src="headerSearchImg" @click="handleClickSearchIcon" />
-</template>
+        <template slot="right" tag="div">
+            <div class='searchContain' v-show="isInSearch">
+                <form action="/">
+                    <search v-model="searchKey" :placeholder='menuIndex===1?"搜索收藏样衣":"搜索组货清单"' show-action shape="round" :left-icon="headerSearchImg_gray" :clearable="false" @cancel="handleCancel" @input="handleRefresh" >
+                        <template slot="right-icon" >
+                            <img :src="clearIcon" style="width:0.2rem;height:0.2rem;object-fit:cover" v-show="searchKey.length>0" alt="" @click="handleSearchClear" >
+                        </template>
+                    </search>
+                </form>
+            </div>
+            <img class="header-img" v-show="!isInSearch" :src="headerSearchImg" @click="handleClickSearchIcon" />
+        </template>
     </c-header>
     <div class="contain">
         <div class="test-agcency-contain">
@@ -58,6 +57,7 @@
             :finished="finished"
             finished-text="已到底，没有更多数据"
             emptyType="hallEmpty"
+            emptyDesc="哎呀～收藏样衣是空的"
             listItems= datas
             :isWaterFall = "true"
             @load-data="handleMore"
@@ -78,6 +78,7 @@
             :finished="finished"
             finished-text="已到底，没有更多数据"
             emptyType="groupEmpty"
+            emptyDesc="哎呀～清单是空的"
             listItems= groupDatas
             @load-data="handleMore"
         >
