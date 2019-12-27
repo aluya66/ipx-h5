@@ -55,7 +55,7 @@ export default {
     p {
         font-size:14px;
         font-weight:400;
-        color:rgba(138,140,153,1);
+        color: @color-c3;
         line-height:20px;
         text-align: center;
         margin-top: 12px;

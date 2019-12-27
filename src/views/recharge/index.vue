@@ -95,6 +95,7 @@ export default {
         this.banlance = {}
         this.rechargeInfo()
         this.getBalance()
+        utils.postMessage('changeStatus', 'light')
     },
     methods: {
         getBottomOffset(offset) {
@@ -190,7 +191,7 @@ export default {
         font-family: "alibabaBold";
         font-weight: bold;
         color: white;
-        line-height: 50px;
+        line-height: 48px;
         margin-top: 4px;
       }
       > img {
