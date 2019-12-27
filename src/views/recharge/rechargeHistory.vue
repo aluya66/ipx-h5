@@ -142,50 +142,53 @@ export default {
   }
 }
 .panel {
-  .content {
-    display: flex;
-    justify-content: space-between;
-    padding: 17px 16px;
-    .title-content {
-      .title {
-        font-size: 14px;
-        font-weight: 400;
-        color: @color-c1;
-        line-height: 20px;
+  .report-list {
+  height: calc(100vh - 60px);
+    .content {
+      display: flex;
+      justify-content: space-between;
+      padding: 17px 16px;
+      .title-content {
+        .title {
+          font-size: 14px;
+          font-weight: 400;
+          color: @color-c1;
+          line-height: 20px;
+        }
+        .time {
+          font-size: 12px;
+          font-weight: 400;
+          color: @color-c4;
+          line-height: 16px;
+          margin-top: 9px;
+        }
       }
-      .time {
-        font-size: 12px;
-        font-weight: 400;
-        color: @color-c4;
-        line-height: 16px;
-        margin-top: 9px;
+      .balance-content {
+        .banlance {
+          font-size: 18px;
+          font-family: "alibabaBold";
+          font-weight: bold;
+          color: @color-c1;
+          line-height: 22px;
+        }
+        .total-cash {
+          font-size: 14px;
+          font-family: "alibabaBold";
+          font-weight: bold;
+          color: @color-c3;
+          line-height: 16px;
+          margin-top: 8px;
+        }
       }
     }
-    .balance-content {
-      .banlance {
-        font-size: 18px;
-        font-family: "alibabaBold";
-        font-weight: bold;
-        color: @color-c1;
-        line-height: 22px;
-      }
-      .total-cash {
-        font-size: 14px;
-        font-family: "alibabaBold";
-        font-weight: bold;
-        color: @color-c3;
-        line-height: 16px;
-        margin-top: 8px;
-      }
+    &:after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      width: 100%;
+      height: 1px;
+      background: @color-c7;
     }
-  }
-  &:after {
-    content: "";
-    position: absolute;
-    left: 16px;
-    width: 100%;
-    height: 1px;
-    background: @color-c7;
   }
 }
 </style>
