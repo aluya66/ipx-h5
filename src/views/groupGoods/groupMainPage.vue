@@ -392,19 +392,13 @@ export default {
 }
 
     .bottom-btn {
+        .btn-select(calc(100vw - 176px),50px,true);
         position: fixed;
         bottom: 16px;
-        width: 200px;
-        height: 45px;
         font-size: 18px;
-        font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 700;
         color: rgba(255, 255, 255, 1);
-        text-align: center;
-        line-height: 45px;
-        background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-        border-radius: 25px;
-        margin: auto;
+        line-height: 50px;
         left:50%;
         transform:translateX(-50%);
     }
