@@ -280,7 +280,7 @@ export default {
 }
 .header {
     background: @color-c8;
-    height: 50px;
+    height: 58px;
     .title {
         // margin: auto 0;
         // height: 100%;
@@ -335,8 +335,8 @@ export default {
     height: 100%; //calc(100vh - 60px);
     overflow: auto;
     //   padding-bottom: 60px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     background-color: #fff;
     .item-wrapper {
         position: relative;
