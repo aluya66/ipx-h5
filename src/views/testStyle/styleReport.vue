@@ -10,7 +10,7 @@
           <span>数据持续更新中</span>
         </div>
       </div>
-      <!-- <div class="tab-raduis">
+      <div class="tab-raduis">
         <c-tabs
           :tabs="tabs"
           :line-width="8/100+'rem'"
@@ -19,7 +19,7 @@
           :border="false"
           @change="changeActive"
         ></c-tabs>
-      </div> -->
+      </div>
       <reportList :list="testStyleList" />
     </div>
     <!-- </c-list> -->
@@ -28,10 +28,13 @@
 
 <script>
 import reportList from '@/views/common/reportList.vue'
+import components from 'components'
 import utils from 'utils'
 
+const { CTabs } = components
 export default {
     components: {
+        CTabs,
         reportList
     },
     data () {
@@ -102,51 +105,51 @@ export default {
     top: 0;
   }
 
-  // .tab-raduis {
-  //   background-color: #fff;
-  //   transform: translateY(-8px);
-  //   .van-tab{
-  //     background-color: #fff;
-  //     &.van-tab--active{
-  //       span{
-  //         font-weight: bold;
-  //         color: #2a2b33
-  //       }
-  //     }
-  //     span{
-  //       font-size: 16px;
-  //       color: #8a8c99;
-  //     }
-  //   }
-  //   .van-tabs__line {
-  //     border-radius: 0;
-  //     background-color: #2a2b33;
-  //     margin-bottom: 4px;
-  //     border-radius: 2px;
-  //   }
-  //   .van-tabs {
-  //     // padding-top: 8px;
-  //     background-color: #fff;
-  //     border-bottom: 0.5px solid #e1e2e6;
-  //     border-top-left-radius: 12px;
-  //     border-top-right-radius: 12px;
-  //     .van-tabs__wrap{
-  //       // border-radius: 12px;
-  //       border-top-left-radius: 12px;
-  //       border-top-right-radius: 12px;
-  //       background-color: #fff;
-  //       .van-tabs__nav{
-  //         background-color: transparent;
-  //       }
-  //     }
-  //     .van-hairline--top-bottom{
-  //       &::after{
-  //         border: 0;
-  //       }
-  //     }
+  .tab-raduis {
+    background-color: #fff;
+    transform: translateY(-8px);
+    .van-tab{
+      background-color: #fff;
+      &.van-tab--active{
+        span{
+          font-weight: bold;
+          color: #2a2b33
+        }
+      }
+      span{
+        font-size: 16px;
+        color: #8a8c99;
+      }
+    }
+    .van-tabs__line {
+      border-radius: 0;
+      background-color: #2a2b33;
+      margin-bottom: 4px;
+      border-radius: 2px;
+    }
+    .van-tabs {
+      // padding-top: 8px;
+      background-color: #fff;
+      border-bottom: 0.5px solid #e1e2e6;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      .van-tabs__wrap{
+        // border-radius: 12px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background-color: #fff;
+        .van-tabs__nav{
+          background-color: transparent;
+        }
+      }
+      .van-hairline--top-bottom{
+        &::after{
+          border: 0;
+        }
+      }
 
-  //   }
-  // }
+    }
+  }
 }
 </style>
 

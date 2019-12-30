@@ -339,9 +339,11 @@ export default {
         height: initial;
         overflow: initial;
         .van-tabs__nav {
+          background: orange;
           margin-left: 16px;
           padding-bottom: 0;
           .van-tab {
+            background: green;
             flex: initial;
             position: relative;
             padding: 0; // margin-right: 12px;
@@ -357,6 +359,7 @@ export default {
               border-radius: 14px !important;
               background-color: #f4f5f7;
               text-align: center;
+              background: #f53030
             }
             .icon-info {
               position: absolute;
