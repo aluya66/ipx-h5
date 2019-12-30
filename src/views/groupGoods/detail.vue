@@ -462,11 +462,15 @@ export default {
   object-fit: cover !important;
   position: absolute;
   top: 50%;
+  left: 0;
   transform: translateY(-50%)
 }
 .van-image-preview__image {
   position: absolute;
-
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
 
