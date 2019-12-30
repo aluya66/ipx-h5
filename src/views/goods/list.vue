@@ -85,7 +85,7 @@ export default {
                 limit,
                 order_by: 1,
                 search,
-                origin: 1, 
+                origin: 1,
                 marketable: this.type,
                 is_secret: '',
                 shop_id: 44

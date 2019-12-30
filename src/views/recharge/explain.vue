@@ -24,10 +24,14 @@
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     components: {},
     data() {
         return {}
+    },
+    activated() {
+        utils.postMessage('changeStatus', 'default')
     }
 }
 </script>

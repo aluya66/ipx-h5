@@ -40,93 +40,93 @@
 </template>
 
 <script>
-import CList from "components/c-list";
-import utils from "utils";
-import EmptyView from "../error/emptyView.vue";
+import CList from 'components/c-list'
+import utils from 'utils'
+import EmptyView from '../error/emptyView.vue'
 export default {
-  components: {
-    CList,
-    EmptyView
-  },
-  data() {
-    return {
-      reportType: 1,
-      reportList: [],
-      currentPage: 0, // 当前页码
-      pageSize: 10, // 码数
-      finished: false, // 加载完标识
-      loading: false, // 加载更多标识
-      error: false // 加载错误标识
-    };
-  },
-  activated() {
-    this.reportType = this.$route.query.type;
-    this.handleRefresh();
-    utils.postMessage("changeStatus", "default");
-  },
-  methods: {
-    resetParams() {
-      this.currentPage = 1;
-      this.finished = false;
-      this.loading = false;
-      this.error = false;
+    components: {
+        CList,
+        EmptyView
     },
-    setSuccessStatus() {
-      this.loading = false;
+    data() {
+        return {
+            reportType: 1,
+            reportList: [],
+            currentPage: 0, // 当前页码
+            pageSize: 10, // 码数
+            finished: false, // 加载完标识
+            loading: false, // 加载更多标识
+            error: false // 加载错误标识
+        }
     },
-    setFailureStatus() {
-      this.currentPage -= 1;
-      this.finished = true;
-      this.loading = false;
+    activated() {
+        this.reportType = this.$route.query.type
+        this.handleRefresh()
+        utils.postMessage('changeStatus', 'default')
     },
-    // 刷新
-    handleRefresh() {
-      this.resetParams();
-      this.getRechargeHistory();
-    },
-    // 加载更多
-    handleMore() {
-      if (this.reportList.length > 0) {
-        this.currentPage += 1;
-        this.getRechargeHistory();
-      }
-    },
-    // 1 : 充值 ，2：提现 ，3 ：下单
-    getRechargeHistory() {
-      const params = {
-        pageNum: this.currentPage,
-        pageSize: this.pageSize,
-        detailOptType: this.reportType
-      };
-      this.loading = true;
-      this.$api.recharge
-        .getAccontHistory(params)
-        .then(res => {
-          this.setSuccessStatus();
-          if (res && res instanceof Array) {
-            if (this.currentPage === 1) {
-              this.reportList = res;
-            } else {
-              this.reportList = this.reportList.concat(res);
+    methods: {
+        resetParams() {
+            this.currentPage = 1
+            this.finished = false
+            this.loading = false
+            this.error = false
+        },
+        setSuccessStatus() {
+            this.loading = false
+        },
+        setFailureStatus() {
+            this.currentPage -= 1
+            this.finished = true
+            this.loading = false
+        },
+        // 刷新
+        handleRefresh() {
+            this.resetParams()
+            this.getRechargeHistory()
+        },
+        // 加载更多
+        handleMore() {
+            if (this.reportList.length > 0) {
+                this.currentPage += 1
+                this.getRechargeHistory()
             }
-            if (res.length < this.pageSize) {
-              this.finished = true;
-            } else {
-              this.finished = false;
+        },
+        // 1 : 充值 ，2：提现 ，3 ：下单
+        getRechargeHistory() {
+            const params = {
+                pageNum: this.currentPage,
+                pageSize: this.pageSize,
+                detailOptType: this.reportType
             }
-          } else {
-            if (this.currentPage === 1) {
-              this.reportList = [];
-            }
-            this.finished = true;
-          }
-        })
-        .catch(() => {
-          this.setFailureStatus();
-        });
+            this.loading = true
+            this.$api.recharge
+                .getAccontHistory(params)
+                .then(res => {
+                    this.setSuccessStatus()
+                    if (res && res instanceof Array) {
+                        if (this.currentPage === 1) {
+                            this.reportList = res
+                        } else {
+                            this.reportList = this.reportList.concat(res)
+                        }
+                        if (res.length < this.pageSize) {
+                            this.finished = true
+                        } else {
+                            this.finished = false
+                        }
+                    } else {
+                        if (this.currentPage === 1) {
+                            this.reportList = []
+                        }
+                        this.finished = true
+                    }
+                })
+                .catch(() => {
+                    this.setFailureStatus()
+                })
+        }
     }
-  }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -164,6 +164,7 @@ export default {
         }
       }
       .balance-content {
+        text-align: right;
         .banlance {
           font-size: 18px;
           font-family: "alibabaBold";

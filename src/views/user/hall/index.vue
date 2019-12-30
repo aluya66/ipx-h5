@@ -49,8 +49,8 @@
             </div>
             <div class="manage" @click="handleManage">{{isManageState?"完成":"管理"}}</div>
         </div>
-        <empty-view class="empty" style="padding-top:25%" v-if="menuIndex == 1 && datas.length <= 0" emptyType="hallEmpty" emptyDesc="" />
-        <empty-view class="empty" style="padding-top:25%" v-else-if="menuIndex == 0 && groupDatas.length <= 0" emptyType="groupEmpty" emptyDesc="" />
+        <empty-view class="empty" style="padding-top:25%" v-if="menuIndex == 1 && datas.length <= 0 && loading == false" emptyType="hallEmpty" emptyDesc="" />
+        <empty-view class="empty" style="padding-top:25%" v-else-if="menuIndex == 0 && groupDatas.length <= 0 && loading == false" emptyType="groupEmpty" emptyDesc="" />
         <list
             ref="productlist"
             :class='["product-list",isStickyTop?"enableScroll":"disableScroll"]'
