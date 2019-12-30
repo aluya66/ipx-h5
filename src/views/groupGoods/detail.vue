@@ -457,10 +457,16 @@ export default {
   }
 }
 .van-image__img {
-  height: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: cover !important;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%)
 }
 .van-image-preview__image {
-  position: absolute
+  position: absolute;
+
 }
 </style>
 
