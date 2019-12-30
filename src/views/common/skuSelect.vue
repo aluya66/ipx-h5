@@ -339,11 +339,16 @@ export default {
         height: 28px;
         overflow: visible;
         .van-tabs__nav {
-          background: orange;
           margin-left: 16px;
           padding-bottom: 0;
+          .van-tab--active {
+              span {
+                border: solid 1px #3c5cf6 !important;
+                background-color: #ebeeff !important;
+                color: #3c5cf6 !important;
+              }
+            }
           .van-tab {
-            background: green;
             flex: initial;
             position: relative;
             padding: 0; // margin-right: 12px;
@@ -353,13 +358,13 @@ export default {
               font-size: 12px;
               font-weight: 500;
               color: #2a2b33;
-              width: 74px !important;
-              height: 28px !important;
-              line-height: 28px !important;
-              border-radius: 14px !important;
+              width: 74px;
+              height: 28px;
+              line-height: 28px;
+              border-radius: 14px;
               background-color: #f4f5f7;
+              border: solid 1px #f4f5f7;
               text-align: center;
-              background: #f53030
             }
             .icon-info {
               position: absolute;
@@ -376,18 +381,14 @@ export default {
               font-size: 10px;
               z-index: 100;
             }
-            &.van-tab--active {
-              span {
-                line-height: 26px;
-                border: solid 1px #3c5cf6;
-                background-color: #ebeeff;
-                color: #3c5cf6;
-                width: 74px !important;
-              height: 28px !important;
-              line-height: 28px !important;
-              border-radius: 14px !important;
-              }
-            }
+            // &.van-tab--active {
+            //   span {
+            //     line-height: 26px;
+            //     border: solid 1px #3c5cf6;
+            //     background-color: #ebeeff;
+            //     color: #3c5cf6;
+            //   }
+            // }
           }
           .van-tabs__line {
             height: 0;
