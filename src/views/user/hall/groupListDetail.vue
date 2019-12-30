@@ -233,7 +233,7 @@ export default {
             })
             this.seletedDetailsItem = {}
             this.colorSkuAction = '0'
-            this.showSku = !this.showSku
+            this.showSku = true//! this.showSku
             this.seletedItemIndex = index
             this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
             this.seletedDetailsItem = {
