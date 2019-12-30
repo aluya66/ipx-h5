@@ -336,8 +336,8 @@ export default {
       margin-top: 25px;
       margin-bottom: 80px;
       .van-tabs__wrap {
-        height: initial;
-        overflow: initial;
+        height: 28px;
+        overflow: visible;
         .van-tabs__nav {
           background: orange;
           margin-left: 16px;
@@ -348,7 +348,7 @@ export default {
             position: relative;
             padding: 0; // margin-right: 12px;
             flex-basis: auto !important;
-            min-width: initial; // margin-top: 12px;
+            min-width: 74px; // margin-top: 12px;
             span {
               font-size: 12px;
               font-weight: 500;
