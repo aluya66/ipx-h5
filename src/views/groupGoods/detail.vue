@@ -459,6 +459,9 @@ export default {
 .van-image__img {
   height: 100%;
 }
+.van-image-preview__image {
+  position: absolute
+}
 </style>
 
 <style lang="less" scoped>
