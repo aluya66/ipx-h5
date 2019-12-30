@@ -304,6 +304,7 @@ export default {
 </style>
 
 <style lang="less">
+
 .mypanel {
   .my-sku-content {
     .van-sku-actions {
@@ -346,14 +347,14 @@ export default {
             padding: 0; // margin-right: 12px;
             flex-basis: auto !important;
             min-width: initial; // margin-top: 12px;
-            .van-ellipsis {
+            span {
               font-size: 12px;
               font-weight: 500;
               color: #2a2b33;
-              width: 74px;
-              height: 28px;
-              line-height: 28px;
-              border-radius: 14px;
+              width: 74px !important;
+              height: 28px !important;
+              line-height: 28px !important;
+              border-radius: 14px !important;
               background-color: #f4f5f7;
               text-align: center;
             }
@@ -430,4 +431,5 @@ export default {
     }
   }
 }
+
 </style>
