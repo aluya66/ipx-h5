@@ -76,7 +76,7 @@
       </template>
 
 <template slot="sku-stepper">
-{{ goodsId }}
+ {{ goodsId }}
 </template>
 
 <template slot="sku-actions">
@@ -300,6 +300,47 @@ export default {
     color: #ffffff;
     background-color: #d5d6de;
   }
+  .van-tab {
+    flex: initial;
+    position: relative;
+    padding: 0; // margin-right: 12px;
+    flex-basis: auto !important;
+    min-width: initial; // margin-top: 12px;
+    span {
+      font-size: 12px;
+      font-weight: 500;
+      color: #2a2b33;
+      width: 74px;
+      height: 28px;
+      line-height: 28px;
+      border-radius: 14px;
+      background-color: #f4f5f7;
+      text-align: center;
+    }
+    .icon-info {
+      position: absolute;
+      background-color: rgba(245, 48, 48, 1);
+      color: white;
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      top: -8px;
+      right: -5px;
+      line-height: 15px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 10px;
+      z-index: 100;
+    }
+    &.van-tab--active {
+      span {
+        line-height: 26px;
+        border: solid 1px #3c5cf6;
+        background-color: #ebeeff;
+        color: #3c5cf6;
+      }
+    }
+  }
 }
 </style>
 
@@ -340,47 +381,6 @@ export default {
         .van-tabs__nav {
           margin-left: 16px;
           padding-bottom: 0;
-          .van-tab {
-            flex: initial;
-            position: relative;
-            padding: 0; // margin-right: 12px;
-            flex-basis: auto !important;
-            min-width: initial; // margin-top: 12px;
-            span {
-              font-size: 12px;
-              font-weight: 500;
-              color: #2a2b33;
-              width: 74px;
-              height: 28px;
-              line-height: 28px;
-              border-radius: 14px;
-              background-color: #f4f5f7;
-              text-align: center;
-            }
-            .icon-info {
-              position: absolute;
-              background-color: rgba(245, 48, 48, 1);
-              color: white;
-              width: 16px;
-              height: 16px;
-              border-radius: 8px;
-              top: -8px;
-              right: -5px;
-              line-height: 15px;
-              text-align: center;
-              font-weight: 500;
-              font-size: 10px;
-              z-index: 100;
-            }
-            &.van-tab--active {
-              span {
-                line-height: 26px;
-                border: solid 1px #3c5cf6;
-                background-color: #ebeeff;
-                color: #3c5cf6;
-              }
-            }
-          }
           .van-tabs__line {
             height: 0;
           }
