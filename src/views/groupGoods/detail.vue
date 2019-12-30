@@ -159,7 +159,7 @@ import utils from 'utils'
 import { Dialog, ImagePreview } from 'vant'
 import progressCricle from '@/views/common/cricleProgress.vue'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-// require('swiper/dist/css/swiper.css')
+require('swiper/dist/css/swiper.css')
 
 export default {
     components: {
