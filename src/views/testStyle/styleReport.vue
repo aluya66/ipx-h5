@@ -28,13 +28,10 @@
 
 <script>
 import reportList from '@/views/common/reportList.vue'
-import components from 'components'
 import utils from 'utils'
 
-const { CTabs } = components
 export default {
     components: {
-        CTabs,
         reportList
     },
     data () {
