@@ -379,6 +379,10 @@ export default {
                 border: solid 1px #3c5cf6;
                 background-color: #ebeeff;
                 color: #3c5cf6;
+                width: 74px !important;
+              height: 28px !important;
+              line-height: 28px !important;
+              border-radius: 14px !important;
               }
             }
           }
