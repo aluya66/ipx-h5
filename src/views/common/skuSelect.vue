@@ -341,15 +341,16 @@ export default {
         .van-tabs__nav {
           margin-left: 16px;
           padding-bottom: 0;
+          overflow: visible;
           .van-tab--active {
+            overflow: visible;
               span {
                 display: block;
                 min-width: 74px;
                 border: solid 1px #3c5cf6 !important;
                 background-color: #ebeeff !important;
                 color: #3c5cf6 !important;
-                width: 74px !important;
-                height: 28px !important;
+                overflow: visible;
               }
             }
           .van-tab {
@@ -358,15 +359,17 @@ export default {
             padding: 0; // margin-right: 12px;
             flex-basis: auto !important;
             min-width: 74px; // margin-top: 12px;
+            overflow: visible;
             span {
+              overflow: visible;
               display: block;
               min-width: 74px;
               font-size: 12px;
               font-weight: 500;
               color: #2a2b33;
-              width: 74px !important;
-              height: 28px !important;
-              line-height: 28px;
+              width: 74px ;
+              height: 28px;
+              line-height: 26px;
               border-radius: 14px;
               background-color: #f4f5f7;
               border: solid 1px #f4f5f7;
