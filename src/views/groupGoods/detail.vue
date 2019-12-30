@@ -458,7 +458,7 @@ export default {
 }
 .van-image__img {
   width: 100%;
-  height: auto;
+  height: auto !important;
   object-fit: cover !important;
   position: absolute;
   top: 50%;
