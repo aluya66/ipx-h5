@@ -24,11 +24,11 @@
         <div class="account-info">
           <p class="title">余额（元）</p>
           <p class="money">{{ banlance.accAvailableMoney }}</p>
-          <img
+          <!-- <img
             src="@/themes/images/app/btn_to_use@3x.png"
             alt=""
             @click="toUse"
-          />
+          /> -->
         </div>
       </div>
       <div class="content">
@@ -49,8 +49,8 @@
         <div class="data-list">
           <div
             class="recharge-cash"
-            v-for="item in rechargeConfig"
-            :key="item.rechargeConfigId"
+            v-for="(item,index) in rechargeConfig"
+            :key="item.rechargeConfigId + index"
             @click="rechargeMoney(item)"
           >
             <p class="cash">{{ item.chargeAmount }}<span>元</span></p>
@@ -203,7 +203,7 @@ export default {
   }
   .content {
     position: absolute;
-    transform: translateY(-22px);
+    transform: translateY(-62px);
     width: 100%;
     z-index: 1;
     padding: 20px;

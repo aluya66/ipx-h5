@@ -1,7 +1,7 @@
 <template>
-  <div class="mypanel">
-    <van-sku v-model="showSku" :sku="sku" class="my-sku-content">
-      <template slot="sku-header">
+<div class="mypanel">
+  <van-sku v-model="showSku" :sku="sku" class="my-sku-content">
+    <template slot="sku-header">
         <div class="van-sku-header van-hairline--bottom">
           <div class="my-sku-header-info">
             <img :src="goodPicture" alt="">
@@ -13,13 +13,12 @@
             </div>
           </div>
         </div>
-      </template>
-      <template slot="sku-group">
-        <van-tabs swipeable class="sku-group-tabs">
-          <template
-            v-for="(colorSkusItem,
-            colorSkusIndex) in seletedDetailsItem.colorSkuList"
-          >
+</template>
+
+<template slot="sku-group">
+<van-tabs swipeable class="sku-group-tabs">
+  <template v-for="(colorSkusItem,
+            colorSkusIndex) in seletedDetailsItem.colorSkuList">
             <van-tab :key="colorSkusIndex" :name="colorSkusItem.attrColorValue">
               <div slot="title">
                 {{ colorSkusItem.attrColorValue }}
@@ -66,7 +65,7 @@
                 </div>
               </div>
             </van-tab>
-          </template>
+</template>
         </van-tabs>
         <div
           class="number-tip"
@@ -76,15 +75,16 @@
         </div>
       </template>
 
-      <template slot="sku-stepper">{{ goodsId }}</template>
-      <template slot="sku-actions">
-        <div class="van-sku-actions" :style="getBottomOffset(2)">
-          <van-button square size="large" type="warning" @click="onPointClicked"
-            >确定({{ seletedDetailsItem.seletedColorSkuSumNum }})</van-button
-          >
-          <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
-        </div>
-      </template>
+<template slot="sku-stepper">
+{{ goodsId }}
+</template>
+
+<template slot="sku-actions">
+<div class="van-sku-actions" :style="getBottomOffset(2)">
+  <van-button square size="large" type="warning" @click="onPointClicked">确定({{ seletedDetailsItem.seletedColorSkuSumNum }})</van-button>
+  <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
+</div>
+</template>
     </van-sku>
   </div>
 </template>
@@ -92,7 +92,15 @@
 <script>
 import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
-import { Icon, Dialog, Sku, Button, Tab, Tabs, Stepper } from 'vant'
+import {
+    Icon,
+    Dialog,
+    Sku,
+    Button,
+    Tab,
+    Tabs,
+    Stepper
+} from 'vant'
 export default {
     components: {
         [Icon.name]: Icon,
@@ -106,25 +114,25 @@ export default {
     props: {
         seletedDetailsItem: {
             type: Object,
-            default() {
+            default () {
                 return {}
             }
         },
         colorSkuAction: {
             type: String,
-            default() {
+            default () {
                 return ''
             }
         },
         goodsId: {
             type: String,
-            default() {
+            default () {
                 return ''
             }
         },
         showSku: {
             type: Boolean,
-            default() {
+            default () {
                 return false
             }
         }
@@ -152,7 +160,9 @@ export default {
             return utils.bottomOffset(offset)
         },
         changSelectedNum(colorSkusIndex, skuIndex) {
-            let { colorSkuList } = this.seletedDetailsItem
+            let {
+                colorSkuList
+            } = this.seletedDetailsItem
             let seletedColorSkuNum = 0
             let seletedColorSkuSumNum = 0
             colorSkuList[colorSkusIndex].skuList.forEach((item, index) => {
@@ -202,8 +212,8 @@ export default {
       font-size: 14px;
       color: @color-rc;
       font-family: "alibabaRegular";
-      line-height:24px;
-      > span {
+      line-height: 24px;
+      >span {
         font-size: 20px;
         font-weight: bold;
         color: @color-rc;
@@ -216,12 +226,10 @@ export default {
       margin-top: 12px;
     }
   }
-
 }
 
 .sku-card {
-  width: calc(100vw - 32px);
-  // height: 200px;
+  width: calc(100vw - 32px); // height: 200px;
   margin: 0 auto;
   border-radius: 8px;
   border: solid 0.5px #e1e2e6;
@@ -264,7 +272,7 @@ export default {
       .stepper-option {
         height: 24px;
         background: red;
-        > img {
+        >img {
           width: 24px;
           height: 24px;
         }
@@ -275,6 +283,22 @@ export default {
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="less" scoped>
+.van-button {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  width: 100%;
+  height: 40px;
+  border-radius: 20px;
+  background: linear-gradient( 135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
+  &.forbidColor {
+    color: #ffffff;
+    background-color: #d5d6de;
   }
 }
 </style>
@@ -290,29 +314,10 @@ export default {
       flex-shrink: 0;
       padding: 5px 16px;
       box-shadow: 0 -1px 6px 0 rgba(33, 44, 98, 0.06);
-      .van-button {
-        font-size: 14px;
-        font-weight: 500;
-        color: #ffffff;
-        width: 100%;
-        height: 40px;
-        border-radius: 20px;
-        background: linear-gradient(
-          135deg,
-          rgba(85, 122, 244, 1) 0%,
-          rgba(114, 79, 255, 1) 100%
-        );
-        &.forbidColor {
-          color: #ffffff;
-          background-color: #d5d6de;
-        }
-      }
     }
-
     .van-popup--bottom.van-popup--round {
       border-radius: 8px 8px 0 0;
     }
-
     .van-sku-header {
       .van-sku-header__goods-info {
         margin-top: 14px;
@@ -321,13 +326,11 @@ export default {
         }
       }
     }
-
     .van-hairline--bottom::after,
     .van-hairline--top-bottom::after,
     .van-hairline-unset--top-bottom::after {
       border: 0;
     }
-
     .sku-group-tabs {
       margin-top: 25px;
       margin-bottom: 80px;
@@ -340,11 +343,9 @@ export default {
           .van-tab {
             flex: initial;
             position: relative;
-            padding: 0;
-            // margin-right: 12px;
+            padding: 0; // margin-right: 12px;
             flex-basis: auto !important;
-            min-width: initial;
-            // margin-top: 12px;
+            min-width: initial; // margin-top: 12px;
             span {
               font-size: 12px;
               font-weight: 500;
@@ -388,7 +389,7 @@ export default {
     }
     .flex-right {
       .van-stepper {
-        > input {
+        >input {
           width: 48px;
           background-color: #f4f5f7;
           font-size: 14px;
@@ -399,8 +400,7 @@ export default {
       .van-stepper__minus {
         background: url("../../themes/images/app/number_reduce@4x.png");
         background-repeat: no-repeat;
-        background-size: 100% 100%;
-        // width: 24px;
+        background-size: 100% 100%; // width: 24px;
         // height: 24px;
       }
       .van-stepper__minus--disabled {
