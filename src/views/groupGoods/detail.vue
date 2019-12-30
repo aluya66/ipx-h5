@@ -456,6 +456,9 @@ export default {
     }
   }
 }
+.van-image__img {
+  height: 100%;
+}
 </style>
 
 <style lang="less" scoped>
