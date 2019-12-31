@@ -202,7 +202,7 @@ export default {
                         if (res.code === 11) {
                             let baseParams = utils.getStore('baseParams')
                             baseParams.token = ''
-                            utils.setStore('baseParams', JSON.stringify(this.baseParams))
+                            utils.setStore('baseParams', JSON.stringify(baseParams))
                             utils.setStore('token', '')
                         }
                         if (opt.hasErrMsg) {
