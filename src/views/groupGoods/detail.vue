@@ -472,6 +472,9 @@ export default {
   width: 100%;
   height: 100%;
 }
+.van-image-preview__overlay {
+    background-color: rgba(0,0,0,1);
+}
 </style>
 
 <style lang="less" scoped>
