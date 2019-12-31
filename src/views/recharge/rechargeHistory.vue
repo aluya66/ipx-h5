@@ -3,14 +3,7 @@
     <c-header slot="header" :left-arrow="true" class="my-header">
       <div slot="title">{{ reportType === 1 ? "充值记录" : "支付记录" }}</div>
     </c-header>
-    <empty-view
-      class="empty"
-      style="padding-top:25%"
-      v-if="reportList.length <= 0"
-      emptyType="error"
-      emptyDesc="暂无数据"
-    />
-    <div class="panel" v-else>
+    <div class="panel" v-show="reportList.length > 0">
       <c-list
         class="report-list"
         @load-data="handleMore"
@@ -18,6 +11,7 @@
         :error="error"
         :finished="finished"
         :hasPullRefresh="true"
+        :immediateCheck="false"
         @on-refresh="handleRefresh"
       >
         <div class="content" v-for="item in reportList" :key="item.id">
@@ -36,6 +30,13 @@
         </div>
       </c-list>
     </div>
+    <empty-view
+      class="empty"
+      style="padding-top:25%"
+      v-else-show
+      emptyType="error"
+      emptyDesc="暂无数据"
+    />
   </layout-view>
 </template>
 

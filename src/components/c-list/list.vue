@@ -6,7 +6,7 @@
         :error.sync="error"
         error-text="请求失败，点击重新加载"
         :finished="finished"
-        :immediate-check="false"
+        :immediate-check="immediateCheck"
         finished-text="已到底，没有更多数据"
         @load="loadMore"
       >
@@ -46,6 +46,10 @@ export default create({
             default: false
         },
         hasPullRefresh: {
+            type: Boolean,
+            default: false
+        },
+        immediateCheck: {
             type: Boolean,
             default: false
         }
