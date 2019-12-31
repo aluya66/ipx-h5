@@ -11,7 +11,7 @@
       <p class="main-text">在IPX App下单支付时，选择“余额支付”。</p>
 
       <p class="titile">如何查询余额？</p>
-      <p class="main-text">进入IPX App - 我的 - 的余额，可查看当前可用金额</p>
+      <p class="main-text">进入IPX App - 我的 - 我的余额，可查看当前可用金额</p>
 
       <p class="titile">使用须知</p>
       <p class="main-text">1）余额仅支持在IPX App下单使用，充值不支持使用余额支付；</p>
