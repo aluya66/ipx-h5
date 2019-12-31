@@ -473,7 +473,7 @@ export default {
   height: 100%;
 }
 .van-image-preview__overlay {
-    background-color: rgba(0,0,0,1);
+    background-color: rgba(0,0,0,1) !important;
 }
 </style>
 
