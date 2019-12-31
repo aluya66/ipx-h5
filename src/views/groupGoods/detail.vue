@@ -472,12 +472,12 @@ export default {
   width: 100%;
   height: 100%;
 }
-.van-image-preview__overlay {
-    background-color: black !important;
-}
-.van-overlay {
-  background-color:black !important;
-}
+// .van-image-preview__overlay {
+//     background-color: black !important;
+// }
+// .van-overlay {
+//   background-color:black !important;
+// }
 </style>
 
 <style lang="less" scoped>
