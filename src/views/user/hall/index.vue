@@ -199,11 +199,9 @@ import utils from 'utils'
 // import EmptyView from '../../error/emptyView.vue'
 export default {
     components: {
-    // Clist,
         ManageView,
         groupItem,
         Search
-    // EmptyView
     },
     props: {},
     data() {
