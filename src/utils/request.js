@@ -204,6 +204,8 @@ export default {
                             baseParams.token = ''
                             utils.setStore('baseParams', JSON.stringify(baseParams))
                             utils.setStore('token', '')
+                            // 退出H5
+                            // window.globalVue.$utils.postMessage('skip_web', '')
                         }
                         if (opt.hasErrMsg) {
                             resolve(res)

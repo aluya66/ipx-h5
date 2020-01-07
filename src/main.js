@@ -66,7 +66,7 @@ const globalVue = new Vue({
     router: route(VueRouter),
     render: h => h(App),
     beforeCreate () {
-        Vue.prototype.$eventBus = eventBus
+        Vue.prototype.$bus = eventBus
         Vue.prototype.$api = serviceApi
         Vue.prototype.$toast = Toast
         Vue.prototype.$utils = globalUtils

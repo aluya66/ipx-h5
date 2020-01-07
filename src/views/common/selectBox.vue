@@ -86,7 +86,7 @@ export default {
   padding-bottom: 16px;
   section {
     background: #E1E2E6;
-    height: 1px;
+    height: 0.5px;
   }
   p {
     font-size: 12px;

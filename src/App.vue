@@ -12,6 +12,15 @@ export default {
     },
     created () {
         this.getBaseCofing()
+        // 接受原生的token回调
+        window.getNativeToken = (token) => {
+            let baseParams = utils.getStore('baseParams')
+            baseParams.token = token
+            utils.setStore('baseParams', JSON.stringify(baseParams))
+            utils.setStore('token', baseParams.token)
+            let routePath = window.globalVue.$route.path
+            window.globalVue.$bus.$emit('tokenCallBack', routePath)
+        }
     },
     methods: {
     // 获取配置参数

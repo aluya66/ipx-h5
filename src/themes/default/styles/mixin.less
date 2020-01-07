@@ -75,7 +75,7 @@
 	width:@w;
 	height:@h;
 	background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-	border-radius:20px;
+	border-radius:@h/2;
 	color:#fff;
 	text-align: center;
 	line-height: @h;
@@ -83,7 +83,7 @@
 .btn-select(@w,@h,@select) when (@select = false) {
 	width:@w;
 	height:@h;
-	border-radius:20px;
+	border-radius:@h/2;
 	border:1px solid @color-ec;
 	color:@color-ec;
 	text-align: center;
