@@ -91,6 +91,12 @@ export default {
         }
     },
     activated() {
+        // 上报页面事件
+        window.sa.track('IPX_WEB', {
+            page: 'recharge',
+            type: 'pageView',
+            event: 'pageView'
+        })
         this.rechargeConfig = []
         this.banlance = {}
         this.rechargeInfo()

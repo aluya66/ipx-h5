@@ -62,6 +62,21 @@ export default {
     },
     activated() {
         this.reportType = this.$route.query.type
+        if (this.reportType === 1) { // 充值记录
+            // 上报页面事件
+            window.sa.track('IPX_WEB', {
+                page: 'rechargeHistory',
+                type: 'pageView',
+                event: 'pageView'
+            })
+        } else { // 支付记录
+            // 上报页面事件
+            window.sa.track('IPX_WEB', {
+                page: 'payHistory',
+                type: 'pageView',
+                event: 'pageView'
+            })
+        }
         this.handleRefresh()
         utils.postMessage('changeStatus', 'default')
     },
@@ -144,7 +159,7 @@ export default {
 }
 .panel {
   .report-list {
-  height: calc(100vh - 60px);
+    height: calc(100vh - 60px);
     .content {
       display: flex;
       justify-content: space-between;
