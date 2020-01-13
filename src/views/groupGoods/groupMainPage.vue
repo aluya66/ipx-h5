@@ -289,7 +289,7 @@ export default {
     .titleContain {
         width: 160px;
         height: 34px; // background: #fff;
-        background: white;
+        // background: red;
         border-radius: 16px;
         border: 1px solid #E6E6E6;
         position: relative;
