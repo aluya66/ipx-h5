@@ -10,13 +10,15 @@
         </div>
         <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
-</template>
-
-<template slot="right">
-<p style="color:#fff" @click="handleToHall">
-    前往展厅</p>
-</template>
-        </c-header>
+        </template>
+        <template slot="right">
+            <img
+            class="header-img"
+            :src="hallIcon"
+            @click="handleToHall"
+            />
+      </template>
+    </c-header>
         <empty-view class="empty" v-if="titleIndex == 1" />
         <empty-view class="empty" v-else-if="titleIndex == 0 && allDatas.length <= 0" emptyType="error" emptyDesc="暂无搜索结果" />
         <div v-else class="contain" :style="getBottomOffset()">
@@ -82,6 +84,7 @@ export default {
             showDesigner: false,
             showGroup: false,
             curDesigner: {},
+            hallIcon: require('@/themes/images/app/icon_nav_exhibition.png'),
             backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             titleIndex: 0,
             screenWidth: document.body.clientWidth,
