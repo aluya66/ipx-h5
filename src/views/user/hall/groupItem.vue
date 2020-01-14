@@ -109,6 +109,7 @@ export default {
 // @import '../../../themes/default/styles/mixin.less';
 .contain {
     padding-bottom: 20px;
+    width: 100%;
     .content {
         margin: 0 16px;
         box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.06);
