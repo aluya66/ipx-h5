@@ -90,6 +90,14 @@ export default {
             banlance: {}
         }
     },
+    created() {
+        this.$bus.$on('tokenCallBack', (routePath) => {
+            if (routePath.indexOf('recharge') > -1) {
+                this.rechargeInfo()
+                this.getBalance()
+            }
+        })
+    },
     activated() {
         // 上报页面事件
         window.sa.track('IPX_WEB', {
