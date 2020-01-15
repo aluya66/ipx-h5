@@ -28,7 +28,7 @@ import 'vue-photo-preview/dist/skin.css'
 
 window.sa = require('sa-sdk-javascript')
 window.sa.init({
-    server_url: 'https://sensorsdatauploading.yosar.com/sa?project=default',
+    server_url: 'https://sensorsdatauploading.yosar.com/sa?project=production',
     // production
     // 如果神策代码中 `sensorsdata.min.js` 版本是 1.13.1 及以前版本，必须须配置 heatmap_url，高于此版本不需要配置。heatmap_url 神策分析中点击分析及触达分析功能代码，代码生成工具会自动生成。
     heatmap_url: '../utils/heatmap.min.js',
