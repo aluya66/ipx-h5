@@ -29,6 +29,7 @@ export default {
     position: fixed;
     bottom: 0;
     background: #fff;
+    width: 100%;
 }
 .footer-contain {
     height: 49px;

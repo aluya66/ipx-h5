@@ -12,12 +12,16 @@
                             placeholder="请输入组货名称"
                             clearable
                             v-model="posterData.groupTitle" />
-                        <field :class='["field-common","group-desc"]'
-                            autosize
-                            type="textarea"
-                            placeholder="请输入组货描述"
-                            v-model="groupDesc"
-                        />
+                        <div class="descContain">
+                             <field :class='["field-common","group-desc"]'
+                                autosize
+                                type="textarea"
+                                placeholder="请输入组货描述"
+                                v-model="groupDesc"
+                                maxlength="200"
+                            />
+                            <p>{{groupDesc.length}}/200</p>
+                        </div>
                     </div>
                 </template>
             </title-content>
@@ -37,23 +41,25 @@
                         <div class="price-menu">
                             <section :class='[menuTitle === selectPriceTitle?"price-select":"price-unSelect"]'  v-for="menuTitle in priceMenu" :key="menuTitle" @click="handleChoosePriceTitle(menuTitle)">
                                 {{menuTitle}}
-                                <div class="price-line" v-show="menuTitle === selectPriceTitle"></div>
                             </section>
                         </div>
                         <p v-if="selectPriceTitle==='建议零售价'" class="price-suggest">各商品均按建议零售价显示(预览查看)</p>
                         <div v-else class="price-custom delete-field-line">
                             <p class="price-custom-title">各单品均加价(预览查看)</p>
-                            <field class="price-input" type="digit" v-model="customPricePercent"/>
-                            <p class="price-symbol">%</p>
+                            <div class="input-contain">
+                                <field class="price-input" type="digit" v-model="customPricePercent"/>
+                                <p class="price-symbol">%</p>
+                            </div>
+
                         </div>
                     </div>
                 </template>
             </title-content>
 
-            <title-content title="联系手机(选填)">
+            <title-content title="联系手机" subTitle="(选填)">
                 <template slot="content">
                     <div style="padding:0.12rem 0.16rem">
-                        <field :class='["field-common","group-title"]' placeholder="请填写联系手机" clearable v-model="phone" />
+                        <field :class='["field-common","group-title"]' type="digit" placeholder="请填写联系手机" clearable v-model="phone" />
                     </div>
                 </template>
             </title-content>
@@ -93,7 +99,7 @@ export default {
             groupImages: [1, 2],
             selectPriceTitle: '自主定价',
             priceMenu: ['自主定价', '建议零售价'],
-            customPricePercent: '10',
+            customPricePercent: '0',
             phone: '123123',
             posterData: {},
             isPreview: false,
@@ -104,9 +110,9 @@ export default {
     watch: {
         customPricePercent(val) {
             this.customPricePercent = val
-            if (val > 999) {
-                this.customPricePercent = 999
-            }            
+            if (parseInt(val) > 999) {
+                this.customPricePercent = '999'
+            }
         }
     },
     methods: {
@@ -115,12 +121,16 @@ export default {
         },
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
+            if (title === '建议零售价') {
+                this.posterData.customPricePercent = '0'
+            } else {
+                this.posterData.customPricePercent = this.customPricePercent || '0'
+            }
         },
         // 预览海报
         handlePreviewPoster() {
             this.isPreview = true
             this.isSave = false
-            this.posterData.customPricePercent = this.customPricePercent
             this.posterData.groupDesc = this.groupDesc
         },
         handleClosePopup() {
@@ -130,25 +140,27 @@ export default {
 
         // 生成海报
         handleCreatePoster() {
-            if (this.posterData.groupTitle.length <= 0) {
+            if (this.posterData.groupTitle === '') {
                 this.$toast('请输入组货名称')
-            } else if (this.groupDesc.length <= 0) {
+            } else if (this.groupDesc === '') {
                 this.$toast('请输入组货描述')
             } else {
                 this.isPreview = true
-                this.isSave = false
-                this.posterData.customPricePercent = this.customPricePercent
+                this.isSave = true
                 this.posterData.groupDesc = this.groupDesc
             }
         },
         handleRequest() {
+            let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
             const params = {
-                groupCode: this.$route.query.groupCode
+                groupCode: this.$route.query.groupCode,
+                productCodes: productCodes.join(',')
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
                 // let baseParams = utils.getStore('baseParams')
                 if (res instanceof Object) {
                     this.posterData = res
+                    this.posterData.customPricePercent = this.customPricePercent || '0'
                     this.posterData.phone = '13811111111'
                 }
             }).catch(() => {
@@ -197,18 +209,31 @@ export default {
         border-radius:4px;
         width: calc(100vw - 32px);
     }
+    .descContain {
+        background:rgba(249,250,252,1);
+        padding-bottom: 10px;
+        p {
+            text-align: right;
+            height:16px;
+            font-size:12px;
+            font-weight:400;
+            color:rgba(178,181,193,1);
+            line-height:16px;
+            margin-right: 16px;
+        }
+    }
     .group-descContain {
-        padding:12px 16px;
+        padding:12px 16px 0;
         .group-title {
             // margin: 12px 16px 0;
             height: 40px;
             font-size:14px ;
-            font-weight:500;
+            font-weight:400;
             color:@color-c1;
         }
         .group-desc {
             font-size:14px;
-            font-weight:500;
+            font-weight:400;
             color:@color-c1;
             margin-top: 10px;
         }
@@ -219,7 +244,6 @@ export default {
         align-content: flex-start;
         padding: 16px 16px 16px 4px;
         margin-top: 12px;
-        margin-bottom: 16px;
         background:@color-c8;
         overflow: scroll;
         .image-item {
@@ -232,7 +256,7 @@ export default {
     }
     .price-contain {
         .price-menu {
-            margin: 11px 16px 0;
+            margin: 12px 16px 0;
             height: 40px;
             line-height: 40px;
             text-align: center;
@@ -240,59 +264,89 @@ export default {
             flex-direction: row;
             align-content: flex-start;
             border-radius:4px;
-            background:rgba(249,250,252,1);
+            section {
+                &:nth-child(2) {
+                    margin-left: 12px;
+                }
+            }
         }
         .price-select {
-            flex: 1;
+            height: 28px;
+            line-height: 26px;
             position: relative;
             font-size:14px;
             font-weight:500;
-            color:@color-ec;
+            color: @color-ec3;
+            background:#EBEEFF;
+            border-radius:16px;
+            border:1px solid @color-ec3;
+            padding: 0 16px;
         }
         .price-unSelect {
-            flex: 1;
+            padding: 0 16px;
+            height: 28px;
+            line-height: 26px;
             position: relative;
             font-size:14px;
             font-weight:500;
-            color:@color-c3;
-        }
-        .price-line {
-            position:absolute;
-            bottom: 0;
-            width:24px;
-            height:2px;
-            background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-            border-radius:1px;
-            left: 50%;
-            transform: translateX(-50%)
+            color:@color-c1;
+            background: @color-c7;
+            border-radius:16px;
+            border:1px solid @color-c7;
         }
         .price-suggest {
-            margin: 16px 16px;
+            margin: 6px 16px;
             font-size:12px;
             font-weight:400;
-            color:@color-c1;
-            line-height:16px;
+            color:@color-c2;
+            line-height:50px;
+            height: 50px;
+            border: 1px solid #E1E2E6;
+            padding-left: 16px;
+            border-radius: 5px;
         }
         .price-custom {
             display: flex;
             flex-direction: row;
             align-content: flex-start;
-            margin: 16px 16px 0;
+            border: 1px solid #E1E2E6;
+            border-radius: 5px;
+            height: 60px;
+            align-items: center;
+            margin: 6px 16px 0;
+            padding-left: 16px;
             .price-custom-title {
                 line-height: 16px;
                 font-size:12px;
                 font-weight:400;
-                color:@color-c1;
+                color:@color-c2;
                 line-height: 40px;
+            }
+            .input-contain {
+                background:rgba(249,250,252,1);
+                border-radius: 5px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                margin-left: 16px;
+                p {
+                    padding-right: 8px;
+                    height:14px;
+                    font-size:12px;
+                    font-weight:400;
+                    color:rgba(42,43,51,1);
+                    line-height:14px;
+                }
             }
             .price-input {
                 width: 68px;
                 height: 40px;
                 background:rgba(249,250,252,1);
                 font-size:14px;
-                font-weight:500;
                 color:rgba(42,43,51,1);
-                margin-left: 12px;
+                border-radius: 5px;
+                font-weight:bold;
             }
             .price-symbol {
                 font-size:12px;
@@ -307,7 +361,7 @@ export default {
         height: 40px;
         font-size:10px;
         font-weight:400;
-        color: @color-ec;
+        color: @color-c3;
         line-height:40px;
         text-align: center;
     }

@@ -13,17 +13,13 @@
             <img class="group-mainImg" :src="posterData.groupImg" alt="">
             <p class="group-name">{{posterData.groupTitle}}</p>
             <p class="group-code">{{posterData.groupCode}}</p>
-            <field
-                class="group-desc field-common"
-                readonly
-                autosize
-                type="textarea"
-                v-model="posterData.groupDesc"
-            ></field>
+            <p class="group-desc field-common">
+                {{posterData.groupDesc}}
+            </p>
             <div class="group-flag">
                 <section class="group-flag-item" v-for="item in posterData.labelDescs" :key="item">{{item}}</section>
             </div>
-            <p class="hot-line">抢购热线 {{posterData.phone}}</p>
+            <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线 {{posterData.phone}}</p>
         </div>
 
         <div class="list-contain">
@@ -48,14 +44,13 @@
 
 <script>
 
-import { Popup, Field, Toast } from 'vant'
+import { Popup, Toast } from 'vant'
 import utils from 'utils'
 import html2canvas from 'html2canvas'
 
 export default {
     components: {
-        Popup,
-        Field
+        Popup
     },
     props: {
         isShowPopup: {
@@ -107,37 +102,40 @@ export default {
             })
             let _this = this
             setTimeout(() => {
-                let img = _this.$refs['image']
+                let img = _this.$refs.image
                 html2canvas(img, {
-                    useCORS: true
+                    useCORS: true,
+                    allowTaint: false,
+                    scale: 1 // 设置像素比 越大越清晰 但是iOS可能无法渲染
                 }).then(function(canvas) {
-                    _this.photoUrl = canvas.toDataURL()
-                    _this.downloadIamge(_this.photoUrl, 'pic')
+                    _this.photoUrl = canvas.toDataURL('image/png')
+                    _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
             }, 2000)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
+            var canvas = document.createElement('canvas')
+            var context = canvas.getContext('2d')
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
             let self = this
-            image.onload = function() {
-                var canvas = document.createElement('canvas')
+            image.src = imgsrc
+            image.style.objectFit = 'contain'
+            image.onload = () => {
                 canvas.width = image.width
                 canvas.height = image.height
-                var context = canvas.getContext('2d')
                 context.drawImage(image, 0, 0, image.width, image.height)
                 // 得到图片的base64编码数据
                 var url = canvas.toDataURL('image/png')
                 var a = document.createElement('a') // 生成一个a元素
                 var event = new MouseEvent('click') // 创建一个单击事件
-                a.download = name || 'photo' // 设置图片名称
+                a.download = name // 设置图片名称
                 a.href = url // 将生成的URL设置为a.href属性
                 a.dispatchEvent(event) // 触发a的单击事件
-                Toast.success('已保存到相册')
+                Toast.clear()
                 self.handleClose()
             }
-            image.src = imgsrc
         },
         handleClose() {
             this.$emit('close')

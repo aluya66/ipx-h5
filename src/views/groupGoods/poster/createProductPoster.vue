@@ -27,7 +27,6 @@
                         <div class="price-menu">
                             <section :class='[menuTitle === selectPriceTitle?"price-select":"price-unSelect"]'  v-for="menuTitle in priceMenu" :key="menuTitle" @click="handleChoosePriceTitle(menuTitle)">
                                 {{menuTitle}}
-                                <div class="price-line" v-show="menuTitle === selectPriceTitle"></div>
                             </section>
                         </div>
                         <div v-if="selectPriceTitle==='建议零售价'" class="price-suggest">
@@ -38,7 +37,7 @@
                             <section :class='["flex-common","posterPrice-contain"]'>
                                 <p>海报价格</p>
                                 <p>{{posterData.retailPrice}}</p>
-                                <p>(建议零售价)</p>
+                                <p>建议零售价</p>
                             </section>
                         </div>
                         <div v-else class="price-custom">
@@ -49,11 +48,11 @@
                             <section :class='["flex-common","custom-add"]'>
                                 <p>加价</p>
                                 <p class="price-symbol">¥</p>
-                                <field class="price-input" v-model="addPrice" />
+                                <field class="price-input" type="digit" v-model="addPrice" />
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
                                 <p>海报价格</p>
-                                <p>{{posterData.retailPrice}}</p>
+                                <p>{{posterPrice}}</p>
                             </section>
                         </div>
                     </div>
@@ -63,7 +62,7 @@
             <title-content title="联系手机(选填)">
                 <template slot="content">
                     <div style="padding:0.12rem 0.16rem">
-                        <field :class='["field-common","group-title"]' placeholder="请填写联系手机" clearable v-model="phone" />
+                        <field :class='["field-common","group-title"]' type="digit" placeholder="请填写联系手机" clearable v-model="phone" />
                     </div>
                 </template>
             </title-content>
@@ -112,6 +111,12 @@ export default {
             addPrice: '0'
         }
     },
+    computed: {
+        posterPrice() {
+            let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0')
+            return p.toFixed(2)
+        }
+    },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
@@ -127,7 +132,6 @@ export default {
         // 预览海报
         handlePreviewPoster() {
             this.posterData.phone = this.phone
-            this.posterData.addPrice = this.addPrice
             this.isPreview = true
             this.isSave = false
         },
@@ -138,10 +142,13 @@ export default {
 
         // 生成海报
         handleCreatePoster() {
-            this.posterData.phone = this.phone
-            this.posterData.addPrice = this.addPrice
-            this.isPreview = true
-            this.isSave = true
+            if (this.posterData.productName.length <= 0) {
+                this.$toast('请输入组货名称')
+            } else {
+                this.posterData.phone = this.phone
+                this.isPreview = true
+                this.isSave = true
+            }
         },
         handleRequest() {
             const params = {
@@ -151,6 +158,7 @@ export default {
                 // let baseParams = utils.getStore('baseParams')
                 if (res instanceof Object) {
                     this.posterData = res
+                    this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
                 }
             }).catch(() => {
@@ -194,7 +202,7 @@ export default {
         width: calc(100vw - 32px);
     }
     .group-descContain {
-        padding:12px 16px;
+        padding:12px 16px 0;
         .group-title {
             // margin: 12px 16px 0;
             height: 40px;
@@ -215,7 +223,6 @@ export default {
         justify-content: flex-start;
         padding: 16px 16px 16px 4px;
         margin-top: 12px;
-        margin-bottom: 16px;
         background:@color-c8;
         overflow: scroll;
         .image-item {
@@ -228,37 +235,43 @@ export default {
     }
     .price-contain {
         .price-menu {
-            margin: 11px 16px 0;
+            margin: 12px 16px 0;
             height: 40px;
             line-height: 40px;
             text-align: center;
             display: flex;
             flex-direction: row;
             align-content: flex-start;
+            border-radius:4px;
+            section {
+                &:nth-child(2) {
+                    margin-left: 12px;
+                }
+            }
         }
         .price-select {
-            flex: 1;
+            height: 28px;
+            line-height: 26px;
             position: relative;
             font-size:14px;
             font-weight:500;
-            color:@color-ec;
+            color: @color-ec3;
+            background:#EBEEFF;
+            border-radius:16px;
+            border:1px solid @color-ec3;
+            padding: 0 16px;
         }
         .price-unSelect {
-            flex: 1;
+            padding: 0 16px;
+            height: 28px;
+            line-height: 26px;
             position: relative;
             font-size:14px;
             font-weight:500;
-            color:@color-c3;
-        }
-        .price-line {
-            position:absolute;
-            bottom: 0;
-            width:24px;
-            height:2px;
-            background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-            border-radius:1px;
-            left: 50%;
-            transform: translateX(-50%)
+            color:@color-c1;
+            background: @color-c7;
+            border-radius:16px;
+            border:1px solid @color-c7;
         }
         .flex-common {
             display: flex;
@@ -270,14 +283,27 @@ export default {
             line-height: 40px;
         }
         .purchase-contain {
-            font-size:12px;
             font-weight:400;
             color:@color-c1;
             p:last-child {
                 margin-left: 24px;
+                font-family: "alibabaBold";
+                font-size:16px;
+                &::before {
+                        content: '¥ ';
+                        width: 20px;
+                        font-weight:600;
+                        line-height: 40px;
+                        font-size: 12px;
+                        position: relative;
+                        font-family: "alibabaRegular";
+                    }
             }
         }
         .posterPrice-contain {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             p {
                 font-size:12px;
                 font-weight:400;
@@ -288,8 +314,10 @@ export default {
                     color:#F41F1F;
                     margin-left: 12px;
                     position: relative;
+                    font-family: "alibabaBold";
                     &::before {
-                        content: '¥';
+                        content: '¥ ';
+                        font-family: "alibabaRegular";
                         width: 20px;
                         font-weight:600;
                         line-height: 40px;
@@ -302,19 +330,33 @@ export default {
                     font-size:12px;
                     font-weight:400;
                     color:@color-c3;
+                    height: 16px;
+                    line-height: 16px;
+                    background:rgba(244,245,247,1);
+                    padding: 1px 4px;
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 3px;
+                    border-bottom-right-radius: 3px;
+                    border-bottom-left-radius: 3px;
                 }
             }
         }
         .price-suggest {
-            margin: 16px 16px;
+            margin: 6px 16px;
             font-size:12px;
             font-weight:400;
             color:@color-c1;
             line-height:16px;
+            border: 1px solid #E1E2E6;
+            padding-left: 16px;
+            border-radius: 5px;
         }
         .price-custom {
-            margin: 16px 16px 0;
+            margin: 6px 16px 0;
             font-size:12px;
+            border: 1px solid #E1E2E6;
+            padding-left: 16px;
+            border-radius: 5px;
             .custom-add {
                 P {
                     &:nth-child(1) {
@@ -324,13 +366,18 @@ export default {
                         width: 48px;
                         text-align: left
                     }
+                    &:nth-child(2) {
+                        font-size:12px;
+                        font-family: "alibabaRegular";
+                    }
                 }
                 .price-input {
                     width: 180px;
                     height: 40px;
                     background:rgba(249,250,252,1);
-                    font-size:14px;
+                    font-size:16px;
                     font-weight:500;
+                    font-family: "alibabaBold";
                     color:rgba(42,43,51,1);
                     margin-left: 12px;
                 }
@@ -348,7 +395,7 @@ export default {
         height: 40px;
         font-size:10px;
         font-weight:400;
-        color: @color-ec;
+        color: @color-c3;
         line-height:40px;
         text-align: center;
     }

@@ -5,21 +5,23 @@
         v-model="isShow"
         :lock-scroll='false'
         @close='handleClose'
+        :closeable='!isDownload'
+        :close-icon="deleteIcon"
     >
         <div class="contain-view" ref="image">
             <div class="header-info">
                 <p class="group-name">{{posterData.productName}}</p>
                 <p class="group-code">{{posterData.productCode}}</p>
                 <p class="product-price">{{productRealPrice()}}</p>
-                <p class="hot-line">抢购热线 {{posterData.phone}}</p>
+                <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线 {{posterData.phone}}</p>
             </div>
 
             <div class="buyer-contain">
                 <div class="product-desc">
                     <section></section>
                     <div class="desc-info">
-                        <img src="" alt="">
-                        <img src="" alt="">
+                        <img :src="leftIcon" alt="">
+                        <img :src="rightIcon" alt="">
                         <p>{{posterData.importantDesc}}</p>
                     </div>
                 </div>
@@ -68,7 +70,10 @@ export default {
     },
     data() {
         return {
-            isShow: false
+            isShow: false,
+            deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
+            leftIcon: require('@/themes/images/app/icon_semicolon_1@3x.png'),
+            rightIcon: require('@/themes/images/app/icon_semicolon_2@3x.png')
         }
     },
     watch: {
@@ -96,10 +101,12 @@ export default {
             setTimeout(() => {
                 let img = _this.$refs['image']
                 html2canvas(img, {
-                    useCORS: true // 允许图片跨域
+                    useCORS: true, // 允许图片跨域
+                    allowTaint: false,
+                    scale: 1 // 设置像素比 越大越清晰 但是iOS可能无法渲染
                 }).then(function(canvas) {
                     _this.photoUrl = canvas.toDataURL()
-                    _this.downloadIamge(_this.photoUrl, 'pic')
+                    _this.downloadIamge(_this.photoUrl, 'poster')
                 })
             }, 2000)
         },
@@ -118,10 +125,10 @@ export default {
                 var url = canvas.toDataURL('image/png')
                 var a = document.createElement('a') // 生成一个a元素
                 var event = new MouseEvent('click') // 创建一个单击事件
-                a.download = name || 'photo' // 设置图片名称
+                a.download = name // 设置图片名称
                 a.href = url // 将生成的URL设置为a.href属性
                 a.dispatchEvent(event) // 触发a的单击事件
-                Toast.success('已保存到相册')
+                Toast.clear()
                 self.handleClose()
             }
             image.src = imgsrc
@@ -234,11 +241,11 @@ export default {
                 width: 16px;
                 height: 16px;
                 &:nth-child(1) {
-                    left: 0;
+                    left: -3px;
                     top: 4px;
                 }
                 &:nth-child(2) {
-                    right: 0;
+                    right: 7px;
                     bottom: 4px;
                 }
             }
@@ -246,10 +253,10 @@ export default {
                 font-size:12px;
                 font-weight:400;
                 color:@color-c1;
-                line-height:16px;
-                margin: 0px 25px 0px 20px;
+                line-height:18px;
+                margin: 0px 10px 0px 15px;
                 // height: 100%;
-                text-align: center;
+                // text-align: center;
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%)

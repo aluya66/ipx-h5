@@ -28,10 +28,10 @@ export default {
 <style lang="less" scoped>
 .contain-view {
     background:rgba(255,255,255,1);
-    box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
+    // box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
     border-radius:12px;
-    padding: 16px 0;
-    margin: 12px 0;
+    padding: 16px 0 0;
+    margin: 0px 0;
     .title {
         font-size:16px;
         font-weight:600;
