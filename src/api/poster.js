@@ -8,7 +8,7 @@ const context = process.env.VUE_APP_serverPath
  * @param {Object} mockFile 接口名称对应的mock数据文件
  */
 export const getGroupPosterInfo = params => Http.fetch(`${context}/v1/interest/groupposter`, params, {
-    method: 'get'
+    method: 'post'
 })
 
 /**

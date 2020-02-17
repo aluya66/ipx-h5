@@ -155,7 +155,6 @@ export default {
             const params = {
                 groupCode: this.$route.query.groupCode,
                 productCodes: productCodes
-                // utils.getStore('groupProductCodes')
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
                 // let baseParams = utils.getStore('baseParams')
@@ -167,6 +166,7 @@ export default {
             }).catch(() => {
 
             })
+
         }
     },
     activated() {
