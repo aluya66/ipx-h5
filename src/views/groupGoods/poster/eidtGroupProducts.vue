@@ -93,9 +93,11 @@ export default {
             this.selectItems.push(item)
         },
         handleSelectAll() {
+            this.selectItems = []
             this.isSelectAll = !this.isSelectAll
             this.products.map(item => {
                 item.select = this.isSelectAll
+                this.selectItems.push(item)
             })
         },
         getGroupDetail() {
@@ -119,6 +121,9 @@ export default {
         }
     },
     activated() {
+        this.selectItems = []
+        this.isSelectAll = false
+        this.selectAllString = ''
         this.getGroupDetail()
     }
 }

@@ -154,7 +154,7 @@ export default {
             let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
             const params = {
                 groupCode: this.$route.query.groupCode,
-                productCodes: productCodes.join(',')
+                productCodes: utils.getStore('groupProductCodes')
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
                 // let baseParams = utils.getStore('baseParams')

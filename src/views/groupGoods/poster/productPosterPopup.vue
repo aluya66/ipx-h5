@@ -8,6 +8,7 @@
         :closeable='!isDownload'
         :close-icon="deleteIcon"
     >
+        <img style="width:100%" :src="imgUrl" alt="">
         <div class="contain-view" ref="image">
             <div class="header-info">
                 <p class="group-name">{{posterData.productName}}</p>
@@ -73,7 +74,8 @@ export default {
             isShow: false,
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
             leftIcon: require('@/themes/images/app/icon_semicolon_1@3x.png'),
-            rightIcon: require('@/themes/images/app/icon_semicolon_2@3x.png')
+            rightIcon: require('@/themes/images/app/icon_semicolon_2@3x.png'),
+            imgUrl: ''
         }
     },
     watch: {
@@ -123,13 +125,14 @@ export default {
                 context.drawImage(image, 0, 0, image.width, image.height)
                 // 得到图片的base64编码数据
                 var url = canvas.toDataURL('image/png')
-                var a = document.createElement('a') // 生成一个a元素
-                var event = new MouseEvent('click') // 创建一个单击事件
-                a.download = name // 设置图片名称
-                a.href = url // 将生成的URL设置为a.href属性
-                a.dispatchEvent(event) // 触发a的单击事件
-                Toast.clear()
-                self.handleClose()
+                self.imgUrl = url
+                // var a = document.createElement('a') // 生成一个a元素
+                // var event = new MouseEvent('click') // 创建一个单击事件
+                // a.download = name // 设置图片名称
+                // a.href = url // 将生成的URL设置为a.href属性
+                // a.dispatchEvent(event) // 触发a的单击事件
+                Toast.success('长按图片保存')
+                // self.handleClose()
             }
             image.src = imgsrc
         },
@@ -175,7 +178,7 @@ export default {
         padding-top: 16px;
     }
     .header-info {
-        background:rgba(249,250,252,1);
+        // background:rgba(249,250,252,1);
         padding-bottom: 26px;
     }
     .group-name {
