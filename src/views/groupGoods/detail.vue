@@ -132,6 +132,10 @@
                   {{ sku | selectSkuStr }}
                 </p>
               </div>
+              <div class="sale_price">
+                <span class="price">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                <span class="tip_title">零售货值</span>
+              </div>
               <div class="price">
                 ¥ <span>{{ cashFormat(item.spuTshPrice) }}</span>
               </div>
@@ -146,9 +150,18 @@
         class="
       price"
       >
-        ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+        <div class="group_price">
+          ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+        </div>
+        <div class="sale_price">
+          <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
+          <span class="tip_title">零售货值</span>
+        </div>
       </div>
-      <button @click="addHall">添加至展厅</button>
+      <div class="group_tool_btn">
+        <button class="poster">生成海报</button>
+        <button class="hall" @click="addHall">加入展厅</button>
+      </div>
     </div>
   </layout-view>
 </template>
@@ -683,15 +696,40 @@ export default {
           .sku-list {
             margin-top: 8px;
             margin-bottom: 16px;
-            height: 38px;
-            overflow: hidden;
-            overflow-y: auto;
+            // height: 38px;
+            // overflow: hidden;
+            // overflow-y: auto;
             > p {
               font-size: 12px;
               font-weight: 400;
               color: @color-c3;
               line-height: 16px;
               margin: 8px 0;
+            }
+          }
+          .sale_price {
+            margin-bottom: 4px;
+            .price {
+              font-size: 12px;
+              font-weight: 400;
+              color: @color-c1;
+              line-height: 14px;
+              font-family: "alibabaRegular";
+              > span {
+                font-size: 14px;
+                font-weight: bold;
+                color: @color-c1;
+                line-height: 14px;
+                font-family: "alibabaBold";
+              }
+            }
+            .tip_title {
+              font-size:10px;
+              font-weight:400;
+              color: @color-c3;
+              line-height:12px;
+              background:rgba(244,245,247,1);
+              margin-left: 10px;
             }
           }
           .price {
@@ -722,34 +760,73 @@ export default {
   background: white;
   box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
   border-radius: 12px 12px 0px 0px;
-  padding: 0 16px;
-  .price {
+  padding: 5px 16px 5px;
+  .group_price {
     font-size: 12px;
     font-weight: 400;
     color: rgba(245, 48, 48, 1);
-    line-height: 49px;
+    line-height: 24px;
     font-family: "alibabaRegular";
     > span {
       font-size: 20px;
       font-weight: bold;
       color: rgba(245, 48, 48, 1);
-      line-height: 49px;
+      line-height: 24px;
       font-family: "alibabaBold";
     }
   }
-  > button {
-    width: 110px;
-    height: 40px;
-    background: linear-gradient(
-      135deg,
-      rgba(85, 122, 244, 1) 0%,
-      rgba(114, 79, 255, 1) 100%
-    );
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    align-self: center;
+  .sale_price {
+    .price {
+      font-size: 12px;
+      font-weight: 400;
+      color: @color-c1;
+      line-height: 14px;
+      font-family: "alibabaRegular";
+      > span {
+        font-size: 14px;
+        font-weight: bold;
+        color: @color-c1;
+        line-height: 14px;
+        font-family: "alibabaBold";
+      }
+    }
+    .tip_title {
+      font-size:10px;
+      font-weight:400;
+      color: @color-c3;
+      line-height:12px;
+      background:rgba(244,245,247,1);
+      margin-left: 4px;
+    }
   }
+  .group_tool_btn {
+    display: flex;
+     .poster {
+      width: 96px;
+      height: 40px;
+      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);border-radius:20px;
+      font-size:14px;
+      font-weight:500;
+      color:rgba(60,92,246,1);
+      // margin-right: 20px;
+      align-self: center;
+    }
+    .hall {
+      width: 96px;
+      height: 40px;
+      background: linear-gradient(
+        135deg,
+        rgba(85, 122, 244, 1) 0%,
+        rgba(114, 79, 255, 1) 100%
+      );
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      align-self: center;
+      margin-left: 20px;
+    }
+  }
+
 }
 </style>

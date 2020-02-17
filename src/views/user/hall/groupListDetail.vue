@@ -29,7 +29,10 @@
           v-for="(item, index) in groupGoodsRecords"
           :key="item.productCode"
         >
-          <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)" />
+          <div class="photo_state">
+            <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)" />
+            <div class="state_text" v-show="tipStr(item) !== ''" >{{ tipStr(item) }}</div>
+          </div>
           <div class="product-info">
             <p
               :class="[item.disabled ? 'disableTitle' : '']"
@@ -46,7 +49,10 @@
               >
                 {{ sku | selectSkuStr }}
               </p>
-              <p class="tips">{{ tipStr(item) }}</p>
+            </div>
+            <div class="sale_price">
+                <span class="price">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                <span class="tip_title">零售货值</span>
             </div>
             <div class="footer-btn">
               <p :class="[item.disabled ? 'disablePrice' : 'price']">
@@ -60,11 +66,19 @@
         </div>
       </div>
       <div class="footer-content" :style="getBottomOffset(0)">
-        <div class="total-price">
-          合计：<span class="yen">¥</span
-          ><span class="price">{{ cashFormat(groupDetail.totalPrice) }}</span>
+        <div class=" total-price">
+          <div class="group_price">
+            ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+          </div>
+          <div class="sale_price">
+            <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
+            <span class="tip_title">零售货值</span>
+          </div>
         </div>
-        <button @click="goPay">立即采购</button>
+        <div class="group_tool_btn">
+          <button class="poster">生成海报</button>
+          <button class="pay" @click="goPay">立即采购</button>
+        </div>
       </div>
     </div>
     <!-- sku选择 -->
@@ -192,6 +206,7 @@ export default {
                 if (isChanged && isEnough) {
                     return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
                 }
+                return ''
             }
         }
     },
@@ -476,13 +491,29 @@ export default {
     margin-bottom: 32px;
     display: flex;
     position: relative;
-    > img {
-      flex: none;
-      width: 106px;
-      height: 106px;
-      border-radius: 4px;
-      object-fit: cover;
-      border: 1px solid @color-c7;
+    .photo_state {
+      position: relative;
+      > img {
+        flex: none;
+        width: 106px;
+        height: 106px;
+        border-radius: 4px;
+        object-fit: cover;
+        border: 1px solid @color-c7;
+      }
+      .state_text {
+        position: absolute;
+        width:106px;
+        height:18px;
+        background:rgba(0,0,0,0.5);
+        border-radius:0px 0px 4px 4px;
+        font-size:10px;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        text-align: center;
+        line-height:18px;
+        top: 88px;
+      }
     }
     .product-info {
       margin-left: 12px;
@@ -518,11 +549,36 @@ export default {
           line-height: 16px;
           margin: 8px 0;
         }
-        .tips {
+        // .tips {
+        //   font-size: 12px;
+        //   font-weight: 400;
+        //   color: @color-rc;
+        //   height: 15px;
+        // }
+      }
+      .sale_price {
+        margin-bottom: 4px;
+        .price {
           font-size: 12px;
           font-weight: 400;
-          color: @color-rc;
-          height: 15px;
+          color: @color-c1;
+          line-height: 14px;
+          font-family: "alibabaRegular";
+          > span {
+            font-size: 14px;
+            font-weight: bold;
+            color: @color-c1;
+            line-height: 14px;
+            font-family: "alibabaBold";
+          }
+        }
+        .tip_title {
+          font-size:10px;
+          font-weight:400;
+          color: @color-c3;
+          line-height:12px;
+          background:rgba(244,245,247,1);
+          margin-left: 10px;
         }
       }
       .footer-btn {
@@ -579,48 +635,113 @@ export default {
 }
 .footer-content {
   background-color: white;
-  // height: 49px;
   width: 100%;
   position: fixed;
+  display: flex;
+  justify-content: space-between;
   bottom: 0;
   left: 0;
   box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
   border-radius: 12px 12px 0px 0px;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 16px;
-  .total-price {
-    font-size: 14px;
+  padding: 5px 16px 5px;
+  .group_price {
+    font-size: 12px;
     font-weight: 400;
-    color: @color-c1;
-    line-height: 49px;
-    .yen {
+    color: rgba(245, 48, 48, 1);
+    line-height: 24px;
+    font-family: "alibabaRegular";
+    > span {
+      font-size: 20px;
+      font-weight: bold;
+      color: rgba(245, 48, 48, 1);
+      line-height: 24px;
+      font-family: "alibabaBold";
+    }
+  }
+  .sale_price {
+    .price {
       font-size: 12px;
       font-weight: 400;
-      color: @color-rc;
+      color: @color-c1;
+      line-height: 14px;
       font-family: "alibabaRegular";
+      > span {
+        font-size: 14px;
+        font-weight: bold;
+        color: @color-c1;
+        line-height: 14px;
+        font-family: "alibabaBold";
+      }
     }
-    .price {
-      font-size: 18px;
+    .tip_title {
+      font-size:10px;
+      font-weight:400;
+      color: @color-c3;
+      line-height:12px;
+      background:rgba(244,245,247,1);
+      margin-left: 4px;
+    }
+  }
+  .group_tool_btn {
+    display: flex;
+     .poster {
+      width: 96px;
+      height: 40px;
+      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);border-radius:20px;
+      font-size:14px;
+      font-weight:500;
+      color:rgba(60,92,246,1);
+      // margin-right: 20px;
+      align-self: center;
+    }
+    .pay {
+      width: 96px;
+      height: 40px;
+      background: linear-gradient(
+        135deg,
+        rgba(85, 122, 244, 1) 0%,
+        rgba(114, 79, 255, 1) 100%
+      );
+      border-radius: 20px;
+      font-size: 14px;
       font-weight: bold;
-      font-family: "alibabaBold";
-      color: @color-rc;
-      margin-bottom: 16px;
+      color: white;
+      align-self: center;
+      margin-left: 20px;
     }
   }
-  > button {
-    width: 96px;
-    height: 40px;
-    background: linear-gradient(
-      135deg,
-      rgba(85, 122, 244, 1) 0%,
-      rgba(114, 79, 255, 1) 100%
-    );
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    color: white;
-    align-self: center;
-  }
+  // .total-price {
+  //   font-size: 14px;
+  //   font-weight: 400;
+  //   color: @color-c1;
+  //   line-height: 49px;
+  //   .yen {
+  //     font-size: 12px;
+  //     font-weight: 400;
+  //     color: @color-rc;
+  //     font-family: "alibabaRegular";
+  //   }
+  //   .price {
+  //     font-size: 18px;
+  //     font-weight: bold;
+  //     font-family: "alibabaBold";
+  //     color: @color-rc;
+  //     margin-bottom: 16px;
+  //   }
+  // }
+  // > button {
+  //   width: 96px;
+  //   height: 40px;
+  //   background: linear-gradient(
+  //     135deg,
+  //     rgba(85, 122, 244, 1) 0%,
+  //     rgba(114, 79, 255, 1) 100%
+  //   );
+  //   border-radius: 20px;
+  //   font-size: 14px;
+  //   font-weight: 500;
+  //   color: white;
+  //   align-self: center;
+  // }
 }
 </style>
