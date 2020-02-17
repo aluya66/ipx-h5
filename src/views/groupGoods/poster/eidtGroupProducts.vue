@@ -175,6 +175,7 @@ export default {
         align-items: center;
         padding: 16px 16px;
         img {
+            object-fit: contain;
             &:nth-child(1) {
                 width: 20px;
                 height: 20px;
