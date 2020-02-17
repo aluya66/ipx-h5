@@ -392,7 +392,7 @@ export default {
         addPoster() {
           this.$router.push({
             path: '/poster/eidtGroupProducts',
-            query: { groupCode: this.groupDetail.groupGoodsId }
+            query: { groupCode: this.groupDetail.groupCode }
           })
         },
         goPay() {

@@ -85,8 +85,10 @@ export default {
             })
             utils.setStore('groupProductCodes', allSelectCode)
             this.$router.push({
-                path: '/poster/editGroupPoster'
+                path: '/poster/editGroupPoster',
+                query: { groupCode: this.$route.query.groupCode }
             })
+
         },
         handleSelectItem(item) {
             item.select = !item.select
