@@ -8,8 +8,8 @@
         :closeable='!isDownload'
         :close-icon="deleteIcon"
     >
-        <img style="width:100%" :src="imgUrl" alt="">
-        <div class="contain-view" ref="image">
+        <img v-if="imgUrl.length > 0" style="width:100%" :src="imgUrl" alt="">
+        <div v-else class="contain-view" ref="image">
             <div class="header-info">
                 <p class="group-name">{{posterData.productName}}</p>
                 <p class="group-code">{{posterData.productCode}}</p>
