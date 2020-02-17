@@ -155,11 +155,11 @@
         </div>
         <div class="sale_price">
           <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-          <span class="tip_title">零售货值</span>
+          <span class="tip_title">建议零售价</span>
         </div>
       </div>
       <div class="group_tool_btn">
-        <button class="poster">生成海报</button>
+        <button class="poster" @click="addPoster">生成海报</button>
         <button class="hall" @click="addHall">加入展厅</button>
       </div>
     </div>
@@ -368,6 +368,12 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        addPoster() {
+          this.$router.push({
+            path: '/poster/eidtGroupProducts',
+            query: { groupCode: this.groupDetail.groupCode }
+          })
         },
         addHall() {
             window.sa.track('IPX_WEB', {

@@ -51,7 +51,7 @@
               </p>
             </div>
             <div class="sale_price">
-                <span class="price">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
                 <span class="tip_title">零售货值</span>
             </div>
             <div class="footer-btn">
@@ -72,11 +72,11 @@
           </div>
           <div class="sale_price">
             <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-            <span class="tip_title">零售货值</span>
+            <span class="tip_title">建议零售价</span>
           </div>
         </div>
         <div class="group_tool_btn">
-          <button class="poster">生成海报</button>
+          <button class="poster" @click="addPoster">生成海报</button>
           <button class="pay" @click="goPay">立即采购</button>
         </div>
       </div>
@@ -389,6 +389,12 @@ export default {
                 }
             })
         },
+        addPoster() {
+          this.$router.push({
+            path: '/poster/eidtGroupProducts',
+            query: { groupCode: this.groupDetail.groupGoodsId }
+          })
+        },
         goPay() {
             window.sa.track('IPX_WEB', {
                 page: 'groupListDetail', // 页面名字
@@ -557,7 +563,8 @@ export default {
         // }
       }
       .sale_price {
-        margin-bottom: 4px;
+        margin-top: 8px;
+        // margin-bottom: 4px;
         .price {
           font-size: 12px;
           font-weight: 400;
@@ -569,6 +576,18 @@ export default {
             font-weight: bold;
             color: @color-c1;
             line-height: 14px;
+            font-family: "alibabaBold";
+          }
+        }
+        .disablePrice {
+          font-size: 12px;
+          font-weight: 400;
+          color: @color-c4;
+          font-family: "alibabaRegular";
+          > span {
+            font-size: 14px;
+            font-weight: bold;
+            color: @color-c4;
             font-family: "alibabaBold";
           }
         }
