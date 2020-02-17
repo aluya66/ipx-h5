@@ -89,3 +89,13 @@
 	text-align: center;
 	line-height: @h;
 }
+.btn-select-default(@w,@h,@select) when (@select = false) {
+	width:@w;
+	height:@h;
+	border-radius:@h/2;
+	// border:1px solid @color-ec;
+	background: @color-ec1;
+	color:@color-ec;
+	text-align: center;
+	line-height: @h;
+}
