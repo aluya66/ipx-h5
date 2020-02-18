@@ -123,18 +123,24 @@ export default {
         },
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
-            if (title === '建议零售价') {
-                this.posterData.customPricePercent = '0'
-            } else {
-                this.posterData.customPricePercent = this.customPricePercent || '0'
-            }
         },
         // 预览海报
         handlePreviewPoster() {
-            this.isPreview = true
-            this.isSave = false
-            this.posterData.groupDesc = this.groupDesc
-            this.posterData.phone = this.phone
+            if (this.posterData.groupTitle === '') {
+                this.$toast('请输入组货名称')
+            } else if (this.groupDesc === '') {
+                this.$toast('请输入组货描述')
+            } else {
+                this.isPreview = true
+                this.isSave = false
+                this.posterData.groupDesc = this.groupDesc
+                this.posterData.phone = this.phone
+                if (this.selectPriceTitle === '建议零售价') {
+                    this.posterData.customPricePercent = '0'
+                } else {
+                    this.posterData.customPricePercent = this.customPricePercent || '0'
+                }
+            }
         },
         handleClosePopup() {
             this.isPreview = false
@@ -152,6 +158,11 @@ export default {
                 this.isSave = true
                 this.posterData.groupDesc = this.groupDesc
                 this.posterData.phone = this.phone
+                if (this.selectPriceTitle === '建议零售价') {
+                    this.posterData.customPricePercent = '0'
+                } else {
+                    this.posterData.customPricePercent = this.customPricePercent || '0'
+                }
             }
         },
         handleRequest() {

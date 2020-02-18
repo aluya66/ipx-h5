@@ -106,7 +106,7 @@ export default {
             
         },
         handleSelectAll() {
-            if(this.selectItems.length === this.products.length) {
+            if (this.selectItems.length === this.products.length) {
                 this.selectItems = []
                 this.products.map(item => {
                     item.select = false
@@ -118,8 +118,6 @@ export default {
                     this.selectItems.push(item)
                 })
             }
-            
-            
         },
         getGroupDetail() {
             const params = {
@@ -128,6 +126,7 @@ export default {
             this.$api.groupGoods
                 .getGroupDetail(params)
                 .then(res => {
+                    console.log(res)
                     this.products = res.groupGoodsSpus.filter(item => item.productShelves !== 0)
                     this.products = this.products.map(item => {
                         return {
