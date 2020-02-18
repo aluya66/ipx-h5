@@ -162,7 +162,7 @@ export default {
                     this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
                 } else {
-                    // this.$toast('返回数据错误')    
+                    // this.$toast('返回数据错误')
                 }
             }).catch(() => {
                 // this.$toast('请求错误')

@@ -151,7 +151,7 @@ export default {
                 bottom = 84
             }
             let height = (window.screen.height - top - bottom) / 100
-            console.log(top , window.screen.height)
+            console.log(top, window.screen.height)
             return `width:${width}rem;height:${height}rem`
         }
     }
