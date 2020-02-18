@@ -390,10 +390,10 @@ export default {
             })
         },
         addPoster() {
-          this.$router.push({
-            path: '/poster/eidtGroupProducts',
-            query: { groupCode: this.groupDetail.groupCode }
-          })
+            this.$router.push({
+                path: '/poster/eidtGroupProducts',
+                query: { groupCode: this.groupDetail.groupCode }
+            })
         },
         goPay() {
             window.sa.track('IPX_WEB', {

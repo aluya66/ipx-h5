@@ -152,7 +152,7 @@ export default {
             }
         },
         handleRequest() {
-            // let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
+            let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
             const params = {
                 groupCode: this.$route.query.groupCode,
                 productCodes: productCodes
@@ -167,7 +167,6 @@ export default {
             }).catch(() => {
 
             })
-
         }
     },
     activated() {
