@@ -76,7 +76,7 @@
             <template slot="footerContain">
                 <div class="footer-view">
                     <section :class='["section-common","button-default"]' @click="handlePreviewPoster">预览海报</section>
-                    <section :class='["section-common","button-select"]' @click="handleCreatePoster">生成海报</section>
+                    <section :class='["section-common","button-select"]' @click="handleCreatePoster">保存海报</section>
                 </div>
             </template>
         </fixed-view>
