@@ -16,7 +16,7 @@
                 <p class="group-name">{{posterData.productName}}</p>
                 <p class="group-code">{{posterData.productCode}}</p>
                 <p class="product-price">{{productRealPrice()}}</p>
-                <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线 {{posterData.phone}}</p>
+                <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线：{{posterData.phone}}</p>
             </div>
 
             <div class="buyer-contain">
@@ -151,7 +151,6 @@ export default {
                 bottom = 84
             }
             let height = (window.screen.height - top - bottom) / 100
-            console.log(top, window.screen.height)
             return `width:${width}rem;height:${height}rem`
         }
     }
