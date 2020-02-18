@@ -105,7 +105,7 @@ export default {
             isPreview: false,
             mainImage: '',
             isSave: false,
-            isNative: true
+            isNative: false
         }
     },
     watch: {
@@ -167,9 +167,12 @@ export default {
             }).catch(() => {
 
             })
+
         }
     },
     activated() {
+        this.isPreview = false
+        this.isSave = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }

@@ -7,8 +7,10 @@
         @close='handleClose'
         :closeable='!isDownload'
         :close-icon="deleteIcon"
+        :safe-area-inset-bottom='true'
+        :safe-area-inset-top='true'
     >
-        <img v-if="imgUrl.length > 0" style="width:100%" :src="imgUrl" alt="">
+        <img v-if="imgUrl !== ''" style="width:100%" :src="imgUrl" alt="">
         <div v-else class="contain-view" ref="image">
             <div class="header-info">
                 <p class="group-name">{{posterData.productName}}</p>
@@ -145,11 +147,12 @@ export default {
             let top = 64
             let bottom = 50
             if (baseparams.isIphoneX) {
-                top = 88 / 100
-                bottom = 84 / 100
+                top = 88
+                bottom = 84
             }
             let height = (window.screen.height - top - bottom) / 100
-            return `position:absolute;width:${width}rem;top:${top / 100}rem,bottom:${bottom / 100}rem;height:${height}rem`
+            console.log(top , window.screen.height)
+            return `width:${width}rem;height:${height}rem`
         }
     }
 

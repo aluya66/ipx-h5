@@ -7,9 +7,11 @@
         :lock-scroll='false'
         :closeable='!isDownload'
         :close-icon="deleteIcon"
+        :safe-area-inset-bottom='true'
+        :safe-area-inset-top='true'
     >
-        <img style="width:100%" :src="imgUrl" alt="">
-        <div class="contain-view" ref="image">
+        <img v-if="imgUrl !== ''" style="width:100%" :src="imgUrl" alt="">
+        <div v-else class="contain-view" ref="image">
         <div class="content-header group-desc-cell">
             <img class="group-mainImg" :src="posterData.groupImg" alt="">
             <p class="group-name">{{posterData.groupTitle}}</p>
@@ -135,8 +137,7 @@ export default {
                 // a.download = name // 设置图片名称
                 // a.href = url // 将生成的URL设置为a.href属性
                 // a.dispatchEvent(event) // 触发a的单击事件
-                Toast.clear()
-                self.handleClose()
+                Toast.success('长按图片保存')
             }
         },
         handleClose() {
@@ -148,11 +149,12 @@ export default {
             let top = 64
             let bottom = 50
             if (baseparams.isIphoneX) {
-                top = 88 / 100
-                bottom = 84 / 100
+                top = 88
+                bottom = 84
             }
             let height = (window.screen.height - top - bottom) / 100
-            return `position:absolute;width:${width}rem;top:${top / 100}rem,bottom:${bottom / 100}rem;height:${height}rem`
+            console.log(top , window.screen.height)
+            return `width:${width}rem;height:${height}rem`
         }
     }
 
