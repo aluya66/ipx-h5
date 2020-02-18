@@ -120,7 +120,7 @@ export default {
         },
         getGroupDetail() {
             const params = {
-                groupCode: 'GR4801551916036180' // this.$route.query.groupCode
+                groupCode: this.$route.query.groupCode
             }
             this.$api.groupGoods
                 .getGroupDetail(params)
