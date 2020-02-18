@@ -123,7 +123,6 @@ export default {
             var context = canvas.getContext('2d')
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
-            let self = this
             image.src = imgsrc
             image.style.objectFit = 'contain'
             image.onload = () => {

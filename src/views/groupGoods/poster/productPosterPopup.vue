@@ -118,7 +118,6 @@ export default {
             var image = new Image()
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
-            let self = this
             image.onload = function() {
                 var canvas = document.createElement('canvas')
                 canvas.width = image.width
@@ -189,8 +188,9 @@ export default {
         padding-bottom: 26px;
     }
     .group-name {
+        font-family:PingFangSC-Medium,PingFang SC;
         font-size:16px;
-        font-weight:600;
+        font-weight:500;
         color:@color-c1;
         line-height:22px;
         margin: 0px 10px 0;
@@ -198,10 +198,10 @@ export default {
     .group-code {
         height:16px;
         font-size:12px;
-        font-weight:500;
+        font-weight:400;
         color:@color-c3;
         line-height:16px;
-        margin: 12px 10px 0;
+        margin: 10px 10px 0;
     }
     .product-price {
         height:30px;
@@ -209,7 +209,7 @@ export default {
         font-weight:600;
         color:rgba(244,31,31,1);
         line-height:20px;
-        margin: 4px 10px 0;
+        margin: 2px 10px 0;
         &::before {
             content: '¥';
             width: 20px;
@@ -220,9 +220,10 @@ export default {
         }
     }
     .hot-line {
+        font-family:PingFangSC-Medium,PingFang SC;
         height:22px;
         font-size:16px;
-        font-weight:600;
+        font-weight:500;
         color:@color-c1;
         line-height:22px;
         margin: 12px 10px 0px
