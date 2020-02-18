@@ -181,7 +181,6 @@ export default {
             }).catch(() => {
 
             })
-
         }
     },
     activated() {
