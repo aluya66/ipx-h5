@@ -7,7 +7,7 @@
             <title-content title="商品名称">
                 <template slot="content">
                     <div class="group-descContain">
-                        <field :class='["field-common","group-title"]' placeholder="请输入商品名称" clearable v-model="posterData.productName" />
+                        <field :class='["field-common","group-title"]' maxlength="50" placeholder="请输入商品名称" clearable v-model="posterData.productName" />
                     </div>
                 </template>
             </title-content>
@@ -48,7 +48,11 @@
                             <section :class='["flex-common","custom-add"]'>
                                 <p>加价</p>
                                 <p class="price-symbol">¥</p>
-                                <field class="price-input" type="digit" v-model="addPrice" />
+                                <field 
+                                    class="price-input" 
+                                    v-model="addPrice" 
+                                    οnkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"
+                                />
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
                                 <p>海报价格</p>
@@ -104,7 +108,7 @@ export default {
             selectPriceTitle: '自主定价',
             priceMenu: ['自主定价', '建议零售价'],
             customPrice: '',
-            phone: '1111',
+            phone: '',
             isPreview: false,
             isSave: false,
             posterData: {},
@@ -114,7 +118,7 @@ export default {
     },
     computed: {
         posterPrice() {
-            let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0')
+            let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0') || '0'
             return p.toFixed(2)
         }
     },
@@ -156,11 +160,13 @@ export default {
                 productCode: this.$route.query.productCode
             }
             this.$api.poster.getProductPosterInfo(params).then(res => {
-                // let baseParams = utils.getStore('baseParams')
+                let baseParams = utils.getStore('baseParams')
+                this.phone = baseParams.phoneNumber
                 if (res instanceof Object) {
                     this.posterData = res
                     this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
+                    
                 } else {
                     // this.$toast('返回数据错误')    
                 }

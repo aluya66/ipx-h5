@@ -57,6 +57,11 @@ export default {
             isNative: false
         }
     },
+    watch: {
+        selectItems(val) {
+            this.isSelectAll = val.length === this.products.length
+        }
+    },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
@@ -92,15 +97,29 @@ export default {
         },
         handleSelectItem(item) {
             item.select = !item.select
-            this.selectItems.push(item)
+            let index = this.selectItems.indexOf(item)
+            if (index < 0) {
+                this.selectItems.push(item)
+            } else {
+                this.selectItems.splice(index,1)
+            }
+            
         },
         handleSelectAll() {
-            this.selectItems = []
-            this.isSelectAll = !this.isSelectAll
-            this.products.map(item => {
-                item.select = this.isSelectAll
-                this.selectItems.push(item)
-            })
+            if(this.selectItems.length === this.products.length) {
+                this.selectItems = []
+                this.products.map(item => {
+                    item.select = false
+                })
+            } else {
+                this.selectItems = []
+                this.products.map(item => {
+                    item.select = true
+                    this.selectItems.push(item)
+                })
+            }
+            
+            
         },
         getGroupDetail() {
             const params = {
@@ -122,14 +141,17 @@ export default {
                 })
         }
     },
-    activated() {
-        this.selectItems = []
-        this.isSelectAll = false
-        this.selectAllString = ''
+    created() {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
         this.getGroupDetail()
+    },
+    activated() {
+        // this.selectItems = []
+        // this.isSelectAll = false
+        // this.selectAllString = ''
+        
     }
 }
 </script>

@@ -11,6 +11,7 @@
                             :class='["field-common","group-title"]'
                             placeholder="请输入组货名称"
                             clearable
+                            maxlength="50"
                             v-model="posterData.groupTitle" />
                         <div class="descContain">
                              <field :class='["field-common","group-desc"]'
@@ -100,7 +101,7 @@ export default {
             selectPriceTitle: '自主定价',
             priceMenu: ['自主定价', '建议零售价'],
             customPricePercent: '0',
-            phone: '123123',
+            phone: '',
             posterData: {},
             isPreview: false,
             mainImage: '',
@@ -133,6 +134,7 @@ export default {
             this.isPreview = true
             this.isSave = false
             this.posterData.groupDesc = this.groupDesc
+            this.posterData.phone = this.phone
         },
         handleClosePopup() {
             this.isPreview = false
@@ -149,6 +151,7 @@ export default {
                 this.isPreview = true
                 this.isSave = true
                 this.posterData.groupDesc = this.groupDesc
+                this.posterData.phone = this.phone
             }
         },
         handleRequest() {
@@ -158,11 +161,11 @@ export default {
                 productCodes: productCodes
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
-                // let baseParams = utils.getStore('baseParams')
+                let baseParams = utils.getStore('baseParams')
+                this.phone = baseParams.phoneNumber
                 if (res instanceof Object) {
                     this.posterData = res
                     this.posterData.customPricePercent = this.customPricePercent || '0'
-                    this.posterData.phone = '13811111111'
                 }
             }).catch(() => {
 
