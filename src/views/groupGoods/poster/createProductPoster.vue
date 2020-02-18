@@ -63,7 +63,7 @@
                 </template>
             </title-content>
 
-            <title-content title="联系手机(选填)">
+            <title-content title="联系手机" subTitle="(选填)">
                 <template slot="content">
                     <div style="padding:0.12rem 0.16rem">
                         <field :class='["field-common","group-title"]' type="digit" placeholder="请填写联系手机" clearable v-model="phone" />
@@ -181,6 +181,7 @@ export default {
                     this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
                     this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
+                    this.posterData.retailPrice = parseFloat(this.posterData.retailPrice).toFixed(2)
                 } else {
                     // this.$toast('返回数据错误')
                 }
@@ -206,9 +207,8 @@ export default {
         display:none !important;
     }
     .van-field__body {
-        font-family:PingFangSC-Medium,PingFang SC;
         font-size:14px !important;
-        font-weight:600 !important;
+        font-weight:400 !important;
         color: @color-c1;
     }
     .van-field__body textarea{

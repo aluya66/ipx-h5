@@ -202,15 +202,15 @@ export default {
         display:none !important;
     }
     .van-field__body {
-        font-family:PingFangSC-Medium,PingFang SC;
+        
         font-size:14px !important;
-        font-weight:600 !important;
+        font-weight:400 !important;
         color: @color-c1;
     }
     .van-field__body textarea{
-        font-family:PingFangSC-Medium,PingFang SC;
+        
         font-size:14px !important;
-        font-weight:500 !important;
+        font-weight:400 !important;
         color: @color-c1;
     }
 }
