@@ -15,14 +15,14 @@
         <div class="content-header group-desc-cell">
             <img class="group-mainImg" :src="posterData.groupImg" alt="">
             <p class="group-name">{{posterData.groupTitle}}</p>
-            <p class="group-code">{{posterData.groupCode}}</p>
+            <p class="group-code">{{posterData.groupDefNo}}</p>
             <p class="group-desc field-common">
                 {{posterData.groupDesc}}
             </p>
             <div class="group-flag">
                 <section class="group-flag-item" v-for="item in posterData.labelDescs" :key="item">{{item}}</section>
             </div>
-            <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线 {{posterData.phone}}</p>
+            <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线：{{posterData.phone}}</p>
         </div>
 
         <div class="list-contain">
@@ -35,7 +35,7 @@
                     <img :src="item.mainPic" alt="">
                     <div class="product-info">
                         <p>{{item.productName}}</p>
-                        <p>{{item.showDescribeFlag}}</p>
+                        <p>{{item.colorAndSizeDesc}}</p>
                         <p>{{handleCalculatePrice(item)}}</p>
                     </div>
                 </div>
@@ -95,7 +95,8 @@ export default {
     methods: {
         handleCalculatePrice(item) {
             let price = parseFloat(item.retailPrice) * (1 + parseFloat(this.posterData.customPricePercent) / 100)
-            return price.toFixed(2)
+            let p = price.toFixed(2)
+            return p
         },
         handleDown() {
             Toast.loading({
@@ -153,7 +154,6 @@ export default {
                 bottom = 84
             }
             let height = (window.screen.height - top - bottom) / 100
-            console.log(top, window.screen.height)
             return `width:${width}rem;height:${height}rem`
         }
     }

@@ -7,7 +7,7 @@
             <title-content title="商品名称">
                 <template slot="content">
                     <div class="group-descContain">
-                        <field :class='["field-common","group-title"]' placeholder="请输入商品名称" clearable v-model="posterData.productName" />
+                        <field :class='["field-common","group-title"]' maxlength="50" placeholder="请输入商品名称" clearable v-model="posterData.productName" />
                     </div>
                 </template>
             </title-content>
@@ -48,7 +48,11 @@
                             <section :class='["flex-common","custom-add"]'>
                                 <p>加价</p>
                                 <p class="price-symbol">¥</p>
-                                <field class="price-input" type="digit" v-model="addPrice" />
+                                <field
+                                    class="price-input"
+                                    v-model="addPrice"
+                                    οnkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"
+                                />
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
                                 <p>海报价格</p>
@@ -104,7 +108,7 @@ export default {
             selectPriceTitle: '自主定价',
             priceMenu: ['自主定价', '建议零售价'],
             customPrice: '',
-            phone: '1111',
+            phone: '',
             isPreview: false,
             isSave: false,
             posterData: {},
@@ -114,8 +118,13 @@ export default {
     },
     computed: {
         posterPrice() {
-            let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0')
-            return p.toFixed(2)
+            let add = this.addPrice
+            if (this.addPrice === '') {
+                add = '0'
+            }
+            let p = parseFloat(this.posterData.retailPrice) + parseFloat(add || '0')
+            let p2 = p.toFixed(2)
+            return p2
         }
     },
     methods: {
@@ -123,18 +132,22 @@ export default {
             return utils.bottomOffset(offset)
         },
         handleChoosePriceTitle(title) {
-            if (title === '建议零售价') {
-                this.posterData.addPrice = '0'
-            } else {
-                this.posterData.addPrice = this.addPrice
-            }
             this.selectPriceTitle = title
         },
         // 预览海报
         handlePreviewPoster() {
-            this.posterData.phone = this.phone
-            this.isPreview = true
-            this.isSave = false
+            if (this.posterData.productName.length <= 0) {
+                this.$toast('请输入组货名称')
+            } else {
+                this.posterData.phone = this.phone
+                this.isPreview = true
+                this.isSave = false
+                if (this.selectPriceTitle === '建议零售价') {
+                    this.posterData.addPrice = '0'
+                } else {
+                    this.posterData.addPrice = this.addPrice
+                }
+            }
         },
         handleClosePopup() {
             this.isPreview = false
@@ -149,6 +162,11 @@ export default {
                 this.posterData.phone = this.phone
                 this.isPreview = true
                 this.isSave = true
+                if (this.selectPriceTitle === '建议零售价') {
+                    this.posterData.addPrice = '0'
+                } else {
+                    this.posterData.addPrice = this.addPrice
+                }
             }
         },
         handleRequest() {
@@ -156,11 +174,13 @@ export default {
                 productCode: this.$route.query.productCode
             }
             this.$api.poster.getProductPosterInfo(params).then(res => {
-                // let baseParams = utils.getStore('baseParams')
+                let baseParams = utils.getStore('baseParams')
+                this.phone = baseParams.phoneNumber
                 if (res instanceof Object) {
                     this.posterData = res
                     this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
+                    this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
                 } else {
                     // this.$toast('返回数据错误')
                 }
