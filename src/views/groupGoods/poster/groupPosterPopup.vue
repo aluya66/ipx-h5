@@ -95,7 +95,8 @@ export default {
     methods: {
         handleCalculatePrice(item) {
             let price = parseFloat(item.retailPrice) * (1 + parseFloat(this.posterData.customPricePercent) / 100)
-            return price.toFixed(2)
+            let p = price.toFixed(2)
+            return p
         },
         handleDown() {
             Toast.loading({

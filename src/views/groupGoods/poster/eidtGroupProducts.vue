@@ -13,8 +13,8 @@
                         <p>{{selectSkuStr(item)}}</p>
                     </div>
                     <div class="price-contain">
-                        <p class="suggest-price" >{{item.spuRetailPrice}}<span>建议零售价</span></p>
-                        <p class="sale-price">{{item.spuTshPrice}}</p>
+                        <p class="suggest-price" >{{parseFloat(item.spuRetailPrice).toFixed(2)}}<span>建议零售价</span></p>
+                        <p class="sale-price">{{parseFloat(item.spuTshPrice).toFixed(2)}}</p>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,6 @@ export default {
             this.$api.groupGoods
                 .getGroupDetail(params)
                 .then(res => {
-                    console.log(res)
                     this.products = res.groupGoodsSpus.filter(item => item.productShelves !== 0)
                     this.products = this.products.map(item => {
                         return {

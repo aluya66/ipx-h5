@@ -122,7 +122,8 @@ export default {
                 this.addPrice = '0'
             }
             let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0')
-            return p.toFixed(2)
+            let p2 = p.toFixed(2)
+            return p2
         }
     },
     methods: {
@@ -178,7 +179,7 @@ export default {
                     this.posterData = res
                     this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
-                    
+                    this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
                 } else {
                     // this.$toast('返回数据错误')    
                 }
