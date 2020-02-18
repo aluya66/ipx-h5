@@ -101,9 +101,8 @@ export default {
             if (index < 0) {
                 this.selectItems.push(item)
             } else {
-                this.selectItems.splice(index,1)
+                this.selectItems.splice(index, 1)
             }
-            
         },
         handleSelectAll() {
             if (this.selectItems.length === this.products.length) {
@@ -149,7 +148,7 @@ export default {
         // this.selectItems = []
         // this.isSelectAll = false
         // this.selectAllString = ''
-        
+
     }
 }
 </script>

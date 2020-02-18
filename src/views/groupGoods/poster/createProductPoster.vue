@@ -48,9 +48,9 @@
                             <section :class='["flex-common","custom-add"]'>
                                 <p>加价</p>
                                 <p class="price-symbol">¥</p>
-                                <field 
-                                    class="price-input" 
-                                    v-model="addPrice" 
+                                <field
+                                    class="price-input"
+                                    v-model="addPrice"
                                     οnkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"
                                 />
                             </section>
@@ -118,10 +118,11 @@ export default {
     },
     computed: {
         posterPrice() {
+            let add = this.addPrice
             if (this.addPrice === '') {
-                this.addPrice = '0'
+                add = '0'
             }
-            let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0')
+            let p = parseFloat(this.posterData.retailPrice) + parseFloat(add || '0')
             let p2 = p.toFixed(2)
             return p2
         }
@@ -181,7 +182,7 @@ export default {
                     this.posterData.addPrice = '0'
                     this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
                 } else {
-                    // this.$toast('返回数据错误')    
+                    // this.$toast('返回数据错误')
                 }
             }).catch(() => {
                 // this.$toast('请求错误')
