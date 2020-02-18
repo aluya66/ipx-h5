@@ -88,7 +88,6 @@ export default {
                 path: '/poster/editGroupPoster',
                 query: { groupCode: this.$route.query.groupCode }
             })
-
         },
         handleSelectItem(item) {
             item.select = !item.select
