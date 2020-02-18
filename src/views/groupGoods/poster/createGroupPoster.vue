@@ -201,13 +201,11 @@ export default {
         display:none !important;
     }
     .van-field__body {
-        
         font-size:14px !important;
         font-weight:400 !important;
         color: @color-c1;
     }
     .van-field__body textarea{
-        
         font-size:14px !important;
         font-weight:400 !important;
         color: @color-c1;
