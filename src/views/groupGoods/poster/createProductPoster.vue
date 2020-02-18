@@ -1,6 +1,6 @@
 <template>
     <layout-view>
-        <c-header slot="header" :left-arrow="true">
+        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative">
             <div slot="title">生成销售海报</div>
         </c-header>
         <div class="poster-contain" :style="getBottomOffset(49)">
@@ -108,7 +108,8 @@ export default {
             isPreview: false,
             isSave: false,
             posterData: {},
-            addPrice: '0'
+            addPrice: '0',
+            isNative: true
         }
     },
     computed: {
@@ -167,6 +168,9 @@ export default {
         }
     },
     activated() {
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         this.handleRequest()
     }
 }

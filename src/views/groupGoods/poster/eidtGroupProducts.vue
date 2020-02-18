@@ -1,6 +1,6 @@
 <template>
     <layout-view>
-        <c-header slot="header" :left-arrow="true">
+        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative">
             <div slot="title">选择海报商品</div>
         </c-header>
         <div class="product-list" :style="getBottomOffset(49)">
@@ -53,7 +53,8 @@ export default {
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
             selectAllString: '',
-            selectItems: []
+            selectItems: [],
+            isNative: false
         }
     },
     methods: {
@@ -126,6 +127,9 @@ export default {
         this.selectItems = []
         this.isSelectAll = false
         this.selectAllString = ''
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         this.getGroupDetail()
     }
 }
