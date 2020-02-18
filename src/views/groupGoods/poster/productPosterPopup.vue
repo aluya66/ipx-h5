@@ -127,13 +127,18 @@ export default {
                 context.drawImage(image, 0, 0, image.width, image.height)
                 // 得到图片的base64编码数据
                 var url = canvas.toDataURL('image/png')
-                self.imgUrl = url
+                let deleteString = 'data:image/png;base64,'
+                var index = url.indexOf(deleteString)
+                if (index === 0) {
+                    let url2 = url.slice(deleteString.length)
+                    utils.postMessage('save_image', url2)
+                }
                 // var a = document.createElement('a') // 生成一个a元素
                 // var event = new MouseEvent('click') // 创建一个单击事件
                 // a.download = name // 设置图片名称
                 // a.href = url // 将生成的URL设置为a.href属性
                 // a.dispatchEvent(event) // 触发a的单击事件
-                Toast.success('长按图片保存')
+                Toast.clear()
                 // self.handleClose()
             }
             image.src = imgsrc
