@@ -118,7 +118,10 @@ export default {
     },
     computed: {
         posterPrice() {
-            let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0') || '0'
+            if (this.addPrice === '') {
+                this.addPrice = '0'
+            }
+            let p = parseFloat(this.posterData.retailPrice) + parseFloat(this.addPrice || '0')
             return p.toFixed(2)
         }
     },
