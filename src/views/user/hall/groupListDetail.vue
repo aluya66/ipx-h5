@@ -683,6 +683,7 @@ export default {
     }
   }
   .sale_price {
+    margin-bottom: 5px;
     .price {
       font-size: 12px;
       font-weight: 400;
@@ -708,6 +709,7 @@ export default {
   }
   .group_tool_btn {
     display: flex;
+    margin-bottom: 5px;
      .poster {
       width: 96px;
       height: 40px;
@@ -734,38 +736,6 @@ export default {
       margin-left: 20px;
     }
   }
-  // .total-price {
-  //   font-size: 14px;
-  //   font-weight: 400;
-  //   color: @color-c1;
-  //   line-height: 49px;
-  //   .yen {
-  //     font-size: 12px;
-  //     font-weight: 400;
-  //     color: @color-rc;
-  //     font-family: "alibabaRegular";
-  //   }
-  //   .price {
-  //     font-size: 18px;
-  //     font-weight: bold;
-  //     font-family: "alibabaBold";
-  //     color: @color-rc;
-  //     margin-bottom: 16px;
-  //   }
-  // }
-  // > button {
-  //   width: 96px;
-  //   height: 40px;
-  //   background: linear-gradient(
-  //     135deg,
-  //     rgba(85, 122, 244, 1) 0%,
-  //     rgba(114, 79, 255, 1) 100%
-  //   );
-  //   border-radius: 20px;
-  //   font-size: 14px;
-  //   font-weight: 500;
-  //   color: white;
-  //   align-self: center;
-  // }
+
 }
 </style>
