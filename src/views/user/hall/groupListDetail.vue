@@ -52,7 +52,7 @@
             </div>
             <div class="sale_price">
                 <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
-                <span class="tip_title">零售货值</span>
+                <span class="tip_title">建议零售价</span>
             </div>
             <div class="footer-btn">
               <p :class="[item.disabled ? 'disablePrice' : 'price']">
@@ -72,7 +72,7 @@
           </div>
           <div class="sale_price">
             <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-            <span class="tip_title">建议零售价</span>
+            <span class="tip_title">零售货值</span>
           </div>
         </div>
         <div class="group_tool_btn">
@@ -390,6 +390,11 @@ export default {
             })
         },
         addPoster() {
+            let products = this.groupGoodsRecords.filter(item => item.productShelves !== 0)
+            if (products.length === 0) {
+                this.$toast('该组货所有商品已失效，无法生成海报')
+                return
+            }
             this.$router.push({
                 path: '/poster/eidtGroupProducts',
                 query: { groupCode: this.groupDetail.groupCode }
@@ -678,6 +683,7 @@ export default {
     }
   }
   .sale_price {
+    margin-bottom: 5px;
     .price {
       font-size: 12px;
       font-weight: 400;
@@ -703,6 +709,7 @@ export default {
   }
   .group_tool_btn {
     display: flex;
+    margin-bottom: 5px;
      .poster {
       width: 96px;
       height: 40px;
@@ -729,38 +736,6 @@ export default {
       margin-left: 20px;
     }
   }
-  // .total-price {
-  //   font-size: 14px;
-  //   font-weight: 400;
-  //   color: @color-c1;
-  //   line-height: 49px;
-  //   .yen {
-  //     font-size: 12px;
-  //     font-weight: 400;
-  //     color: @color-rc;
-  //     font-family: "alibabaRegular";
-  //   }
-  //   .price {
-  //     font-size: 18px;
-  //     font-weight: bold;
-  //     font-family: "alibabaBold";
-  //     color: @color-rc;
-  //     margin-bottom: 16px;
-  //   }
-  // }
-  // > button {
-  //   width: 96px;
-  //   height: 40px;
-  //   background: linear-gradient(
-  //     135deg,
-  //     rgba(85, 122, 244, 1) 0%,
-  //     rgba(114, 79, 255, 1) 100%
-  //   );
-  //   border-radius: 20px;
-  //   font-size: 14px;
-  //   font-weight: 500;
-  //   color: white;
-  //   align-self: center;
-  // }
+
 }
 </style>

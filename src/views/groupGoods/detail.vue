@@ -134,7 +134,7 @@
               </div>
               <div class="sale_price">
                 <span class="price">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
-                <span class="tip_title">零售货值</span>
+                <span class="tip_title">建议零售价</span>
               </div>
               <div class="price">
                 ¥ <span>{{ cashFormat(item.spuTshPrice) }}</span>
@@ -155,7 +155,7 @@
         </div>
         <div class="sale_price">
           <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-          <span class="tip_title">建议零售价</span>
+          <span class="tip_title">零售货值</span>
         </div>
       </div>
       <div class="group_tool_btn">
@@ -782,6 +782,7 @@ export default {
     }
   }
   .sale_price {
+    margin-bottom: 5px;
     .price {
       font-size: 12px;
       font-weight: 400;
@@ -807,6 +808,7 @@ export default {
   }
   .group_tool_btn {
     display: flex;
+    margin-bottom: 5px;
      .poster {
       width: 96px;
       height: 40px;
