@@ -15,14 +15,14 @@
         <div class="content-header group-desc-cell">
             <img class="group-mainImg" :src="posterData.groupImg" alt="">
             <p class="group-name">{{posterData.groupTitle}}</p>
-            <p class="group-code">{{posterData.groupDefNo}}</p>
+            <p class="group-code">款号:{{posterData.groupDefNo}}</p>
             <p class="group-desc field-common">
                 {{posterData.groupDesc}}
             </p>
-            <div class="group-flag">
+            <div class="group-flag" :class="[(!posterData.phone || posterData.phone.length<=0) ? 'group-paddingBottom' : '']">
                 <section class="group-flag-item" v-for="item in posterData.labelDescs" :key="item">{{item}}</section>
             </div>
-            <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线：{{posterData.phone}}</p>
+            <p class="hot-line" v-show="posterData.phone && posterData.phone.length>0" >抢购热线：{{posterData.phone}}</p>
         </div>
 
         <div class="list-contain">
@@ -35,7 +35,7 @@
                     <img :src="item.mainPic" alt="">
                     <div class="product-info">
                         <p>{{item.productName}}</p>
-                        <p>{{item.colorAndSizeDesc}}</p>
+                        <p>款号:{{item.productAtrNumber}}</p>
                         <p>{{handleCalculatePrice(item)}}</p>
                     </div>
                 </div>
@@ -94,7 +94,7 @@ export default {
     },
     methods: {
         handleCalculatePrice(item) {
-            let price = parseFloat(item.retailPrice) * (1 + parseFloat(this.posterData.customPricePercent) / 100)
+            let price = parseFloat(item.tshPrice) * (1 + parseFloat(this.posterData.customPricePercent) / 100)
             let p = price.toFixed(2)
             return p
         },
@@ -123,7 +123,6 @@ export default {
             var context = canvas.getContext('2d')
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
-            let self = this
             image.src = imgsrc
             image.style.objectFit = 'contain'
             image.onload = () => {
@@ -132,13 +131,19 @@ export default {
                 context.drawImage(image, 0, 0, image.width, image.height)
                 // 得到图片的base64编码数据
                 var url = canvas.toDataURL('image/png')
-                self.imgUrl = url
+                let deleteString = 'data:image/png;base64,'
+                var index = url.indexOf(deleteString)
+                if (index === 0) {
+                    let url2 = url.slice(deleteString.length)
+                    utils.postMessage('save_image', url2)
+                }
+                // self.imgUrl = url
                 // var a = document.createElement('a') // 生成一个a元素
                 // var event = new MouseEvent('click') // 创建一个单击事件
                 // a.download = name // 设置图片名称
                 // a.href = url // 将生成的URL设置为a.href属性
                 // a.dispatchEvent(event) // 触发a的单击事件
-                Toast.success('长按图片保存')
+                Toast.clear()
             }
         },
         handleClose() {
@@ -233,6 +238,9 @@ export default {
         color:@color-c1;
         line-height:20px;
         margin: 12px 16px 0;
+    }
+    .group-paddingBottom {
+        padding-bottom:16px !important;
     }
     .group-flag {
         display: flex;

@@ -14,7 +14,7 @@
         <div v-else class="contain-view" ref="image">
             <div class="header-info">
                 <p class="group-name">{{posterData.productName}}</p>
-                <p class="group-code">{{posterData.productCode}}</p>
+                <p class="group-code">款号：{{posterData.productAtrNumber}}</p>
                 <p class="product-price">{{productRealPrice()}}</p>
                 <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线：{{posterData.phone}}</p>
             </div>
@@ -118,7 +118,6 @@ export default {
             var image = new Image()
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
-            let self = this
             image.onload = function() {
                 var canvas = document.createElement('canvas')
                 canvas.width = image.width
@@ -127,13 +126,18 @@ export default {
                 context.drawImage(image, 0, 0, image.width, image.height)
                 // 得到图片的base64编码数据
                 var url = canvas.toDataURL('image/png')
-                self.imgUrl = url
+                let deleteString = 'data:image/png;base64,'
+                var index = url.indexOf(deleteString)
+                if (index === 0) {
+                    let url2 = url.slice(deleteString.length)
+                    utils.postMessage('save_image', url2)
+                }
                 // var a = document.createElement('a') // 生成一个a元素
                 // var event = new MouseEvent('click') // 创建一个单击事件
                 // a.download = name // 设置图片名称
                 // a.href = url // 将生成的URL设置为a.href属性
                 // a.dispatchEvent(event) // 触发a的单击事件
-                Toast.success('长按图片保存')
+                Toast.clear()
                 // self.handleClose()
             }
             image.src = imgsrc
@@ -184,8 +188,9 @@ export default {
         padding-bottom: 26px;
     }
     .group-name {
+        font-family:PingFangSC-Medium,PingFang SC;
         font-size:16px;
-        font-weight:600;
+        font-weight:500;
         color:@color-c1;
         line-height:22px;
         margin: 0px 10px 0;
@@ -193,10 +198,10 @@ export default {
     .group-code {
         height:16px;
         font-size:12px;
-        font-weight:500;
+        font-weight:400;
         color:@color-c3;
         line-height:16px;
-        margin: 12px 10px 0;
+        margin: 10px 10px 0;
     }
     .product-price {
         height:30px;
@@ -204,7 +209,7 @@ export default {
         font-weight:600;
         color:rgba(244,31,31,1);
         line-height:20px;
-        margin: 4px 10px 0;
+        margin: 2px 10px 0;
         &::before {
             content: '¥';
             width: 20px;
@@ -215,9 +220,10 @@ export default {
         }
     }
     .hot-line {
+        font-family:PingFangSC-Medium,PingFang SC;
         height:22px;
         font-size:16px;
-        font-weight:600;
+        font-weight:500;
         color:@color-c1;
         line-height:22px;
         margin: 12px 10px 0px

@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <fixed-view>
+        <fixed-view class="footer-shadow">
             <template slot="footerContain">
                 <div class="selectContain">
                     <div class="select" @click="handleSelectAll">
@@ -120,7 +120,7 @@ export default {
         },
         getGroupDetail() {
             const params = {
-                groupCode: 'GR4801551916036180' // this.$route.query.groupCode
+                groupCode: this.$route.query.groupCode
             }
             this.$api.groupGoods
                 .getGroupDetail(params)
@@ -154,9 +154,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.selectContain {
+.footer-shadow {
     box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
+}
+.selectContain {
+    // box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+    // border-radius:12px 12px 0px 0px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
