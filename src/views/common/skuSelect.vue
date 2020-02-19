@@ -45,7 +45,7 @@
                       class="space-price"
                       style="font-family: alibabaBold;color: @color-c4 !important;font-weight: bold;font-size: 0.12rem;"
                     >
-                      &yen;{{ cashFormat(skuItem.tshPrice) }}
+                      &yen;{{ cashFormat(skuItem.defaultSkuPrice) }}
                     </p>
                   </div>
                   <div class="flex-right">

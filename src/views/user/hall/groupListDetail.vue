@@ -390,6 +390,11 @@ export default {
             })
         },
         addPoster() {
+            let products = this.groupGoodsRecords.filter(item => item.productShelves !== 0)
+            if (products.length === 0) {
+                this.$toast('该组货所有商品已失效，无法生成海报')
+                return
+            }
             this.$router.push({
                 path: '/poster/eidtGroupProducts',
                 query: { groupCode: this.groupDetail.groupCode }

@@ -782,6 +782,7 @@ export default {
     }
   }
   .sale_price {
+    margin-bottom: 5px;
     .price {
       font-size: 12px;
       font-weight: 400;
@@ -807,6 +808,7 @@ export default {
   }
   .group_tool_btn {
     display: flex;
+    margin-bottom: 5px;
      .poster {
       width: 96px;
       height: 40px;
