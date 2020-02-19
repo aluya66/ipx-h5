@@ -137,7 +137,9 @@ export default {
         // 预览海报
         handlePreviewPoster() {
             if (this.posterData.productName.length <= 0) {
-                this.$toast('请输入组货名称')
+                this.$toast('请输入商品名称')
+            } else if (this.posterData.productName.split(' ').join('').length === 0) {
+                this.$toast('请重新输入商品名称')
             } else {
                 this.posterData.phone = this.phone
                 this.isPreview = true
@@ -157,7 +159,9 @@ export default {
         // 生成海报
         handleCreatePoster() {
             if (this.posterData.productName.length <= 0) {
-                this.$toast('请输入组货名称')
+                this.$toast('请输入商品名称')
+            } else if (this.posterData.productName.split(' ').join('').length === 0) {
+                this.$toast('请重新输入商品名称')
             } else {
                 this.posterData.phone = this.phone
                 this.isPreview = true

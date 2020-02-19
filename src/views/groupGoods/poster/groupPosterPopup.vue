@@ -217,7 +217,6 @@ export default {
         object-fit: contain;
     }
     .group-name {
-        height:22px;
         font-size:16px;
         font-weight:500;
         color:@color-c1;

@@ -128,6 +128,10 @@ export default {
         handlePreviewPoster() {
             if (this.posterData.groupTitle === '') {
                 this.$toast('请输入组货名称')
+            } else if (this.posterData.groupTitle.split(' ').join('').length === 0) {
+                this.$toast('请重新输入组货名称')
+            } else if (this.groupDesc.split(' ').join('').length === 0) {
+                this.$toast('请重新输入组货描述')
             } else if (this.groupDesc === '') {
                 this.$toast('请输入组货描述')
             } else {
@@ -151,6 +155,10 @@ export default {
         handleCreatePoster() {
             if (this.posterData.groupTitle === '') {
                 this.$toast('请输入组货名称')
+            } else if (this.posterData.groupTitle.split(' ').join('').length === 0) {
+                this.$toast('请重新输入组货名称')
+            } else if (this.groupDesc.split(' ').join('').length === 0) {
+                this.$toast('请重新输入组货描述')
             } else if (this.groupDesc === '') {
                 this.$toast('请输入组货描述')
             } else {
@@ -265,6 +273,7 @@ export default {
         margin-top: 12px;
         background:@color-c8;
         overflow: scroll;
+        width: 100%;
         .image-item {
             width: 74px;
             height: 74px;

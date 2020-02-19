@@ -21,6 +21,17 @@ export default {
             let routePath = window.globalVue.$route.path
             window.globalVue.$bus.$emit('tokenCallBack', routePath)
         }
+
+        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        if (!isIos) {
+            window.addEventListener('resize', () => {
+                if (document.activeElement.tagName === 'INPUT') {
+                    window.setTimeout(() => {
+                        document.activeElement.scrollIntoViewIfNeeded()
+                    }, 100)
+                }
+            })
+        }
     },
     methods: {
     // 获取配置参数
@@ -49,7 +60,8 @@ export default {
                 'lat': '100.156161',
                 'lng': '100.156161',
                 'statusBarHeight': 20,
-                'isIphoneX': false
+                'isIphoneX': false,
+                'phoneNumber': '13888888888'
             }
 
             let results = {}
