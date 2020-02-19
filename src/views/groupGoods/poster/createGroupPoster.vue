@@ -294,6 +294,9 @@ export default {
             margin-top: 10px;
         }
     }
+    .product-list::-webkit-scrollbar {
+        display:none
+    }
     .product-list {
         display: flex;
         flex-direction: row;
@@ -304,6 +307,7 @@ export default {
         overflow: scroll;
         width: 100%;
         .image-item {
+            display: block;
             width: 74px;
             height: 74px;
             margin-left: 12px;

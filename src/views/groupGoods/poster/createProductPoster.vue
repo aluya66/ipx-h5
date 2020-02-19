@@ -189,6 +189,7 @@ export default {
                     this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
                     this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
+                    this.posterData.tshPrice = parseFloat(this.posterData.tshPrice).toFixed(2)
                     this.posterData.retailPrice = parseFloat(this.posterData.retailPrice).toFixed(2)
                 } else {
                     // this.$toast('返回数据错误')
@@ -253,6 +254,9 @@ export default {
             margin-top: 10px;
         }
     }
+    .product-list::-webkit-scrollbar {
+        display:none
+    }
     .product-list {
         display: flex;
         flex-direction: row;
@@ -262,6 +266,7 @@ export default {
         background:@color-c8;
         overflow: scroll;
         .image-item {
+            display: block;
             width: 74px;
             height: 74px;
             margin-left: 12px;
