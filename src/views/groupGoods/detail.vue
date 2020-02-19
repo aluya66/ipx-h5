@@ -832,7 +832,7 @@ export default {
       font-weight: bold;
       color: white;
       align-self: center;
-      margin-left: 20px;
+      margin-left: 12px;
     }
   }
 
