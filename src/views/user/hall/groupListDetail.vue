@@ -52,7 +52,7 @@
             </div>
             <div class="sale_price">
                 <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
-                <span class="tip_title">零售货值</span>
+                <span class="tip_title">建议零售价</span>
             </div>
             <div class="footer-btn">
               <p :class="[item.disabled ? 'disablePrice' : 'price']">
@@ -72,7 +72,7 @@
           </div>
           <div class="sale_price">
             <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-            <span class="tip_title">建议零售价</span>
+            <span class="tip_title">零售货值</span>
           </div>
         </div>
         <div class="group_tool_btn">
