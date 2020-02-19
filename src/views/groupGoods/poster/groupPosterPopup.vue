@@ -79,7 +79,8 @@ export default {
             isShow: false,
             products: [1, 2, 3, 4, 5, 6, 7],
             headerImage: require('@/themes/images/app/Collocation@3x.png'),
-            deleteIcon: require('@/themes/images/app/control_delete@3x.png')
+            deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
+            descArr: []
         }
     },
     watch: {
@@ -89,6 +90,16 @@ export default {
         isDownload(val) {
             if (val) {
                 this.handleDown()
+            }
+        },
+        posterData(val) {
+            let desc = val.groupDesc
+            this.descArr = desc.split(/[\n]/g)
+            for (var i = 0; i < this.descArr.length; i++) {
+                if (this.descArr[i] === '') {
+                    this.descArr.splice(i, 1)
+                    i--
+                }
             }
         }
     },

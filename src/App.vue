@@ -21,17 +21,6 @@ export default {
             let routePath = window.globalVue.$route.path
             window.globalVue.$bus.$emit('tokenCallBack', routePath)
         }
-
-        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-        if (!isIos) {
-            window.addEventListener('resize', () => {
-                if (document.activeElement.tagName === 'INPUT') {
-                    window.setTimeout(() => {
-                        document.activeElement.scrollIntoViewIfNeeded()
-                    }, 100)
-                }
-            })
-        }
     },
     methods: {
     // 获取配置参数

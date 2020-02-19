@@ -12,6 +12,7 @@
                             placeholder="请输入组货名称"
                             clearable
                             maxlength="50"
+                            :adjust-position='true'
                             v-model="posterData.groupTitle" />
                         <div class="descContain">
                              <field :class='["field-common","group-desc"]'
@@ -19,6 +20,7 @@
                                 type="textarea"
                                 placeholder="请输入组货描述"
                                 v-model="groupDesc"
+                                :adjust-position='true'
                                 maxlength="200"
                             />
                             <p>{{groupDesc.length}}/200</p>
@@ -48,7 +50,7 @@
                         <div v-else class="price-custom delete-field-line">
                             <p class="price-custom-title">各单品均加价(预览查看)</p>
                             <div class="input-contain">
-                                <field class="price-input" type="digit" v-model="customPricePercent"/>
+                                <field class="price-input" type="digit" :adjust-position='true' v-model="customPricePercent"/>
                                 <p class="price-symbol">%</p>
                             </div>
 
@@ -60,7 +62,14 @@
             <title-content title="联系手机" subTitle="(选填)">
                 <template slot="content">
                     <div style="padding:0.12rem 0.16rem">
-                        <field :class='["field-common","group-title"]' type="digit" placeholder="请填写联系手机" clearable v-model="phone" />
+                        <field
+                            :class='["field-common","group-title"]'
+                            :adjust-position='true'
+                            type="digit"
+                            placeholder="请填写联系手机"
+                            clearable
+                            v-model="phone"
+                        />
                     </div>
                 </template>
             </title-content>
@@ -199,6 +208,22 @@ export default {
             this.isNative = true
         }
         this.handleRequest()
+    },
+    created() {
+        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        if (!isIos) {
+            window.addEventListener('resize', function() {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            document.activeElement.scrollIntoView()
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 0)
+                }
+            })
+        }
     }
 
 }
