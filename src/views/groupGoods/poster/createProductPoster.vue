@@ -32,7 +32,7 @@
                         <div v-if="selectPriceTitle==='建议零售价'" class="price-suggest">
                             <section :class='["flex-common","purchase-contain"]'>
                                 <p>采货价</p>
-                                <p>{{posterData.gapPrice}}</p>
+                                <p>{{posterData.tshPrice}}</p>
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
                                 <p>海报价格</p>
@@ -43,7 +43,7 @@
                         <div v-else class="price-custom">
                             <section :class='["flex-common","purchase-contain"]'>
                                 <p>采货价</p>
-                                <p>{{posterData.gapPrice}}</p>
+                                <p>{{posterData.tshPrice}}</p>
                             </section>
                             <section :class='["flex-common","custom-add"]'>
                                 <p>加价</p>

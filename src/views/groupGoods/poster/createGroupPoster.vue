@@ -95,8 +95,8 @@ export default {
     },
     data() {
         return {
-            groupTitle: '百变街头日常穿搭',
-            groupDesc: '绿色卫衣简约休闲营造随意氛围\n镭射材质别具魅力隐约彰显出街头的个性\n即便只用简单的黑色也能搭配出别样的质感造型',
+            groupTitle: '',
+            groupDesc: '',
             groupImages: [1, 2],
             selectPriceTitle: '自主定价',
             priceMenu: ['自主定价', '建议零售价'],
@@ -176,6 +176,7 @@ export default {
                 this.phone = baseParams.phoneNumber
                 if (res instanceof Object) {
                     this.posterData = res
+                    this.groupDesc = this.posterData.groupDesc
                     this.posterData.customPricePercent = this.customPricePercent || '0'
                 }
             }).catch(() => {

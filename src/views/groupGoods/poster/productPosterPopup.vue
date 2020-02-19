@@ -14,7 +14,7 @@
         <div v-else class="contain-view" ref="image">
             <div class="header-info">
                 <p class="group-name">{{posterData.productName}}</p>
-                <p class="group-code">{{posterData.productCode}}</p>
+                <p class="group-code">款号：{{posterData.productAtrNumber}}</p>
                 <p class="product-price">{{productRealPrice()}}</p>
                 <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线：{{posterData.phone}}</p>
             </div>
