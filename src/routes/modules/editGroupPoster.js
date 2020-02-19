@@ -3,7 +3,8 @@ export default {
     name: 'editGroupPoster',
     meta: {
         title: 'editGroupPoster',
-        keepAlive: true
+        keepAlive: true,
+        requireAuth: true
     },
     component: () => import('@/views/groupGoods/poster/createGroupPoster.vue')
 }
