@@ -146,8 +146,10 @@ export default {
                 this.isSave = false
                 if (this.selectPriceTitle === '建议零售价') {
                     this.posterData.addPrice = '0'
+                    this.posterData.isRetail = true
                 } else {
                     this.posterData.addPrice = this.addPrice
+                    this.posterData.isRetail = false
                 }
             }
         },
@@ -168,8 +170,10 @@ export default {
                 this.isSave = true
                 if (this.selectPriceTitle === '建议零售价') {
                     this.posterData.addPrice = '0'
+                    this.posterData.isRetail = true
                 } else {
                     this.posterData.addPrice = this.addPrice
+                    this.posterData.isRetail = false
                 }
             }
         },

@@ -150,7 +150,9 @@ export default {
                 this.posterData.phone = this.phone
                 if (this.selectPriceTitle === '建议零售价') {
                     this.posterData.customPricePercent = '0'
+                    this.posterData.isRetail = true
                 } else {
+                    this.posterData.isRetail = false
                     this.posterData.customPricePercent = this.customPricePercent || '0'
                 }
             }
@@ -177,7 +179,9 @@ export default {
                 this.posterData.phone = this.phone
                 if (this.selectPriceTitle === '建议零售价') {
                     this.posterData.customPricePercent = '0'
+                    this.posterData.isRetail = true
                 } else {
+                    this.posterData.isRetail = false
                     this.posterData.customPricePercent = this.customPricePercent || '0'
                 }
             }
