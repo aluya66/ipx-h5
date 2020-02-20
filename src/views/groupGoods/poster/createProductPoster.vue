@@ -31,22 +31,22 @@
                         </div>
                         <div v-if="selectPriceTitle==='建议零售价'" class="price-suggest">
                             <section :class='["flex-common","purchase-contain"]'>
-                                <p>采货价</p>
+                                <p style="font-size:0.13rem" >采货价</p>
                                 <p>{{posterData.tshPrice}}</p>
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
-                                <p>海报价格</p>
+                                <p style="font-size:0.13rem">海报价格</p>
                                 <p>{{posterData.retailPrice}}</p>
                                 <p>建议零售价</p>
                             </section>
                         </div>
                         <div v-else class="price-custom">
                             <section :class='["flex-common","purchase-contain"]'>
-                                <p>采货价</p>
+                                <p style="font-size:0.13rem">采货价</p>
                                 <p>{{posterData.tshPrice}}</p>
                             </section>
                             <section style="height:0.40rem"  :class='["flex-common","custom-add"]'>
-                                <p style="line-height:0.4rem">加价</p>
+                                <p style="line-height:0.4rem;font-size:0.13rem">加价</p>
                                 <p class="price-symbol">¥</p>
                                 <field
                                     class="price-input"
@@ -276,7 +276,7 @@ export default {
     height: 100%;
     .field-common {
         background:rgba(249,250,252,1);
-        border-radius:4px;
+        border-radius:8px;
         width: calc(100vw - 32px);
     }
     .group-descContain {
@@ -310,8 +310,8 @@ export default {
         .image-item {
             display: block;
             background:rgba(255,255,255,1);
-            width: calc(28.57vw - 19.43px);
-            height: calc(28.57vw - 19.43px);
+            width: 74px; //calc(28.57vw - 19.43px);
+            height: 74px; // calc(28.57vw - 19.43px);
             margin-left: 12px;
             object-fit: cover;
             border-radius:4px;
@@ -334,10 +334,11 @@ export default {
             }
         }
         .price-select {
+            font-family:PingFangSC-Medium,PingFang SC;
             height: 28px;
             line-height: 26px;
             position: relative;
-            font-size:14px;
+            font-size:12px;
             font-weight:500;
             color: @color-ec3;
             background:#EBEEFF;
@@ -346,11 +347,12 @@ export default {
             padding: 0 16px;
         }
         .price-unSelect {
+            font-family:PingFangSC-Medium,PingFang SC;
             padding: 0 16px;
             height: 28px;
             line-height: 26px;
             position: relative;
-            font-size:14px;
+            font-size:12px;
             font-weight:500;
             color:@color-c1;
             background: @color-c7;
@@ -398,7 +400,7 @@ export default {
                 &:nth-child(2) {
                     font-size:16px;
                     font-weight:400;
-                    color:#F53030;
+                    color:@color-rc;
                     margin-left: 12px;
                     position: relative;
                     font-family: "alibabaBold";

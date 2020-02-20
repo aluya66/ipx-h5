@@ -252,10 +252,10 @@ export default {
         font-size:14px !important;
         font-weight:400 !important;
         color: @color-c1;
-        min-height: 94px;
+        min-height: 84px;
     }
     .van-cell {
-        height: 94px;
+        height: 84px;
         padding: 0 16px !important;
     }
 }
@@ -309,7 +309,7 @@ export default {
     }
     .descContain {
         background:rgba(249,250,252,1);
-        margin-top: 10px;
+        margin-top: 16px;
         padding: 10px 0 0;
         p {
             text-align: right;
@@ -322,19 +322,21 @@ export default {
         }
     }
     .group-descContain {
-        padding:12px 16px 0;
+        padding:16px 16px 0;
         .group-title {
             // margin: 12px 16px 0;
             height: 40px;
             font-size:14px ;
             font-weight:400;
             color:@color-c1;
+            border-radius: 8px;
         }
         .group-desc {
             font-size:14px;
             font-weight:400;
             color:@color-c1;
-            height: 94px;
+            height: 84px;
+            border-radius: 8px;
         }
     }
     .product-list::-webkit-scrollbar {
@@ -352,8 +354,8 @@ export default {
         // width: 100%;
         .image-item {
             display: block;
-            width: calc(28.57vw - 19.43px);
-            height: calc(28.57vw - 19.43px);
+            width: 74px;//calc(28.57vw - 19.43px);
+            height: 74px;//calc(28.57vw - 19.43px);
             margin-left: 12px;
             object-fit: cover;
             border-radius:4px;
@@ -403,7 +405,7 @@ export default {
         }
         .price-suggest {
             margin: 6px 16px;
-            font-size:12px;
+            font-size:13px;
             font-weight:400;
             color:@color-c2;
             line-height:50px;

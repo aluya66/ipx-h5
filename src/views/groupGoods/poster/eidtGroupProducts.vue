@@ -3,7 +3,7 @@
         <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative" :showBorderBottom='true'>
             <div slot="title">选择海报商品</div>
         </c-header>
-        <empty-view class="empty" v-if="products.length <= 0" emptyType="error" emptyDesc="暂无可选商品" />
+        <empty-view class="empty" v-if="isShowEmpty" emptyType="error" emptyDesc="暂无可选商品" />
         <div v-else class="productSelect-list" :style="getBottomOffset(49)">
             <div class="productSelect-item" v-for="item in products" :key="item.productCode" @click="handleSelectItem(item)" >
                 <img :src="item.select ? select_sel : select_def" alt="">
@@ -56,7 +56,8 @@ export default {
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
             selectAllString: '',
             selectItems: [],
-            isNative: false
+            isNative: false,
+            isShowEmpty: false
         }
     },
     watch: {
@@ -64,7 +65,7 @@ export default {
             this.isSelectAll = val.length === this.products.length
         },
         '$route' (to, from) {
-            if (from.name === 'groupListDetail' && to.name === 'eidtGroupProducts') {
+            if ((from.name === 'groupListDetail' || from.name === 'groupDetail') && to.name === 'eidtGroupProducts') {
                 this.selectItems = []
                 this.isSelectAll = false
                 this.getGroupDetail()
@@ -141,6 +142,7 @@ export default {
                             select: false
                         }
                     })
+                    this.isShowEmpty = this.products.length === 0
                 })
                 .catch(err => {
                     console.log(err)
@@ -235,13 +237,19 @@ export default {
             padding: 0px 0;
             justify-content: space-between;
                 .title-contain {
+                    position: relative;
                     p {
                         &:nth-child(1) {
+                            // display: inline-block;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow:ellipsis;
                             height: 22px;
                             font-size:16px;
                             font-weight:500;
                             color:@color-c1;
                             line-height:22px;
+                            width: calc(100vw - 186px);
                             margin: 0 16px 0 12px;
                         }
                         &:nth-child(2) {
@@ -268,6 +276,7 @@ export default {
                             font-family: "alibabaBold";
                             margin-bottom: 4px;
                             span {
+                                font-family:PingFangSC-Medium,PingFang SC;
                                 margin-left: 12px;
                                 font-size:10px;
                                 font-weight:500;
