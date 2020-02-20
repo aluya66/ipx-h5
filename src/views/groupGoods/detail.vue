@@ -741,11 +741,13 @@ export default {
             }
             .tip_title {
               font-size:10px;
-              font-weight:400;
+              font-weight:500;
               color: @color-c3;
               line-height:12px;
               background:rgba(244,245,247,1);
               margin-left: 10px;
+              padding: 2px;
+              border-radius:0px 4px 4px 4px;
             }
           }
           .price {
@@ -809,11 +811,13 @@ export default {
     }
     .tip_title {
       font-size:10px;
-      font-weight:400;
+      font-weight:500;
       color: @color-c3;
       line-height:12px;
       background:rgba(244,245,247,1);
       margin-left: 4px;
+      padding: 2px;
+      border-radius:0px 4px 4px 4px;
     }
   }
   .group_tool_btn {
