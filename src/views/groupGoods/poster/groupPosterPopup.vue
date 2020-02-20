@@ -106,7 +106,7 @@ export default {
     methods: {
         handleCalculatePrice(item) {
             if (this.posterData.isRetail) {
-                let price = parseFloat(item.retailPrice) * (1 + parseFloat(this.posterData.customPricePercent) / 100)
+                let price = parseFloat(item.retailPrice)
                 let p = price.toFixed(2)
                 return p
             } else {

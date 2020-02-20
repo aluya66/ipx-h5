@@ -6,7 +6,7 @@
         <div class="product-list" :style="getBottomOffset(49)">
             <div class="product-item" v-for="item in products" :key="item.productCode" @click="handleSelectItem(item)" >
                 <img :src="item.select ? select_sel : select_def" alt="">
-                <img :src="item.mainPic" alt="">
+                <img :src="item.colorSkuList[0].imgUrl" alt="">
                 <div class="product-info">
                     <div class="title-contain">
                         <p>{{item.productName}}</p>
@@ -125,6 +125,7 @@ export default {
             this.$api.groupGoods
                 .getGroupDetail(params)
                 .then(res => {
+                    console.log(res)
                     this.products = res.groupGoodsSpus.filter(item => item.productShelves !== 0)
                     this.products = this.products.map(item => {
                         return {

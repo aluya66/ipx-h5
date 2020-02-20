@@ -118,12 +118,16 @@ export default {
             var image = new Image()
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
+            let _this = this
             image.onload = function() {
+                let img = _this.$refs['image']
+                var rect = img.getBoundingClientRect()
                 var canvas = document.createElement('canvas')
                 canvas.width = image.width
                 canvas.height = image.height
                 var context = canvas.getContext('2d')
                 context.drawImage(image, 0, 0, image.width, image.height)
+                context.translate(-rect.left, -rect.top)
                 // 得到图片的base64编码数据
                 var url = canvas.toDataURL('image/png')
                 let deleteString = 'data:image/png;base64,'
