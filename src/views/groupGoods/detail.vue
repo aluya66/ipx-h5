@@ -370,10 +370,20 @@ export default {
                 })
         },
         addPoster() {
-            this.$router.push({
-                path: '/poster/eidtGroupProducts',
-                query: { groupCode: this.groupDetail.groupCode }
-            })
+          let token = utils.getStore('token')
+          if (token === 'undefined' || token === '') {
+            window.globalVue.$utils.postMessage('user_authentication', '')
+            return
+          }
+          let products = this.productList.filter(item => item.productShelves !== 0)
+          if (products.length === 0) {
+           this.$toast('该组货所有商品已失效，无法生成海报')
+           return
+          }
+          this.$router.push({
+            path: '/poster/eidtGroupProducts',
+            query: { groupCode: this.groupDetail.groupCode }
+         })
         },
         addHall() {
             window.sa.track('IPX_WEB', {
