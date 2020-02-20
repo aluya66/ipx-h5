@@ -7,7 +7,7 @@
       :pageOutStatus="isNative"
     >
       <div class="title-header" slot="title">
-        编辑组货方案
+        组货方案
       </div>
     </c-header>
     <!-- <div class="line" :style="marginTop"></div> -->
@@ -72,7 +72,7 @@
           </div>
           <div class="sale_price">
             <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-            <span class="tip_title">零售货值</span>
+            <span class="tip_title">建议零售价</span>
           </div>
         </div>
         <div class="group_tool_btn">
@@ -201,10 +201,10 @@ export default {
                 }
                 if (!isEnough && stockAll >= batchNum) {
                     value.unablepay = true
-                    return '不满足起订量，需手动调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
+                    return '不足起订量，需调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
                 }
                 if (isChanged && isEnough) {
-                    return '商品规格变更，请再次确认' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
+                    return '部分商品规格变更' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
                 }
                 return ''
             }
