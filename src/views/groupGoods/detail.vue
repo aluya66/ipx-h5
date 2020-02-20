@@ -155,7 +155,7 @@
         </div>
         <div class="sale_price">
           <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-          <span class="tip_title">零售货值</span>
+          <span class="tip_title">建议零售价</span>
         </div>
       </div>
       <div class="group_tool_btn">
@@ -370,20 +370,20 @@ export default {
                 })
         },
         addPoster() {
-          let token = utils.getStore('token')
-          if (token === 'undefined' || token === '') {
-            window.globalVue.$utils.postMessage('user_authentication', '')
-            return
-          }
-          let products = this.productList.filter(item => item.productShelves !== 0)
-          if (products.length === 0) {
-           this.$toast('该组货所有商品已失效，无法生成海报')
-           return
-          }
-          this.$router.push({
-            path: '/poster/eidtGroupProducts',
-            query: { groupCode: this.groupDetail.groupCode }
-         })
+            let token = utils.getStore('token')
+            if (token === 'undefined' || token === '') {
+                window.globalVue.$utils.postMessage('user_authentication', '')
+                return
+            }
+            let products = this.productList.filter(item => item.productShelves !== 0)
+            if (products.length === 0) {
+                this.$toast('该组货所有商品已失效，无法生成海报')
+                return
+            }
+            this.$router.push({
+                path: '/poster/eidtGroupProducts',
+                query: { groupCode: this.groupDetail.groupCode }
+            })
         },
         addHall() {
             window.sa.track('IPX_WEB', {
