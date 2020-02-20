@@ -241,6 +241,8 @@ export default {
     .van-cell:not(:last-child)::after {
         display:none !important;
     }
+}
+.descContain{
     .van-field__body {
         font-size:14px !important;
         font-weight:400 !important;
