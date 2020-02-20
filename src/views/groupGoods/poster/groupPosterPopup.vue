@@ -5,8 +5,6 @@
         v-model="isShow"
         @close='handleClose'
         :lock-scroll='false'
-        :closeable='!isDownload'
-        :close-icon="deleteIcon"
         :safe-area-inset-bottom='true'
         :safe-area-inset-top='true'
     >
