@@ -313,7 +313,7 @@ export default {
             width: calc(28.57vw - 19.43px);
             height: calc(28.57vw - 19.43px);
             margin-left: 12px;
-            object-fit: contain;
+            object-fit: cover;
             border-radius:4px;
         }
     }
