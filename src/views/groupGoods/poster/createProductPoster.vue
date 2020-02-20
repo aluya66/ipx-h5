@@ -1,6 +1,6 @@
 <template>
     <layout-view>
-        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative">
+        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative" :showBorderBottom='true'>
             <div slot="title">生成销售海报</div>
         </c-header>
         <div class="poster-contain" :style="getBottomOffset(49)">
@@ -45,13 +45,14 @@
                                 <p>采货价</p>
                                 <p>{{posterData.tshPrice}}</p>
                             </section>
-                            <section :class='["flex-common","custom-add"]'>
-                                <p>加价</p>
+                            <section style="height:0.40rem"  :class='["flex-common","custom-add"]'>
+                                <p style="line-height:0.4rem">加价</p>
                                 <p class="price-symbol">¥</p>
                                 <field
                                     class="price-input"
                                     v-model="addPrice"
-                                    onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
+                                    clearable
+                                    @input="clearNoNum"
                                 />
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
@@ -72,7 +73,7 @@
             </title-content>
             <p class="bottom-prompt">海报可以分享至微信好友、朋友圈</p>
         </div>
-        <fixed-view>
+        <fixed-view class="footer-shadow">
             <template slot="footerContain">
                 <div class="footer-view">
                     <section :class='["section-common","button-default"]' @click="handlePreviewPoster">预览海报</section>
@@ -120,6 +121,12 @@ export default {
             isNative: false
         }
     },
+    watch: {
+        addPrice(val) {
+            let p = val.toFixed(2)
+            this.addPrice = p
+        }
+    },
     computed: {
         posterPrice() {
             let add = this.addPrice
@@ -132,6 +139,16 @@ export default {
         }
     },
     methods: {
+        clearNoNum(obj) {
+            obj = obj.replace(/[^\d.]/g, '') // 清除“数字”和“.”以外的字符
+            obj = obj.replace(/\.{2,}/g, '.') // 只保留第一个. 清除多余的
+            obj = obj.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')
+            obj = obj.replace(/^(\\-)*(\d+)\.(\d\d).*$/, '$1$2.$3') // 只能输入两个小数
+            if (obj.indexOf('.') < 0 && obj !== '') { // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+                // obj = parseFloat(obj)
+            }
+            this.addPrice = obj
+        },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
@@ -234,6 +251,10 @@ export default {
 </style>
 
 <style lang='less' scoped>
+.footer-shadow {
+    box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+    border-radius:12px 12px 0px 0px;
+}
 .popup-view {
     position: absolute;
     top: 0;
@@ -282,13 +303,15 @@ export default {
         flex-direction: row;
         justify-content: flex-start;
         padding: 16px 16px 16px 4px;
-        margin-top: 12px;
+        margin: 12px 16px 0;
         background:@color-c8;
+        border-radius:12px;
         overflow: scroll;
         .image-item {
             display: block;
-            width: 74px;
-            height: 74px;
+            background:rgba(255,255,255,1);
+            width: calc(28.57vw - 19.43px);
+            height: calc(28.57vw - 19.43px);
             margin-left: 12px;
             object-fit: contain;
             border-radius:4px;
@@ -339,26 +362,29 @@ export default {
             flex-direction: row;
             align-content: flex-start;
             width: 100%;
-            height: 40px;
+            height: 19px;
             text-align: center;
-            line-height: 40px;
+            line-height: 14px;
+            margin-top: 12px;
         }
         .purchase-contain {
             font-weight:400;
             color:@color-c1;
-            p:last-child {
-                margin-left: 24px;
-                font-family: "alibabaBold";
-                font-size:16px;
-                &::before {
-                        content: '¥ ';
-                        width: 20px;
-                        font-weight:600;
-                        line-height: 40px;
-                        font-size: 12px;
-                        position: relative;
-                        font-family: "alibabaRegular";
-                    }
+            p {
+                &:nth-child(2) {
+                    margin-left: 24px;
+                    font-family: "alibabaBold";
+                    font-size:16px;
+                    &::before {
+                            content: '¥ ';
+                            width: 20px;
+                            font-weight:400;
+                            line-height: 14px;
+                            font-size: 12px;
+                            position: relative;
+                            font-family: "alibabaRegular";
+                        }
+                }
             }
         }
         .posterPrice-contain {
@@ -370,9 +396,9 @@ export default {
                 font-weight:400;
                 color:@color-c1;
                 &:nth-child(2) {
-                    font-size:22px;
-                    font-weight:500;
-                    color:#F41F1F;
+                    font-size:16px;
+                    font-weight:400;
+                    color:#F53030;
                     margin-left: 12px;
                     position: relative;
                     font-family: "alibabaBold";
@@ -380,7 +406,7 @@ export default {
                         content: '¥ ';
                         font-family: "alibabaRegular";
                         width: 20px;
-                        font-weight:600;
+                        font-weight:400;
                         line-height: 40px;
                         font-size: 12px;
                         position: relative;
@@ -389,10 +415,10 @@ export default {
                 &:nth-child(3) {
                     margin-left: 12px;
                     font-size:12px;
-                    font-weight:400;
+                    font-weight:500;
                     color:@color-c3;
                     height: 16px;
-                    line-height: 16px;
+                    line-height: 14px;
                     background:rgba(244,245,247,1);
                     padding: 1px 4px;
                     border-top-left-radius: 0;
@@ -408,16 +434,20 @@ export default {
             font-weight:400;
             color:@color-c1;
             line-height:16px;
-            border: 1px solid #E1E2E6;
+            border:1px solid rgba(244,245,247,1);
             padding-left: 16px;
-            border-radius: 5px;
+            padding-top: 4px;
+            padding-bottom: 14px;
+            border-radius: 8px;
         }
         .price-custom {
             margin: 6px 16px 0;
+            padding-top: 4px;
+            padding-bottom: 14px;
             font-size:12px;
-            border: 1px solid #E1E2E6;
+            border:1px solid rgba(244,245,247,1);
             padding-left: 16px;
-            border-radius: 5px;
+            border-radius: 8px;
             .custom-add {
                 P {
                     &:nth-child(1) {
@@ -435,12 +465,13 @@ export default {
                 .price-input {
                     width: 180px;
                     height: 40px;
-                    background:rgba(249,250,252,1);
                     font-size:16px;
                     font-weight:500;
                     font-family: "alibabaBold";
                     color:rgba(42,43,51,1);
-                    margin-left: 12px;
+                    background:rgba(244,245,247,1);
+                    border-radius:8px;
+                    margin-left: 8px;
                 }
                 .price-symbol {
                     font-size:12px;
@@ -454,7 +485,7 @@ export default {
     }
     .bottom-prompt {
         height: 40px;
-        font-size:10px;
+        font-size:12px;
         font-weight:400;
         color: @color-c3;
         line-height:40px;

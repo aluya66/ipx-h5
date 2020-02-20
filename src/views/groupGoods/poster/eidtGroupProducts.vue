@@ -1,10 +1,11 @@
 <template>
     <layout-view>
-        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative">
+        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative" :showBorderBottom='true'>
             <div slot="title">选择海报商品</div>
         </c-header>
-        <div class="product-list" :style="getBottomOffset(49)">
-            <div class="product-item" v-for="item in products" :key="item.productCode" @click="handleSelectItem(item)" >
+        <empty-view class="empty" v-if="products.length <= 0" emptyType="error" emptyDesc="暂无可选商品" />
+        <div v-else class="productSelect-list" :style="getBottomOffset(49)">
+            <div class="productSelect-item" v-for="item in products" :key="item.productCode" @click="handleSelectItem(item)" >
                 <img :src="item.select ? select_sel : select_def" alt="">
                 <img :src="item.colorSkuList[0].imgUrl" alt="">
                 <div class="product-info">
@@ -19,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <fixed-view class="footer-shadow">
+        <fixed-view class="footer-shadow" v-if="products.length > 0" >
             <template slot="footerContain">
                 <div class="selectContain">
                     <div class="select" @click="handleSelectAll">
@@ -41,10 +42,11 @@
 <script>
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
-
+import EmptyView from '../../error/emptyView.vue'
 export default {
     components: {
-        FixedView
+        FixedView,
+        EmptyView
     },
     data() {
         return {
@@ -60,6 +62,13 @@ export default {
     watch: {
         selectItems(val) {
             this.isSelectAll = val.length === this.products.length
+        },
+        '$route' (to, from) {
+            if (from.name === 'groupListDetail' && to.name === 'eidtGroupProducts') {
+                this.selectItems = []
+                this.isSelectAll = false
+                this.getGroupDetail()
+            }
         }
     },
     methods: {
@@ -125,7 +134,6 @@ export default {
             this.$api.groupGoods
                 .getGroupDetail(params)
                 .then(res => {
-                    console.log(res)
                     this.products = res.groupGoodsSpus.filter(item => item.productShelves !== 0)
                     this.products = this.products.map(item => {
                         return {
@@ -146,8 +154,6 @@ export default {
         this.getGroupDetail()
     },
     activated() {
-        // this.selectItems = []
-        // this.isSelectAll = false
         // this.selectAllString = ''
 
     }
@@ -155,6 +161,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.empty {
+    margin-top: 24px;
+    border-radius: 12px 12px 0px 0px;
+    padding-top: 112px;
+}
+
 .footer-shadow {
     box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
@@ -194,22 +206,24 @@ export default {
       text-align: center;
     }
   }
-.product-list {
+.productSelect-list {
     overflow: auto;
     height: 100%;
-    .product-item {
+    .productSelect-item {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
         padding: 16px 16px;
         img {
-            object-fit: contain;
             &:nth-child(1) {
                 width: 20px;
                 height: 20px;
             }
             &:nth-child(2) {
+                object-fit: contain;
+                border-radius:4px;
+                border: 1px solid @color-c7;
                 width: 106px;
                 height: 106px;
                 margin-left: 16px;
@@ -223,6 +237,7 @@ export default {
                 .title-contain {
                     p {
                         &:nth-child(1) {
+                            height: 22px;
                             font-size:16px;
                             font-weight:500;
                             color:@color-c1;
@@ -254,8 +269,8 @@ export default {
                             margin-bottom: 4px;
                             span {
                                 margin-left: 12px;
-                                font-size:12px;
-                                font-weight:400;
+                                font-size:10px;
+                                font-weight:500;
                                 color:@color-c3;
                                 height: 16px;
                                 line-height: 16px;

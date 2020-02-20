@@ -320,7 +320,7 @@ export default {
                     position: relative;
                     p {
                         &:nth-child(1) {
-                            height:22px;
+                            max-height: 32px;
                             font-size:16px;
                             font-weight:500;
                             color:@color-c1;

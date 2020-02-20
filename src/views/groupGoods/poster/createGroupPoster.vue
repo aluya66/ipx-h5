@@ -1,6 +1,6 @@
 <template>
     <layout-view>
-        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative">
+        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative" :showBorderBottom='true'>
             <div slot="title">生成销售海报</div>
         </c-header>
         <div class="poster-contain" :style="getBottomOffset(49)">
@@ -16,7 +16,6 @@
                             v-model="posterData.groupTitle" />
                         <div class="descContain">
                              <field :class='["field-common","group-desc"]'
-                                autosize
                                 type="textarea"
                                 placeholder="请输入组货描述"
                                 v-model="groupDesc"
@@ -75,7 +74,7 @@
             </title-content>
             <p class="bottom-prompt">海报可以分享至微信好友、朋友圈</p>
         </div>
-        <fixed-view>
+        <fixed-view class="footer-shadow">
             <template slot="footerContain">
                 <div class="footer-view">
                     <section :class='["section-common","button-default"]' @click="handlePreviewPoster">预览海报</section>
@@ -251,8 +250,29 @@ export default {
         font-size:14px !important;
         font-weight:400 !important;
         color: @color-c1;
+        min-height: 94px;
+    }
+    .van-cell {
+        height: 94px;
+        padding: 0 16px !important;
     }
 }
+// .input-contain {
+//     .van-field__body input{
+//         font-size:14px !important;
+//         font-weight:400 !important;
+//         color: @color-c1;
+//         min-height: 24px !important;
+//     }
+//     .van-field__body {
+//         height: 24px !important;
+//     }
+//     .van-cell {
+//         height: 32px !important;
+//         line-height: 32px !important;
+//         padding: 4px 16px !important;
+//     }
+// }
 .delete-field-line {
     .van-cell:not(:last-child)::after {
         display:none !important;
@@ -287,14 +307,15 @@ export default {
     }
     .descContain {
         background:rgba(249,250,252,1);
-        padding-bottom: 10px;
+        margin-top: 10px;
+        padding: 10px 0 0;
         p {
             text-align: right;
-            height:16px;
+            height:34px;
             font-size:12px;
             font-weight:400;
             color:rgba(178,181,193,1);
-            line-height:16px;
+            line-height:34px;
             margin-right: 16px;
         }
     }
@@ -311,7 +332,7 @@ export default {
             font-size:14px;
             font-weight:400;
             color:@color-c1;
-            margin-top: 10px;
+            height: 94px;
         }
     }
     .product-list::-webkit-scrollbar {
@@ -322,14 +343,15 @@ export default {
         flex-direction: row;
         align-content: flex-start;
         padding: 16px 16px 16px 4px;
-        margin-top: 12px;
+        margin: 12px 16px 0;
         background:@color-c8;
+        border-radius:12px;
         overflow: scroll;
-        width: 100%;
+        // width: 100%;
         .image-item {
             display: block;
-            width: 74px;
-            height: 74px;
+            width: calc(28.57vw - 19.43px);
+            height: calc(28.57vw - 19.43px);
             margin-left: 12px;
             object-fit: contain;
             border-radius:4px;
@@ -352,10 +374,11 @@ export default {
             }
         }
         .price-select {
+            font-family:PingFangSC-Medium,PingFang SC;
             height: 28px;
             line-height: 26px;
             position: relative;
-            font-size:14px;
+            font-size:12px;
             font-weight:500;
             color: @color-ec3;
             background:#EBEEFF;
@@ -364,11 +387,12 @@ export default {
             padding: 0 16px;
         }
         .price-unSelect {
+            font-family:PingFangSC-Medium,PingFang SC;
             padding: 0 16px;
             height: 28px;
             line-height: 26px;
             position: relative;
-            font-size:14px;
+            font-size:12px;
             font-weight:500;
             color:@color-c1;
             background: @color-c7;
@@ -382,7 +406,7 @@ export default {
             color:@color-c2;
             line-height:50px;
             height: 50px;
-            border: 1px solid #E1E2E6;
+            border:1px solid rgba(244,245,247,1);
             padding-left: 16px;
             border-radius: 5px;
         }
@@ -390,7 +414,7 @@ export default {
             display: flex;
             flex-direction: row;
             align-content: flex-start;
-            border: 1px solid #E1E2E6;
+            border:1px solid rgba(244,245,247,1);
             border-radius: 5px;
             height: 60px;
             align-items: center;
@@ -398,12 +422,14 @@ export default {
             padding-left: 16px;
             .price-custom-title {
                 line-height: 16px;
-                font-size:12px;
+                font-size:13px;
                 font-weight:400;
                 color:@color-c2;
                 line-height: 40px;
             }
             .input-contain {
+                flex: 1;
+                margin-right: 16px;
                 background:rgba(249,250,252,1);
                 border-radius: 5px;
                 display: flex;
@@ -421,7 +447,7 @@ export default {
                 }
             }
             .price-input {
-                width: 68px;
+                width: 90%;
                 height: 40px;
                 background:rgba(249,250,252,1);
                 font-size:14px;
@@ -440,12 +466,16 @@ export default {
     }
     .bottom-prompt {
         height: 40px;
-        font-size:10px;
+        font-size:12px;
         font-weight:400;
         color: @color-c3;
         line-height:40px;
         text-align: center;
     }
+}
+.footer-shadow {
+    box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+    border-radius:12px 12px 0px 0px;
 }
 .footer-view {
         margin: 5px 24px 0;
