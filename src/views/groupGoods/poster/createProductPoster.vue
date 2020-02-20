@@ -51,7 +51,7 @@
                                 <field
                                     class="price-input"
                                     v-model="addPrice"
-                                    οnkeyup="this.value=this.value.replace(/[^\-?\d.]/g,'')"
+                                    onKeyPress="if (event.keyCode!=46 && event.keyCode!=45 && event.keyCode<48 || event.keyCode>57)) event.returnValue=false"
                                 />
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
