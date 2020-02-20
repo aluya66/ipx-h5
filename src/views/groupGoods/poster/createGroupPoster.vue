@@ -84,7 +84,10 @@
             </template>
         </fixed-view>
 
-        <popup-view ref="imageView" :isDownload='isSave' :isShowPopup="isPreview" :posterData="posterData" @close='handleClosePopup'/>
+        <div class="popup-view" v-show="isPreview" >
+            <img :src="deleteIcon" alt="" @click="handleClosePopup" >
+            <popup-view ref="imageView" :isDownload='isSave' :isShowPopup="isPreview" :posterData="posterData" @close='handleClosePopup'/>
+        </div>
     </layout-view>
 </template>
 
@@ -104,6 +107,7 @@ export default {
     },
     data() {
         return {
+            deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
             groupTitle: '',
             groupDesc: '',
             groupImages: [1, 2],
@@ -189,7 +193,7 @@ export default {
         handleRequest() {
             let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
             const params = {
-                groupCode: this.$route.query.groupCode,
+                groupCode: 'GR8743045578983000', // this.$route.query.groupCode,
                 productCodes: productCodes
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
@@ -257,6 +261,22 @@ export default {
 </style>
 
 <style lang='less' scoped>
+.popup-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    img {
+        position: absolute;
+        right: 26px;
+        top: 5px;
+        width: 32px;
+        height: 32px;
+        object-fit: fill;
+        z-index: 99999;
+    }
+}
 .poster-contain {
     overflow: auto;
     height: 100%;

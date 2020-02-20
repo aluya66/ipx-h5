@@ -80,7 +80,10 @@
                 </div>
             </template>
         </fixed-view>
-        <popup-view ref="imageView" :isDownload='isSave' :isShowPopup="isPreview" :posterData="posterData" @close='handleClosePopup' />
+        <div class="popup-view" v-show="isPreview" >
+            <img :src="deleteIcon" alt="" @click="handleClosePopup" >
+            <popup-view ref="imageView" :isDownload='isSave' :isShowPopup="isPreview" :posterData="posterData" @close='handleClosePopup' />
+        </div>
     </layout-view>
 </template>
 
@@ -100,10 +103,11 @@ export default {
     },
     data() {
         return {
+            deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
             purchasePrice: '100.00',
             poseterPrice: '200.00',
-            groupTitle: '百变街头日常穿搭',
-            groupDesc: '绿色卫衣简约休闲营造随意氛围\n镭射材质别具魅力隐约彰显出街头的个性\n即便只用简单的黑色也能搭配出别样的质感造型',
+            groupTitle: '',
+            groupDesc: '',
             groupImages: [],
             selectPriceTitle: '自主定价',
             priceMenu: ['自主定价', '建议零售价'],
@@ -230,6 +234,22 @@ export default {
 </style>
 
 <style lang='less' scoped>
+.popup-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    img {
+        position: absolute;
+        right: 26px;
+        top: 5px;
+        width: 32px;
+        height: 32px;
+        object-fit: fill;
+        z-index: 99999;
+    }
+}
 .poster-contain {
     overflow: auto;
     height: 100%;
