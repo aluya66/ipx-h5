@@ -192,7 +192,7 @@ export default {
         handleRequest() {
             let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
             const params = {
-                groupCode: 'GR8743045578983000', // this.$route.query.groupCode,
+                groupCode: this.$route.query.groupCode,
                 productCodes: productCodes
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
