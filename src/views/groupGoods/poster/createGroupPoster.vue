@@ -216,21 +216,27 @@ export default {
         }
         this.handleRequest()
     },
+    destroyed() {
+        window.onresize = null
+    },
     mounted() {
+        console.log('000000------------')
         let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
         if (!isIos) {
+            console.log('is Android------------')
             window.onresize = () => {
-                return (() => {
-                    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                        window.setTimeout(function() {
-                            if ('scrollIntoView' in document.activeElement) {
-                                document.activeElement.scrollIntoView()
-                            } else {
-                                document.activeElement.scrollIntoViewIfNeeded()
-                            }
-                        }, 0)
-                    }
-                })()
+                console.log('onresize ------------')
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                    console.log('input or textarea ------------')
+                    window.setTimeout(function() {
+                        console.log('123++++++++++')
+                        if ('scrollIntoView' in document.activeElement) {
+                            document.activeElement.scrollIntoView()
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 0)
+                }
             }
         }
     }
