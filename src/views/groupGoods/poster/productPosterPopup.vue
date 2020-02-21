@@ -27,8 +27,8 @@
                     </div>
                 </div>
                 <div class="buyer">
-                    <img :src="posterData.designer.avatar" alt="">
-                    <P class="buyer-name">{{posterData.designer.nickname}}</P>
+                    <img :src="posterData.designer && posterData.designer.avatar ? posterData.designer.avatar : '' " alt="">
+                    <P class="buyer-name">{{posterData.designer && posterData.designer.nickname ? posterData.designer.nickname : ''}}</P>
                     <P class="buyer-job">买手</P>
                 </div>
             </div>
