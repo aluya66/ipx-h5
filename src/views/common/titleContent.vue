@@ -1,6 +1,6 @@
 <template>
     <div class="contain-view">
-        <p class="title">{{title}}<span class="subTitle">{{subTitle}}</span></p>
+        <p :style="titleTop" class="title">{{title}}<span class="subTitle">{{subTitle}}</span></p>
         <slot name="content"></slot>
     </div>
 </template>
@@ -18,10 +18,23 @@ export default {
         subTitle: {
             type: String,
             default: ''
+        },
+        titleOffsetTop: {
+            type: String,
+            default: ''
+        }
+    },
+    computed: {
+        titleTop() {
+            if (this.titleOffsetTop.length >= 0) {
+                return 'margin-top:' + parseFloat(this.titleOffsetTop) / 100 + 'rem;'
+            }
+            return ''
         }
     },
     data() {
-
+        return {
+        }
     }
 }
 </script>

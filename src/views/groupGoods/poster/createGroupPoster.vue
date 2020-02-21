@@ -4,7 +4,7 @@
             <div slot="title">生成销售海报</div>
         </c-header>
         <div class="poster-contain" :style="getBottomOffset(49)">
-            <title-content title="组货名称及描述">
+            <title-content title="组货名称及描述" titleOffsetTop='0'>
                 <template slot="content">
                     <div class="group-descContain">
                         <field
@@ -250,6 +250,14 @@ export default {
         display:none !important;
     }
 }
+.group-title {
+    .van-cell {
+        padding: 0 16px;
+    }
+    .van-field__body {
+        height: 100%;
+    }
+}
 .descContain{
     .van-field__body {
         font-size:14px !important;
@@ -312,7 +320,7 @@ export default {
     height: 100%;
     .field-common {
         background:rgba(249,250,252,1);
-        border-radius:4px;
+        border-radius:8px;
         width: calc(100vw - 32px);
     }
     .descContain {
@@ -464,7 +472,7 @@ export default {
                 background:rgba(249,250,252,1);
                 font-size:14px;
                 color:rgba(42,43,51,1);
-                border-radius: 5px;
+                border-radius: 8px;
                 font-weight:bold;
             }
             .price-symbol {
