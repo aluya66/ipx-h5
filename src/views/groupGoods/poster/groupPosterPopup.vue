@@ -325,7 +325,10 @@ export default {
                     position: relative;
                     p {
                         &:nth-child(1) {
-                            max-height: 32px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow:ellipsis;
+                            height: 22px;
                             font-size:16px;
                             font-weight:500;
                             color:@color-c1;
