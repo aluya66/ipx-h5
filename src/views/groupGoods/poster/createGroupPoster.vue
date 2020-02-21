@@ -216,20 +216,22 @@ export default {
         }
         this.handleRequest()
     },
-    created() {
+    mounted() {
         let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
         if (!isIos) {
-            window.addEventListener('resize', function() {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                    window.setTimeout(function() {
-                        if ('scrollIntoView' in document.activeElement) {
-                            document.activeElement.scrollIntoView()
-                        } else {
-                            document.activeElement.scrollIntoViewIfNeeded()
-                        }
-                    }, 0)
-                }
-            })
+            window.onresize = () => {
+                return (() => {
+                    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                        window.setTimeout(function() {
+                            if ('scrollIntoView' in document.activeElement) {
+                                document.activeElement.scrollIntoView()
+                            } else {
+                                document.activeElement.scrollIntoViewIfNeeded()
+                            }
+                        }, 0)
+                    }
+                })()
+            }
         }
     }
 
