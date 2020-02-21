@@ -5,8 +5,6 @@
         v-model="isShow"
         :lock-scroll='false'
         @close='handleClose'
-        :closeable='!isDownload'
-        :close-icon="deleteIcon"
         :safe-area-inset-bottom='true'
         :safe-area-inset-top='true'
     >
@@ -197,6 +195,11 @@ export default {
         color:@color-c1;
         line-height:22px;
         margin: 0px 10px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        max-height: 32px;
+        width: cacl(100vw - 64px);
     }
     .group-code {
         height:16px;

@@ -232,6 +232,11 @@ export default {
         object-fit: contain;
     }
     .group-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        max-height: 32px;
+        width: cacl(100vw - 64px);
         font-size:16px;
         font-weight:500;
         color:@color-c1;
