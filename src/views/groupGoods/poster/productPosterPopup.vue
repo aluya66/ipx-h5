@@ -90,7 +90,12 @@ export default {
     },
     methods: {
         productRealPrice() {
-            let price = parseFloat(this.posterData.retailPrice) + parseFloat(this.posterData.addPrice)
+            let price = 0
+            if (this.posterData.isRetail) {
+                price = parseFloat(this.posterData.retailPrice) + parseFloat(this.posterData.addPrice)
+            } else {
+                price = parseFloat(this.posterData.tshPrice) + parseFloat(this.posterData.addPrice)
+            }
             return price.toFixed(2)
         },
         handleDown() {
@@ -196,11 +201,6 @@ export default {
         line-height:22px;
         margin: 0px 10px 0;
         word-break:break-word;
-        // white-space: pre-wrap;
-        // overflow: hidden;
-        // text-overflow:ellipsis;
-        // max-height: 32px;
-        // width: cacl(100vw - 100px);
     }
     .group-code {
         height:16px;
