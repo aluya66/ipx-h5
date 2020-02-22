@@ -202,6 +202,9 @@ export default {
                     this.posterData = res
                     this.groupDesc = this.posterData.groupDesc
                     this.posterData.customPricePercent = this.customPricePercent || '0'
+                    if (this.posterData.labelDescs && this.posterData.labelDescs.length > 5) {
+                        this.posterData.labelDescs = this.posterData.labelDescs.slice(0, 5)
+                    }
                 }
             }).catch(() => {
 
