@@ -6,8 +6,12 @@
         <empty-view class="empty" v-if="isShowEmpty" emptyType="error" emptyDesc="暂无可选商品" />
         <div v-else class="productSelect-list" :style="getBottomOffset(49)">
             <div class="productSelect-item" v-for="item in products" :key="item.productCode" @click="handleSelectItem(item)" >
-                <img :src="item.select ? select_sel : select_def" alt="">
-                <img :src="item.colorSkuList[0].imgUrl" alt="">
+                <div>
+                    <img class="select-icon" :src="item.select ? select_sel : select_def" alt="">
+                </div>
+                <div>
+                    <img class="product-mainImg" :src="item.colorSkuList[0].imgUrl" alt="">
+                </div>
                 <div class="product-info">
                     <div class="title-contain">
                         <p>{{item.productName}}</p>
@@ -217,19 +221,19 @@ export default {
         justify-content: flex-start;
         align-items: center;
         padding: 16px 16px;
-        img {
-            &:nth-child(1) {
-                width: 20px;
-                height: 20px;
-            }
-            &:nth-child(2) {
-                object-fit: contain;
-                border-radius:4px;
-                border: 1px solid @color-c7;
-                width: 106px;
-                height: 106px;
-                margin-left: 16px;
-            }
+        .select-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            // display: block;
+        }
+        .product-mainImg {
+            margin-left: 16px;
+            object-fit: cover;
+            width: 106px;
+            height: 106px;
+            border-radius:4px;
+            border: 1px solid @color-c7;
         }
         .product-info {
             display: flex;
