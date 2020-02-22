@@ -17,7 +17,7 @@
                 <p class="hot-line" v-if="posterData.phone !== ''" >抢购热线：{{posterData.phone}}</p>
             </div>
 
-            <div class="buyer-contain">
+            <div class="buyer-contain" v-if="posterData.importantDesc.length > 0" >
                 <div class="product-desc">
                     <section></section>
                     <div class="desc-info">
