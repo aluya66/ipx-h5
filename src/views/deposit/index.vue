@@ -4,10 +4,12 @@
             style="z-index:2"
             slot="header"
             class="hall-header"
+            :style="navAlpha"
             :isLight="false"
             :left-arrow="true"
             :pageOutStatus="isNative"
         >
+            <div slot="title" style="color:#000" v-show="headerAlpha === 1" >极速上店</div>
         </c-header>
         <div class="contain-view" :style="getBottomOffset(49)">
             <div class="radius-header" :style="headerTop">
@@ -61,7 +63,8 @@ export default {
             planItems: [1, 2, 4],
             firstImg: require('../../themes/images/app/icon_commodity_display@3x.png'),
             secImg: require('../../themes/images/app/icon_train@3x.png'),
-            thirdImg: require('../../themes/images/app/icon_manage_guide@3x.png')
+            thirdImg: require('../../themes/images/app/icon_manage_guide@3x.png'),
+            headerAlpha: 0
         }
     },
     computed: {
@@ -75,6 +78,9 @@ export default {
             let h = w * 476 / 375
             let top = (h - 52 - navHeight) / 100
             return `margin-top:${top}rem`
+        },
+        navAlpha() {
+            return `background:rgb(255,255,255,${this.headerAlpha});margin-bottom:0`
         }
     },
     methods: {
@@ -84,6 +90,9 @@ export default {
         handleAdjustHeaderBg() {
             let w = window.screen.width
             let h = w * 476 / 375 / 100
+            if (this.headerAlpha > 0) {
+                h = 0
+            }
             return `background-size:100% ${h}rem`
         },
         handleMore() {
@@ -98,7 +107,11 @@ export default {
                 () => {
                     let scrollTop = document.querySelector('.contain-view') && document.querySelector('.contain-view').scrollTop
                     let offsetTop = document.querySelector('.planList-contain') && document.querySelector('.planList-contain').offsetTop
-                    // this.isStickyTop = scrollTop >= offsetTop
+                    if (scrollTop >= offsetTop) {
+                        this.headerAlpha = 1
+                    } else {
+                        this.headerAlpha = 0
+                    }
                     console.log('offsetTop == ', offsetTop)
                     console.log('scrollTop == ', scrollTop)
                 },
