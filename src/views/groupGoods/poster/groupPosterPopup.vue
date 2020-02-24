@@ -8,8 +8,8 @@
         :safe-area-inset-bottom='true'
         :safe-area-inset-top='true'
     >
-        <img v-if="imgUrl !== ''" style="width:100%" :src="imgUrl" alt="">
-        <div v-else class="contain-view" ref="image">
+        <div style="width:0.6rem;height:0.4rem;background:#ff4545" @click="handleDown"></div>
+        <div class="contain-view" ref="image">
         <div class="content-header group-desc-cell">
             <img class="group-mainImg" :src="posterData.groupImg" alt="">
             <p class="group-name">{{posterData.groupTitle}}</p>
@@ -86,14 +86,9 @@ export default {
             this.isShow = val
         },
         isDownload(val) {
-            if (val) {
-                Toast.loading({
-                    message: '生成海报...',
-                    forbidClick: true,
-                    duration: 0
-                })
-                this.handleDown()
-            }
+            // if (val) {
+            //     this.handleDown()
+            // }
         },
         posterData(val) {
             let desc = val.groupDesc
@@ -120,6 +115,11 @@ export default {
         },
         handleDown() {
             let _this = this
+            Toast.loading({
+                message: '生成海报...',
+                forbidClick: true,
+                duration: 0
+            })
             setTimeout(() => {
                 let img = _this.$refs['image']
                 // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
