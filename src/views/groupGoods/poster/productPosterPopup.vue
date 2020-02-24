@@ -115,7 +115,7 @@ export default {
                     _this.photoUrl = canvas.toDataURL()
                     _this.downloadIamge(_this.photoUrl, 'poster')
                 })
-            }, 2000)
+            }, 3000)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
