@@ -67,7 +67,7 @@
             <title-content title="联系手机" subTitle="(选填)">
                 <template slot="content">
                     <div style="padding:0.12rem 0.16rem">
-                        <field :class='["field-common","group-title"]' type="digit" placeholder="请填写联系手机" clearable v-model="phone" />
+                        <field class="phone-input" type="digit" placeholder="请填写联系手机" clearable v-model="phone" />
                     </div>
                 </template>
             </title-content>
@@ -270,6 +270,15 @@ export default {
 </style>
 
 <style lang='less' scoped>
+.phone-input {
+    height: 40px;
+    font-size:14px ;
+    font-weight:500;
+    color:@color-c1;
+    background:rgba(249,250,252,1);
+    border-radius:8px;
+    width: calc(100vw - 32px);
+}
 .footer-shadow {
     box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
