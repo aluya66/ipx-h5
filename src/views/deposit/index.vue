@@ -94,7 +94,8 @@ export default {
         },
         handleScroll() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
-            let offsetTop = document.querySelector('#boxFixed').offsetTop;  // 要滚动到顶部吸附的元素的偏移量
+            console.log(scrollTop)
+            // let offsetTop = document.querySelector('#boxFixed').offsetTop;  // 要滚动到顶部吸附的元素的偏移量
         }
     },
     mounted() {
