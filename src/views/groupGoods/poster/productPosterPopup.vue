@@ -84,7 +84,15 @@ export default {
         },
         isDownload(val) {
             if (val) {
-                this.handleDown()
+                Toast.loading({
+                    message: '生成海报...',
+                    forbidClick: true,
+                    duration: 0
+                })
+                let _this = this
+                setTimeout(() => {
+                    _this.handleDown()
+                }, 3000)
             }
         }
     },
@@ -99,19 +107,11 @@ export default {
             return price.toFixed(2)
         },
         handleDown() {
-            Toast.loading({
-                message: '生成海报...',
-                forbidClick: true,
-                duration: 0
-            })
             let _this = this
             setTimeout(() => {
                 let img = _this.$refs['image']
-                var rect = img.getBoundingClientRect()
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
                 html2canvas(img, {
-                    x: -rect.left,
-                    y: -rect.top,
                     useCORS: true, // 允许图片跨域
                     allowTaint: false,
                     scale: isIos ? 1 : 0.6 // 设置像素比 越大越清晰 但是iOS可能无法渲染
@@ -119,15 +119,12 @@ export default {
                     _this.photoUrl = canvas.toDataURL()
                     _this.downloadIamge(_this.photoUrl, 'poster')
                 })
-            }, 3000)
+            }, 1000)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
             var canvas = document.createElement('canvas')
             var context = canvas.getContext('2d')
-            let img = this.$refs.image
-            var rect = img.getBoundingClientRect() // 获取元素相对于视察的偏移量
-            context.translate(-rect.left, -rect.top)
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
             image.src = imgsrc
