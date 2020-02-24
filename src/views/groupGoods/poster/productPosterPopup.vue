@@ -107,8 +107,11 @@ export default {
             let _this = this
             setTimeout(() => {
                 let img = _this.$refs['image']
+                var rect = img.getBoundingClientRect()
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
                 html2canvas(img, {
+                    x: -rect.left,
+                    y: -rect.top,
                     useCORS: true, // 允许图片跨域
                     allowTaint: false,
                     scale: isIos ? 1 : 0.6 // 设置像素比 越大越清晰 但是iOS可能无法渲染

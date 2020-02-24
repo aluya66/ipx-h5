@@ -122,11 +122,14 @@ export default {
             let _this = this
             setTimeout(() => {
                 let img = _this.$refs.image
+                var rect = img.getBoundingClientRect() // 获取元素相对于视察的偏移量
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
                 html2canvas(img, {
+                    x: -rect.left,
+                    y: -rect.top,
                     useCORS: true,
                     allowTaint: false,
-                    scale: isIos ? 1 : 0.6  // 设置像素比 越大越清晰 但是iOS可能无法渲染
+                    scale: isIos ? 1 : 0.6 // 设置像素比 越大越清晰 但是iOS可能无法渲染
                 }).then(function(canvas) {
                     _this.photoUrl = canvas.toDataURL('image/png')
                     _this.downloadIamge(_this.photoUrl, 'poster.png')
