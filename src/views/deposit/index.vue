@@ -62,7 +62,7 @@ export default {
             firstImg: require('../../themes/images/app/icon_commodity_display@3x.png'),
             secImg: require('../../themes/images/app/icon_train@3x.png'),
             thirdImg: require('../../themes/images/app/icon_manage_guide@3x.png')
-            }
+        }
     },
     computed: {
         headerTop() {
@@ -91,7 +91,14 @@ export default {
         },
         handleBuy() {
 
+        },
+        handleScroll() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
+            let offsetTop = document.querySelector('#boxFixed').offsetTop;  // 要滚动到顶部吸附的元素的偏移量
         }
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll, true)
     }
 }
 </script>
