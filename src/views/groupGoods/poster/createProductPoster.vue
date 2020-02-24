@@ -227,6 +227,25 @@ export default {
             this.isNative = true
         }
         this.handleRequest()
+    },
+    destroyed() {
+        window.onresize = null
+    },
+    mounted() {
+        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        if (!isIos) {
+            window.onresize = () => {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            document.activeElement.scrollIntoView()
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 0)
+                }
+            }
+        }
     }
 }
 </script>
