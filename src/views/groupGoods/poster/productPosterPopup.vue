@@ -121,6 +121,9 @@ export default {
             var image = new Image()
             var canvas = document.createElement('canvas')
             var context = canvas.getContext('2d')
+            let img = this.$refs.image
+            var rect = img.getBoundingClientRect() // 获取元素相对于视察的偏移量
+            context.translate(-rect.left, -rect.top)
             // 解决跨域 Canvas 污染问题
             image.setAttribute('crossOrigin', 'anonymous')
             image.src = imgsrc
