@@ -93,13 +93,21 @@ export default {
 
         },
         handleScroll() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
-            console.log(scrollTop)
-            // let offsetTop = document.querySelector('#boxFixed').offsetTop;  // 要滚动到顶部吸附的元素的偏移量
+            window.addEventListener(
+                'scroll',
+                () => {
+                    let scrollTop = document.querySelector('.contain-view') && document.querySelector('.contain-view').scrollTop
+                    let offsetTop = document.querySelector('.planList-contain') && document.querySelector('.planList-contain').offsetTop
+                    // this.isStickyTop = scrollTop >= offsetTop
+                    console.log('offsetTop == ', offsetTop)
+                    console.log('scrollTop == ', scrollTop)
+                },
+                true
+            )
         }
     },
     mounted() {
-        window.addEventListener('scroll', this.handleScroll, true)
+        this.handleScroll()
     }
 }
 </script>
@@ -122,7 +130,7 @@ export default {
   background: rgba(0, 0, 0, 0);
 }
 .contain-view {
-    overflow: auto;
+    overflow: scroll;
     height: 100%;
 }
 .footer-shadow {
