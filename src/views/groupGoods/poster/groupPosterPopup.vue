@@ -155,6 +155,9 @@ export default {
                 if (index === 0) {
                     let url2 = url.slice(deleteString.length)
                     utils.postMessage('save_image', url2)
+                    Toast.clear()
+                } else {
+                    Toast('保存失败请重试')
                 }
                 // self.imgUrl = url
                 // var a = document.createElement('a') // 生成一个a元素
@@ -162,7 +165,6 @@ export default {
                 // a.download = name // 设置图片名称
                 // a.href = url // 将生成的URL设置为a.href属性
                 // a.dispatchEvent(event) // 触发a的单击事件
-                Toast.clear()
             }
         },
         handleClose() {
