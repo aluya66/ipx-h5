@@ -1,15 +1,6 @@
 <template>
-    <popup
-        class="productPopup-contain"
-        :style='handlePopupSize()'
-        v-model="isShow"
-        :lock-scroll='false'
-        @close='handleClose'
-        :safe-area-inset-bottom='true'
-        :safe-area-inset-top='true'
-    >
-        <img v-if="imgUrl !== ''" style="width:100%" :src="imgUrl" alt="">
-        <div v-else class="contain-view" ref="image">
+    <popup-view class="productPopup-contain" :show="isShow" :safeArea='true' @close='handleClose'>
+        <div class="contain-view" ref="image">
             <div class="header-info">
                 <p class="group-name">{{posterData.productName}}</p>
                 <p class="group-code">款号:{{posterData.productAtrNumber}}</p>
@@ -40,18 +31,19 @@
                 </div>
             </div>
         </div>
-    </popup>
+    </popup-view>
 </template>
 
 <script>
 
-import { Popup, Toast } from 'vant'
+import { Toast } from 'vant'
 import utils from 'utils'
 import html2canvas from 'html2canvas'
+import PopupView from '../../common/popupView.vue'
 
 export default {
     components: {
-        Popup
+        PopupView
     },
     props: {
         isShowPopup: {
@@ -116,17 +108,9 @@ export default {
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
                     _this.photoUrl = canvas.toDataURL()
-                    let deleteString = 'data:image/png;base64,'
-                    var index = _this.photoUrl.indexOf(deleteString)
-                    if (index === 0) {
-                        let url2 = _this.photoUrl.slice(deleteString.length)
-                        utils.postMessage('save_image', url2)
-                        Toast.clear()
-                    } else {
-                        Toast('保存失败请重试')
-                    }
+                    _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
-            }, 5000)
+            }, 3000)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
@@ -136,7 +120,6 @@ export default {
             image.setAttribute('crossOrigin', 'anonymous')
             image.src = imgsrc
             image.style.objectFit = 'contain'
-            // 解决跨域 Canvas 污染问题
             image.onload = function() {
                 canvas.width = image.width
                 canvas.height = image.height

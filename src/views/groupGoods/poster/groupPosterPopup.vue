@@ -1,14 +1,5 @@
 <template>
-    <popup
-        class="popup-contain"
-        :style='handlePopupSize()'
-        v-model="isShow"
-        @close='handleClose'
-        :lock-scroll='false'
-        :safe-area-inset-bottom='true'
-        :safe-area-inset-top='true'
-    >
-        <div style="width:0.6rem;height:0.4rem;background:#ff4545" @click="handleDown"></div>
+    <popup-view class="popup-contain" :show="isShow" :safeArea='true' @close='handleClose'>
         <div class="contain-view" ref="image">
         <div class="content-header group-desc-cell">
             <img class="group-mainImg" :src="posterData.groupImg" alt="">
@@ -40,18 +31,19 @@
             </div>
         </div>
         </div>
-    </popup>
+    </popup-view>
 </template>
 
 <script>
 
-import { Popup, Toast } from 'vant'
+import { Toast } from 'vant'
 import utils from 'utils'
 import html2canvas from 'html2canvas'
+import PopupView from '../../common/popupView.vue'
 
 export default {
     components: {
-        Popup
+        PopupView
     },
     props: {
         isShowPopup: {
@@ -86,9 +78,14 @@ export default {
             this.isShow = val
         },
         isDownload(val) {
-            // if (val) {
-            //     this.handleDown()
-            // }
+            if (val) {
+                Toast.loading({
+                    message: '生成海报...',
+                    forbidClick: true,
+                    duration: 0
+                })
+                this.handleDown()
+            }
         },
         posterData(val) {
             let desc = val.groupDesc
@@ -115,11 +112,6 @@ export default {
         },
         handleDown() {
             let _this = this
-            Toast.loading({
-                message: '生成海报...',
-                forbidClick: true,
-                duration: 0
-            })
             setTimeout(() => {
                 let img = _this.$refs['image']
                 // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
@@ -133,7 +125,7 @@ export default {
                     _this.photoUrl = canvas.toDataURL('image/png')
                     _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
-            }, 5000)
+            }, 3000)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
