@@ -108,19 +108,10 @@ export default {
             setTimeout(() => {
                 let img = _this.$refs['image']
                 // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-                var rect = img.getBoundingClientRect()
-                var width = img.offsetWidth
-                var height = img.offsetHeight
-                var canvas = document.createElement('canvas')
-                canvas.width = width
-                canvas.height = height
-                var context = canvas.getContext('2d')
-                context.translate(-rect.left, -rect.top)
                 html2canvas(img, {
                     useCORS: true, // 允许图片跨域
                     allowTaint: false,
                     scale: 1, // 设置像素比 越大越清晰 但是iOS可能无法渲染
-                    canvas: canvas,
                     taintTest: true,
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
@@ -134,7 +125,6 @@ export default {
                     } else {
                         Toast('保存失败请重试')
                     }
-                    // _this.downloadIamge(_this.photoUrl, 'poster')
                 })
             }, 5000)
         },
