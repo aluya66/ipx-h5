@@ -149,7 +149,7 @@ export default {
                     utils.postMessage('save_image', url2)
                     Toast.clear()
                 } else {
-                    Toast('保存失败请重试')
+                    this.$toast('保存失败请重试')
                 }
                 // var a = document.createElement('a') // 生成一个a元素
                 // var event = new MouseEvent('click') // 创建一个单击事件

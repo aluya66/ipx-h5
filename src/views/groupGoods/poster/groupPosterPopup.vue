@@ -129,17 +129,7 @@ export default {
                     scale: isIos ? 1 : 0.6 // 设置像素比 越大越清晰 但是iOS可能无法渲染
                 }).then(function(canvas) {
                     _this.photoUrl = canvas.toDataURL('image/png')
-                    let deleteString = 'data:image/png;base64,'
-                    var index = _this.photoUrl.indexOf(deleteString)
-                    if (index === 0) {
-                        let url2 = _this.photoUrl.slice(deleteString.length)
-                        utils.postMessage('save_image', url2)
-                        Toast.clear()
-                    } else {
-                        Toast('保存失败请重试')
-                    }
-                       
-                    // _this.downloadIamge(_this.photoUrl, 'poster.png')
+                    _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
             }, 5000)
         },
@@ -164,7 +154,7 @@ export default {
                     utils.postMessage('save_image', url2)
                     Toast.clear()
                 } else {
-                    Toast('保存失败请重试')
+                    this.$toast('保存失败请重试')
                 }
                 // self.imgUrl = url
                 // var a = document.createElement('a') // 生成一个a元素
