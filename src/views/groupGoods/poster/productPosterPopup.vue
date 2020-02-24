@@ -117,7 +117,16 @@ export default {
                     scale: isIos ? 1 : 0.6 // 设置像素比 越大越清晰 但是iOS可能无法渲染
                 }).then(function(canvas) {
                     _this.photoUrl = canvas.toDataURL()
-                    _this.downloadIamge(_this.photoUrl, 'poster')
+                    let deleteString = 'data:image/png;base64,'
+                    var index = _this.photoUrl.indexOf(deleteString)
+                    if (index === 0) {
+                        let url2 = _this.photoUrl.slice(deleteString.length)
+                        utils.postMessage('save_image', url2)
+                        Toast.clear()
+                    } else {
+                        Toast('保存失败请重试')
+                    }
+                    // _this.downloadIamge(_this.photoUrl, 'poster')
                 })
             }, 1000)
         },
