@@ -92,10 +92,7 @@ export default {
                     forbidClick: true,
                     duration: 0
                 })
-                let _this = this
-                setTimeout(() => {
-                    _this.handleDown()
-                }, 3000)
+                this.handleDown()
             }
         },
         posterData(val) {
@@ -144,7 +141,7 @@ export default {
                        
                     // _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
-            }, 1000)
+            }, 5000)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
