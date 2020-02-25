@@ -5,14 +5,14 @@
             方案一
             </section>
             <div class="plan-moneyContain">
-                <p class="plan-money">10000<span>元押金</span></p>
-                <p>=</p>
-                <p class="plan-money">30000<span>元消费额度</span></p>
+                <p class="plan-money">{{data.depositAmount}}<span>元押金</span></p>
+                <p style="padding:0 0.1rem">=</p>
+                <p class="plan-money">{{data.consumeAmount}}<span>元消费额度</span></p>
             </div>
             <div class="plan-info">
-                <p>·40天押金有效期</p>
-                <p>·3次免费全场换货</p>
-                <p>·100%退货退款</p>
+                <p>·{{data.effectiveDays}}天押金有效期</p>
+                <p>·{{data.refundTimes}}次免费全场换货</p>
+                <p>·{{data.refundRate}}%退货退款</p>
             </div>
         </div>
     </div>
@@ -21,6 +21,12 @@
 <script>
 export default {
     props: {
+        data: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
         title: {
             type: String,
             default: ''

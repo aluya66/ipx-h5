@@ -16,7 +16,7 @@
                 <span></span>
             </div>
             <div class="planList-contain">
-                <plan-view v-for="item in planItems" :key="item" ></plan-view>
+                <plan-view v-for="(item, index) in planItems" :key="index" :data="item" ></plan-view>
             </div>
             <div>
                 <p class="pre-view">即将上线  敬请期待</p>
@@ -120,7 +120,9 @@ export default {
         },
         handleRequest() {
             this.$api.deposit.getDepositConfig().then(res => {
-                debugger
+                if (res instanceof Array) {
+                    this.planItems = res
+                }
             }).catch(() => {
 
             })
