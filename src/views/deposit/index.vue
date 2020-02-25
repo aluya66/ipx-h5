@@ -117,7 +117,17 @@ export default {
                 },
                 true
             )
+        },
+        handleRequest() {
+            this.$api.deposit.getDepositConfig().then(res => {
+                debugger
+            }).catch(() => {
+
+            })
         }
+    },
+    activated() {
+        this.handleRequest()
     },
     mounted() {
         this.handleScroll()
