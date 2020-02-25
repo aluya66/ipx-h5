@@ -15,57 +15,57 @@
         </div>
 </template>
 
-<template slot="sku-group">
-<van-tabs swipeable class="sku-group-tabs">
-  <template v-for="(colorSkusItem,
-            colorSkusIndex) in seletedDetailsItem.colorSkuList">
-            <van-tab :key="colorSkusIndex" :name="colorSkusItem.attrColorValue">
-              <div slot="title">
-                {{ colorSkusItem.attrColorValue }}
-                <div
-                  class="icon-info"
-                  v-if="colorSkusItem.seletedColorSkuNum > 0"
-                >
-                  {{
-                    colorSkusItem.seletedColorSkuNum > 99
-                      ? colorSkusItem.seletedColorSkuNum + "+"
-                      : colorSkusItem.seletedColorSkuNum
-                  }}
-                </div>
-              </div>
-              <div class="sku-card">
-                <div
-                  class="sku-card-list"
-                  v-for="(skuItem, skuIndex) in colorSkusItem.skuList"
-                  :key="skuIndex"
-                >
-                  <div class="flex-left">
-                    <p class="spec-name">{{ skuItem.attrSpecValue }}</p>
-                    <p
-                      class="space-price"
-                      style="font-family: alibabaBold;color: @color-c4 !important;font-weight: bold;font-size: 0.12rem;"
-                    >
-                      &yen;{{ cashFormat(skuItem.defaultSkuPrice) }}
-                    </p>
-                  </div>
-                  <div class="flex-right">
-                    <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
-                    <!-- :value="Number(skuItem.entityStock) > 0 ? skuItem.selectedNum : 0" -->
-                    <!-- v-model="skuItem.skuValue" -->
-                    <van-stepper
-                      :min="0"
-                      :max="skuItem.entityStock"
-                      v-model="skuItem.skuValue"
-                      @change="changSelectedNum(colorSkusIndex, skuIndex)"
-                    />
-                    <!-- <span
-                      v-show="skuValueStatus"
-                  >{{ skuItem.skuValue | filterSkuValue(skuItem.selectedNum, skuItem.entityStock) }}</span>-->
-                  </div>
-                </div>
-              </div>
-            </van-tab>
-</template>
+      <template slot="sku-group">
+        <van-tabs swipeable class="sku-group-tabs">
+          <template v-for="(colorSkusItem,
+                    colorSkusIndex) in seletedDetailsItem.colorSkuList">
+                    <van-tab :key="colorSkusIndex" :name="colorSkusItem.attrColorValue">
+                      <div slot="title">
+                        {{ colorSkusItem.attrColorValue }}
+                        <div
+                          class="icon-info"
+                          v-if="colorSkusItem.seletedColorSkuNum > 0"
+                        >
+                          {{
+                            colorSkusItem.seletedColorSkuNum > 99
+                              ? colorSkusItem.seletedColorSkuNum + "+"
+                              : colorSkusItem.seletedColorSkuNum
+                          }}
+                        </div>
+                      </div>
+                      <div class="sku-card">
+                        <div
+                          class="sku-card-list"
+                          v-for="(skuItem, skuIndex) in colorSkusItem.skuList"
+                          :key="skuIndex"
+                        >
+                          <div class="flex-left">
+                            <p class="spec-name">{{ skuItem.attrSpecValue }}</p>
+                            <p
+                              class="space-price"
+                              style="font-family: alibabaBold;color: @color-c4 !important;font-weight: bold;font-size: 0.12rem;"
+                            >
+                              &yen;{{ cashFormat(skuItem.defaultSkuPrice) }}
+                            </p>
+                          </div>
+                          <div class="flex-right">
+                            <div class="sku-num">库存：{{ skuItem.entityStock }}</div>
+                            <!-- :value="Number(skuItem.entityStock) > 0 ? skuItem.selectedNum : 0" -->
+                            <!-- v-model="skuItem.skuValue" -->
+                            <van-stepper
+                              :min="0"
+                              :max="skuItem.entityStock"
+                              v-model="skuItem.skuValue"
+                              @change="changSelectedNum(colorSkusIndex, skuIndex)"
+                            />
+                            <!-- <span
+                              v-show="skuValueStatus"
+                          >{{ skuItem.skuValue | filterSkuValue(skuItem.selectedNum, skuItem.entityStock) }}</span>-->
+                          </div>
+                        </div>
+                      </div>
+                    </van-tab>
+          </template>
         </van-tabs>
         <div
           class="number-tip"
@@ -75,16 +75,16 @@
         </div>
       </template>
 
-<template slot="sku-stepper">
- {{ goodsId }}
-</template>
+      <template slot="sku-stepper">
+      {{ goodsId }}
+      </template>
 
-<template slot="sku-actions">
-<div class="van-sku-actions" :style="getBottomOffset(2)">
-  <van-button square size="large" type="warning" @click="onPointClicked">确定({{ seletedDetailsItem.seletedColorSkuSumNum }})</van-button>
-  <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
-</div>
-</template>
+      <template slot="sku-actions">
+      <div class="van-sku-actions" :style="getBottomOffset(2)">
+        <van-button square size="large" type="warning" @click="onPointClicked">确定({{ seletedDetailsItem.seletedColorSkuSumNum }})</van-button>
+        <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
+      </div>
+      </template>
     </van-sku>
   </div>
 </template>
