@@ -99,11 +99,11 @@ export default {
             })
             setTimeout(() => {
                 let img = _this.$refs['image']
-                // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+                let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
                 html2canvas(img, {
                     useCORS: true, // 允许图片跨域
                     allowTaint: false,
-                    scale: 1, // 设置像素比 越大越清晰 但是iOS可能无法渲染
+                    scale: isIos ? 1 : 0.6, // 设置像素比 越大越清晰 但是iOS可能无法渲染
                     taintTest: true,
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
@@ -135,13 +135,6 @@ export default {
                 } else {
                     this.$toast('保存失败请重试')
                 }
-                // var a = document.createElement('a') // 生成一个a元素
-                // var event = new MouseEvent('click') // 创建一个单击事件
-                // a.download = name // 设置图片名称
-                // a.href = url // 将生成的URL设置为a.href属性
-                // a.dispatchEvent(event) // 触发a的单击事件
-
-                // self.handleClose()
             }
             image.src = imgsrc
         },
