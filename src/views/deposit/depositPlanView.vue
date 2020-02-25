@@ -5,15 +5,21 @@
             方案一
             </section>
             <div class="plan-moneyContain">
-                <p class="plan-money">{{data.depositAmount}}<span>元押金</span></p>
+                <p class="plan-money">{{data.depositAmount}}<span> 元押金</span></p>
                 <p style="padding:0 0.1rem">=</p>
-                <p class="plan-money">{{data.consumeAmount}}<span>元消费额度</span></p>
+                <p class="plan-money">{{data.consumeAmount}}<span> 元消费额度</span></p>
             </div>
             <div class="plan-info">
-                <p>·{{data.effectiveDays}}天押金有效期</p>
-                <p>·{{data.refundTimes}}次免费全场换货</p>
-                <p>·{{data.refundRate}}%退货退款</p>
+                <p>{{data.effectiveDays}}天押金有效期</p>
+                <p>{{data.refundTimes}}次免费全场换货</p>
+                <p>{{data.refundRate}}%退货退款</p>
             </div>
+        </div>
+        <div class="out-side-left" v-show="showConnectIcon">
+            <img :src="connetImg" alt="">
+        </div>
+        <div class="out-side-right" v-show="showConnectIcon">
+            <img :src="connetImg" alt="">
         </div>
     </div>
 </template>
@@ -30,17 +36,45 @@ export default {
         title: {
             type: String,
             default: ''
+        },
+        showConnectIcon: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
         return {
-
+            connetImg: require('@/themes/images/app/icon_connect@3x.png')
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
+.out-side-left {
+    position: absolute;
+    width: 10px;
+    height: 44px;
+    left: 48px;
+    top: -26px;
+    z-index: 999;
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+.out-side-right {
+    position: absolute;
+    width: 10px;
+    height: 44px;
+    right: 48px;
+    top: -26px;
+    z-index: 999;
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
 .plan-shadow {
     box-shadow:0px 3px 20px 0px rgba(33,44,98,0.12);
     background: #fff;
@@ -50,6 +84,7 @@ export default {
 .plan-contain {
     padding: 2px 0px 10px;
     background: #fff;
+    position: relative;
     .plan-header {
         text-align: center;
         height:46px;
@@ -103,7 +138,7 @@ export default {
         margin-top: 10px;
         margin-bottom: 26px;
         p {
-            padding-left: 20px;
+            padding-left: 24px;
             width: 50%;
             height:32px;
             font-size:14px;
@@ -111,6 +146,19 @@ export default {
             font-weight:500;
             color:rgba(88,91,102,1);
             line-height:32px;
+            position: relative;
+            &::before {
+                content: "";
+                width:4px;
+                height:4px;
+                background:rgba(42,43,51,1);
+                border-radius: 2px;
+                position: absolute;
+                display: block;
+                top: 50%;
+                left: 16px;
+                transform: translateY(-50%);
+            }
         }
     }
 }

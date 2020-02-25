@@ -16,7 +16,7 @@
                 <span></span>
             </div>
             <div class="planList-contain">
-                <plan-view v-for="(item, index) in planItems" :key="index" :data="item" ></plan-view>
+                <plan-view v-for="(item, index) in planItems" :key="index" :data="item" :showConnectIcon="index > 0" ></plan-view>
             </div>
             <div>
                 <p class="pre-view">即将上线  敬请期待</p>
@@ -129,6 +129,9 @@ export default {
         }
     },
     activated() {
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         this.handleRequest()
     },
     mounted() {
