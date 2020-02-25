@@ -8,6 +8,7 @@
             :isLight="false"
             :left-arrow="true"
             :pageOutStatus="isNative"
+            :showBorderBottom="headerAlpha === 1"
         >
             <div slot="title" style="color:#000" v-show="headerAlpha === 1" >极速上店</div>
         </c-header>

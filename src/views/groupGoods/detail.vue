@@ -159,10 +159,11 @@
         </div>
       </div>
       <div class="group_tool_btn">
-        <button class="poster" @click="addPoster">生成海报</button>
+        <button class="poster" @click="handleStore">极速上店</button>
         <button class="hall" @click="addHall">加入展厅</button>
       </div>
     </div>
+    <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster">
   </layout-view>
 </template>
 
@@ -182,6 +183,7 @@ export default {
     },
     data() {
         return {
+            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
             backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
             popularNum: '',
             timer: '',
@@ -297,6 +299,19 @@ export default {
         }
     },
     methods: {
+        handlePosterIconBottom() {
+            let baseparams = utils.getStore('baseParams')
+            let btm = 57
+            if (baseparams.isIphoneX) {
+                btm = 91
+            }
+            return `bottom:${btm / 100}rem`
+        },
+        handleStore() {
+            this.$router.push({
+                path: '/deposit'
+            })
+        },
         cashFormat(price) {
             return cash.changeFormat(price)
         },
@@ -510,6 +525,13 @@ export default {
 </style>
 
 <style lang="less" scoped>
+.poster-icon {
+  display: block;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  right: 8px;
+}
 .panel {
   background-color: white;
   height: 100%;

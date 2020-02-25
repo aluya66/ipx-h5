@@ -118,7 +118,7 @@ export default {
         .plan-money {
             height:18px;
             font-size:24px;
-            font-family:ALIBABAFont-Bold,ALIBABAFont;
+            font-family:"alibabaBold";
             font-weight:bold;
             color:@color-c1;
             line-height:18px;
