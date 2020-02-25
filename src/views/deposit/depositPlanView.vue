@@ -2,7 +2,7 @@
     <div class="plan-contain">
         <div class="plan-shadow">
             <section class="plan-header">
-            方案一
+            {{data.remark}}
             </section>
             <div class="plan-moneyContain">
                 <p class="plan-money">{{data.depositAmount}}<span> 元押金</span></p>

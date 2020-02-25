@@ -164,6 +164,7 @@ export default {
 .footer-shadow {
     box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
+    z-index: 99999;
 }
 .footer-view {
     margin: 5px 24px 0;

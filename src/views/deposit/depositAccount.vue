@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     data() {
         return {
@@ -41,13 +42,10 @@ export default {
     },
     methods: {
         handleCall() {
-            window.location.href = 'tel://10086'
+            utils.postMessage('customer_service')
         },
         handlePriceFormat(num) {
-            num = parseFloat(num).toFixed(2)
-            var str = num.toString()
-            var reg = str.indexOf('.') > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
-            let numStr = str.replace(reg, '$1,')
+            let numStr = utils.priceFormat(num)
             return numStr
         },
         handleAdjustHeaderBg() {
