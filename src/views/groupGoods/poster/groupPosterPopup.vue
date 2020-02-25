@@ -79,11 +79,6 @@ export default {
         },
         isDownload(val) {
             if (val) {
-                Toast.loading({
-                    message: '生成海报...',
-                    forbidClick: true,
-                    duration: 0
-                })
                 this.handleDown()
             }
         },
@@ -112,6 +107,11 @@ export default {
         },
         handleDown() {
             let _this = this
+            Toast.loading({
+                message: '生成海报...',
+                forbidClick: true,
+                duration: 0
+            })
             setTimeout(() => {
                 let img = _this.$refs['image']
                 // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false

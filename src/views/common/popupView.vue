@@ -30,7 +30,7 @@ export default {
         return {
             name: 'dialog',
             showSelf: false,
-            zIndex: 9999, // this.getZIndex(),
+            zIndex: 999, // this.getZIndex(),
             bodyOverflow: ''
         }
     },
