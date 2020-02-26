@@ -180,11 +180,11 @@ export default {
         text-align: center;
     }
     .button-default {
-        // .btn-select-default(calc(50vw - 31.5px),40px,false);
         height:40px;
         background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);
         border-radius:20px;
         width: calc(50vw - 31.5px);
+        color: @color-ec
     }
     .button-select {
         .btn-select(calc(50vw - 31.5px),40px,true);
@@ -257,10 +257,11 @@ export default {
         flex-direction: column;
         align-items: center;
         margin: 0 18px;
+        width: calc(33.33vw);
         img {
             display: block;
-            width: calc(33.33vw - 58.8px);
-            height: calc(33.33vw - 58.8px);
+            width: 64px; // calc(33.33vw - 58.8px);
+            height: 64px //calc(33.33vw - 58.8px);
         }
         p {
             height:20px;

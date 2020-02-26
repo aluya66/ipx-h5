@@ -138,7 +138,7 @@ export default {
         margin-top: 10px;
         margin-bottom: 26px;
         p {
-            padding-left: 24px;
+            padding-left: 26px;
             width: 50%;
             height:32px;
             font-size:14px;
@@ -156,7 +156,7 @@ export default {
                 position: absolute;
                 display: block;
                 top: 50%;
-                left: 16px;
+                left: 18px;
                 transform: translateY(-50%);
             }
         }
