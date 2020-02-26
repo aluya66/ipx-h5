@@ -6,7 +6,7 @@
             class="hall-header"
             :isLight="false"
             :left-arrow="true"
-            :pageOutStatus="true"
+            :pageOutStatus="isNative"
         >
             <template slot="left" tag="div">
                 <img class="header-img" :src="backImage" />
@@ -37,6 +37,7 @@ import utils from 'utils'
 export default {
     data() {
         return {
+            isNative: false,
             backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             userData: {}
         }
@@ -84,6 +85,9 @@ export default {
         }
     },
     activated() {
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         this.handleRequest()
     }
 }
