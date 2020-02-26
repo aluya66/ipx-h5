@@ -218,7 +218,7 @@ export default {
             let btm = 57
             if (baseparams.isIphoneX) {
                 btm = 91
-            }  
+            }
             return `bottom:${btm / 100}rem`
         },
         handleStore() {

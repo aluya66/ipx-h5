@@ -16,6 +16,7 @@
         <div class="contain-view">
             <p class="account-title">授信余额(元)</p>
             <p class="account-money">{{handlePriceFormat(userData.availableAmount)}}</p>
+            <p class="account-status">{{userData.status | handleStatus}}</p>
             <div class="account-desc">
                 <section class="account-time">
                     <p>剩余有效期(天)</p>
@@ -40,6 +41,22 @@ export default {
             userData: {}
         }
     },
+    filters: {
+        handleStatus(status) {
+            let statusString = ''
+            switch (status) {
+            case 1: statusString = '已开通'
+                break
+            case 2: statusString = '已冻结'
+                break
+            case 3: statusString = '退款中'
+                break
+            case 4: statusString = '已退款'
+                break
+            }
+            return statusString
+        }
+    },
     methods: {
         handleCall() {
             utils.postMessage('customer_service')
@@ -58,8 +75,9 @@ export default {
         },
         handleRequest() {
             this.$api.deposit.getUserDeposit().then(res => {
-                this.userData = res
-                debugger
+                if (res instanceof Object) {
+                    this.userData = res
+                }
             }).catch(() => {
 
             })
@@ -95,6 +113,7 @@ export default {
     width: calc(100vw - 32px);
     margin: 16px 16px 0;
     padding-bottom: 36px;
+    position: relative;
     .account-title {
         display: block;
         // height:22px;
@@ -117,11 +136,27 @@ export default {
         margin: 8px 16px 0;
         text-align: center
     }
+    .account-status {
+        // height:28px;
+        display: block;
+        background:rgba(255,235,237,1);
+        border-radius:14px;
+        font-size:14px;
+        font-weight:400;
+        color:rgba(245,48,48,1);
+        line-height:28px;
+        padding: 0 20px;
+        position: absolute;
+        left: 50%;
+        top: 153px;
+        transform: translateX(-50%);
+        align-self: center;
+    }
     .account-desc {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        margin: 48px 0 0;
+        margin: 72px 0 0;
         .account-time {
             flex: 1;
             p {
