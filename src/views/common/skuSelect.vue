@@ -65,7 +65,7 @@
                 </div>
               </div>
             </van-tab>
-</template>
+    </template>
         </van-tabs>
         <div
           class="number-tip"
@@ -75,16 +75,16 @@
         </div>
       </template>
 
-<template slot="sku-stepper">
- {{ goodsId }}
-</template>
+      <template slot="sku-stepper">
+        {{ goodsId }}
+      </template>
 
-<template slot="sku-actions">
-<div class="van-sku-actions" :style="getBottomOffset(2)">
-  <van-button square size="large" type="warning" @click="onPointClicked">确定({{ seletedDetailsItem.seletedColorSkuSumNum }})</van-button>
-  <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
-</div>
-</template>
+      <template slot="sku-actions">
+        <div class="van-sku-actions" :style="getBottomOffset(2)">
+        <van-button square size="large" type="warning" @click="onPointClicked">确定({{ seletedDetailsItem.seletedColorSkuSumNum }})</van-button>
+    <!-- <van-button square size="large" type="warning" class="forbidColor" v-else>确定</van-button> -->
+        </div>
+      </template>
     </van-sku>
   </div>
 </template>
