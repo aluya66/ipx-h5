@@ -99,6 +99,8 @@ export default {
 
     .plan-list {
         padding: 20px;
+        overflow: scroll;
+        height: 100%;
     }
 
     .item-shape {
@@ -196,6 +198,5 @@ export default {
 
     .plan-footer {
         color: #2A2B33;
-        bottom: 10px;
     }
 </style>
