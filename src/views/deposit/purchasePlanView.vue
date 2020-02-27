@@ -4,22 +4,24 @@
             <div slot="title">请选择购买方案</div>
         </c-header>
         <div class="plan-list" :style="getBottomOffset(49)">
-            <div :class="['item-shape', selectIndex===key?'item-shape-select':'']" v-for="(item, key) in items" :key="key" v-on:click="selectIndex=key">
+            <div :class="['item-shape', selectIndex===key?'item-shape-select':'']" v-for="(item, key) in plans"
+                 :key="key" v-on:click="selectIndex=key">
                 <div :class="['item-title', selectIndex===key?'item-title-select':'']">
-                    <span class="text-size-18">{{item.planTitle}}：</span><span class="text-size-16">付</span><span class="text-size-24">{{item.deposit}}</span><span
+                    <span class="text-size-18">{{item.remark}}：</span><span class="text-size-16">付</span><span
+                    class="text-size-24">{{item.depositAmount}}</span><span
                     class="text-size-16">元押金</span>
                 </div>
                 <div :class="['item-content', selectIndex===key?'item-content-select':'']">
-                    <p>·{{item.quota}}元消费额度</p>
-                    <p>·{{item.times}}次免费全场换货</p>
-                    <p>·{{item.dateLimit}}天押金有效期</p>
-                    <p>·{{item.percent}}退货退款</p>
+                    <p>{{item.consumeAmount}}元消费额度</p>
+                    <p>{{item.refundTimes}}次免费全场换货</p>
+                    <p>{{item.effectiveDays}}天押金有效期</p>
+                    <p>{{item.refundRate}}%退货退款</p>
                 </div>
             </div>
         </div>
         <fixed-view class="plan-footer">
             <template slot="footerContain">
-                <div class="pay-button">去支付</div>
+                <button class="pay-button" :disabled="!userData || userData.status < 4" v-on:click="goPay()">去支付</button>
             </template>
         </fixed-view>
     </layout-view>
@@ -30,41 +32,15 @@ import utils from 'utils'
 import FixedView from '../common/bottomFixedView.vue'
 
 export default {
-    props: {
-        title: {
-            type: String,
-            default: ''
-        }
-    },
     components: {
         FixedView
     },
     data() {
         return {
             isNative: false,
-            items: [{
-                planTitle: '方案一',
-                deposit: 10000,
-                quota: 3000,
-                times: 3,
-                dateLimit: 40,
-                percent: '100%'
-            }, {
-                planTitle: '方案二',
-                deposit: 20000,
-                quota: 6000,
-                times: 6,
-                dateLimit: 60,
-                percent: '100%'
-            }, {
-                planTitle: '方案三',
-                deposit: 30000,
-                quota: 9000,
-                times: 10,
-                dateLimit: 90,
-                percent: '100%'
-            }],
-            selectIndex: 0
+            plans: [],
+            selectIndex: 0,
+            userData: {}
         }
     },
     methods: {
@@ -75,7 +51,35 @@ export default {
             let w = window.screen.width
             let h = w * 476 / 375 / 100
             return `background-size:100% ${h}rem`
+        },
+        handleRequest() {
+            this.$api.deposit.getDepositConfig().then(res => {
+                if (res instanceof Array) {
+                    this.plans = res
+                }
+            }).catch(() => {
+
+            })
+        },
+        getAccountInfo() {
+            this.$api.deposit.getUserDeposit().then(res => {
+                if (res instanceof Object) {
+                    this.userData = res
+                }
+            }).catch(() => {
+
+            })
+        },
+        goPay() {
+            alert('去支付')
         }
+    },
+    activated() {
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
+        this.handleRequest()
+        this.getAccountInfo()
     }
 }
 </script>
@@ -99,6 +103,7 @@ export default {
 
     .text-size-24 {
         font-size: 24px;
+        font-family: 'alibabaBold';
     }
 
     .text-size-18 {
@@ -132,10 +137,24 @@ export default {
             width: 50%;
             height: 32px;
             font-size: 14px;
-            font-family: PingFangSC-Medium, PingFang SC, serif;
             font-weight: 500;
             color: @color-c2;
             line-height: 32px;
+            position: relative;
+            padding-left: 8px;
+            font-family:PingFangSC-Medium,PingFang SC;
+            &::before {
+                content: "";
+                width:4px;
+                height:4px;
+                background:rgba(42,43,51,1);
+                border-radius: 2px;
+                position: absolute;
+                display: block;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+            }
         }
     }
 
@@ -155,13 +174,16 @@ export default {
     .pay-button {
         height: 50px;
         line-height: 50px;
-        text-align: center;
+        width: calc(100vw - 32px);
         font-weight: bold;
         background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
         border-radius: 25px;
         font-size: 18px;
         margin: 0px 16px;
         color: white;
+    }
+    .pay-button[disabled] {
+        background: @color-c5;
     }
 
     .plan-footer {
