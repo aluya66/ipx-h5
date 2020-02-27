@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { Field } from 'vant'
+import { Field, Dialog } from 'vant'
 import utils from 'utils'
 
 import VueSlider from 'vue-slider-component'
@@ -188,9 +188,12 @@ export default {
                     maxPrice: this.sliderData.value[1]
                 }
                 this.$api.deposit.createIntention(params).then(res => {
-
-                    this.$toast.success('提交成功')
-                    this.$router.go(-1)
+                    Dialog.alert({
+                        message: '您的意向已收到！请耐心等待客服人员来电沟通哦～',
+                        confirmButtonText: '我知道了'
+                    }).then(() => {
+                        this.$router.go(-1)
+                    })
 
                 }).catch(err => {
                     console.log(err)
