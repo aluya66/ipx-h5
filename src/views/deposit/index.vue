@@ -97,10 +97,14 @@ export default {
             return `background-size:100% ${h}rem`
         },
         handleMore() {
-
+            this.$router.push({
+                path: '/intention'
+            })
         },
         handleBuy() {
-
+            this.$router.push({
+                path: '/deposit/purchasePlan'
+            })
         },
         handleScroll() {
             window.addEventListener(
