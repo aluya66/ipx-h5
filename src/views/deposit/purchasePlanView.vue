@@ -3,7 +3,7 @@
         <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative" :showBorderBottom='true'>
             <div slot="title">请选择购买方案</div>
         </c-header>
-        <div class="plan-list" :style="getBottomOffset(49)">
+        <div class="plan-list" :style="getBottomOffset(84)">
             <div :class="['item-shape', selectIndex===key?'item-shape-select':'']" v-for="(item, key) in plans"
                  :key="key" v-on:click="selectIndex=key">
                 <div :class="['item-title', selectIndex===key?'item-title-select':'']">
@@ -19,22 +19,25 @@
                 </div>
             </div>
         </div>
-        <fixed-view class="plan-footer">
+        <!--<fixed-view class="plan-footer">
             <template slot="footerContain">
                 <button class="pay-button" :disabled="!userData || userData.status < 4" v-on:click="goPay()">去支付</button>
             </template>
-        </fixed-view>
+        </fixed-view>-->
+        <div class="plan-footer">
+            <button class="pay-button" :disabled="!userData || userData.status < 4" v-on:click="goPay()">去支付</button>
+        </div>
     </layout-view>
 </template>
 
 <script>
 import utils from 'utils'
-import FixedView from '../common/bottomFixedView.vue'
+// import FixedView from '../common/bottomFixedView.vue'
 
 export default {
-    components: {
-        FixedView
-    },
+    // components: {
+    //     FixedView
+    // },
     data() {
         return {
             isNative: false,
@@ -189,7 +192,7 @@ export default {
         background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
         border-radius: 25px;
         font-size: 18px;
-        margin: 0px 16px;
+        margin: 0px 16px 34px 16px;
         color: white;
     }
     .pay-button[disabled] {
@@ -198,5 +201,9 @@ export default {
 
     .plan-footer {
         color: #2A2B33;
+        position: fixed;
+        background: white;
+        bottom: 0;
+        width: 100%;
     }
 </style>
