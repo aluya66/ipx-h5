@@ -1,10 +1,7 @@
 <template>
    <layout-view>
-   <c-header slot="header" :left-arrow="true">
+   <c-header class="my-header" slot="header" :left-arrow="true">
        <div slot="title">填写意向单</div>
-       <!-- <template slot="right" tag="div">
-           <img class="header-img" :src="headerSearchImg" />
-       </template> -->
    </c-header>
 
     <div class="content">
@@ -20,7 +17,6 @@
             maxlength="20"
             :error="showUserNameError"
             @blur="handleVerifyUserName"
-            @focus="handleHeight"
             />
         </div>
         <div class="info-input">
@@ -34,7 +30,6 @@
                 placeholder="请输入您的电话"
                 :error="showPhoneError"
                 @blur="handleVerifyPhone"
-                @focus="handleHeight"
             />
         </div>
         <div class="info-input">
@@ -56,11 +51,11 @@
         <div class="info-input">
             <span>价格</span>
             <div class="range-price">
-                {{demo.demo8.value[0]}}元 - {{demo.demo8.value[1]===9900 ? "不限" : demo.demo8.value[1]+"元"}}
+                {{sliderData.value[0]}}元 - {{sliderData.value[1]===9900 ? "不限" : sliderData.value[1]+"元"}}
             </div>
         </div>
 
-        <vue-slider ref="slider3" v-bind="demo.demo8" v-model="demo.demo8.value" style="margin-top: 0.1rem; height: 0.04rem;">
+        <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-top: 0.1rem; height: 0.04rem;">
         </vue-slider>
 
     </div>
@@ -91,28 +86,82 @@ export default {
             address: '',
             busiStyle: '',
 
-            demo: {
-                demo8: {
-                    width: '95%',
-                    show: true,
-                    value: [0, 9900],
-                    min: 0,
-                    max: 9900,
-                    interval: 100,
-                    piecewiseLabel: true,
-                    tooltip: 'always',
-                    tooltipDir: [
-                        'bottom',
-                        'top'
-                    ]
+            phoneFormartResult: false,
+            userNameFormartResult: false,
+            showPhoneError: false,
+            showUserNameError: false,
+
+            sliderData: {
+                width: '95%',
+                show: true,
+                value: [0, 9900],
+                min: 0,
+                max: 9900,
+                interval: 100,
+                piecewiseLabel: true,
+                tooltip: 'always',
+                tooltipDir: [
+                    'bottom',
+                    'top'
+                ]
+            }
+
+        }
+    },
+    created() {
+        this.busiStyle = ''
+        utils.setStore('businStyle', '')
+    },
+    activated() {
+        this.busiStyle = utils.getStore('businStyle')
+        console.log(this.busiStyle)
+    },
+    watch: {
+        userPhone (val) {
+            let phoneResult = utils.isPhone(this.userPhone)
+            this.phoneFormartResult = phoneResult
+            if (val.length === 11) {
+                if (!phoneResult) {
+                    this.showPhoneError = true
+                    this.$toast('手机格式有误')
+                } else {
+                    this.showPhoneError = false
                 }
-            },
-            value: 0
+            } else {
+                this.phoneFormartResult = false
+                this.showPhoneError = false
+            }
+        },
+        userName (val) {
+            let reg = /^[a-zA-Z\s\u4e00-\u9fa5]+$/
+            let spacingReg = /^[ ]+$/
+            if (spacingReg.test(val)) {
+                this.userName = ''
+            }
+            let userNameResult = reg.test(val)
+
+            if (!userNameResult) {
+                this.userNameFormartResult = false
+                this.showUserNameError = true
+                // this.$toast('请输入正确的姓名')
+                this.$toast('请输入中英文字符')
+            } else {
+                this.userNameFormartResult = true
+                this.showUserNameError = false
+            }
         }
     },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        handleVerifyPhone () {
+            if (this.userPhone.length < 11) {
+                this.$toast('手机格式有误')
+                this.showPhoneError = true
+            }
+        },
+        handleVerifyUserName () {
         },
         chooseAddress() {
             const params = {
@@ -123,20 +172,39 @@ export default {
                 this.address = adrs
             }
         },
-        chooseStyle() { //选择风格
+        chooseStyle() { // 选择风格
             this.$router.push({
                 path: '/chooseBusiStyle'
             })
         },
-        commitForm() { //提交
+        commitForm() { // 提交
+            if (this.phoneFormartResult & this.userNameFormartResult & this.address !== '' & this.busiStyle !== '') {
+                const params = {
+                    phoneNumber: this.userPhone,
+                    relName: this.userName,
+                    address: this.address,
+                    style: this.busiStyle,
+                    minPrice: this.sliderData.value[0],
+                    maxPrice: this.sliderData.value[1]
+                }
+                this.$api.deposit.createIntention(params).then(res => {
 
+                    this.$toast.success('提交成功')
+                    this.$router.go(-1)
+
+                }).catch(err => {
+                    console.log(err)
+                })
+            } else {
+                this.$toast('请完善信息')
+            }
         },
         refreshSlider (val) {
             this.$nextTick(() => {
                 this.$refs.slider3.refresh()
             })
         }
-   
+
     }
 }
 </script>
@@ -172,7 +240,17 @@ export default {
 </style>
 
 <style lang='less' scoped>
-
+.my-header {
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: @color-c7;
+  }
+}
 .content {
   margin: 16px;
     .info-input {

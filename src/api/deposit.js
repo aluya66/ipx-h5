@@ -19,3 +19,21 @@ export const getDepositConfig = params => Http.fetch(`${context}/v1/deposit/conf
 export const getUserDeposit = params => Http.fetch(`${context}/v1/deposit/account`, params, {
     method: 'get'
 })
+
+/**
+ * 意向单标签配置
+ * @param {*} params params数据对象
+ * @param {Object} mockFile 接口名称对应的mock数据文件
+ */
+export const getIntentionStyle = params => Http.fetch(`${context}/v1/deposit/intention/lables`, params, {
+    method: 'get'
+})
+
+/**
+ * 生成意向单记录
+ * @param {*} params params数据对象
+ * @param {Object} mockFile 接口名称对应的mock数据文件
+ */
+export const createIntention = params => Http.fetch(`${context}/v1/deposit/intention`, params, {
+    method: 'post'
+})
