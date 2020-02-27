@@ -35,9 +35,7 @@ export default {
     },
     methods: {
         handleInput(val) {
-            console.log(val.target.value)
             if (this.formart !== '') {
-                console.log('123')
                 this.inputFormat(val.target.value)
             } else {
                 this.$emit('input', val.target.value)
