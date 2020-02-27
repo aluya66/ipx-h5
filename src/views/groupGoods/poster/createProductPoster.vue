@@ -45,15 +45,20 @@
                                 <p style="font-size:0.13rem">采货价</p>
                                 <p>{{posterData.tshPrice}}</p>
                             </section>
-                            <section style="height:0.40rem"  :class='["flex-common","custom-add"]'>
-                                <p style="line-height:0.4rem;font-size:0.13rem">加价</p>
+                            <section style="height:0.32rem"  :class='["flex-common","custom-add"]'>
+                                <p style="line-height:0.32rem;font-size:0.13rem">加价</p>
                                 <p class="price-symbol">¥</p>
-                                <field
+
+                                <div class="input-contain">
+                                    <input-view v-model='addPrice' formart="digit"/>
+                                </div>
+
+                                <!-- <field
                                     class="price-input"
                                     v-model="addPrice"
                                     clearable
                                     @input="clearNoNum"
-                                />
+                                /> -->
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
                                 <p>海报价格</p>
@@ -94,13 +99,15 @@ import { Field } from 'vant'
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
 import PopupView from './productPosterPopup.vue'
+import InputView from '../../common/inputView.vue'
 
 export default {
     components: {
         TitleContent,
         Field,
         FixedView,
-        PopupView
+        PopupView,
+        InputView
     },
     data() {
         return {
@@ -122,10 +129,10 @@ export default {
         }
     },
     watch: {
-        addPrice(val) {
-            let p = val.toFixed(2)
-            this.addPrice = p
-        }
+        // addPrice(val) {
+        //     let p = val.toFixed(2)
+        //     this.addPrice = p
+        // }
     },
     computed: {
         posterPrice() {
@@ -270,6 +277,7 @@ export default {
 </style>
 
 <style lang='less' scoped>
+
 .footer-shadow {
     box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
@@ -483,22 +491,36 @@ export default {
                         font-family: "alibabaRegular";
                     }
                 }
-                .price-input {
+                .input-contain {
                     width: 180px;
-                    height: 40px;
+                    height: 32px;
+                    background:rgba(244,245,247,1);
+                    position: relative;
+                    margin-left: 8px;
+                    border-radius:8px;
+                }
+                .clear-icon {
+                    position: absolute;
+                    top: 6px;
+                    z-index: 999999;
+                    right: 12px;
+                }
+                .price-input {
+                    outline: 0;
+                    width: 180px;
+                    height: 32px;
                     font-size:16px;
                     font-weight:500;
                     font-family: "alibabaBold";
                     color:rgba(42,43,51,1);
                     background:rgba(244,245,247,1);
                     border-radius:8px;
-                    margin-left: 8px;
                 }
                 .price-symbol {
                     font-size:12px;
                     font-weight:400;
                     color:@color-c1;
-                    line-height:40px;
+                    line-height:32px;
                     margin-left: 12px;
                 }
             }
