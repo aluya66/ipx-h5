@@ -137,6 +137,7 @@ export default {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
+        this.headerAlpha = 0
         this.handleRequest()
     },
     mounted() {
