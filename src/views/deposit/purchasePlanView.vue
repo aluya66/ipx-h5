@@ -71,7 +71,15 @@ export default {
             })
         },
         goPay() {
-            alert('去支付')
+            const item = this.plans[this.selectIndex]
+            const params = {
+                jumpUrl: 'depositPayWay://',
+                depositConfigId: item.depositConfigId === undefined ? '' : item.depositConfigId + '', // 押金配置id
+                depositAmount: item.depositAmount + '', // 押金总额
+                consumeAmount: item.consumeAmount + '' // 消费额度
+            }
+            debugger
+            utils.postMessage('', params)
         }
     },
     activated() {

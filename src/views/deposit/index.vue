@@ -102,7 +102,9 @@ export default {
             })
         },
         handleBuy() {
-
+            this.$router.push({
+                path: '/deposit/purchasePlan'
+            })
         },
         handleScroll() {
             window.addEventListener(
