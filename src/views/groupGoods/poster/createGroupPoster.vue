@@ -49,7 +49,7 @@
                         <div v-else class="price-custom delete-field-line">
                             <p class="price-custom-title">各单品均加价(预览查看)</p>
                             <div class="input-contain">
-                                <field class="price-input" type="digit" :adjust-position='true' v-model="customPricePercent"/>
+                                <input-view class="price-input" v-model="customPricePercent" formart="number" :hiddenClear="true" />
                                 <p class="price-symbol">%</p>
                             </div>
 
@@ -96,12 +96,13 @@ import { Field } from 'vant'
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
 import PopupView from './groupPosterPopup'
-
+import InputView from '../../common/inputView.vue'
 export default {
     components: {
         TitleContent,
         Field,
         FixedView,
+        InputView,
         PopupView
     },
     data() {
@@ -123,10 +124,12 @@ export default {
     },
     watch: {
         customPricePercent(val) {
-            this.customPricePercent = val
+            console.log(val)
             if (parseInt(val) > 999) {
-                this.customPricePercent = '999'
+                val = '999'
             }
+            this.customPricePercent = val
+            console.log('customPricePercent', this.customPricePercent)
         }
     },
     methods: {
@@ -443,10 +446,11 @@ export default {
                 font-size:13px;
                 font-weight:400;
                 color:@color-c2;
-                line-height: 40px;
+                line-height: 32px;
+                // flex: 1 0
             }
             .input-contain {
-                flex: 1;
+                flex: 1 1;
                 margin-right: 16px;
                 background:rgba(249,250,252,1);
                 border-radius: 5px;
@@ -466,7 +470,9 @@ export default {
             }
             .price-input {
                 width: 90%;
-                height: 40px;
+                margin-left: 0px;
+                margin-right: 8px;
+                height: 32px;
                 background:rgba(249,250,252,1);
                 font-size:14px;
                 color:rgba(42,43,51,1);
@@ -477,7 +483,7 @@ export default {
                 font-size:12px;
                 font-weight:400;
                 color:@color-c1;
-                line-height:40px;
+                line-height:32px;
                 margin-left: 4px;
             }
         }

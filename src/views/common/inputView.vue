@@ -1,6 +1,6 @@
 <template>
     <div class="input-contain">
-        <input class="price-input" v-model="inputVal" type="text" @input="handleInput" @focus="()=>{ isFocus = true }" @blur="()=>{ isFocus = false }">
+        <input class="price-input" v-model="value" type="text" @input="handleInput" @focus="()=>{ isFocus = true }" @blur="()=>{ isFocus = false }">
         <div @click.stop="handleClear" class="clear-icon">
             <img v-show="value.length > 0 && isFocus && !hiddenClear" :src="deleteIcon" alt="">
         </div>
@@ -21,14 +21,13 @@ export default {
             default: ''
         }
     },
-    watch: {
-        value(val) {
-            this.inputVal = val
-        }
-    },
+    // watch: {
+    //     value(val) {
+    //         this.inputVal = val
+    //     }
+    // },
     data() {
         return {
-            inputVal: '0',
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
             isFocus: false
         }
@@ -48,7 +47,7 @@ export default {
                 obj = obj.replace(/[^\d]/g, '') // 清除“数字”以外的字符
             }
             this.value = obj
-            this.inputVal = obj
+            // this.inputVal = obj
             this.$emit('input', this.value)
         },
 
