@@ -1,6 +1,6 @@
 <template>
   <div :class="bem()">
-    <empty-view class="empty-list" v-if="listItems.count <= 0"  :emptyType="emptyType" :emptyDesc="emptyDesc" />
+    <empty-view class="empty-list" v-if="listItems.length <= 0"  :emptyType="emptyType" :emptyDesc="emptyDesc" />
     <van-pull-refresh v-else v-model="isLoading" @refresh="onRefresh" :disabled="!hasPullRefresh">
       <van-list
         v-model="mLoading"

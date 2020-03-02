@@ -61,7 +61,7 @@ export default {
     data() {
         return {
             isNative: false,
-            planItems: [1, 2, 4],
+            planItems: [],
             firstImg: require('../../themes/images/app/icon_commodity_display@3x.png'),
             secImg: require('../../themes/images/app/icon_train@3x.png'),
             thirdImg: require('../../themes/images/app/icon_manage_guide@3x.png'),
@@ -117,8 +117,6 @@ export default {
                     } else {
                         this.headerAlpha = 0
                     }
-                    console.log('offsetTop == ', offsetTop)
-                    console.log('scrollTop == ', scrollTop)
                 },
                 true
             )
