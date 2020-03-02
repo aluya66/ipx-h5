@@ -434,11 +434,11 @@ export default {
             window.addEventListener(
                 'scroll',
                 () => {
-                    if (this.menuIndex === 1) {
-                        this.$refs.productlist.check()
-                    } else {
-                        this.$refs.grouplist.check()
-                    }
+                    // if (this.menuIndex === 1) {
+                    //     this.$refs.productlist.check()
+                    // } else {
+                    //     this.$refs.grouplist.check()
+                    // }
 
                     let scrollTop =
             document.querySelector('.contain') &&
