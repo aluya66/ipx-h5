@@ -40,7 +40,7 @@ export default {
             }
 
             let testData = {
-                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAl4Mm5QBf/2fMy4INP2jH2lGPDCTCbeCMRIVaudh6PyYZOcOP7sU5sfVIxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLk+mtgbkTUo4YSC+ImZUQSNknBdbvdf+XD3OEjtKzY7IpvR4V6VV6J0pTv1CQk2wp1+pW0tveJouIizLKYv1O6Osr6WYBeRgpV4jeK9jP/bOijmzOJ48xwjHYeoGxRkQKzodU9bMVP+gqgIG6+56aWeuSYV4JV9RuKc27/H3KB+KDCRMzG2CWX9BtFinj84ch48cLB23AkFQhBWLZ/OwnSPmqmAHmF853oYrP+IIJbkJV/UvaOF0O65MRJjxeidOaUvYBzP52XHrGqmgazfEQCF9vGKvP4Nwzq5QRuHOP++VYC7mn2mLVQ365EVTj8rLcz8S7jjXtebnKHV/Ska7p/4ts3fLi7nqrc=',
+                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAl4Mm5QBf/2fN1zLbu+OhWd5Z4ipZe8r0+IVaudh6PyYZOcOP7sU5sfVIxOX3jZECK9znhnL4kblv+IueZKTy3raeRPSP1B9lXcRi7r7JCOLkdyp+WIQpNHVKoWRCR5aa06v8z6WJy0zWb0eFelVeidKU79QkJNsKdfqVtLb3iaLib0b+phfeX+if0T/AsN9D9S1CSS3/aFL3bz3JW3XyC72yrCGFdgqZDokPXS1Nfej7I5kYQn3fPrvzr/lwRtUmLXt92aaGKzAT3FJVEHmj02Ji467AUsf8migwtNqwClGOEjS5AV6pz9sVn5vEL9xFvYgH+tV32TqCPdh8akPVw7S2InusmAZK9r4UYtukzSkiz6fxhR1jFyF4cXDY0ZvdmZY60wNx6vRM=',
                 'app_version': '1.2.0',
                 'platform': 'web',
                 'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',

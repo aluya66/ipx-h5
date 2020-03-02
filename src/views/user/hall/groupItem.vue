@@ -16,7 +16,7 @@
         <section class="footer">
             <p>¥<span>{{cashFormat(groupGood.totalPrice)}}</span></p>
             <div class="action">
-                <!-- <section :class='["default", !manageState ? "inManage" :""]' @click="handleCheckDetail">查看详情</section> -->
+                <section class="default" @click="handleCheckDetail">查看详情</section>
                 <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">一键采购</section>
             </div>
         </section>
@@ -239,10 +239,8 @@ export default {
                 justify-content: flex-end;
 
                 .default {
-                    margin-right: 0;
-                    .btn-select(96px,
-                    36px,
-                    false)
+                    margin-right: 12px;
+                    .btn-gray(96px, 36px)
                 }
                 .select {
                     font-weight: 500;

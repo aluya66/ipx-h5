@@ -4,17 +4,20 @@
             style="z-index:2"
             slot="header"
             class="hall-header"
+            :style="navAlpha"
             :isLight="false"
             :left-arrow="true"
             :pageOutStatus="isNative"
+            :showBorderBottom="headerAlpha === 1"
         >
+            <div slot="title" style="color:#000" v-show="headerAlpha === 1" >极速上店</div>
         </c-header>
         <div class="contain-view" :style="getBottomOffset(49)">
             <div class="radius-header" :style="headerTop">
                 <span></span>
             </div>
             <div class="planList-contain">
-                <plan-view v-for="item in planItems" :key="item" ></plan-view>
+                <plan-view v-for="(item, index) in planItems" :key="index" :data="item" :showConnectIcon="index > 0" ></plan-view>
             </div>
             <div>
                 <p class="pre-view">即将上线  敬请期待</p>
@@ -58,10 +61,11 @@ export default {
     data() {
         return {
             isNative: false,
-            planItems: [1, 2, 4],
+            planItems: [],
             firstImg: require('../../themes/images/app/icon_commodity_display@3x.png'),
             secImg: require('../../themes/images/app/icon_train@3x.png'),
-            thirdImg: require('../../themes/images/app/icon_manage_guide@3x.png')
+            thirdImg: require('../../themes/images/app/icon_manage_guide@3x.png'),
+            headerAlpha: 0
         }
     },
     computed: {
@@ -75,6 +79,9 @@ export default {
             let h = w * 476 / 375
             let top = (h - 52 - navHeight) / 100
             return `margin-top:${top}rem`
+        },
+        navAlpha() {
+            return `background:rgb(255,255,255,${this.headerAlpha});margin-bottom:0`
         }
     },
     methods: {
@@ -84,21 +91,55 @@ export default {
         handleAdjustHeaderBg() {
             let w = window.screen.width
             let h = w * 476 / 375 / 100
+            if (this.headerAlpha > 0) {
+                h = 0
+            }
             return `background-size:100% ${h}rem`
         },
         handleMore() {
-
+            this.$router.push({
+                path: '/intention'
+            })
         },
         handleBuy() {
-
+            this.$router.push({
+                path: '/deposit/purchasePlan'
+            })
         },
         handleScroll() {
-            // let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 滚动条偏移量
-            // let offsetTop = document.querySelector('#boxFixed').offsetTop;  // 要滚动到顶部吸附的元素的偏移量
+            window.addEventListener(
+                'scroll',
+                () => {
+                    let scrollTop = document.querySelector('.contain-view') && document.querySelector('.contain-view').scrollTop
+                    let offsetTop = document.querySelector('.planList-contain') && document.querySelector('.planList-contain').offsetTop
+                    if (scrollTop >= offsetTop) {
+                        this.headerAlpha = 1
+                    } else {
+                        this.headerAlpha = 0
+                    }
+                },
+                true
+            )
+        },
+        handleRequest() {
+            this.$api.deposit.getDepositConfig().then(res => {
+                if (res instanceof Array) {
+                    this.planItems = res
+                }
+            }).catch(() => {
+
+            })
         }
     },
+    activated() {
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
+        this.headerAlpha = 0
+        this.handleRequest()
+    },
     mounted() {
-        window.addEventListener('scroll', this.handleScroll, true)
+        this.handleScroll()
     }
 }
 </script>
@@ -121,12 +162,13 @@ export default {
   background: rgba(0, 0, 0, 0);
 }
 .contain-view {
-    overflow: auto;
+    overflow: scroll;
     height: 100%;
 }
 .footer-shadow {
     box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
+    z-index: 99999;
 }
 .footer-view {
     margin: 5px 24px 0;
@@ -141,11 +183,11 @@ export default {
         text-align: center;
     }
     .button-default {
-        // .btn-select-default(calc(50vw - 31.5px),40px,false);
         height:40px;
         background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);
         border-radius:20px;
         width: calc(50vw - 31.5px);
+        color: @color-ec
     }
     .button-select {
         .btn-select(calc(50vw - 31.5px),40px,true);
@@ -218,10 +260,11 @@ export default {
         flex-direction: column;
         align-items: center;
         margin: 0 18px;
+        width: calc(33.33vw);
         img {
             display: block;
-            width: calc(33.33vw - 58.8px);
-            height: calc(33.33vw - 58.8px);
+            width: 64px; // calc(33.33vw - 58.8px);
+            height: 64px //calc(33.33vw - 58.8px);
         }
         p {
             height:20px;

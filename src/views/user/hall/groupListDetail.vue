@@ -76,10 +76,11 @@
           </div>
         </div>
         <div class="group_tool_btn">
-          <button class="poster" @click="addPoster">生成海报</button>
+          <button class="poster" @click="handleStore">极速上店</button>
           <button class="pay" @click="goPay">立即采购</button>
         </div>
       </div>
+      <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster">
     </div>
     <!-- sku选择 -->
     <sku-select
@@ -114,7 +115,8 @@ export default {
             seletedDetailsItem: {}, // sku数据源
             seletedItemIndex: '', // 选择调整商品下标
             isOrderSuply: false,
-            isNative: false
+            isNative: false,
+            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png')
         }
     },
     mounted() {
@@ -211,6 +213,19 @@ export default {
         }
     },
     methods: {
+        handlePosterIconBottom() {
+            let baseparams = utils.getStore('baseParams')
+            let btm = 57
+            if (baseparams.isIphoneX) {
+                btm = 91
+            }
+            return `bottom:${btm / 100}rem`
+        },
+        handleStore() {
+            this.$router.push({
+                path: '/deposit'
+            })
+        },
         cashFormat(price) {
             return cash.changeFormat(price)
         },
@@ -418,6 +433,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.poster-icon {
+  display: block;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  right: 8px;
+}
 .my-header {
   position: relative;
   &:after {
