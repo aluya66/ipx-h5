@@ -20,11 +20,11 @@
             <div class="account-desc">
                 <section class="account-time">
                     <p>剩余有效期(天)</p>
-                    <p>{{userData.effectiveDays}}</p>
+                    <p>{{userData.effectiveDays || 0}}</p>
                 </section>
                 <section class="account-time">
                     <p>押金额度(元)</p>
-                    <p>{{handlePriceFormat(userData.consumeAmount)}}</p>
+                    <p>{{handlePriceFormat(userData.depositAmount)}}</p>
                 </section>
             </div>
             <section class="account-connect">联系客服</section>
@@ -63,6 +63,9 @@ export default {
             utils.postMessage('customer_service')
         },
         handlePriceFormat(num) {
+            if (num === '') {
+                num = '0'
+            }
             let numStr = utils.priceFormat(num)
             return numStr
         },
