@@ -3,7 +3,8 @@ export default {
     name: 'intention',
     meta: {
         title: '',
-        keepAlive: true
+        keepAlive: true,
+        requireAuth: true
     },
     component: () => import('@/views/deposit/depositIntention.vue')
 }
