@@ -63,7 +63,7 @@ export default {
             utils.postMessage('customer_service')
         },
         handlePriceFormat(num) {
-            if (num === '') {
+            if (num === '' || !num) {
                 num = '0'
             }
             let numStr = utils.priceFormat(num)
