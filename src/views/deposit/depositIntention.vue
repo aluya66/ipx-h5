@@ -14,7 +14,7 @@
             v-model="userName"
             :border="false"
             placeholder="请输入您的姓名"
-            maxlength="20"
+            maxlength="10"
             :error="showUserNameError"
             @blur="handleVerifyUserName"
             />
@@ -316,6 +316,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 16px;
+    margin-bottom: 5px;
     > button {
         width: calc(100vw - 32px);
         height:50px;
