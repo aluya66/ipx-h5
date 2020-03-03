@@ -194,7 +194,6 @@ export default {
                     }).then(() => {
                         this.$router.go(-1)
                     })
-
                 }).catch(err => {
                     console.log(err)
                 })
