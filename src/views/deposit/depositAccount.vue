@@ -27,7 +27,7 @@
                     <p>{{handlePriceFormat(userData.depositAmount)}}</p>
                 </section>
             </div>
-            <section class="account-connect">联系客服</section>
+            <section class="account-connect" @click="handleCall" >联系客服</section>
         </div>
     </layout-view>
 </template>
