@@ -17,6 +17,7 @@
             maxlength="10"
             :error="showUserNameError"
             @blur="handleVerifyUserName"
+            @focus="handleHeight"
             />
         </div>
         <div class="info-input">
@@ -30,6 +31,7 @@
                 placeholder="请输入您的电话"
                 :error="showPhoneError"
                 @blur="handleVerifyPhone"
+                @focus="handleHeight"
             />
         </div>
         <div class="info-input">
@@ -58,11 +60,12 @@
         <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-top: 0.1rem; height: 0.04rem;">
         </vue-slider>
 
+
     </div>
 
-    <div class="footview" :style="getBottomOffset(0)">
-        <button @click="commitForm">确定</button>
-    </div>
+        <div class="footview" :style="getBottomOffset(0)">
+            <button @click="commitForm">确定</button>
+        </div>
 
    </layout-view>
 </template>
@@ -104,7 +107,8 @@ export default {
                     'bottom',
                     'top'
                 ]
-            }
+            },
+            handleBottom: 0
 
         }
     },
@@ -156,12 +160,20 @@ export default {
             return utils.bottomOffset(offset)
         },
         handleVerifyPhone () {
+            this.handleBottom = '0'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
                 this.showPhoneError = true
             }
         },
         handleVerifyUserName () {
+            this.handleBottom = '0'
+        },
+        handleHeight () {
+            let platform = utils.getStore('baseParams').platform
+            if (platform === 'android') {
+                this.handleBottom = '300px'
+            }
         },
         chooseAddress() {
             const params = {
@@ -254,7 +266,10 @@ export default {
   }
 }
 .content {
-  margin: 16px;
+
+    overflow: auto;
+    height: 100%;
+    margin: 16px;
     .info-input {
         display: flex;
         justify-content: space-between;
@@ -312,20 +327,20 @@ export default {
     }
 }
 
-.footview {
-    position: fixed;
-    bottom: 0;
-    left: 16px;
-    margin-bottom: 5px;
-    > button {
-        width: calc(100vw - 32px);
-        height:50px;
-        background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-        border-radius:25px;
-        font-size:18px;
-        font-weight:500;
-        color:rgba(255,255,255,1);
+    .footview {
+        position: fixed;
+        bottom: 0;
+        left: 16px;
+        margin-bottom: 5px;
+        > button {
+            width: calc(100vw - 32px);
+            height:50px;
+            background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
+            border-radius:25px;
+            font-size:18px;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+        }
     }
-}
 
 </style>

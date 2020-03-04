@@ -518,6 +518,7 @@ export default {
 }
 .list-content {
   margin-top: 16px;
+  padding-bottom: 60px;
   .product-cell {
     background: white;
     height: 106px;
