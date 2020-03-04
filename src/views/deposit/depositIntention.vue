@@ -268,7 +268,7 @@ export default {
 .content {
 
     overflow: auto;
-    height: 100%;
+    height: 80%;
     margin: 16px;
     .info-input {
         display: flex;
