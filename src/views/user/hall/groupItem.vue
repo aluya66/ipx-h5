@@ -16,7 +16,7 @@
         <section class="footer">
             <p>¥<span>{{cashFormat(groupGood.totalPrice)}}</span></p>
             <div class="action">
-                <section class="default" @click="handleCheckDetail">查看详情</section>
+                <section class="default" @click.stop="handleStore">极速上店</section>
                 <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">一键采购</section>
             </div>
         </section>
@@ -78,6 +78,11 @@ export default {
                 productCode: product.productCode
             }
             utils.postMessage('', params)
+        },
+        handleStore() {
+            this.$router.push({
+                path: '/deposit'
+            })
         },
         handleCheckDetail() {
             window.sa.track('IPX_WEB', {

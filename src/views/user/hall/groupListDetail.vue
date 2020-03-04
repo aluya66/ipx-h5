@@ -437,7 +437,7 @@ export default {
   display: block;
   width: 80px;
   height: 80px;
-  position: absolute;
+  position: fixed;
   right: 8px;
 }
 .my-header {
