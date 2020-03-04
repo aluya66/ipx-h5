@@ -16,7 +16,7 @@
         <div class="contain-view">
             <p class="account-title">授信余额(元)</p>
             <p class="account-money">{{handlePriceFormat(userData.availableAmount)}}</p>
-            <p class="account-status">{{userData.status | handleStatus}}</p>
+            <p class="account-status" v-show="userData.status === 2 || userData.status === 3 ">{{userData.status | handleStatus}}</p>
             <div class="account-desc">
                 <section class="account-time">
                     <p>剩余有效期(天)</p>
