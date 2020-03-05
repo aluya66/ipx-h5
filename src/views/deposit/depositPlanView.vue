@@ -2,7 +2,7 @@
     <div class="plan-contain">
         <div class="plan-shadow">
             <section class="plan-header">
-            {{data.remark}}
+                <p class="plan-title">{{data.remark}}</p>
             </section>
             <div class="plan-moneyContain">
                 <p class="plan-money">{{data.depositAmount}}<span> 元押金</span></p>
@@ -78,7 +78,7 @@ export default {
 .plan-shadow {
     box-shadow:0px 3px 20px 0px rgba(33,44,98,0.12);
     background: #fff;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
 }
 .plan-contain {
@@ -86,14 +86,31 @@ export default {
     background: #fff;
     position: relative;
     .plan-header {
-        text-align: center;
         height:46px;
         background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-        line-height: 46px;
-        font-size:16px;
-        font-family:PingFangSC-Medium,PingFang SC;
-        font-weight:500;
-        color:rgba(255,255,255,1);
+        text-align: center;
+        .plan-title {
+            display: inline;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 46px;
+            font-size:16px;
+            font-family:PingFangSC-Medium,PingFang SC;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+            position: relative;
+            &::after {
+                content: '';
+                height:2px;
+                background:rgba(255,255,255,1);
+                border-radius:2px;
+                opacity:0.1;
+                position: absolute;
+                bottom: 1px;
+                left: 0;
+                width: 100%;
+            }
+        }
     }
     .plan-moneyContain {
         margin: 24px 20px 0;
