@@ -26,7 +26,7 @@
                 class="input"
                 v-model="userPhone"
                 type="number"
-                maxlength="11"
+                maxlength="11" 
                 :border="false"
                 placeholder="请输入您的电话"
                 :error="showPhoneError"
@@ -266,8 +266,10 @@ export default {
   }
 }
 .content {
-
-    overflow: auto;
+    // height: calc(100vh - 65px);
+    overflow-y: scroll;
+    overflow-x:hidden;
+    // overflow: auto;
     height: 80%;
     margin: 16px;
     .info-input {

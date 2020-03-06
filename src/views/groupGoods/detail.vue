@@ -569,7 +569,7 @@ export default {
     margin: 16px 16px 0;
     > p {
       font-size: 18px;
-      font-weight: 500;
+      font-weight: bold;
       color: rgba(42, 43, 51, 1);
       line-height: 26px;
       // .ellipsis();
@@ -601,7 +601,7 @@ export default {
       > span {
         position: absolute;
         font-size: 20px;
-        font-weight: 600;
+        font-weight: bold;
         transform: translateX(-50%);
         color: @color-c1;
         line-height: 28px;
@@ -642,7 +642,7 @@ export default {
         );
         border-radius: 25px;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: bold;
         color: white;
       }
       > button:disabled {
@@ -727,7 +727,7 @@ export default {
           > p {
             line-height: 22px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: bold;
             color: @color-c1;
             .ellipsis();
           }
@@ -763,7 +763,7 @@ export default {
             }
             .tip_title {
               font-size:10px;
-              font-weight:500;
+              font-weight:bold;
               color: @color-c3;
               line-height:12px;
               background:rgba(244,245,247,1);
@@ -833,7 +833,7 @@ export default {
     }
     .tip_title {
       font-size:10px;
-      font-weight:500;
+      font-weight:bold;
       color: @color-c3;
       line-height:12px;
       background:rgba(244,245,247,1);
@@ -850,7 +850,7 @@ export default {
       height: 40px;
       background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);border-radius:20px;
       font-size:14px;
-      font-weight:500;
+      font-weight:bold;
       color:rgba(60,92,246,1);
       // margin-right: 20px;
       align-self: center;
