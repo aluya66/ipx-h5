@@ -527,6 +527,7 @@ export default {
     position: relative;
     .photo_state {
       position: relative;
+      background-color: @color-c8;
       > img {
         flex: none;
         width: 106px;

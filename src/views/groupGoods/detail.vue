@@ -720,6 +720,7 @@ export default {
           border-radius: 4px;
           object-fit: cover;
           border: 1px solid @color-c7;
+          background-color: @color-c8;
         }
         .product-info {
           margin-left: 12px;
