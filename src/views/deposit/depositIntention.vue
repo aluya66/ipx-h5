@@ -26,7 +26,7 @@
                 class="input"
                 v-model="userPhone"
                 type="number"
-                maxlength="11" 
+                maxlength="11"
                 :border="false"
                 placeholder="请输入您的电话"
                 :error="showPhoneError"
@@ -57,9 +57,8 @@
             </div>
         </div>
 
-        <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-top: 0.1rem; height: 0.04rem;">
+        <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-left: 0.09rem; margin-top: 0.1rem; height: 0.04rem;">
         </vue-slider>
-
 
     </div>
 
@@ -95,7 +94,7 @@ export default {
             showUserNameError: false,
 
             sliderData: {
-                width: '95%',
+                width: '96%',
                 show: true,
                 value: [0, 9900],
                 min: 0,
@@ -226,6 +225,7 @@ export default {
 <style lang="less">
 .content {
     .vue-slider-rail {
+        background-color: @color-c7;
         .vue-slider-process {
             background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
             border-radius:2px;
@@ -235,18 +235,28 @@ export default {
             width: 24px;
             box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
             margin-top: -12px;
+            margin-left: -10px;
+
         }
+
         .vue-slider-dot-tooltip-top { ///
             // display: none;
             width:12px;
             height:12px;
             background:rgba(250,217,97,1);
             border-radius:6px;
-            left: 12px;
+            left: 2px;
             top: 6px;
             .vue-slider-dot-tooltip-inner {
                 display: none;
             }
+        }
+    }
+    .van-field__control {
+        &::-webkit-input-placeholder {
+            font-size:14px;
+            font-weight:500;
+            color:@color-c4;
         }
     }
 }
@@ -266,10 +276,8 @@ export default {
   }
 }
 .content {
-    // height: calc(100vh - 65px);
     overflow-y: scroll;
     overflow-x:hidden;
-    // overflow: auto;
     height: 80%;
     margin: 16px;
     .info-input {
@@ -293,6 +301,8 @@ export default {
             margin-top: 16px;
             font-size: 14px;
             align-items: center;
+            font-weight:bold;
+            color:@color-c1;
             .placeholder {
                 font-size:14px;
                 font-weight:500;
@@ -302,8 +312,8 @@ export default {
             }
             .showText {
                 font-size:14px;
-                font-weight:500;
-                color:@color-c2;
+                font-weight:bold;
+                color:@color-c1;
                 line-height:44px;
                 margin-left: 20px;
             }
