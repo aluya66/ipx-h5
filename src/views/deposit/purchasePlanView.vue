@@ -50,11 +50,6 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        handleAdjustHeaderBg() {
-            let w = window.screen.width
-            let h = w * 476 / 375 / 100
-            return `background-size:100% ${h}rem`
-        },
         handleRequest() {
             this.$api.deposit.getDepositConfig().then(res => {
                 if (res instanceof Array) {
@@ -81,7 +76,6 @@ export default {
                 depositAmount: item.depositAmount + '', // 押金总额
                 consumeAmount: item.consumeAmount + '' // 消费额度
             }
-            debugger
             utils.postMessage('', params)
         }
     },
