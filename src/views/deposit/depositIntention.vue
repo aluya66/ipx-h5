@@ -4,7 +4,7 @@
        <div slot="title">填写意向单</div>
    </c-header>
 
-    <div class="content">
+    <div class="content" style="height: calc(100vh - 65px)">
         <p>请填写以下信息，我们会根据您的需求推荐更合适的方案～</p>
 
         <div class="info-input">
@@ -62,7 +62,7 @@
 
     </div>
 
-        <div class="footview" :style="getBottomOffset(0)">
+        <div class="footview" :style="getBottomOffset(0)" style="bottom: 0">
             <button @click="commitForm">确定</button>
         </div>
 
@@ -176,6 +176,7 @@ export default {
             }
             utils.postMessage('', params)
             window.getAddressInfo = (adrs) => {
+                this.handleBottom = '0'
                 this.address = adrs
             }
         },
