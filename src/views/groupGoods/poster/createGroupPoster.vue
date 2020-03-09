@@ -14,7 +14,7 @@
                             maxlength="50"
                             :adjust-position='true'
                             v-model="posterData.groupTitle" />
-                        <div class="descContain">
+                        <!-- <div class="descContain">
                              <field :class='["field-common","group-desc"]'
                                 type="textarea"
                                 placeholder="请输入组货描述"
@@ -23,7 +23,7 @@
                                 maxlength="200"
                             />
                             <p>{{groupDesc.length}}/200</p>
-                        </div>
+                        </div> -->
                     </div>
                 </template>
             </title-content>
@@ -45,13 +45,30 @@
                                 {{menuTitle}}
                             </section>
                         </div>
-                        <p v-if="selectPriceTitle==='建议零售价'" class="price-suggest">各商品均按建议零售价显示(预览查看)</p>
+                        <p v-if="selectPriceTitle==='单品调价'" class="price-suggest">
+                            各商品均按建议零售价显示(预览查看)
+                        </p>
                         <div v-else class="price-custom delete-field-line">
-                            <p class="price-custom-title">各单品均加价(预览查看)</p>
-                            <div class="input-contain">
-                                <input-view class="price-input" v-model="customPricePercent" formart="number" :hiddenClear="true" />
-                                <p class="price-symbol">%</p>
-                            </div>
+
+                            <section :class='["flex-common","purchase-contain"]'>
+                                <p style="font-size:0.13rem">采货价:</p>
+                                <p>{{parseFloat(posterData.totalPrice).toFixed(2)}}</p>
+                            </section>
+                            <section style="height:0.32rem"  :class='["flex-common","custom-add"]'>
+                                <p class="price-custom-title">单品均加价:</p>
+                                <div class="input-contain">
+                                    <input-view class="price-input" v-model="customPricePercent" formart="number" :hiddenClear="true" />
+                                    <p class="price-symbol">%</p>
+                                </div>
+                            </section>
+                            <section :class='["flex-common","posterPrice-contain"]'>
+                                <p>海报价:</p>
+                                <p>{{posterPrice}}</p>
+                            </section>
+
+                            <section class="suggest-selected">
+                                <p>使用建议零售价</p>
+                            </section>
 
                         </div>
                     </div>
@@ -111,8 +128,8 @@ export default {
             groupTitle: '',
             groupDesc: '',
             groupImages: [1, 2],
-            selectPriceTitle: '自主定价',
-            priceMenu: ['自主定价', '建议零售价'],
+            selectPriceTitle: '统一调价',
+            priceMenu: ['统一调价', '单品调价'],
             customPricePercent: '0',
             phone: '',
             posterData: {},
@@ -130,6 +147,17 @@ export default {
             }
             this.customPricePercent = val
             console.log('customPricePercent', this.customPricePercent)
+        }
+    },
+    computed: {
+        posterPrice() {
+            let add = this.customPricePercent
+            if (this.customPricePercent === '') {
+                add = '0'
+            }
+            let p = parseFloat(this.posterData.totalPrice) * parseFloat(add || '0')/100
+            let p2 = p.toFixed(2)
+            return p2
         }
     },
     methods: {
@@ -154,7 +182,7 @@ export default {
                 this.isSave = false
                 this.posterData.groupDesc = this.groupDesc
                 this.posterData.phone = this.phone
-                if (this.selectPriceTitle === '建议零售价') {
+                if (this.selectPriceTitle === '单品调价') {
                     this.posterData.customPricePercent = '0'
                     this.posterData.isRetail = true
                 } else {
@@ -183,7 +211,7 @@ export default {
                 this.isSave = true
                 this.posterData.groupDesc = this.groupDesc
                 this.posterData.phone = this.phone
-                if (this.selectPriceTitle === '建议零售价') {
+                if (this.selectPriceTitle === '单品调价') {
                     this.posterData.customPricePercent = '0'
                     this.posterData.isRetail = true
                 } else {
@@ -432,59 +460,128 @@ export default {
             border-radius: 5px;
         }
         .price-custom {
-            display: flex;
-            flex-direction: row;
-            align-content: flex-start;
             border:1px solid rgba(244,245,247,1);
             border-radius: 5px;
-            height: 60px;
-            align-items: center;
             margin: 6px 16px 0;
-            padding-left: 16px;
-            .price-custom-title {
-                line-height: 16px;
-                font-size:13px;
+            padding: 4px 0 14px 16px;
+            .flex-common {
+                display: flex;
+                flex-direction: row;
+                align-content: flex-start;
+                width: 100%;
+                height: 19px;
+                text-align: center;
+                line-height: 14px;
+                margin-top: 12px;
+            }
+            .purchase-contain {
                 font-weight:400;
                 color:@color-c2;
-                line-height: 32px;
-                // flex: 1 0
+                font-size:13px;
+                p {
+                    &:nth-child(2) {
+                        margin-left: 46px;
+                        font-family: "alibabaBold";
+                        font-size:16px;
+                        &::before {
+                                content: '¥ ';
+                                width: 20px;
+                                font-weight:400;
+                                line-height: 14px;
+                                font-size: 12px;
+                                position: relative;
+                                font-family: "alibabaRegular";
+                            }
+                    }
+                }
             }
-            .input-contain {
-                flex: 1 1;
-                margin-right: 16px;
-                background:rgba(249,250,252,1);
-                border-radius: 5px;
+            .posterPrice-contain {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: flex-start;
-                margin-left: 16px;
                 p {
-                    padding-right: 8px;
-                    height:14px;
-                    font-size:12px;
+                    font-size:13px;
                     font-weight:400;
-                    color:rgba(42,43,51,1);
-                    line-height:14px;
+                    color:@color-c2;
+                    &:nth-child(2) {
+                        font-size:16px;
+                        font-weight:400;
+                        color:@color-rc;
+                        margin-left: 46px;
+                        position: relative;
+                        font-family: "alibabaBold";
+                        &::before {
+                            content: '¥ ';
+                            font-family: "alibabaRegular";
+                            width: 20px;
+                            font-weight:400;
+                            line-height: 40px;
+                            font-size: 12px;
+                            position: relative;
+                        }
+                    }
+                    &:nth-child(3) {
+                        margin-left: 12px;
+                        font-size:12px;
+                        font-weight:500;
+                        color:@color-c3;
+                        height: 16px;
+                        line-height: 14px;
+                        background:rgba(244,245,247,1);
+                        padding: 1px 4px;
+                        border-top-left-radius: 0;
+                        border-top-right-radius: 3px;
+                        border-bottom-right-radius: 3px;
+                        border-bottom-left-radius: 3px;
+                    }
                 }
             }
-            .price-input {
-                width: 90%;
-                margin-left: 0px;
-                margin-right: 8px;
-                height: 32px;
-                background:rgba(249,250,252,1);
-                font-size:14px;
-                color:rgba(42,43,51,1);
-                border-radius: 8px;
-                font-weight:bold;
-            }
-            .price-symbol {
-                font-size:12px;
-                font-weight:400;
-                color:@color-c1;
-                line-height:32px;
-                margin-left: 4px;
+            .custom-add {
+                .price-custom-title {
+                    line-height: 16px;
+                    font-size:13px;
+                    font-weight:400;
+                    color:@color-c2;
+                    line-height: 32px;
+                    // flex: 1 0
+                }
+                .input-contain {
+                    flex: 1 1;
+                    margin-right: 16px;
+                    background:rgba(249,250,252,1);
+                    border-radius: 5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-start;
+                    margin-left: 20px;
+                    p {
+                        padding-right: 8px;
+                        height:14px;
+                        font-size:12px;
+                        font-weight:400;
+                        color:rgba(42,43,51,1);
+                        line-height:14px;
+                    }
+                }
+                .price-input {
+                    width: 90%;
+                    margin-left: 8px;
+                    margin-right: 8px;
+                    height: 32px;
+                    background:rgba(249,250,252,1);
+                    font-size:14px;
+                    color:rgba(42,43,51,1);
+                    border-radius: 8px;
+                    font-weight:bold;
+                }
+                .price-symbol {
+                    font-size:12px;
+                    font-weight:400;
+                    color:@color-c1;
+                    line-height:32px;
+                    margin-left: 4px;
+                }
             }
         }
     }
