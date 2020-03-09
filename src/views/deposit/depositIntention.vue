@@ -4,7 +4,7 @@
        <div slot="title">填写意向单</div>
    </c-header>
 
-    <div class="content" style="height: calc(100vh - 65px)">
+    <div class="content">
         <p>请填写以下信息，我们会根据您的需求推荐更合适的方案～</p>
 
         <div class="info-input">
@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-left: 0.15rem; margin-top: 0.1rem; height: 0.04rem;">
+        <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-left: 0.28rem; margin-top: 0.1rem; height: 0.04rem;">
         </vue-slider>
 
     </div>
@@ -94,7 +94,7 @@ export default {
             showUserNameError: false,
 
             sliderData: {
-                width: '94%',
+                width: '87%',
                 show: true,
                 value: [0, 9900],
                 min: 0,
@@ -275,10 +275,14 @@ export default {
     overflow-y: scroll;
     overflow-x:hidden;
     height: 80%;
-    margin: 16px;
+    margin: 16px 0;
+    > p {
+        margin: 0 16px 4px;
+    }
     .info-input {
         display: flex;
         justify-content: space-between;
+        margin: 0 16px;
         > span {
             height:44px;
             font-size:14px;
