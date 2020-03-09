@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-left: 0.09rem; margin-top: 0.1rem; height: 0.04rem;">
+        <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-top: 0.1rem; height: 0.04rem;">
         </vue-slider>
 
     </div>
@@ -94,18 +94,14 @@ export default {
             showUserNameError: false,
 
             sliderData: {
-                width: '96%',
+                width: '94%',
                 show: true,
                 value: [0, 9900],
                 min: 0,
                 max: 9900,
                 interval: 100,
-                piecewiseLabel: true,
-                tooltip: 'always',
-                tooltipDir: [
-                    'bottom',
-                    'top'
-                ]
+                tooltip: 'always'
+
             },
             handleBottom: 0
 
@@ -235,8 +231,6 @@ export default {
             width: 24px;
             box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
             margin-top: -12px;
-            margin-left: -10px;
-
         }
 
         .vue-slider-dot-tooltip-top { ///
@@ -245,7 +239,7 @@ export default {
             height:12px;
             background:rgba(250,217,97,1);
             border-radius:6px;
-            left: 2px;
+            left: 12px;
             top: 6px;
             .vue-slider-dot-tooltip-inner {
                 display: none;
