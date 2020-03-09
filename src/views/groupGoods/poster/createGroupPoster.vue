@@ -67,6 +67,7 @@
                             </section>
 
                             <section class="suggest-selected">
+                                <img class="select-icon" :src="select_def" alt="">
                                 <p>使用建议零售价</p>
                             </section>
 
@@ -125,6 +126,8 @@ export default {
     data() {
         return {
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
+            select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
+            select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
             groupTitle: '',
             groupDesc: '',
             groupImages: [1, 2],
