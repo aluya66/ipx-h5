@@ -154,6 +154,13 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
+        scrollToBottom() {
+             // 将滚动拉到底
+            setTimeout(() => {
+                let scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0
+                window.scrollTo(0, Math.max(scrollHeight - 1, 0))
+            }, 100)
+        },
         handleVerifyPhone () {
             window.scrollTo(0, 0)
             this.handleBottom = '0'
