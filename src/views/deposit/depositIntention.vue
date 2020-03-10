@@ -113,7 +113,7 @@ export default {
     },
     activated() {
         this.busiStyle = utils.getStore('businStyle')
-        console.log(this.busiStyle)
+        this.scrollToBottom()
     },
     watch: {
         userPhone (val) {
@@ -162,7 +162,8 @@ export default {
             }, 100)
         },
         handleVerifyPhone () {
-            window.scrollTo(0, 0)
+            this.scrollToBottom()
+            // window.scrollTo(0, 0)
             this.handleBottom = '0'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
@@ -170,7 +171,7 @@ export default {
             }
         },
         handleVerifyUserName () {
-            window.scrollTo(0, 0)
+            this.scrollToBottom()
             this.handleBottom = '0'
         },
         handleHeight () {
@@ -180,13 +181,13 @@ export default {
             }
         },
         chooseAddress() {
-            window.scrollTo(0, 0)
+            this.scrollToBottom()
             const params = {
                 jumpUrl: 'chooseAddress://'
             }
             utils.postMessage('', params)
             window.getAddressInfo = (adrs) => {
-                window.scrollTo(0, 0)
+                this.scrollToBottom()
                 this.address = adrs
             }
         },
