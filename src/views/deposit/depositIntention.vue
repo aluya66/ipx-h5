@@ -113,7 +113,6 @@ export default {
     },
     activated() {
         this.busiStyle = utils.getStore('businStyle')
-        this.scrollToBottom()
     },
     watch: {
         userPhone (val) {
@@ -154,15 +153,15 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        scrollToBottom() {
-             // 将滚动拉到底
-            setTimeout(() => {
-                let scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0
-                window.scrollTo(0, Math.max(scrollHeight - 1, 0))
-            }, 100)
-        },
+        // scrollToBottom() {
+        //      // 将滚动拉到底
+        //     setTimeout(() => {
+        //         let scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0
+        //         window.scrollTo(0, Math.max(scrollHeight - 1, 0))
+        //     }, 100)
+        // },
         handleVerifyPhone () {
-            this.scrollToBottom()
+            // this.scrollToBottom()
             // window.scrollTo(0, 0)
             this.handleBottom = '0'
             if (this.userPhone.length < 11) {
@@ -171,7 +170,7 @@ export default {
             }
         },
         handleVerifyUserName () {
-            this.scrollToBottom()
+            // this.scrollToBottom()
             this.handleBottom = '0'
         },
         handleHeight () {
@@ -181,13 +180,11 @@ export default {
             }
         },
         chooseAddress() {
-            this.scrollToBottom()
             const params = {
                 jumpUrl: 'chooseAddress://'
             }
             utils.postMessage('', params)
             window.getAddressInfo = (adrs) => {
-                this.scrollToBottom()
                 this.address = adrs
             }
         },
@@ -351,10 +348,12 @@ export default {
 }
 
     .footview {
-        position: fixed;
+        position: absolute;
+        margin: 0 16px 5px;
         bottom: 0;
-        left: 16px;
-        margin-bottom: 5px;
+        // position: fixed;
+        // left: 16px;
+        // margin-bottom: 5px;
         > button {
             width: calc(100vw - 32px);
             height:50px;
