@@ -45,9 +45,25 @@
                                 {{menuTitle}}
                             </section>
                         </div>
-                        <p v-if="selectPriceTitle==='单品调价'" class="price-suggest">
-                            各商品均按建议零售价显示(预览查看)
-                        </p>
+                        <div v-if="selectPriceTitle==='单品调价'" class="price-suggest">
+                            <div class="goodInfo-list" v-for="goodsInfo in posterData.products" :key="goodsInfo.productCode"> 
+                                <img :src="goodsInfo.mainPic" alt="">
+                                <div class="good-info">
+                                    <p>{{goodsInfo.productName}}</p>
+                                    <section :class='["flex-common","purchase-contain","good-totalPrice"]'>
+                                        <p style="font-size:0.13rem">采货价:</p>
+                                        <p>{{parseFloat(posterData.totalPrice).toFixed(2)}}</p>
+                                    </section>
+                                    <section style="height:0.32rem"  :class='["flex-common","custom-add","good-posterPrice"]'>
+                                        <p style="line-height:0.32rem;font-size:0.13rem">海报价:</p>
+                                        <p class="price-symbol">¥</p>
+                                        <div class="input-contain">
+                                            <input-view style="color:rgba(245,48,48,1)"  v-model='singlePosterPrice' formart="digit"/>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
                         <div v-else class="price-custom delete-field-line">
 
                             <section :class='["flex-common","purchase-contain"]'>
@@ -78,7 +94,7 @@
 
             <title-content title="联系方式" subTitle="(选填)">
                 <template slot="content">
-                    <p>手机号码</p>
+                    <p class="phone-title">手机号码</p>
                     <div style="padding:0.12rem 0.16rem">
                         <field
                             :class='["field-common","group-title"]'
@@ -88,6 +104,12 @@
                             clearable
                             v-model="phone"
                         />
+                    </div>
+                    <div class="qrcode-content">
+                        <p class="phone-title">微信二维码</p>
+                        <div class="photo-choose">
+                            <img :src="choose_qrcode" alt="">
+                        </div>
                     </div>
                 </template>
             </title-content>
@@ -129,12 +151,14 @@ export default {
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
+            choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
             groupTitle: '',
             groupDesc: '',
             groupImages: [1, 2],
             selectPriceTitle: '统一调价',
             priceMenu: ['统一调价', '单品调价'],
             customPricePercent: '0',
+            singlePosterPrice: 0,
             phone: '',
             posterData: {},
             isPreview: false,
@@ -147,11 +171,16 @@ export default {
     watch: {
         customPricePercent(val) {
             console.log(val)
-            if (parseInt(val) > 999) {
-                val = '999'
-            }
+            // if (parseInt(val) > 999) {
+            //     val = '999'
+            // }
             this.customPricePercent = val
             console.log('customPricePercent', this.customPricePercent)
+        },
+        singlePosterPrice(val) {
+            // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
+            // let price = parseFloat(val).toFixed(2)
+            this.singlePosterPrice = val
         }
     },
     computed: {
@@ -463,51 +492,57 @@ export default {
         }
         .price-suggest {
             margin: 6px 16px;
-            font-size:13px;
-            font-weight:400;
-            color:@color-c2;
-            line-height:50px;
-            height: 50px;
             border:1px solid rgba(244,245,247,1);
-            padding-left: 16px;
+            padding: 16px;
             border-radius: 5px;
+            .goodInfo-list {
+                margin-bottom: 24px;
+                display: flex;
+                > img {
+                    width:106px;
+                    height:106px;
+                    border-radius:4px;
+                    border:1px solid rgba(244,245,247,1);
+                    background: @color-c8;
+                }
+                .good-info {
+                    margin-left: 12px;
+                    height:106px;
+                    width: calc(100vw - 182px);
+                    > p {
+                        font-size:16px;
+                        font-weight:bold;
+                        color: @color-c1;
+                        line-height:22px;
+                    }
+                    .good-totalPrice {
+                        margin-top: 28px;
+                        > p {
+                            &:nth-child(2) {
+                                margin-left: 12px;
+                            }
+                        }
+                    }
+                    .good-posterPrice {
+                        margin-top: 5px;
+                        margin-bottom: 0;
+                        .input-contain {
+                            margin-right: 0;
+                            margin-left: 9px;
+                        }
+                        .price-symbol {
+                            margin-left: 12px;
+                            color: @color-rc;
+                        }
+                    }
+                }
+            }
         }
         .price-custom {
             border:1px solid rgba(244,245,247,1);
             border-radius: 5px;
             margin: 6px 16px 0;
             padding: 4px 0 14px 16px;
-            .flex-common {
-                display: flex;
-                flex-direction: row;
-                align-content: flex-start;
-                width: 100%;
-                height: 19px;
-                text-align: center;
-                line-height: 14px;
-                margin-top: 12px;
-            }
-            .purchase-contain {
-                font-weight:400;
-                color:@color-c2;
-                font-size:13px;
-                p {
-                    &:nth-child(2) {
-                        margin-left: 46px;
-                        font-family: "alibabaBold";
-                        font-size:16px;
-                        &::before {
-                                content: '¥ ';
-                                width: 20px;
-                                font-weight:400;
-                                line-height: 14px;
-                                font-size: 12px;
-                                position: relative;
-                                font-family: "alibabaRegular";
-                            }
-                    }
-                }
-            }
             .posterPrice-contain {
                 display: flex;
                 flex-direction: row;
@@ -549,53 +584,6 @@ export default {
                     }
                 }
             }
-            .custom-add {
-                .price-custom-title {
-                    line-height: 16px;
-                    font-size:13px;
-                    font-weight:400;
-                    color:@color-c2;
-                    line-height: 32px;
-                    // flex: 1 0
-                }
-                .input-contain {
-                    flex: 1 1;
-                    margin-right: 16px;
-                    background:rgba(249,250,252,1);
-                    border-radius: 5px;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: flex-start;
-                    margin-left: 20px;
-                    p {
-                        padding-right: 8px;
-                        height:14px;
-                        font-size:12px;
-                        font-weight:400;
-                        color:rgba(42,43,51,1);
-                        line-height:14px;
-                    }
-                }
-                .price-input {
-                    width: 90%;
-                    margin-left: 8px;
-                    margin-right: 8px;
-                    height: 32px;
-                    background:rgba(249,250,252,1);
-                    font-size:14px;
-                    color:rgba(42,43,51,1);
-                    border-radius: 8px;
-                    font-weight:bold;
-                }
-                .price-symbol {
-                    font-size:12px;
-                    font-weight:400;
-                    color:@color-c1;
-                    line-height:32px;
-                    margin-left: 4px;
-                }
-            }
             .suggest-selected {
                 display: flex;
                 width:120px;
@@ -619,6 +607,109 @@ export default {
                 }
             }
         }
+        .flex-common {
+                display: flex;
+                flex-direction: row;
+                align-content: flex-start;
+                width: 100%;
+                height: 19px;
+                text-align: center;
+                line-height: 14px;
+                margin-top: 12px;
+        }
+        .purchase-contain {
+                font-weight:400;
+                color:@color-c2;
+                font-size:13px;
+                p {
+                    &:nth-child(2) {
+                        margin-left: 46px;
+                        font-family: "alibabaBold";
+                        font-size:16px;
+                        &::before {
+                                content: '¥ ';
+                                width: 20px;
+                                font-weight:400;
+                                line-height: 14px;
+                                font-size: 12px;
+                                position: relative;
+                                font-family: "alibabaRegular";
+                            }
+                    }
+                }
+        }
+        .custom-add {
+            .price-custom-title {
+                    line-height: 16px;
+                    font-size:13px;
+                    font-weight:400;
+                    color:@color-c2;
+                    line-height: 32px;
+                    // flex: 1 0
+            }
+            .input-contain {
+                    flex: 1 1;
+                    margin-right: 16px;
+                    background:rgba(249,250,252,1);
+                    border-radius: 5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-start;
+                    margin-left: 20px;
+                    p {
+                        padding-right: 8px;
+                        height:14px;
+                        font-size:12px;
+                        font-weight:400;
+                        color:rgba(42,43,51,1);
+                        line-height:14px;
+                    }
+            }
+            .price-input {
+                width: 90%;
+                margin-left: 8px;
+                margin-right: 8px;
+                height: 32px;
+                background:rgba(249,250,252,1);
+                font-size:14px;
+                color:rgba(42,43,51,1);
+                border-radius: 8px;
+                font-weight:bold;
+            }
+            .price-symbol {
+                    font-size:12px;
+                    font-weight:400;
+                    color:@color-c1;
+                    line-height:32px;
+                    margin-left: 4px;
+            }
+        }
+
+    }
+    .phone-title {
+        font-size:13px;
+        font-weight:bold;
+        color: @color-c1;
+        margin: 12px 16px 0;
+    }
+    .qrcode-content {
+        margin-top: -8px;
+        .photo-choose {
+            margin: 13px 16px 32px;
+            width:109px;
+            height:109px;
+            background:rgba(249,250,252,1);
+            border-radius:8px;
+            text-align:center;
+            > img {
+                margin: 30% 0;
+            }
+            
+        }
+        // > img {
+        //     margin: 13px 16px 32px;
+        // }
     }
     .bottom-prompt {
         height: 40px;
