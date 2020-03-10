@@ -6,12 +6,11 @@
         </c-header>
         <div class="image-content" :style="getBottomOffset(84)">
             <div class="image-list">
-                <div :class="['image-item', index % 4 !== 0 ? 'margin-left' : '', index >= 4 ? 'margin-top' : '']"
+                <div class="image-item" :class="[index % 4 !== 0 ? 'margin-left' : '', index >= 4 ? 'margin-top' : '']"
                      v-for="(item, index) in images"
-                     :key="index">
-                    <img src="~images/empty_Exhibition.png"/>
-                    <img class="select-box" :src="item.isSelect ? imageSelect: imageUnselect"
-                         @click="switchSelectState(index)"/>
+                     :key="index" :style="getPictureRect()">
+                    <img :src="item.path" :style="getPictureRect()"/>
+                    <img class="select-box" :src="item.isSelect ? imageSelect: imageUnselect" @click="switchSelectState(index)"/>
                 </div>
             </div>
             <div class="image-count">共{{images.length}}张图片</div>
@@ -22,8 +21,8 @@
                 全选
             </div>
             <div class="image-footer-right">
-                <div class="image-download">下载图片</div>
-                <div class="create-poster">生成海报</div>
+                <div class="image-download" @click="downloadPicture()">下载图片</div>
+                <div class="create-poster" @click="uploadPicture()">生成海报</div>
             </div>
         </div>
     </layout-view>
@@ -37,88 +36,89 @@ export default {
         return {
             isNative: true,
             isAllSelected: false,
+            screenWidth: document.body.clientWidth,
             images: [{
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             },
             {
-                path: '',
+                path: 'http://media.yosar.com/19/344/1575861273785',
                 isSelect: false
             }],
             imageUnselect: require('../../themes/images/groupGoods/checkbox_default.png'),
@@ -129,6 +129,12 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
+        getPictureRect() {
+            // `padding-bottom:${y}px !important`
+            let width = (this.screenWidth - 15 * window.devicePixelRatio) / 4
+            console.log(this.screenWidth + ', width = ' + width)
+            return `width:${width}px`
+        },
         switchSelectState(index) {
             this.images[index].isSelect = !this.images[index].isSelect
         },
@@ -137,6 +143,26 @@ export default {
             this.images.forEach((item) => {
                 item.isSelect = this.isAllSelected
             })
+        },
+        downloadPicture() {
+            let pictures = []
+            this.images.forEach((item) => {
+                if (item.isSelect) {
+                    pictures.push(item.path)
+                }
+            })
+
+            if (pictures.length === 0) {
+                this.$toast('请选择图片')
+                return
+            }
+            utils.postMessage('download_pictures', pictures)
+        },
+        uploadPicture() {
+            let params = {
+                jumpUrl: 'selectPicture://'
+            }
+            utils.postMessage('', params)
         }
     }
 }
@@ -155,16 +181,17 @@ export default {
     }
 
     .image-item {
-        width: 90px;
-        height: 90px;
+        /*width: calc((100vw - 10px) / 4);*/
+        height: calc((100vw - 10px) / 4);
         position: relative;
         background: @color-c8;
     }
 
     .image-item img {
-        width: 90px;
-        height: 90px;
+        /*width: calc((100vw - 10px) / 4);*/
+        height: calc((100vw - 10px) / 4);
         position: absolute;
+        object-fit: cover;
     }
 
     .image-item .select-box {
@@ -175,7 +202,7 @@ export default {
         right: 4px;
         top: 4px;
         border-radius: 12px;
-        background: rgba(0, 0, 0, 0.3);;
+        /*background: rgba(0, 0, 0, 0.3);;*/
     }
 
     .margin-left {
