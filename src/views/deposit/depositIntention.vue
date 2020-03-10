@@ -62,7 +62,7 @@
 
     </div>
 
-        <div class="footview" :style="getBottomOffset(0)" style="bottom: 0">
+        <div class="footview" :style="getBottomOffset(0)">
             <button @click="commitForm">确定</button>
         </div>
 
@@ -173,12 +173,13 @@ export default {
             }
         },
         chooseAddress() {
+            window.scrollTo(0, 0)
             const params = {
                 jumpUrl: 'chooseAddress://'
             }
             utils.postMessage('', params)
             window.getAddressInfo = (adrs) => {
-                this.handleBottom = '0'
+                window.scrollTo(0, 0)
                 this.address = adrs
             }
         },
