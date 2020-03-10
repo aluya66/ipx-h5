@@ -55,20 +55,20 @@
                                 <p>{{parseFloat(posterData.totalPrice).toFixed(2)}}</p>
                             </section>
                             <section style="height:0.32rem"  :class='["flex-common","custom-add"]'>
-                                <p class="price-custom-title">单品均加价:</p>
+                                <p class="price-custom-title" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(88,91,102,1)'">单品均加价:</p>
                                 <div class="input-contain">
-                                    <input-view class="price-input" v-model="customPricePercent" formart="number" :hiddenClear="true" />
-                                    <p class="price-symbol">%</p>
+                                    <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="number" :hiddenClear="true" />
+                                    <p class="price-symbol" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(42,43,51,1)'">%</p>
                                 </div>
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
                                 <p>海报价:</p>
-                                <p>{{posterPrice}}</p>
+                                <p>{{isSuggest ? parseFloat(posterData.totalRetailPrice).toFixed(2) : posterPrice}}</p>
                             </section>
 
-                            <section class="suggest-selected">
-                                <img class="select-icon" :src="select_def" alt="">
-                                <p>使用建议零售价</p>
+                            <section class="suggest-selected" :style="isSuggest ? 'background:rgba(235,238,255,1)' : 'background:rgba(249,250,252,1)' ">
+                                <img class="suggest-select-icon" :src="isSuggest ? select_sel : select_def" alt="" @click="selectSuggest">
+                                <p :style="isSuggest ? 'color: rgba(60,92,246,1);':'color: rgba(42,43,51,1);'">使用建议零售价</p>
                             </section>
 
                         </div>
@@ -76,8 +76,9 @@
                 </template>
             </title-content>
 
-            <title-content title="联系手机" subTitle="(选填)">
+            <title-content title="联系方式" subTitle="(选填)">
                 <template slot="content">
+                    <p>手机号码</p>
                     <div style="padding:0.12rem 0.16rem">
                         <field
                             :class='["field-common","group-title"]'
@@ -139,7 +140,8 @@ export default {
             isPreview: false,
             mainImage: '',
             isSave: false,
-            isNative: false
+            isNative: false,
+            isSuggest: false
         }
     },
     watch: {
@@ -169,6 +171,14 @@ export default {
         },
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
+        },
+        selectSuggest() { //选中建议零售价
+            this.isSuggest = !this.isSuggest
+            if(this.isSuggest){
+                this.customPricePercent = ''
+            } else {
+                this.customPricePercent = '0'
+            }
         },
         // 预览海报
         handlePreviewPoster() {
@@ -584,6 +594,28 @@ export default {
                     color:@color-c1;
                     line-height:32px;
                     margin-left: 4px;
+                }
+            }
+            .suggest-selected {
+                display: flex;
+                width:120px;
+                height:32px;
+                background:rgba(249,250,252,1);
+                border-radius:8px;
+                align-items: center;
+                margin: auto;
+                margin-top: 8px;
+                > img {
+                    width: 16px;
+                    height: 16px;
+                    margin-left: 8px;
+                }
+                > p {
+                    font-size:12px;
+                    font-weight:bold;
+                    color: @color-c1;
+                    margin-left: 4px;
+                    line-height: 16px;
                 }
             }
         }
