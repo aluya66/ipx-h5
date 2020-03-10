@@ -155,6 +155,7 @@ export default {
             return utils.bottomOffset(offset)
         },
         handleVerifyPhone () {
+            window.scrollTo(0, 0)
             this.handleBottom = '0'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
@@ -162,6 +163,7 @@ export default {
             }
         },
         handleVerifyUserName () {
+            window.scrollTo(0, 0)
             this.handleBottom = '0'
         },
         handleHeight () {
