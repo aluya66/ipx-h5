@@ -153,16 +153,7 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        // scrollToBottom() {
-        //      // 将滚动拉到底
-        //     setTimeout(() => {
-        //         let scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0
-        //         window.scrollTo(0, Math.max(scrollHeight - 1, 0))
-        //     }, 100)
-        // },
         handleVerifyPhone () {
-            // this.scrollToBottom()
-            // window.scrollTo(0, 0)
             this.handleBottom = '0'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
@@ -170,7 +161,6 @@ export default {
             }
         },
         handleVerifyUserName () {
-            // this.scrollToBottom()
             this.handleBottom = '0'
         },
         handleHeight () {
@@ -223,6 +213,25 @@ export default {
             })
         }
 
+    },
+    destroyed() {
+        window.onresize = null
+    },
+    mounted() {
+        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        if (!isIos) {
+            window.onresize = () => {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'FIELD') {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            document.activeElement.scrollIntoView()
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 0)
+                }
+            }
+        }
     }
 }
 </script>
