@@ -26,7 +26,7 @@
                 class="input"
                 v-model="userPhone"
                 type="number"
-                maxlength="11" 
+                maxlength="11"
                 :border="false"
                 placeholder="请输入您的电话"
                 :error="showPhoneError"
@@ -59,7 +59,6 @@
 
         <vue-slider ref="slider3" v-bind="sliderData" v-model="sliderData.value" style="margin-top: 0.1rem; height: 0.04rem;">
         </vue-slider>
-
 
     </div>
 

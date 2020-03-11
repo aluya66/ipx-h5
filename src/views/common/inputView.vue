@@ -1,6 +1,6 @@
 <template>
     <div class="input-contain">
-        <input class="price-input" v-model="value" type="text" :disabled="disabledInput" @input="handleInput" @focus="()=>{ isFocus = true }" @blur="()=>{ isFocus = false }">
+        <input class="price-input" v-model="value" type="text" :style="`color:${inputColorValue}`" :disabled="disabledInput" @input="handleInput" @focus="()=>{ isFocus = true }" @blur="()=>{ isFocus = false }">
         <div @click.stop="handleClear" class="clear-icon">
             <img v-show="value.length > 0 && isFocus && !hiddenClear" :src="deleteIcon" alt="">
         </div>
@@ -23,6 +23,10 @@ export default {
         disabledInput: {
             type: Boolean,
             default: false
+        },
+        inputColorValue: {
+            type: String,
+            default: '#2A2B33'
         }
     },
     // watch: {

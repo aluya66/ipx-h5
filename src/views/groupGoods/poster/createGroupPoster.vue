@@ -46,7 +46,7 @@
                             </section>
                         </div>
                         <div v-if="selectPriceTitle==='单品调价'" class="price-suggest">
-                            <div class="goodInfo-list" v-for="goodsInfo in posterData.products" :key="goodsInfo.productCode"> 
+                            <div class="goodInfo-list" v-for="goodsInfo in posterData.products" :key="goodsInfo.productCode">
                                 <img :src="goodsInfo.mainPic" alt="">
                                 <div class="good-info">
                                     <p>{{goodsInfo.productName}}</p>
@@ -58,7 +58,7 @@
                                         <p style="line-height:0.32rem;font-size:0.13rem">海报价:</p>
                                         <p class="price-symbol">¥</p>
                                         <div class="input-contain">
-                                            <input-view style="color:rgba(245,48,48,1)"  v-model='singlePosterPrice' formart="digit"/>
+                                            <input-view class="price-input" :inputColorValue="'#F53030'" v-model="goodsInfo.retailPrice" formart="digit"/>
                                         </div>
                                     </section>
                                 </div>
@@ -176,12 +176,12 @@ export default {
             // }
             this.customPricePercent = val
             console.log('customPricePercent', this.customPricePercent)
-        },
-        singlePosterPrice(val) {
-            // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
-            // let price = parseFloat(val).toFixed(2)
-            this.singlePosterPrice = val
         }
+        // singlePosterPrice(val) {
+        //     // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
+        //     let price = parseFloat(val).toFixed(2)
+        //     this.singlePosterPrice = price
+        // }
     },
     computed: {
         posterPrice() {
@@ -189,7 +189,7 @@ export default {
             if (this.customPricePercent === '') {
                 add = '0'
             }
-            let p = parseFloat(this.posterData.totalPrice) * parseFloat(add || '0')/100
+            let p = parseFloat(this.posterData.totalPrice) * parseFloat(add || '0') / 100
             let p2 = p.toFixed(2)
             return p2
         }
@@ -201,9 +201,9 @@ export default {
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
         },
-        selectSuggest() { //选中建议零售价
+        selectSuggest() { // 选中建议零售价
             this.isSuggest = !this.isSuggest
-            if(this.isSuggest){
+            if (this.isSuggest) {
                 this.customPricePercent = ''
             } else {
                 this.customPricePercent = '0'
@@ -705,7 +705,7 @@ export default {
             > img {
                 margin: 30% 0;
             }
-            
+
         }
         // > img {
         //     margin: 13px 16px 32px;

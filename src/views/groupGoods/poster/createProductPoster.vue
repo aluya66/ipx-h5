@@ -31,37 +31,30 @@
                         </div>
                         <div v-if="selectPriceTitle==='建议零售价'" class="price-suggest">
                             <section :class='["flex-common","purchase-contain"]'>
-                                <p style="font-size:0.13rem" >采货价</p>
+                                <p style="font-size:0.13rem" >采货价:</p>
                                 <p>{{posterData.tshPrice}}</p>
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
-                                <p style="font-size:0.13rem">海报价格</p>
+                                <p style="font-size:0.13rem">海报价:</p>
                                 <p>{{posterData.retailPrice}}</p>
                                 <p>建议零售价</p>
                             </section>
                         </div>
                         <div v-else class="price-custom">
                             <section :class='["flex-common","purchase-contain"]'>
-                                <p style="font-size:0.13rem">采货价</p>
+                                <p style="font-size:0.13rem">采货价:</p>
                                 <p>{{posterData.tshPrice}}</p>
                             </section>
                             <section style="height:0.32rem"  :class='["flex-common","custom-add"]'>
-                                <p style="line-height:0.32rem;font-size:0.13rem">加价</p>
+                                <p style="line-height:0.32rem;font-size:0.13rem">加价:</p>
                                 <p class="price-symbol">¥</p>
 
                                 <div class="input-contain">
                                     <input-view v-model='addPrice' formart="digit"/>
                                 </div>
-
-                                <!-- <field
-                                    class="price-input"
-                                    v-model="addPrice"
-                                    clearable
-                                    @input="clearNoNum"
-                                /> -->
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
-                                <p>海报价格</p>
+                                <p>海报价:</p>
                                 <p>{{posterPrice}}</p>
                             </section>
                         </div>
@@ -69,10 +62,24 @@
                 </template>
             </title-content>
 
-            <title-content title="联系手机" subTitle="(选填)">
+            <title-content title="联系方式" subTitle="(选填)">
                 <template slot="content">
+                    <p class="phone-title">手机号码</p>
                     <div style="padding:0.12rem 0.16rem">
-                        <field class="phone-input" type="digit" placeholder="请填写联系手机" clearable v-model="phone" />
+                        <field
+                            :class='["field-common","group-title"]'
+                            :adjust-position='true'
+                            type="digit"
+                            placeholder="请填写联系手机"
+                            clearable
+                            v-model="phone"
+                        />
+                    </div>
+                    <div class="qrcode-content">
+                        <p class="phone-title">微信二维码</p>
+                        <div class="photo-choose">
+                            <img :src="choose_qrcode" alt="">
+                        </div>
                     </div>
                 </template>
             </title-content>
@@ -112,6 +119,7 @@ export default {
     data() {
         return {
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
+            choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
             purchasePrice: '100.00',
             poseterPrice: '200.00',
             groupTitle: '',
@@ -140,7 +148,7 @@ export default {
             if (this.addPrice === '') {
                 add = '0'
             }
-            let p = parseFloat(this.posterData.tshPrice) + parseFloat(add || '0')
+            let p = parseFloat(this.posterData.retailPrice) + parseFloat(add || '0')
             let p2 = p.toFixed(2)
             return p2
         }
@@ -406,12 +414,13 @@ export default {
         }
         .purchase-contain {
             font-weight:400;
-            color:@color-c1;
+            color:@color-c2;
             p {
                 &:nth-child(2) {
-                    margin-left: 24px;
+                    margin-left: 20px;
                     font-family: "alibabaBold";
                     font-size:16px;
+                    color:@color-c1;
                     &::before {
                             content: '¥ ';
                             width: 20px;
@@ -429,14 +438,14 @@ export default {
             flex-direction: row;
             align-items: center;
             p {
-                font-size:12px;
+                font-size:13px;
                 font-weight:400;
-                color:@color-c1;
+                color:@color-c2;
                 &:nth-child(2) {
                     font-size:16px;
                     font-weight:400;
                     color:@color-rc;
-                    margin-left: 12px;
+                    margin-left: 20px;
                     position: relative;
                     font-family: "alibabaBold";
                     &::before {
@@ -488,19 +497,20 @@ export default {
             .custom-add {
                 P {
                     &:nth-child(1) {
-                        font-size:12px;
+                        font-size:13px;
                         font-weight:400;
-                        color:@color-c1;
-                        width: 48px;
+                        color:@color-c2;
                         text-align: left
                     }
                     &:nth-child(2) {
                         font-size:12px;
+                        color:@color-c1;
                         font-family: "alibabaRegular";
                     }
                 }
                 .input-contain {
-                    width: 180px;
+                    flex: 1 1;
+                    margin-right: 16px;
                     height: 32px;
                     background:rgba(244,245,247,1);
                     position: relative;
@@ -515,7 +525,6 @@ export default {
                 }
                 .price-input {
                     outline: 0;
-                    width: 180px;
                     height: 32px;
                     font-size:16px;
                     font-weight:500;
@@ -529,10 +538,34 @@ export default {
                     font-weight:400;
                     color:@color-c1;
                     line-height:32px;
-                    margin-left: 12px;
+                    margin-left: 33px;
                 }
             }
         }
+    }
+    .phone-title {
+        font-size:13px;
+        font-weight:bold;
+        color: @color-c1;
+        margin: 12px 16px 0;
+    }
+    .qrcode-content {
+        margin-top: -8px;
+        .photo-choose {
+            margin: 13px 16px 32px;
+            width:109px;
+            height:109px;
+            background:rgba(249,250,252,1);
+            border-radius:8px;
+            text-align:center;
+            > img {
+                margin: 30% 0;
+            }
+
+        }
+        // > img {
+        //     margin: 13px 16px 32px;
+        // }
     }
     .bottom-prompt {
         height: 40px;
