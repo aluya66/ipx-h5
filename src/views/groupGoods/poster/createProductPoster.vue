@@ -77,9 +77,10 @@
                     </div>
                     <div class="qrcode-content">
                         <p class="phone-title">微信二维码</p>
-                        <div class="photo-choose">
+                        <div class="photo-choose" v-if="albumImg_url===''" @click="chooseQRCodeImg">
                             <img :src="choose_qrcode" alt="">
                         </div>
+                        <img class="Album-selectd" v-else :src="albumImg_url" alt="" @click="chooseQRCodeImg">
                     </div>
                 </template>
             </title-content>
@@ -120,6 +121,7 @@ export default {
         return {
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
             choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
+            albumImg_url: '',
             purchasePrice: '100.00',
             poseterPrice: '200.00',
             groupTitle: '',
@@ -170,6 +172,15 @@ export default {
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
         },
+        chooseQRCodeImg() {
+            const params = {
+                jumpUrl: 'choosePhoto://'
+            }
+            utils.postMessage('', params)
+            window.getAlbumPhoto = (imgData) => {
+                this.albumImg_url = 'data:image/jpeg;base64,' + imgData
+            }
+        },
         // 预览海报
         handlePreviewPoster() {
             if (this.posterData.productName.length <= 0) {
@@ -177,9 +188,14 @@ export default {
             } else if (this.posterData.productName.split(' ').join('').length === 0) {
                 this.$toast('请重新输入商品名称')
             } else {
+                this.$router.push({
+                    path: '/poster/previewProductPoster',
+                    query: { productData: this.posterData }
+                })
+
                 this.posterData.phone = this.phone
-                this.isPreview = true
-                this.isSave = false
+                // this.isPreview = true
+                // this.isSave = false
                 if (this.selectPriceTitle === '建议零售价') {
                     this.posterData.addPrice = '0'
                     this.posterData.isRetail = true
@@ -215,7 +231,8 @@ export default {
         },
         handleRequest() {
             const params = {
-                productCode: this.$route.query.productCode
+                productCode: this.$route.query.productCode,
+                skuCodes: ["052400016285000","052400016285002"],
             }
             this.$api.poster.getProductPosterInfo(params).then(res => {
                 let baseParams = utils.getStore('baseParams')
@@ -563,9 +580,9 @@ export default {
             }
 
         }
-        // > img {
-        //     margin: 13px 16px 32px;
-        // }
+        .Album-selectd {
+            margin: 13px 16px 32px;
+        }
     }
     .bottom-prompt {
         height: 40px;
