@@ -9,6 +9,9 @@
             <div class="title-header" slot="title">
                 组货方案
             </div>
+            <div class="title-right" slot="right" @click="back2Detail()">
+                原始方案
+            </div>
         </c-header>
         <!-- <div class="line" :style="marginTop"></div> -->
         <div class="panel" :style="getBottomOffset(69)">
@@ -22,19 +25,21 @@
             <div class="list-title">
                 <div class="dot"></div>
                 <p>样衣列表</p>
-                <div class="list-manage" @click="manageProduct()">{{ isManage ? '管理': '完成'}}</div>
+                <div class="list-manage" @click="manageProduct()">{{ isManage ? '完成' : '管理'}}</div>
             </div>
             <div class="list-content">
                 <div
                     class="product-cell"
                     v-for="(item, index) in groupGoodsRecords"
+                    :class="{ 'move-right' : isManage}"
                     :key="item.productCode"
                 >
+                    <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click="selectItem(index)"/>
                     <div class="photo_state">
                         <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
                         <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
                     </div>
-                    <div class="product-info">
+                    <div class="product-info" :class="{'product-info-move' : isManage}">
                         <p
                             :class="[item.disabled ? 'disableTitle' : '']"
                             @click="jumpToProduct(item)"
@@ -67,7 +72,7 @@
                 </div>
             </div>
             <div class="footer-content" :style="getBottomOffset(0)">
-                <div class=" total-price">
+                <div class=" total-price" v-show="!isManage">
                     <div class="group_price">
                         ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
                     </div>
@@ -76,12 +81,19 @@
                         <span class="tip_title">建议零售价</span>
                     </div>
                 </div>
-                <div class="group_tool_btn">
+                <div class="group_tool_btn" v-show="!isManage">
                     <button class="poster" @click="handleStore">极速上店</button>
                     <button class="pay" @click="goPay">立即采购</button>
                 </div>
+                <div class="product-manage" v-show="isManage">
+                    <div class="manage-left">
+                        <img :src="isAllSelected ? select_sel: select_def" @click="selectAll()"/>
+                        全选
+                    </div>
+                    <div class="manage-right" @click="clearSelectedProduct()">移除({{selectedNum}})</div>
+                </div>
             </div>
-            <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster">
+            <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage">
         </div>
         <!-- sku选择 -->
         <sku-select
@@ -118,8 +130,12 @@ export default {
             seletedItemIndex: '', // 选择调整商品下标
             isOrderSuply: false,
             isNative: false,
-            isManage: true,
-            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png')
+            isManage: false,
+            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
+            select_def: require('@/themes/images/groupGoods/checkbox_default.png'),
+            select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
+            selectedNum: 0,
+            isAllSelected: false
         }
     },
     mounted() {
@@ -216,6 +232,9 @@ export default {
         }
     },
     methods: {
+        back2Detail() {
+            this.$router.go(-1)
+        },
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
             let btm = 57
@@ -229,6 +248,26 @@ export default {
                 path: '/deposit'
             })
         },
+        selectItem(index) {
+            console.log('index = ' + index)
+            this.groupGoodsRecords[index].isSelected = !this.groupGoodsRecords[index].isSelected
+            if (this.groupGoodsRecords[index].isSelected) {
+                this.selectedNum++
+            } else {
+                this.selectedNum--
+            }
+        },
+        selectAll() {
+            this.isAllSelected = !this.isAllSelected
+            this.groupGoodsRecords.forEach((item) => {
+                item.isSelected = this.isAllSelected
+            })
+            if (this.isAllSelected) {
+                this.selectedNum = this.groupGoodsRecords.length
+            } else {
+                this.selectedNum = 0
+            }
+        },
         cashFormat(price) {
             return cash.changeFormat(price)
         },
@@ -237,18 +276,31 @@ export default {
         },
         manageProduct() {
             this.isManage = !this.isManage
+            this.selectedNum = 0
+            this.isAllSelected = false
+            this.groupGoodsRecords.forEach(item => {
+                item.isSelected = false
+            })
+        },
+        clearSelectedProduct() {
+            console.log('移除')
+            this.dialogAlert(true)
+            // for (let i = this.groupGoodsRecords.length - 1; i >= 0; i--) {
+            //     if (this.groupGoodsRecords[i].isSelected) {
+            //         this.groupGoodsRecords.remove(i)
+            //     }
+            // }
         },
         dialogAlert(isDialog) {
-            if (!this.isDialog && isDialog) {
-                this.isDialog = true
-                Dialog.alert({
-                    title: '商品信息变更',
-                    message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
-                    confirmButtonText: '我知道了',
-                    confirmButtonColor: '#007AFF'
-                }).then(() => {
-                })
-            }
+            Dialog.confirm({
+                title: '确定移除？',
+                message: '商品移除后将不再显示在方案内',
+                cancelButtonText: '取消',
+                cancelButtonColor: '#007AFF',
+                confirmButtonText: '确定',
+                confirmButtonColor: '#007AFF'
+            }).then(() => {
+            })
         },
         jumpToProduct(product) {
             window.sa.track('IPX_WEB', {
@@ -310,7 +362,8 @@ export default {
                         return {
                             ...item,
                             disabled: false,
-                            unablepay: false
+                            unablepay: false,
+                            isSelected: false
                         }
                     })
                     this.groupName = this.groupDetail.name
@@ -337,7 +390,8 @@ export default {
                             return {
                                 ...item,
                                 disabled: false,
-                                unablepay: true
+                                unablepay: true,
+                                isSelected: false
                             }
                         })
                         this.groupName = this.groupDetail.name
@@ -459,6 +513,17 @@ export default {
             height: 1px;
             background: @color-c7;
         }
+
+        .title-header {
+            font-weight: bold;
+        }
+
+        .title-right {
+            font-size: 14px;
+            font-family: PingFangSC-Medium,PingFang SC;
+            font-weight: bold;
+            color: @color-ec;
+        }
     }
 
     .line {
@@ -473,6 +538,7 @@ export default {
         background-color: white;
         height: calc(100vh - 65px);
         overflow-y: scroll;
+        overflow-x: hidden;
         padding: 16px;
         margin-top: -1px;
     }
@@ -557,6 +623,13 @@ export default {
             margin-bottom: 32px;
             display: flex;
             position: relative;
+            align-items: center;
+
+            .product-item-check {
+                width: 20px;
+                height: 20px;
+                margin-right: 16px;
+            }
 
             .photo_state {
                 position: relative;
@@ -585,10 +658,13 @@ export default {
                 }
             }
 
+            .product-info-move {
+                margin-right: -36px;
+            }
+
             .product-info {
                 margin-left: 12px;
                 width: calc(100vw - 152px);
-
                 > p {
                     font-size: 16px;
                     font-weight: 500;
@@ -749,6 +825,35 @@ export default {
         box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
         border-radius: 12px 12px 0px 0px;
         padding: 5px 16px 5px;
+
+        .product-manage {
+            display: flex;
+            flex-direction: row;
+            width: calc(100vw - 32px);
+            height: 44px;
+            margin-bottom: 5px;
+            justify-content: space-between;
+            .manage-left {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                img {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
+                }
+            }
+            .manage-right {
+                height:40px;
+                padding-left: 16px;
+                color: white;
+                font-size: 14px;
+                line-height: 40px;
+                padding-right: 16px;
+                background:rgba(245,48,48,1);
+                border-radius:20px;
+            }
+        }
 
         .group_price {
             font-size: 12px;
