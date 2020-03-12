@@ -9,8 +9,8 @@
                 <div class="image-item" :class="[index % 4 !== 0 ? 'margin-left' : '', index >= 4 ? 'margin-top' : '']"
                      v-for="(item, index) in images"
                      :key="index" :style="getPictureRect()">
-                    <img :src="item.path" :style="getPictureRect()"/>
-                    <img class="select-box" :src="item.isSelect ? imageSelect: imageUnselect" @click="switchSelectState(index)"/>
+                    <img :src="item.skuDefaultImg" :style="getPictureRect()" alt=""/>
+                    <img class="select-box" :src="item.isSelected ? imageSelect: imageUnselect" @click="switchSelectState(index)" alt=""/>
                 </div>
             </div>
             <div class="image-count">共{{images.length}}张图片</div>
@@ -22,7 +22,7 @@
             </div>
             <div class="image-footer-right">
                 <div class="image-download" @click="downloadPicture()">下载图片</div>
-                <div class="create-poster" @click="uploadPicture()">生成海报</div>
+                <div class="create-poster" @click="createPoster()">生成海报</div>
             </div>
         </div>
     </layout-view>
@@ -37,90 +37,9 @@ export default {
             isNative: true,
             isAllSelected: false,
             screenWidth: document.body.clientWidth,
-            images: [{
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            },
-            {
-                path: 'http://media.yosar.com/19/344/1575861273785',
-                isSelect: false
-            }],
+            productCode: '',
+            fromPath: 'product', // product单品，group组货
+            images: [],
             imageUnselect: require('../../themes/images/groupGoods/checkbox_default.png'),
             imageSelect: require('../../themes/images/groupGoods/selected_icon.png')
         }
@@ -136,19 +55,19 @@ export default {
             return `width:${width}px`
         },
         switchSelectState(index) {
-            this.images[index].isSelect = !this.images[index].isSelect
+            this.images[index].isSelected = !this.images[index].isSelected
         },
         selectAll() {
             this.isAllSelected = !this.isAllSelected
             this.images.forEach((item) => {
-                item.isSelect = this.isAllSelected
+                item.isSelected = this.isAllSelected
             })
         },
         downloadPicture() {
             let pictures = []
             this.images.forEach((item) => {
-                if (item.isSelect) {
-                    pictures.push(item.path)
+                if (item.isSelected) {
+                    pictures.push(item.skuDefaultImg)
                 }
             })
 
@@ -158,11 +77,58 @@ export default {
             }
             utils.postMessage('download_pictures', pictures)
         },
-        uploadPicture() {
-            let params = {
-                jumpUrl: 'selectPicture://'
+        createPoster() {
+            // let params = {
+            //     jumpUrl: 'selectPicture://'
+            // }
+            // utils.postMessage('', params)
+            let skuList = this.images.filter(item => {
+                return item.isSelected
+            })
+            if (skuList.length === 0) {
+                this.$toast('请选择图片')
+                return
             }
-            utils.postMessage('', params)
+            utils.setStore('productSkuList', skuList)
+            if (this.fromPath === 'product') { // 单品
+                this.$router.push({
+                    path: '/poster/editProductPoster',
+                    query: this.productCode
+                })
+            } else { // 组货
+                this.$router.push({
+                    path: '/poster/editProductPoster',
+                    query: this.productCode
+                })
+            }
+        },
+        getSkuList() {
+            const params = {
+                productCode: this.productCode
+            }
+            this.$api.poster.getSkuList(params).then(res => {
+                if (res instanceof Array) {
+                    this.images = res
+                    // res.forEach(item => {
+                    //     this.images.push(item.imageModelList)
+                    // })
+                    this.images = this.images.map(item => {
+                        return {
+                            ...item,
+                            isSelected: false
+                        }
+                    })
+                }
+            })
+        }
+    },
+    mounted() {
+        if (this.$route.query.productCode !== undefined) {
+            this.productCode = this.$route.query.productCode
+            this.getSkuList()
+        }
+        if (this.$route.query.fromPath !== undefined) {
+            this.fromPath = this.$route.query.fromPath
         }
     }
 }
@@ -233,7 +199,7 @@ export default {
         width: 100%;
         justify-content: space-between;
         box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
-        border-radius: 20px 20px 0px 0px;
+        border-radius: 20px 20px 0 0;
     }
 
     .image-footer-left {
