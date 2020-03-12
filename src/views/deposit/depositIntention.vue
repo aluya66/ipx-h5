@@ -110,6 +110,7 @@ export default {
     created() {
         this.busiStyle = ''
         utils.setStore('businStyle', '')
+        this.scrollTop()
     },
     activated() {
         this.busiStyle = utils.getStore('businStyle')
@@ -160,7 +161,11 @@ export default {
                     // if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
                         window.setTimeout(function() {
                             if ('scrollIntoView' in document.activeElement) {
-                                document.activeElement.scrollIntoView()
+                                // document.activeElement.scrollIntoView()
+                                window.scroll(0,0)
+                                // alert('22222')
+                                document.getElementById('footview').scrollIntoView(false)
+
                             } else {
                                 document.activeElement.scrollIntoViewIfNeeded()
                             }
@@ -170,6 +175,7 @@ export default {
             }
         },
         handleVerifyPhone () {
+            window.scroll(0,0)
             this.handleBottom = '0'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
@@ -177,6 +183,7 @@ export default {
             }
         },
         handleVerifyUserName () {
+            window.scroll(0,0)
             this.handleBottom = '0'
         },
         handleHeight () {
@@ -191,7 +198,7 @@ export default {
             }
             utils.postMessage('', params)
             window.getAddressInfo = (adrs) => {
-                this.scrollTop()
+                // this.scrollTop()
                 this.address = adrs
             }
         },
@@ -291,7 +298,7 @@ export default {
 }
 .content {
     overflow-y: scroll;
-    overflow-x:hidden;
+    // overflow-x:hidden;
     height: 80%;
     margin: 16px 0;
     > p {
