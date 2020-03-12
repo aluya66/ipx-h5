@@ -153,6 +153,22 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
+        scrollTop() {
+            let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+            if (!isIos) {
+                window.onresize = () => {
+                    // if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                        window.setTimeout(function() {
+                            if ('scrollIntoView' in document.activeElement) {
+                                document.activeElement.scrollIntoView()
+                            } else {
+                                document.activeElement.scrollIntoViewIfNeeded()
+                            }
+                        }, 100)
+                    // }
+                }
+            }
+        },
         handleVerifyPhone () {
             this.handleBottom = '0'
             if (this.userPhone.length < 11) {
@@ -175,6 +191,7 @@ export default {
             }
             utils.postMessage('', params)
             window.getAddressInfo = (adrs) => {
+                this.scrollTop()
                 this.address = adrs
             }
         },
@@ -216,22 +233,6 @@ export default {
     },
     destroyed() {
         window.onresize = null
-    },
-    mounted() {
-        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-        if (!isIos) {
-            window.onresize = () => {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                    window.setTimeout(function() {
-                        if ('scrollIntoView' in document.activeElement) {
-                            document.activeElement.scrollIntoView()
-                        } else {
-                            document.activeElement.scrollIntoViewIfNeeded()
-                        }
-                    }, 0)
-                }
-            }
-        }
     }
 }
 </script>
@@ -357,12 +358,12 @@ export default {
 }
 
     .footview {
-        position: absolute;
-        margin: 0 16px 5px;
+        // position: absolute;
+        // margin: 0 16px 5px;
         bottom: 0;
-        // position: fixed;
-        // left: 16px;
-        // margin-bottom: 5px;
+        position: fixed;
+        left: 16px;
+        margin-bottom: 5px;
         > button {
             width: calc(100vw - 32px);
             height:50px;
