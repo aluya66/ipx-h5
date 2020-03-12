@@ -158,19 +158,14 @@ export default {
             let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
             if (!isIos) {
                 window.onresize = () => {
-                    // if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
                         window.setTimeout(function() {
                             if ('scrollIntoView' in document.activeElement) {
-                                // document.activeElement.scrollIntoView()
                                 window.scroll(0,0)
-                                // alert('22222')
                                 document.getElementById('footview').scrollIntoView(false)
-
                             } else {
                                 document.activeElement.scrollIntoViewIfNeeded()
                             }
                         }, 100)
-                    // }
                 }
             }
         },
@@ -198,7 +193,6 @@ export default {
             }
             utils.postMessage('', params)
             window.getAddressInfo = (adrs) => {
-                // this.scrollTop()
                 this.address = adrs
             }
         },
