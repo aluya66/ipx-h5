@@ -89,7 +89,7 @@ export default {
             this.getDesignerSamples()
         },
         getBackgroundUrl() {
-            return `background-image:url(${this.designer.backgroundUrl});background-size:100%`
+            return `background-image:url(${this.designer.backgroundUrl});background-size:100%;background-repeat:no-repeat`
         },
         handleAdjustHeaderBg() {
             let w = window.screen.width
@@ -97,7 +97,7 @@ export default {
             if (this.headerAlpha > 0) {
                 h = 0
             }
-            return `background-size:100% ${h}rem`
+            return `background-size:100% ${h}rem;margin-bottom:0`
         },
         getHeaderBg() {
             return `background:rgba(255,255,255,${this.headerAlpha});margin-bottom:0`
@@ -125,7 +125,7 @@ export default {
         },
         getPictureRect() {
             // `padding-bottom:${y}px !important`
-            let width = (document.body.clientWidth - 40 * window.devicePixelRatio) / 2
+            let width = (document.body.clientWidth - 40 * window.devicePixelRatio - 2) / 2
             return `width:${width}px`
         },
         go2Detail(item) {
@@ -210,6 +210,7 @@ export default {
         height: 44px;
         width: 100%;
         display: flex;
+        margin-top: -1px;
         z-index: 2;
         flex-direction: row;
         background: white;

@@ -4,10 +4,10 @@
             <img class="photo" :src="designer.avatar"/>
             <span class="name">{{designer.nickname}}</span>
             <span class="label">IPX原创设计师</span>
-            <img class="chat linear-background" src="../../themes/images/designer/icon_28_28_infor_def@2x.png">
-            <div class="linear-background attention">
-                <img src="../../themes/images/designer/icon_plus_20_20@2x.png"/>
-                关注
+            <img class="chat linear-background" src="../../themes/images/designer/icon_28_28_infor_def@2x.png" @click="handleCall">
+            <div :class="[designer.isFocus === 0 ? 'linear-background attention': 'has-attention']" @click="handleFollow">
+                <img v-if="designer.isFocus === 0" src="../../themes/images/designer/icon_plus_20_20@2x.png"/>
+                {{designer.isFocus === 0 ? '关注' : '已关注'}}
             </div>
         </div>
         <div class="designer-bottom">
@@ -32,12 +32,37 @@
 </template>
 
 <script>
+import utils from '../../utils'
 export default {
     props: {
         designer: {
             type: Object,
             default() {
                 return {}
+            }
+        }
+    },
+    methods: {
+        handleCall() {
+            utils.postMessage('customer_service')
+        },
+        handleFollow() {
+            debugger
+            let params = {
+                designerId: this.designer.designerId,
+                designsHallId: this.designer.id,
+                isFocus: 0
+            }
+            if (this.designer.isFocus === 0) { // 0未关注   1关注
+                params.isFocus = 1
+                this.$api.designer.addFollow(params).then(res => {
+                    this.designer.isFocus = params.isFocus
+                })
+            } else {
+                params.isFocus = 0
+                this.$api.designer.cancelFollow(params).then(res => {
+                    this.designer.isFocus = params.isFocus
+                })
             }
         }
     }
@@ -90,7 +115,7 @@ export default {
             }
 
             .linear-background {
-                background: linear-gradient(146deg, rgba(53, 85, 241, 1) 0%, rgba(136, 58, 241, 1) 100%);
+                background: linear-gradient(146deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
             }
 
             .chat {
@@ -113,10 +138,28 @@ export default {
                 align-items: center;
                 top: 30px;
                 right: 12px;
+                font-size: 12px;
 
                 > img {
                     margin-right: 4px;
+                    width: 20px;
+                    height: 20px;
                 }
+            }
+            .has-attention {
+                width: 68px;
+                height: 28px;
+                border-radius: 4px;
+                position: absolute;
+                color: @color-c3;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 12px;
+                top: 30px;
+                right: 12px;
+                background: white;
+                border: 1px solid @color-c4;
             }
         }
 

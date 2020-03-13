@@ -81,18 +81,13 @@ export default {
     },
     methods: {
         getBackgroundUrl() {
-            return `background-image:url(${this.designer.backgroundUrl});background-size:100%`
+            return `background-image:url(${this.designer.backgroundUrl});background-size:100%;background-repeat:no-repeat`
         },
         handleAdjustHeaderBg() {
-            let w = window.screen.width
-            let h = w * 476 / 375 / 100
-            if (this.headerAlpha > 0) {
-                h = 0
-            }
-            return `background-size:100% ${h}rem`
+            return `background-size:100%`
         },
         getHeaderBg() {
-            return `background:rgba(255,255,255,${this.headerAlpha});margin-bottom:0`
+            return `background:rgba(255,255,255,${this.headerAlpha});`
         },
         getDesignerHall() {
             const params = {
@@ -105,7 +100,7 @@ export default {
         },
         getPictureRect() {
             // `padding-bottom:${y}px !important`
-            let width = (document.body.clientWidth - 48 * window.devicePixelRatio) / 3
+            let width = (document.body.clientWidth - 48 * window.devicePixelRatio - 3) / 3
             return `width:${width}px`
         },
         getCustomPay() {

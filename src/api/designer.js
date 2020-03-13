@@ -46,3 +46,30 @@ export const postUnCollectSample = params => Http.fetch(`${context}/v1/collect/c
 export const getCustomPay = params => Http.fetch(`${context}/v1/exhibithall/custom`, params, {
     method: 'get'
 })
+
+/**
+ * 加关注
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const addFollow = params => Http.fetch(`${context}/v1/followhall/add`, params, {
+    method: 'post'
+})
+
+/**
+ * 取消关注
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const cancelFollow = params => Http.fetch(`${context}/v1/followhall/cancel`, params, {
+    method: 'put'
+})
+
+/**
+ * 设计师样衣厅代理
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const agentExhibition = params => Http.fetch(`${context}/v1/agentexhibithall`, params, {
+    method: 'post'
+})
