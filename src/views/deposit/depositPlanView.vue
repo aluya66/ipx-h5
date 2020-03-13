@@ -11,8 +11,8 @@
             </div>
             <div class="plan-info">
                 <p>{{data.effectiveDays}}天押金有效期</p>
-                <p>{{data.refundTimes}}次免费全场换货</p>
-                <p>{{data.refundRate}}%退货退款</p>
+                <p>{{data.refundTimes}}天退货周期</p>
+                <p>{{data.refundRate}}%受理退货</p>
             </div>
         </div>
         <div class="out-side-left" v-show="showConnectIcon">
