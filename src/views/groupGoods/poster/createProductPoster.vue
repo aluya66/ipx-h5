@@ -94,10 +94,10 @@
                 </div>
             </template>
         </fixed-view>
-        <div class="popup-view" v-show="isPreview" >
+        <!-- <div class="popup-view" v-show="isPreview" >
             <img :src="deleteIcon" alt="" @click="handleClosePopup" >
             <popup-view ref="imageView" :isDownload='isSave' :isShowPopup="isPreview" :posterData="posterData" @close='handleClosePopup' />
-        </div>
+        </div> -->
     </layout-view>
 </template>
 
@@ -106,7 +106,7 @@ import TitleContent from '../../common/titleContent.vue'
 import { Field } from 'vant'
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
-import PopupView from './productPosterPopup.vue'
+// import PopupView from './productPosterPopup.vue'
 import InputView from '../../common/inputView.vue'
 
 export default {
@@ -114,7 +114,7 @@ export default {
         TitleContent,
         Field,
         FixedView,
-        PopupView,
+        // PopupView,
         InputView
     },
     data() {
@@ -179,6 +179,7 @@ export default {
             utils.postMessage('', params)
             window.getAlbumPhoto = (imgData) => {
                 this.albumImg_url = 'data:image/jpeg;base64,' + imgData
+                this.posterData.albumImg_url = this.albumImg_url
             }
         },
         // 预览海报
@@ -216,10 +217,12 @@ export default {
                 this.$toast('请输入商品名称')
             } else if (this.posterData.productName.split(' ').join('').length === 0) {
                 this.$toast('请重新输入商品名称')
+            } else if (this.albumImg_url === '') {
+                this.$toast('请上传微信二维码')
             } else {
                 this.posterData.phone = this.phone
-                this.isPreview = true
-                this.isSave = true
+                // this.isPreview = true
+                // this.isSave = true
                 if (this.selectPriceTitle === '建议零售价') {
                     this.posterData.addPrice = '0'
                     this.posterData.isRetail = true
@@ -232,7 +235,7 @@ export default {
         handleRequest() {
             const params = {
                 productCode: this.$route.query.productCode,
-                skuCodes: ["052400016285000","052400016285002"],
+                skuCodes: ['052400016285000', '052400016285002']
             }
             this.$api.poster.getProductPosterInfo(params).then(res => {
                 let baseParams = utils.getStore('baseParams')
@@ -244,6 +247,7 @@ export default {
                     this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
                     this.posterData.tshPrice = parseFloat(this.posterData.tshPrice).toFixed(2)
                     this.posterData.retailPrice = parseFloat(this.posterData.retailPrice).toFixed(2)
+                    this.posterData.albumImg_url = this.albumImg_url
                 } else {
                     // this.$toast('返回数据错误')
                 }
@@ -574,14 +578,13 @@ export default {
             height:109px;
             background:rgba(249,250,252,1);
             border-radius:8px;
-            text-align:center;
-            > img {
-                margin: 30% 0;
-            }
-
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .Album-selectd {
             margin: 13px 16px 32px;
+            height: calc(100vw - 32px);
         }
     }
     .bottom-prompt {
