@@ -16,5 +16,14 @@ export const getGroupPosterInfo = params => Http.fetch(`${context}/v1/interest/g
  * @param {*} params params数据对象
  */
 export const getProductPosterInfo = params => Http.fetch(`${context}/v1/interest/productposter`, params, {
-    method: 'post'
+    method: 'get'
+})
+
+/**
+ * 图片列表
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const getSkuList = params => Http.fetch(`${context}/v1/interest/skulist`, params, {
+    method: 'get'
 })

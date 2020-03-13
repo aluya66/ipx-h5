@@ -1,10 +1,12 @@
 <template>
-    <div class="samples-container" :style="getBackgroundUrl()">
-        <div class="samples-main">
-            <designer-info class="samples-designer" :designer="designer" />
-        </div>
-        <div class="samples-list">
-            <div class="samples-tabs">
+    <layout-view :style="headerAlpha === 0 ? getBackgroundUrl() : handleAdjustHeaderBg()">
+        <c-header slot="header" :left-arrow="true" :showBorderBottom='headerAlpha !== 0'
+                  :isLight="false"
+                  :pageOutStatus="true"
+                  :style="getHeaderBg()">
+        </c-header>
+        <div class="samples-container">
+            <div class="fixed-tabs" v-if="isFixedCondition">
                 <div class="tab" :class="{'tab-select': sortBy === 1 || sortBy === 2}" @click="switchSortBy(1)">
                     销售
                 </div>
@@ -12,25 +14,43 @@
                     最新
                 </div>
                 <div class="tab" :class="{'tab-select': sortBy === 4 || sortBy === 5}" @click="switchSortBy(3)">
-                    价格<img />
+                    价格<img :src="sortBy === 4 ? priceIconDown : (sortBy === 5 ? priceIconUp : priceIconDef)"/>
                 </div>
             </div>
-            <div class="all-cloth">
-                <div class="cloth-item" v-for="(item, index) in products" :key="index" :class="[index % 2 === 0 ? 'item-left' : 'item-right']" :style="getPictureRect()">
-                    <img class="main-pic" :src="item.mainPic" :style="getPictureRect()"/>
-                    <span class="cloth-title">{{item.productName}}</span>
-                    <div class="cloth-data">
-                        <span class="price">¥{{item.defaultMinPrice}}</span>
-                        <div class="collect" @click="doCollect(index, item)"><img :src="item.isCollect === 1 ? selectIcon : unselectIcon"/><span><!--{{item.collectCount}}--></span></div>
+            <div class="samples-list">
+                <div class="samples-main">
+                    <designer-info class="samples-designer" :designer="designer" />
+                </div>
+                <div class="samples-tabs">
+                    <div class="tab" :class="{'tab-select': sortBy === 1 || sortBy === 2}" @click="switchSortBy(1)">
+                        销售
+                    </div>
+                    <div class="tab" :class="{'tab-select': sortBy === 3}" @click="switchSortBy(2)">
+                        最新
+                    </div>
+                    <div class="tab" :class="{'tab-select': sortBy === 4 || sortBy === 5}" @click="switchSortBy(3)">
+                        价格<img :src="sortBy === 4 ? priceIconDown : (sortBy === 5 ? priceIconUp : priceIconDef)"/>
+                    </div>
+                </div>
+                <div class="all-cloth">
+                    <div class="cloth-item" v-for="(item, index) in products" :key="index" :class="[index % 2 === 0 ? 'item-left' : 'item-right']"
+                         :style="getPictureRect()" @click="go2Detail(item)">
+                        <img class="main-pic" :src="item.mainPic" :style="getPictureRect()"/>
+                        <span class="cloth-title">{{item.productName}}</span>
+                        <div class="cloth-data">
+                            <span class="price">¥{{item.defaultMinPrice}}</span>
+                            <div class="collect" @click="doCollect(index, item)"><img :src="item.isCollect === 1 ? selectIcon : unselectIcon"/><span><!--{{item.collectCount}}--></span></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </layout-view>
 </template>
 
 <script>
 import DesignerInfo from './designerInfo.vue'
+import utils from '../../utils'
 export default {
     components: {
         DesignerInfo
@@ -44,7 +64,13 @@ export default {
             sortBy: 1, // 排序类型 1销量高到低 2销量低到高 3最新 4价格高到低 5价格低到高
             designerId: '0',
             unselectIcon: require('../../themes/images/designer/icon_collect_def_16_16@2x.png'),
-            selectIcon: require('../../themes/images/designer/icon_collect_sel_16_16@2x.png')
+            selectIcon: require('../../themes/images/designer/icon_collect_sel_16_16@2x.png'),
+            priceIconDef: require('../../themes/images/designer/control_drop_down_def.png'),
+            priceIconUp: require('../../themes/images/designer/control_drop_up_blue.png'),
+            priceIconDown: require('../../themes/images/designer/control_drop_down_blue.png'),
+            headerAlpha: 0,
+            isFixedCondition: false,
+            conditionTop: 0
         }
     },
     methods: {
@@ -60,9 +86,21 @@ export default {
                 if (this.sortBy === 4) { this.sortBy = 5 } else { this.sortBy = 4 }
                 break
             }
+            this.getDesignerSamples()
         },
         getBackgroundUrl() {
-            return `background-image:url(${this.designer.backgroundUrl})`
+            return `background-image:url(${this.designer.backgroundUrl});background-size:100%`
+        },
+        handleAdjustHeaderBg() {
+            let w = window.screen.width
+            let h = w * 476 / 375 / 100
+            if (this.headerAlpha > 0) {
+                h = 0
+            }
+            return `background-size:100% ${h}rem`
+        },
+        getHeaderBg() {
+            return `background:rgba(255,255,255,${this.headerAlpha});margin-bottom:0`
         },
         getDesignerHall() {
             const params = {
@@ -75,7 +113,10 @@ export default {
         },
         getDesignerSamples() {
             const params = {
-                designerId: this.designerId
+                pageSize: 10,
+                pageNo: 1,
+                shopId: this.designer.shopId,
+                sortType: this.sortBy
             }
             this.$api.designer.getDesignerSamples(params).then(res => {
                 this.products = res
@@ -86,6 +127,13 @@ export default {
             // `padding-bottom:${y}px !important`
             let width = (document.body.clientWidth - 40 * window.devicePixelRatio) / 2
             return `width:${width}px`
+        },
+        go2Detail(item) {
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: item.productCode
+            }
+            utils.postMessage('', params)
         },
         doCollect(index, item) {
             const params = {
@@ -106,42 +154,115 @@ export default {
                     this.products[index].collectCount--
                 })
             }
+        },
+        handleScroll() {
+            window.addEventListener(
+                'scroll',
+                () => {
+                    let scrollTop = document.querySelector('.samples-container') && document.querySelector('.samples-container').scrollTop
+                    if (scrollTop >= 60 * window.devicePixelRatio) {
+                        this.headerAlpha = 1
+                    } else {
+                        this.headerAlpha = 0
+                    }
+                    this.isFixedCondition = scrollTop >= 244 * window.devicePixelRatio
+                },
+                true
+            )
+        },
+        fixedConditionContainer() {
+            return `position:fixed;left:0;top:${this.conditionTop}px;z-index:2;`
         }
     },
     mounted() {
+        this.handleScroll()
         if (this.$route.query.designerId !== undefined) {
             this.designerId = this.$route.query.designerId
             this.getDesignerHall()
             this.getDesignerSamples()
+        }
+    },
+    activated() {
+        let baseParams = utils.getStore('baseParams')
+        let statusBarHeight = Number(baseParams.statusBarHeight) / 100
+
+        if (baseParams.platform === 'ios') {
+            if (Number(baseParams.statusBarHeight) > 20) {
+                this.conditionTop = (Number(statusBarHeight) + 44) * window.devicePixelRatio
+                // this.paddingBottom = '0.34rem'
+            } else {
+                this.conditionTop = (statusBarHeight + 44) * window.devicePixelRatio
+            }
+        } else {
+            this.conditionTop = (statusBarHeight + 44) * window.devicePixelRatio
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
+    .header-bg {
+        background: transparent;
+    }
+    .fixed-tabs {
+        position: fixed;
+        left: 0;
+        height: 44px;
+        width: 100%;
+        display: flex;
+        z-index: 2;
+        flex-direction: row;
+        background: white;
+        .tab {
+            line-height: 44px;
+            text-align: center;
+            flex-grow: 1;
+            font-weight: bold;
+            font-size: 14px;
+            color: @color-c1;
+            >img {
+                width: 16px;
+                height: 16px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+        .tab-select {
+            color: @color-ec;
+        }
+    }
     .samples-container {
         position: relative;
-        height: calc(100vh);
+        height: 100%;
+        overflow: scroll;
         background-repeat: no-repeat;
         background-attachment: fixed;
 
-        .samples-main {
-            z-index: 2;
-            position: absolute;
+        .samples-header {
             width: 100%;
-            left: 0;
-            top: 0;
-            .samples-designer {
-                margin-top: 136px;
+            position: fixed;
+            z-index: 1;
+            >img {
+                width: 26px;
+                height: 26px;
+                margin-left: 16px;
             }
+        }
+        .samples-main {
+            width: 100%;
+            margin-top: -94px;
+            /*.samples-designer {*/
+            /*    margin-top: 136px;*/
+            /*}*/
         }
         .samples-list {
             background: white;
-            padding-top: 100px;
             width: 100%;
             position: absolute;
+            display: flex;
+            flex-direction: column;
             left: 0;
-            top: 232px;
+            top: 142px;
             .samples-tabs {
                 height: 44px;
                 width: 100%;
@@ -157,6 +278,12 @@ export default {
                     font-weight: bold;
                     font-size: 14px;
                     color: @color-c1;
+                    >img {
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
                 }
                 .tab-select {
                     color: @color-ec;
