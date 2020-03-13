@@ -4,7 +4,7 @@
        <div slot="title">
            预览海报
        </div>
-       <template slot="right" tag="div">
+       <template slot="right" tag="div" @click="savePoster">
            保存
        </template>
    </c-header>
@@ -64,6 +64,10 @@
 </template>
 
 <script>
+import { Toast } from 'vant'
+import html2canvas from 'html2canvas'
+import utils from 'utils'
+
 export default {
     components: {
 
@@ -80,6 +84,56 @@ export default {
     },
     activated() {
         this.productData = this.$route.query.productData
+    },
+    methods: {
+        savePoster() {
+            let _this = this
+            Toast.loading({
+                message: '生成海报...',
+                forbidClick: true,
+                duration: 0
+            })
+            setTimeout(() => {
+                let img = _this.$refs['image']
+                let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+                html2canvas(img, {
+                    useCORS: true, // 允许图片跨域
+                    allowTaint: false,
+                    scale: isIos ? 1 : 0.6, // 设置像素比 越大越清晰 但是iOS可能无法渲染
+                    taintTest: true,
+                    dpi: window.devicePixelRatio
+                }).then(function(canvas) {
+                    _this.photoUrl = canvas.toDataURL()
+                    _this.downloadIamge(_this.photoUrl, 'poster.png')
+                })
+            }, 3000)
+        },
+        downloadIamge(imgsrc, name) {
+            var image = new Image()
+            var canvas = document.createElement('canvas')
+            var context = canvas.getContext('2d')
+            // 解决跨域 Canvas 污染问题
+            image.setAttribute('crossOrigin', 'anonymous')
+            image.src = imgsrc
+            image.style.objectFit = 'contain'
+            image.onload = function() {
+                canvas.width = image.width
+                canvas.height = image.height
+                context.drawImage(image, 0, 0, image.width, image.height)
+                // 得到图片的base64编码数据
+                var url = canvas.toDataURL('image/png')
+                let deleteString = 'data:image/png;base64,'
+                var index = url.indexOf(deleteString)
+                if (index === 0) {
+                    let url2 = url.slice(deleteString.length)
+                    utils.postMessage('save_image', url2)
+                    Toast.clear()
+                } else {
+                    this.$toast('保存失败请重试')
+                }
+            }
+            image.src = imgsrc
+        }
     }
 }
 </script>
