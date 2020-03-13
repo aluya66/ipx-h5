@@ -107,9 +107,10 @@
                     </div>
                     <div class="qrcode-content">
                         <p class="phone-title">微信二维码</p>
-                        <div class="photo-choose">
+                        <div class="photo-choose" v-if="albumImg_url===''" @click="chooseQRCodeImg">
                             <img :src="choose_qrcode" alt="">
                         </div>
+                        <img class="Album-selectd" v-else :src="albumImg_url" alt="" @click="chooseQRCodeImg">
                     </div>
                 </template>
             </title-content>
@@ -118,16 +119,15 @@
         <fixed-view class="footer-shadow">
             <template slot="footerContain">
                 <div class="footer-view">
-                    <section :class='["section-common","button-default"]' @click="handlePreviewPoster">预览海报</section>
-                    <section :class='["section-common","button-select"]' @click="handleCreatePoster">保存海报</section>
+                    <section :class='["section-common","button-select"]' @click="handlePreviewPoster">立即生成海报</section>
                 </div>
             </template>
         </fixed-view>
 
-        <div class="popup-view" v-show="isPreview" >
+        <!-- <div class="popup-view" v-show="isPreview" >
             <img :src="deleteIcon" alt="" @click="handleClosePopup" >
             <popup-view ref="imageView" :isDownload='isSave' :isShowPopup="isPreview" :posterData="posterData" @close='handleClosePopup'/>
-        </div>
+        </div> -->
     </layout-view>
 </template>
 
@@ -136,15 +136,15 @@ import TitleContent from '../../common/titleContent.vue'
 import { Field } from 'vant'
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
-import PopupView from './groupPosterPopup'
+// import PopupView from './groupPosterPopup'
 import InputView from '../../common/inputView.vue'
 export default {
     components: {
         TitleContent,
         Field,
         FixedView,
-        InputView,
-        PopupView
+        InputView
+        // PopupView
     },
     data() {
         return {
@@ -152,6 +152,7 @@ export default {
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
             choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
+            albumImg_url: '',
             groupTitle: '',
             groupDesc: '',
             groupImages: [1, 2],
@@ -209,6 +210,16 @@ export default {
                 this.customPricePercent = '0'
             }
         },
+        chooseQRCodeImg() {
+            const params = {
+                jumpUrl: 'choosePhoto://'
+            }
+            utils.postMessage('', params)
+            window.getAlbumPhoto = (imgData) => {
+                this.albumImg_url = 'data:image/jpeg;base64,' + imgData
+                this.posterData.albumImg_url = this.albumImg_url
+            }
+        },
         // 预览海报
         handlePreviewPoster() {
             if (this.posterData.groupTitle === '') {
@@ -220,9 +231,13 @@ export default {
             } else if (this.groupDesc === '') {
                 this.$toast('请输入组货描述')
             } else {
-                this.isPreview = true
-                this.isSave = false
-                this.posterData.groupDesc = this.groupDesc
+                this.$router.push({
+                    path: '/poster/previewGroupPoster',
+                    query: { groupData: this.posterData }
+                })
+                // this.isPreview = true
+                // this.isSave = false
+                // this.posterData.groupDesc = this.groupDesc
                 this.posterData.phone = this.phone
                 if (this.selectPriceTitle === '单品调价') {
                     this.posterData.customPricePercent = '0'
@@ -236,31 +251,6 @@ export default {
         handleClosePopup() {
             this.isPreview = false
             this.isSave = false
-        },
-
-        // 生成海报
-        handleCreatePoster() {
-            if (this.posterData.groupTitle === '') {
-                this.$toast('请输入组货名称')
-            } else if (this.posterData.groupTitle.split(' ').join('').length === 0) {
-                this.$toast('请重新输入组货名称')
-            } else if (this.groupDesc.split(' ').join('').length === 0) {
-                this.$toast('请重新输入组货描述')
-            } else if (this.groupDesc === '') {
-                this.$toast('请输入组货描述')
-            } else {
-                this.isPreview = true
-                this.isSave = true
-                this.posterData.groupDesc = this.groupDesc
-                this.posterData.phone = this.phone
-                if (this.selectPriceTitle === '单品调价') {
-                    this.posterData.customPricePercent = '0'
-                    this.posterData.isRetail = true
-                } else {
-                    this.posterData.isRetail = false
-                    this.posterData.customPricePercent = this.customPricePercent || '0'
-                }
-            }
         },
         handleRequest() {
             let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
@@ -278,6 +268,8 @@ export default {
                     if (this.posterData.labelDescs && this.posterData.labelDescs.length > 5) {
                         this.posterData.labelDescs = this.posterData.labelDescs.slice(0, 5)
                     }
+                    this.posterData.albumImg_url = this.albumImg_url
+                    this.posterData.phone = this.phone
                 }
             }).catch(() => {
 
@@ -701,15 +693,14 @@ export default {
             height:109px;
             background:rgba(249,250,252,1);
             border-radius:8px;
-            text-align:center;
-            > img {
-                margin: 30% 0;
-            }
-
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        // > img {
-        //     margin: 13px 16px 32px;
-        // }
+        .Album-selectd {
+            margin: 13px 16px 32px;
+            height: calc(100vw - 32px);
+        }
     }
     .bottom-prompt {
         height: 40px;
@@ -721,25 +712,25 @@ export default {
     }
 }
 .footer-shadow {
-    box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+    // box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
 }
 .footer-view {
-        margin: 5px 24px 0;
-        display: flex;
-        width: calc(100vw - 48px);
-        flex-direction: row;
-        justify-content :space-between;
+        margin: 5px 20px 0;
+        width: calc(100vw - 40px);
+        // display: flex;
+        // flex-direction: row;
+        // justify-content :space-between;
         .section-common {
-            font-size:14px;
-            font-weight:500;
-            line-height:20px;
+            font-size:16px;
+            font-weight:bold;
+            line-height:22px;
         }
-        .button-default {
-            .btn-select-default(calc(50vw - 31.5px),40px,false);
-        }
+        // .button-default {
+        //     .btn-select-default(calc(50vw - 31.5px),40px,false);
+        // }
         .button-select {
-            .btn-select(calc(50vw - 31.5px),40px,true);
+            .btn-select(calc(100vw - 40px),50px,true);
         }
     }
 </style>

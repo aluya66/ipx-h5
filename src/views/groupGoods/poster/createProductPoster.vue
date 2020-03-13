@@ -89,8 +89,7 @@
         <fixed-view class="footer-shadow">
             <template slot="footerContain">
                 <div class="footer-view">
-                    <section :class='["section-common","button-default"]' @click="handlePreviewPoster">预览海报</section>
-                    <section :class='["section-common","button-select"]' @click="handleCreatePoster">保存海报</section>
+                    <section :class='["section-common","button-select"]' @click="handlePreviewPoster">立即生成海报</section>
                 </div>
             </template>
         </fixed-view>
@@ -188,6 +187,8 @@ export default {
                 this.$toast('请输入商品名称')
             } else if (this.posterData.productName.split(' ').join('').length === 0) {
                 this.$toast('请重新输入商品名称')
+            } else if (this.albumImg_url === '') {
+                this.$toast('请上传微信二维码')
             } else {
                 this.$router.push({
                     path: '/poster/previewProductPoster',
@@ -209,28 +210,6 @@ export default {
         handleClosePopup() {
             this.isPreview = false
             this.isSave = false
-        },
-
-        // 生成海报
-        handleCreatePoster() {
-            if (this.posterData.productName.length <= 0) {
-                this.$toast('请输入商品名称')
-            } else if (this.posterData.productName.split(' ').join('').length === 0) {
-                this.$toast('请重新输入商品名称')
-            } else if (this.albumImg_url === '') {
-                this.$toast('请上传微信二维码')
-            } else {
-                this.posterData.phone = this.phone
-                // this.isPreview = true
-                // this.isSave = true
-                if (this.selectPriceTitle === '建议零售价') {
-                    this.posterData.addPrice = '0'
-                    this.posterData.isRetail = true
-                } else {
-                    this.posterData.addPrice = this.addPrice
-                    this.posterData.isRetail = false
-                }
-            }
         },
         handleRequest() {
             const params = {
@@ -316,7 +295,7 @@ export default {
     width: calc(100vw - 32px);
 }
 .footer-shadow {
-    box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+    // box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
 }
 .popup-view {
@@ -597,21 +576,21 @@ export default {
     }
 }
 .footer-view {
-        margin: 5px 24px 0;
-        display: flex;
-        width: calc(100vw - 48px);
-        flex-direction: row;
-        justify-content :space-between;
+        margin: 5px 20px 0;
+        // display: flex;
+        width: calc(100vw - 40px);
+        // flex-direction: row;
+        // justify-content :space-between;
         .section-common {
-            font-size:14px;
-            font-weight:500;
-            line-height:20px;
+            font-size:16px;
+            font-weight:bold;
+            line-height:22px;
         }
-        .button-default {
-            .btn-select-default(calc(50vw - 31.5px),40px,false);
-        }
+        // .button-default {
+        //     .btn-select-default(calc(50vw - 31.5px),40px,false);
+        // }
         .button-select {
-            .btn-select(calc(50vw - 31.5px),40px,true);
+            .btn-select(calc(100vw - 40px),50px,true);
         }
     }
 </style>

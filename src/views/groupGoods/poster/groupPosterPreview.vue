@@ -1,6 +1,6 @@
 <template>
    <layout-view>
-   <c-header class="my-header" slot="header" :left-arrow="true">
+   <c-header  class="my-header" slot="header" :left-arrow="true">
        <div slot="title">
            预览海报
        </div>
@@ -11,65 +11,70 @@
        </template>
    </c-header>
 
-    <div class="panel_content">
-        <div class="content" ref="image">
-            <div class="product_content">
+   <div class="panel_content" >
+       <div class="content" ref="image">
+           <div class="product_content">
                 <img :src="selected_logo" alt="">
-                <div class="product_info">
-                    <img :src="productData.mainPic" alt="">
-                    <div class="product_text_info">
-                        <p>{{productData.productName}}</p>
-                        <p>颜色：{{productData.colorName}}</p>
-                        <p>尺码：{{productData.sizeName}}</p>
-                        <p>{{productData.tshPrice}}</p>
-                    </div>
-                </div>
+                <img :src="groupData.groupImg" alt="">
+                <p>{{groupData.groupTitle}}</p>
             </div>
+
             <div class="designer_content">
                 <img class="triangle_top" :src="triangle_icon" alt="">
-                <div class="designer_label">设计师说</div>
+                <div class="designer_label">KOC说</div>
 
                 <div class="designer_header">
-                    <img :src="productData.designer.avatar" alt="">
+                    <img :src="groupData.avatar" alt="">
                     <div class="name_label">
-                        <p>{{productData.designer.nickname}}</p>
-                        <p>IPX原创设计师</p>
+                        <p>{{groupData.nickname}}</p>
+                        <p>IPX时尚买手</p>
                     </div>
                 </div>
 
                 <div class="designer_distribute">
                     <img class="left" :src="left_icon" alt="">
-                    <p>{{productData.importantDesc}}</p>
+                    <p>{{groupData.groupDesc}}</p>
                     <img class="right" :src="right_icon" alt="">
                 </div>
             </div>
+
             <div class="product_image">
-                <div class="images_list" v-for="(image,index) in productData.imgs" :key="index" >
-                    <img :src="image" alt="">
-                    <div class="change_content">
+                <div class="top_title">
+                    <p>包含商品</p>
+                    <span>/ Collocation</span>
+                </div>
+                <!-- mainPic -->
+                <div class="images_list" v-for="product in groupData.products" :key="product.productCode" >
+                    <img :src="product.mainPic" alt=""> 
+                    <p>{{product.productName}}</p>
+                    <div class="goods_information">
+                        <p>{{product.colorName}}：{{product.sizeName}}</p>
+                        <p>{{product.retailPrice}}</p>
+                    </div>
+                    <div class="change_content" @click="changeProduct">
                         <img :src="changeGood_icon" alt="">
                         <p>换一张</p>
                     </div>
                 </div>
                 <div class="footer_content">
-                    <img :src="productData.albumImg_url" alt="">
+                    <img :src="groupData.albumImg_url" alt="">
                     <div class="tell_info">
                         <img :src="callPhone_icon" alt="">
-                        <p>联系电话：{{productData.phone}}</p>
+                        <p>联系电话：{{groupData.phone}}</p>
                     </div>
                 </div>
             </div>
 
-        </div>
-    </div>
+       </div>
+   </div>
 
    </layout-view>
 </template>
 
 <script>
 import { Toast } from 'vant'
-import html2canvas from 'html2canvas'
 import utils from 'utils'
+import html2canvas from 'html2canvas'
 
 export default {
     components: {
@@ -83,15 +88,17 @@ export default {
             callPhone_icon: require('../../../themes/images/groupGoods/icon_call_phone@3x.png'),
             changeGood_icon: require('../../../themes/images/groupGoods/icon_change@3x.png'),
             triangle_icon: require('../../../themes/images/groupGoods/icon_triangle@3x.png'),
-            productData: {}
+            groupData: {}
         }
     },
     activated() {
-        this.productData = this.$route.query.productData
+        this.groupData = this.$route.query.groupData
     },
     methods: {
+        changeProduct() {
+
+        },
         savePoster() {
-            alert('3333')
             let _this = this
             Toast.loading({
                 message: '生成海报...',
@@ -108,7 +115,7 @@ export default {
                     taintTest: true,
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
-                    _this.photoUrl = canvas.toDataURL()
+                    _this.photoUrl = canvas.toDataURL('image/png')
                     _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
             }, 3000)
@@ -121,7 +128,7 @@ export default {
             image.setAttribute('crossOrigin', 'anonymous')
             image.src = imgsrc
             image.style.objectFit = 'contain'
-            image.onload = function() {
+            image.onload = () => {
                 canvas.width = image.width
                 canvas.height = image.height
                 context.drawImage(image, 0, 0, image.width, image.height)
@@ -137,8 +144,8 @@ export default {
                     this.$toast('保存失败请重试')
                 }
             }
-            image.src = imgsrc
-        }
+        },
+
     }
 }
 </script>
@@ -156,82 +163,36 @@ export default {
     }
 }
 .panel_content {
-    background:rgba(244,245,247,1);
+    background: rgba(244,245,247,1);
     height: calc(100vh - 48px);
     overflow-y: scroll;
     padding-bottom: 48px;
 }
 .content {
     margin: 16px;
-    // height:600px;
     background: @color-c8;
-    border-radius:12px;
+    border-radius: 12px;
     .product_content {
         background:linear-gradient(360deg,rgba(255,255,255,1) 0%,rgba(235,238,255,1) 100%);
-        border-radius:12px;
+        border-radius: 12px;
         text-align: center;
-        padding-bottom: 4px;
+        padding: 16px;
+        padding-bottom: 20px;
         > img {
-            margin-top: 16px;
+            border-radius:12px 12px 0 0;
+            &:nth-child(2) {
+                margin: 8px 0 12px;
+                height: calc(100vw - 32px);
+            }
         }
-        .product_info {
-            margin: 8px 16px 4px;
-            height:156px;
-            background: rgba(255,255,255,1);
-            border-radius:12px;
-            display: flex;
-            > img {
-                width:93px;
-                height:124px;
-                background:rgba(249,250,252,1);
-                border-radius:8px;
-                margin: 16px 12px 16px 16px;
-                object-fit: cover;
-            }
-            .product_text_info {
-                margin: 16px 16px 16px 0px;
-                text-align: left;
-                position: relative;
-                // background: blue;
-                p {
-                    font-size:12px;
-                    font-weight:400;
-                    color:@color-c3;
-                    line-height:18px;
-                    &:nth-child(1) {
-                        font-size:16px;
-                        font-weight:bold;
-                        color:@color-c1;
-                        line-height:22px;
-                        margin-bottom: 8px;
-                        width: calc(100vw - 201px);
-                        // .multi-ellipsis(2);
-                        max-height: 44px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-                    &:nth-child(4) {
-                        font-size:20px;
-                        font-weight:bold;
-                        color:@color-rc;
-                        font-family: "alibabaBold";
-                        position: absolute;
-                        margin-top: 12px;
-                        bottom: 0;
-                        &::before {
-                            content: '¥ ';
-                            font-family: "alibabaRegular";
-                            width: 20px;
-                            font-weight:400;
-                            line-height: 24px;
-                            font-size: 12px;
-                            position: relative;
-                        }
-                    }
-                }
-            }
+        > p {
+            font-size: 16px;
+            font-weight: bold;
+            color: @color-c1;
+            line-height: 22px;
         }
     }
+
     .designer_content {
         margin: 0;
         background:linear-gradient(360deg,rgba(253,253,254,1) 0%,rgba(249,250,252,1) 100%);
@@ -314,19 +275,76 @@ export default {
         }
 
     }
+
     .product_image {
         background: white;
         border-radius:12px;
         margin-top: 12px;
+        padding-top: 24px;
         padding-bottom: 40px;
+        .top_title {
+            display: flex;
+            margin-left: 16px;
+            font-size:14px;
+            font-weight:400;
+            color: @color-c4;
+            line-height:20px;
+            > p {
+                font-size:20px;
+                font-weight: bold;
+                color: @color-c1;
+                line-height:28px;
+                margin-right: 8px;
+            }
+            > span {
+                align-self: flex-end;
+            }
+        }
         .images_list {
             position: relative;
+            background:rgba(255,255,255,1);
+            box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
+            border-radius:12px;
+            margin: 24px 16px 0;
+            padding-bottom: 16px;
             > img {
-                margin: 16px;
-                margin-bottom: 0;
+                margin: 0;
                 height: calc(100vw - 64px);
+                background:rgba(249,250,252,1);
                 border-radius:12px;
-                border:1px solid rgba(244,245,247,1);
+            }
+            > p {
+                font-size:16px;
+                font-weight: bold;
+                color: @color-c1;
+                line-height:22px;
+                margin: 12px 16px 8px;
+            }
+            .goods_information {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 16px;
+                p {
+                    align-self: center;
+                    font-size:12px;
+                    font-weight:400;
+                    color: @color-c3;
+                    line-height:16px;
+                    &:nth-child(2) {
+                        font-size:20px;
+                        font-weight:400;
+                        color:@color-rc;
+                        font-family: "alibabaBold";
+                        &::before {
+                            content: '¥ ';
+                            font-family: "alibabaRegular";
+                            width: 20px;
+                            font-weight:400;
+                            line-height: 24px;
+                            font-size: 12px;
+                        }
+                    }
+                }
             }
             .change_content {
                 z-index: 100;
@@ -375,6 +393,6 @@ export default {
         }
 
     }
-
 }
+
 </style>
