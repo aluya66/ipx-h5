@@ -13,9 +13,9 @@
                 </div>
                 <div :class="['item-content', selectIndex===key?'item-content-select':'']">
                     <p>{{item.consumeAmount}}元消费额度</p>
-                    <p>{{item.refundTimes}}次免费全场换货</p>
                     <p>{{item.effectiveDays}}天押金有效期</p>
-                    <p>{{item.refundRate}}%退货退款</p>
+                    <p>{{item.refundTimes}}天退货周期</p>
+                    <p>{{item.refundRate}}%受理退货</p>
                 </div>
             </div>
         </div>
