@@ -123,8 +123,12 @@ export default {
     },
     watch: {
         addPrice(val) {
-            let p = val.toFixed(2)
-            this.addPrice = p
+            if (val === '') {
+                this.addPrice = '0'
+            } else {
+                let p = val.toFixed(2)
+                this.addPrice = p
+            }
         }
     },
     computed: {
