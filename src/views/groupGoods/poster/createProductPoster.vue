@@ -169,6 +169,9 @@ export default {
                     this.posterData.addPrice = '0'
                     this.posterData.isRetail = true
                 } else {
+                    if (this.addPrice === '') {
+                        this.addPrice = '0'
+                    }
                     this.posterData.addPrice = this.addPrice
                     this.posterData.isRetail = false
                 }
@@ -193,6 +196,9 @@ export default {
                     this.posterData.addPrice = '0'
                     this.posterData.isRetail = true
                 } else {
+                    if (this.addPrice === '') {
+                        this.addPrice = '0'
+                    }
                     this.posterData.addPrice = this.addPrice
                     this.posterData.isRetail = false
                 }
