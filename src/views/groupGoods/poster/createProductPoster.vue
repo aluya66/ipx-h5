@@ -50,6 +50,8 @@
                                 <p class="price-symbol">¥</p>
 
                                 <div class="input-contain">
+
+                                    <field class="price-input" type="digit" v-model="addPrice"/>
                                     <input-view v-model='addPrice' formart="digit"/>
                                 </div>
 

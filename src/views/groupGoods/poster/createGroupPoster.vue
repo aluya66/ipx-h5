@@ -49,7 +49,8 @@
                         <div v-else class="price-custom delete-field-line">
                             <p class="price-custom-title">各单品均加价(预览查看)</p>
                             <div class="input-contain">
-                                <input-view class="price-input" v-model="customPricePercent" formart="number" :hiddenClear="true" />
+                                <field class="price-input" type="digit" :adjust-position='true' v-model="customPricePercent"/>
+                                <!-- <input-view class="price-input" v-model="customPricePercent" formart="number" :hiddenClear="true" /> -->
                                 <p class="price-symbol">%</p>
                             </div>
 
@@ -212,7 +213,24 @@ export default {
             }).catch(() => {
 
             })
-        }
+        },
+        scrollTop() {
+            // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+            // if (!isIos) {
+                // alert("2222")
+                window.onresize = () => {
+                    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                        window.setTimeout(function() {
+                            if ('scrollIntoView' in document.activeElement) {
+                                document.activeElement.scrollIntoView()
+                            } else {
+                                document.activeElement.scrollIntoViewIfNeeded()
+                            }
+                        }, 0)
+                    }
+                }
+            }
+        // }
     },
     activated() {
         this.isPreview = false
@@ -221,25 +239,10 @@ export default {
             this.isNative = true
         }
         this.handleRequest()
+        this.scrollTop()
     },
     destroyed() {
         window.onresize = null
-    },
-    mounted() {
-        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-        if (!isIos) {
-            window.onresize = () => {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                    window.setTimeout(function() {
-                        if ('scrollIntoView' in document.activeElement) {
-                            document.activeElement.scrollIntoView()
-                        } else {
-                            document.activeElement.scrollIntoViewIfNeeded()
-                        }
-                    }, 0)
-                }
-            }
-        }
     }
 
 }
