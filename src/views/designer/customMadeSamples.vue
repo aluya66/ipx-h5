@@ -76,7 +76,8 @@ export default {
                 businessDescribe: '',
                 showUrl: []
             },
-            headerAlpha: 0
+            headerAlpha: 0,
+            itemWidth: 0
         }
     },
     methods: {
@@ -87,7 +88,7 @@ export default {
             return `background-size:100%`
         },
         getHeaderBg() {
-            return `background:rgba(255,255,255,${this.headerAlpha});`
+            return `background:rgba(255,255,255,${this.headerAlpha});margin-bottom:0`
         },
         getDesignerHall() {
             const params = {
@@ -99,9 +100,7 @@ export default {
             })
         },
         getPictureRect() {
-            // `padding-bottom:${y}px !important`
-            let width = (document.body.clientWidth - 48 * window.devicePixelRatio - 3) / 3
-            return `width:${width}px`
+            return `width:${this.itemWidth}px`
         },
         getCustomPay() {
             const params = {
@@ -143,6 +142,7 @@ export default {
             this.getCustomPay()
         }
         this.handleScroll()
+        this.itemWidth = parseInt((document.body.clientWidth - 48 * window.devicePixelRatio) / 3)
     }
 }
 </script>

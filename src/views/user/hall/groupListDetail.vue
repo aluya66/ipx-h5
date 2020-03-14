@@ -300,6 +300,7 @@ export default {
                 confirmButtonText: '确定',
                 confirmButtonColor: '#007AFF'
             }).then(() => {
+                this.skuCommit()
             })
         },
         jumpToProduct(product) {
@@ -411,20 +412,40 @@ export default {
                 groupGoodsId: this.groupDetail.groupGoodsId,
                 name: this.groupDetail.name
             }
-            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-                item.skuList.forEach((skuItem, skuIndex) => {
-                    skuItem.num = skuItem.skuValue
-                    let sku = {
-                        groupGoodsRecordId: skuItem.groupGoodsRecordId,
-                        num: skuItem.skuValue,
-                        productAtrNumber: this.seletedDetailsItem.productAtrNumber,
-                        productCode: this.seletedDetailsItem.productCode,
-                        productSkuCode: skuItem.productSkuCode,
-                        starasSkuCode: skuItem.starasSkuCode
-                    }
-                    groupProducts.push(sku)
+            if (!this.isManage) {
+                this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
+                    item.skuList.forEach((skuItem, skuIndex) => {
+                        skuItem.num = skuItem.skuValue
+                        let sku = {
+                            groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                            num: skuItem.skuValue,
+                            productAtrNumber: this.seletedDetailsItem.productAtrNumber,
+                            productCode: this.seletedDetailsItem.productCode,
+                            productSkuCode: skuItem.productSkuCode,
+                            starasSkuCode: skuItem.starasSkuCode
+                        }
+                        groupProducts.push(sku)
+                    })
                 })
-            })
+            } else {
+                this.groupGoodsRecords.forEach(group => {
+                    group.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
+                            skuItem.num = skuItem.skuValue
+                            let sku = {
+                                groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                                num: skuItem.skuValue,
+                                productAtrNumber: group.productAtrNumber,
+                                productCode: group.productCode,
+                                productSkuCode: skuItem.productSkuCode,
+                                starasSkuCode: skuItem.starasSkuCode,
+                                delFlag: group.isSelected ? 1 : 2
+                            }
+                            groupProducts.push(sku)
+                        })
+                    })
+                })
+            }
             params.groupGoodsRecords = groupProducts
             if (this.isOrderSuply) {
                 this.groupGoodsRecords.forEach((product, index) => {
@@ -447,7 +468,14 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         this.getGroupDetail()
-                        this.$toast.success('已修改')
+                        if (!this.isManage) {
+                            this.$toast.success('已修改')
+                        } else {
+                            this.isManage = false
+                            this.isAllSelected = false
+                            this.selectedNum = 0
+                            this.$toast.success('已移除')
+                        }
                     }
                 })
                 .catch(err => {
