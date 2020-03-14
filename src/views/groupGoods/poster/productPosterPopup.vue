@@ -86,7 +86,7 @@ export default {
             if (this.posterData.isRetail) {
                 price = parseFloat(this.posterData.retailPrice) + parseFloat(this.posterData.addPrice)
             } else {
-                price = parseFloat(this.posterData.tshPrice) + parseFloat(this.posterData.addPrice)
+                price = this.posterData.posterPrice //parseFloat(this.posterData.tshPrice) + parseFloat(this.posterData.addPrice)
             }
             return price.toFixed(2)
         },

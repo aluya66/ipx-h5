@@ -132,7 +132,6 @@ export default {
             let add = this.addPrice
             if (this.addPrice === '') {
                 add = '0'
-                this.addPrice = '0'
             }
             let p = parseFloat(this.posterData.tshPrice) + parseFloat(add || '0')
             let p2 = p.toFixed(2)
@@ -172,6 +171,7 @@ export default {
                 } else {
                     this.posterData.addPrice = this.addPrice
                     this.posterData.isRetail = false
+                    this.posterData.posterPrice = this.posterPrice
                 }
             }
         },
@@ -196,6 +196,7 @@ export default {
                 } else {
                     this.posterData.addPrice = this.addPrice
                     this.posterData.isRetail = false
+                    this.posterData.posterPrice = this.posterPrice
                 }
             }
         },
@@ -210,6 +211,7 @@ export default {
                     this.posterData = res
                     this.posterData.addPrice = this.addPrice
                     this.posterData.addPrice = '0'
+                    this.posterData.posterPrice = '0'
                     this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
                     this.posterData.tshPrice = parseFloat(this.posterData.tshPrice).toFixed(2)
                     this.posterData.retailPrice = parseFloat(this.posterData.retailPrice).toFixed(2)
