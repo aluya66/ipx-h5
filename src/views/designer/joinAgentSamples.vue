@@ -1,5 +1,5 @@
 <template>
-    <layout-view :style="headerAlpha === 0 ? getBackgroundUrl() : handleAdjustHeaderBg()">
+    <layout-view :style="getBackgroundUrl()">
         <c-header slot="header" :left-arrow="true" :showBorderBottom='headerAlpha !== 0'
                   :isLight="false"
                   :pageOutStatus="true"
@@ -68,12 +68,7 @@ export default {
             return `background-image:url(${this.designer.backgroundUrl});background-size:100%;background-repeat:no-repeat`
         },
         handleAdjustHeaderBg() {
-            let w = window.screen.width
-            let h = w * 476 / 375 / 100
-            if (this.headerAlpha > 0) {
-                h = 0
-            }
-            return `background-size:100% ${h}rem`
+            return `background-size:100%`
         },
         getHeaderBg() {
             return `background:rgba(255,255,255,${this.headerAlpha});margin-bottom:0`
@@ -107,6 +102,8 @@ export default {
             )
         },
         joinAgent() {
+            let baseParams = utils.getStore('baseParams')
+            this.phoneNumber = baseParams.phoneNumber
             this.isShowDialog = !this.isShowDialog
         },
         postAgentExhibition() {
@@ -125,8 +122,7 @@ export default {
                 jumpUrl: 'selectProvince://'
             }
             utils.postMessage('', params)
-            window.setProvince = (phoneNumber, provinceName, provinceCode) => {
-                this.phoneNumber = phoneNumber
+            window.setProvince = (provinceName, provinceCode) => {
                 this.provinceCode = provinceCode
                 this.provinceName = provinceName
                 console.log('省份：' + this.provinceName + ', 编码：' + this.provinceCode)

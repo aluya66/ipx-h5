@@ -70,7 +70,8 @@ export default {
             priceIconDown: require('../../themes/images/designer/control_drop_down_blue.png'),
             headerAlpha: 0,
             isFixedCondition: false,
-            conditionTop: 0
+            conditionTop: 0,
+            itemWidth: 0
         }
     },
     methods: {
@@ -89,7 +90,7 @@ export default {
             this.getDesignerSamples()
         },
         getBackgroundUrl() {
-            return `background-image:url(${this.designer.backgroundUrl});background-size:100%;background-repeat:no-repeat`
+            return `background-image:url(${this.designer.backgroundUrl});background-size:100% ;background-repeat:no-repeat`
         },
         handleAdjustHeaderBg() {
             let w = window.screen.width
@@ -125,8 +126,7 @@ export default {
         },
         getPictureRect() {
             // `padding-bottom:${y}px !important`
-            let width = (document.body.clientWidth - 40 * window.devicePixelRatio - 2) / 2
-            return `width:${width}px`
+            return `width:${this.itemWidth}px`
         },
         go2Detail(item) {
             const params = {
@@ -196,6 +196,8 @@ export default {
         } else {
             this.conditionTop = (statusBarHeight + 44) * window.devicePixelRatio
         }
+        this.itemWidth = parseInt((document.body.clientWidth - 40 * window.devicePixelRatio) / 2)
+        console.log(document.body.clientWidth + ', ' + window.devicePixelRatio + ', ' + this.itemWidth)
     }
 }
 </script>
