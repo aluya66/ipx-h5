@@ -196,8 +196,6 @@ export default {
                 productCodes: productCodes
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
-                let baseParams = utils.getStore('baseParams')
-                this.phone = baseParams.phoneNumber
                 if (res instanceof Object) {
                     this.posterData = res
                     this.groupDesc = this.posterData.groupDesc
@@ -217,6 +215,8 @@ export default {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
+        let baseParams = utils.getStore('baseParams')
+        this.phone = baseParams.phoneNumber
         this.handleRequest()
     },
     destroyed() {
