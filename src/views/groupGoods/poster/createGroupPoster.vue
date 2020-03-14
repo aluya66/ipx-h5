@@ -50,7 +50,6 @@
                             <p class="price-custom-title">各单品均加价(预览查看)</p>
                             <div class="input-contain">
                                 <field class="price-input" type="digit" :adjust-position='true' v-model="customPricePercent"/>
-                                <!-- <input-view class="price-input" v-model="customPricePercent" formart="number" :hiddenClear="true" /> -->
                                 <p class="price-symbol">%</p>
                             </div>
 
@@ -97,13 +96,12 @@ import { Field } from 'vant'
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
 import PopupView from './groupPosterPopup'
-import InputView from '../../common/inputView.vue'
+
 export default {
     components: {
         TitleContent,
         Field,
         FixedView,
-        InputView,
         PopupView
     },
     data() {
@@ -125,12 +123,10 @@ export default {
     },
     watch: {
         customPricePercent(val) {
-            console.log(val)
-            if (parseInt(val) > 999) {
-                val = '999'
-            }
             this.customPricePercent = val
-            console.log('customPricePercent', this.customPricePercent)
+            if (parseInt(val) > 999) {
+                this.customPricePercent = '999'
+            }
         }
     },
     methods: {
@@ -213,24 +209,7 @@ export default {
             }).catch(() => {
 
             })
-        },
-        scrollTop() {
-            // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-            // if (!isIos) {
-                // alert("2222")
-                window.onresize = () => {
-                    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                        window.setTimeout(function() {
-                            if ('scrollIntoView' in document.activeElement) {
-                                document.activeElement.scrollIntoView()
-                            } else {
-                                document.activeElement.scrollIntoViewIfNeeded()
-                            }
-                        }, 0)
-                    }
-                }
-            }
-        // }
+        }
     },
     activated() {
         this.isPreview = false
@@ -239,10 +218,25 @@ export default {
             this.isNative = true
         }
         this.handleRequest()
-        this.scrollTop()
     },
     destroyed() {
         window.onresize = null
+    },
+    mounted() {
+        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        if (!isIos) {
+            window.onresize = () => {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            document.activeElement.scrollIntoView()
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 0)
+                }
+            }
+        }
     }
 
 }
@@ -449,11 +443,10 @@ export default {
                 font-size:13px;
                 font-weight:400;
                 color:@color-c2;
-                line-height: 32px;
-                // flex: 1 0
+                line-height: 40px;
             }
             .input-contain {
-                flex: 1 1;
+                flex: 1;
                 margin-right: 16px;
                 background:rgba(249,250,252,1);
                 border-radius: 5px;
@@ -473,9 +466,7 @@ export default {
             }
             .price-input {
                 width: 90%;
-                margin-left: 0px;
-                margin-right: 8px;
-                height: 32px;
+                height: 40px;
                 background:rgba(249,250,252,1);
                 font-size:14px;
                 color:rgba(42,43,51,1);
@@ -486,7 +477,7 @@ export default {
                 font-size:12px;
                 font-weight:400;
                 color:@color-c1;
-                line-height:32px;
+                line-height:40px;
                 margin-left: 4px;
             }
         }

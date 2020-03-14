@@ -158,19 +158,19 @@ export default {
             let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
             if (!isIos) {
                 window.onresize = () => {
-                        window.setTimeout(function() {
-                            if ('scrollIntoView' in document.activeElement) {
-                                window.scroll(0,0)
-                                document.getElementById('footview').scrollIntoView(false)
-                            } else {
-                                document.activeElement.scrollIntoViewIfNeeded()
-                            }
-                        }, 100)
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            window.scroll(0, 0)
+                            document.getElementById('footview').scrollIntoView(false)
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 100)
                 }
             }
         },
         handleVerifyPhone () {
-            window.scroll(0,0)
+            window.scroll(0, 0)
             this.handleBottom = '0'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
@@ -178,7 +178,7 @@ export default {
             }
         },
         handleVerifyUserName () {
-            window.scroll(0,0)
+            window.scroll(0, 0)
             this.handleBottom = '0'
         },
         handleHeight () {
