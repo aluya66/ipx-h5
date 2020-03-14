@@ -226,10 +226,6 @@ export default {
                 this.$toast('请输入组货名称')
             } else if (this.posterData.groupTitle.split(' ').join('').length === 0) {
                 this.$toast('请重新输入组货名称')
-            } else if (this.groupDesc.split(' ').join('').length === 0) {
-                this.$toast('请重新输入组货描述')
-            } else if (this.groupDesc === '') {
-                this.$toast('请输入组货描述')
             } else {
                 this.$router.push({
                     path: '/poster/previewGroupPoster',
@@ -238,14 +234,14 @@ export default {
                 // this.isPreview = true
                 // this.isSave = false
                 // this.posterData.groupDesc = this.groupDesc
-                this.posterData.phone = this.phone
-                if (this.selectPriceTitle === '单品调价') {
-                    this.posterData.customPricePercent = '0'
-                    this.posterData.isRetail = true
-                } else {
-                    this.posterData.isRetail = false
-                    this.posterData.customPricePercent = this.customPricePercent || '0'
-                }
+                // this.posterData.phone = this.phone
+                // if (this.selectPriceTitle === '单品调价') {
+                //     this.posterData.customPricePercent = '0'
+                //     this.posterData.isRetail = true
+                // } else {
+                //     this.posterData.isRetail = false
+                //     this.posterData.customPricePercent = this.customPricePercent || '0'
+                // }
             }
         },
         handleClosePopup() {

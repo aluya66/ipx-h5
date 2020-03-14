@@ -21,7 +21,7 @@
                         <p>{{productData.productName}}</p>
                         <p>颜色：{{productData.colorName}}</p>
                         <p>尺码：{{productData.sizeName}}</p>
-                        <p>{{productData.tshPrice}}</p>
+                        <p>{{productData.retailPrice}}</p>
                     </div>
                 </div>
             </div>
