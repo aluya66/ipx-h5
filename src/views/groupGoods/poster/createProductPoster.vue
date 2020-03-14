@@ -123,12 +123,8 @@ export default {
     },
     watch: {
         addPrice(val) {
-            if (val === '') {
-                this.addPrice = '0'
-            } else {
-                let p = val.toFixed(2)
-                this.addPrice = p
-            }
+            let p = val.toFixed(2)
+            this.addPrice = p
         }
     },
     computed: {
@@ -136,6 +132,7 @@ export default {
             let add = this.addPrice
             if (this.addPrice === '') {
                 add = '0'
+                this.addPrice = '0'
             }
             let p = parseFloat(this.posterData.tshPrice) + parseFloat(add || '0')
             let p2 = p.toFixed(2)
