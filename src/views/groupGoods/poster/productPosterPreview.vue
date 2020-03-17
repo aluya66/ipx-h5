@@ -44,9 +44,9 @@
                 </div>
             </div>
             <div class="product_image">
-                <div class="images_list" v-for="(image,index) in productData.imgs" :key="index" >
-                    <img :src="image" alt="">
-                    <div class="change_content">
+                <div class="images_list" v-for="(skuItem,index) in productData.imgs" :key="index" >
+                    <img :src="skuItem.image" alt="">
+                    <div class="change_content" @click="changeImage(skuItem.skuCode)">
                         <img :src="changeGood_icon" alt="">
                         <p>换一张</p>
                     </div>
@@ -83,15 +83,64 @@ export default {
             callPhone_icon: require('../../../themes/images/groupGoods/icon_call_phone@3x.png'),
             changeGood_icon: require('../../../themes/images/groupGoods/icon_change@3x.png'),
             triangle_icon: require('../../../themes/images/groupGoods/icon_triangle@3x.png'),
-            productData: {}
+            productData: {},
+            changedSku: {},
+            changeSkuCode: ''
         }
     },
-    activated() {
+    created() {
+        // alert('create')
+        utils.setStore('productSkuList', '')
         this.productData = this.$route.query.productData
     },
+    activated() {
+        this.changedSku = utils.getStore('productSkuList')[0]
+        // alert(this.changedSku.productSkuCode)
+        if (this.changedSku.productSkuCode !== undefined) {
+            this.handleRequest()
+        }
+    },
     methods: {
+        changeImage(skucode) {
+            this.changeSkuCode = skucode
+            this.$router.push({
+                path: '/picture/imageList',
+                query: {
+                    productCode: this.productData.productCode,
+                    fromPath: 'product',
+                    fromChange: true
+                }
+            })
+        },
+        handleRequest() {
+            let skuLsit = this.productData.imgs
+            let skuCodes = []
+            skuLsit.forEach(item => {
+                skuCodes.push(item.skuCode)
+            })
+            let index = skuCodes.indexOf(this.changeSkuCode)
+            skuCodes[index] = this.changedSku.productSkuCode
+            const params = {
+                productCode: this.productData.productCode,
+                skuCodes: skuCodes
+            }
+            let phone = this.productData.phone
+            let retailPrice = this.productData.retailPrice
+            let albumImg = this.productData.albumImg_url
+            let productName = this.productData.productName
+            this.$api.poster.getProductPosterInfo(params).then(res => {
+                if (res instanceof Object) {
+                    this.productData = res
+                    this.productData.phone = phone
+                    this.productData.retailPrice = retailPrice
+                    this.productData.albumImg_url = albumImg
+                    this.productData.productName = productName
+                }
+            }).catch(() => {
+                // this.$toast('请求错误')
+            })
+        },
         savePoster() {
-            alert('3333')
             let _this = this
             Toast.loading({
                 message: '生成海报...',

@@ -15,14 +15,14 @@
             </div>
             <div class="image-count">共{{images.length}}张图片</div>
         </div>
-        <div class="image-footer">
+        <div class="image-footer" :style="getBottomOffset(0)">
             <div class="image-footer-left">
-                <img :src="isAllSelected ? imageSelect: imageUnselect" @click="selectAll()"/>
+                <img :src="isAllSelected ? imageSelect: imageUnselect" @click="selectAll"/>
                 全选
             </div>
             <div class="image-footer-right">
-                <div class="image-download" @click="downloadPicture()">下载图片</div>
-                <div class="create-poster" @click="createPoster()">生成海报</div>
+                <div class="image-download" @click="downloadPicture" >下载图片</div>
+                <div class="create-poster" @click="createPoster" >生成海报</div>
             </div>
         </div>
     </layout-view>
@@ -34,11 +34,12 @@ export default {
     name: 'imageList',
     data() {
         return {
-            isNative: true,
+            isNative: false,
             isAllSelected: false,
             screenWidth: document.body.clientWidth,
             productCode: '',
             fromPath: 'product', // product单品，group组货
+            fromChange: false,
             images: [],
             imageUnselect: require('../../themes/images/groupGoods/checkbox_default.png'),
             imageSelect: require('../../themes/images/groupGoods/selected_icon.png')
@@ -55,9 +56,20 @@ export default {
             return `width:${width}px`
         },
         switchSelectState(index) {
+            let skuList = this.images.filter(item => {
+                return item.isSelected
+            })
+            if (skuList.length === 1 & this.fromChange & !this.images[index].isSelected) {
+                this.$toast('只能选择一张图片替换')
+                return
+            }
             this.images[index].isSelected = !this.images[index].isSelected
         },
         selectAll() {
+            if (this.fromChange & this.images.length > 1) {
+                this.$toast('只能选择一张图片替换')
+                return
+            }
             this.isAllSelected = !this.isAllSelected
             this.images.forEach((item) => {
                 item.isSelected = this.isAllSelected
@@ -89,17 +101,22 @@ export default {
                 this.$toast('请选择图片')
                 return
             }
-            utils.setStore('productSkuList', skuList)
             if (this.fromPath === 'product') { // 单品
-                this.$router.push({
-                    path: '/poster/editProductPoster',
-                    query: this.productCode
-                })
+                if (this.fromChange) {
+                    utils.setStore('productSkuList', skuList)
+                    this.$router.go(-1)
+                } else {
+                    this.$router.push({
+                        path: '/poster/editProductPoster',
+                        query: {
+                            productCode: this.productCode,
+                            skuCodeList: skuList
+                        }
+                    })
+                }
             } else { // 组货
-                this.$router.push({
-                    path: '/poster/editProductPoster',
-                    query: this.productCode
-                })
+                utils.setStore('productSkuList', skuList)
+                this.$router.go(-1)
             }
         },
         getSkuList() {
@@ -122,13 +139,20 @@ export default {
             })
         }
     },
-    mounted() {
+    activated() {
+        this.isNative = false
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         if (this.$route.query.productCode !== undefined) {
             this.productCode = this.$route.query.productCode
             this.getSkuList()
         }
         if (this.$route.query.fromPath !== undefined) {
             this.fromPath = this.$route.query.fromPath
+        }
+        if (this.$route.query.fromChange !== undefined) {
+            this.fromChange = this.$route.query.fromChange
         }
     }
 }

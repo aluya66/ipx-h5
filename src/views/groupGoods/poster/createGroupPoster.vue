@@ -227,6 +227,7 @@ export default {
             } else if (this.posterData.groupTitle.split(' ').join('').length === 0) {
                 this.$toast('请重新输入组货名称')
             } else {
+                this.posterData.phone = this.phone
                 this.$router.push({
                     path: '/poster/previewGroupPoster',
                     query: { groupData: this.posterData }

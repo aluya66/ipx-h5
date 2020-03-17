@@ -16,7 +16,7 @@
                 <template slot="content">
                     <div class="product-list"
                     >
-                        <img v-for="imageUrl in posterData.imgs" :key="imageUrl" class="image-item" :src="imageUrl">
+                        <img v-for="(sku,index) in posterData.imgs" :key="index" class="image-item" :src="sku.image">
                     </div>
                 </template>
             </title-content>
@@ -189,6 +189,7 @@ export default {
                 this.$toast('请重新输入商品名称')
             } else {
                 this.posterData.retailPrice = this.posterPrice
+                this.posterData.phone = this.phone
                 this.$router.push({
                     path: '/poster/previewProductPoster',
                     query: { productData: this.posterData }
@@ -211,9 +212,14 @@ export default {
             this.isSave = false
         },
         handleRequest() {
+            let skuLsit = this.$route.query.skuCodeList
+            let skuCodes = []
+            skuLsit.forEach(item => {
+                skuCodes.push(item.productSkuCode)
+            })
             const params = {
                 productCode: this.$route.query.productCode,
-                skuCodes: ['052400016285000', '052400016285002']
+                skuCodes: skuCodes
             }
             this.$api.poster.getProductPosterInfo(params).then(res => {
                 let baseParams = utils.getStore('baseParams')

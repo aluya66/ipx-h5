@@ -45,13 +45,13 @@
                 </div>
                 <!-- mainPic -->
                 <div class="images_list" v-for="product in groupData.products" :key="product.productCode" >
-                    <img :src="product.mainPic" alt=""> 
+                    <img :src="product.mainPic" alt="">
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
                         <p>{{product.retailPrice}}</p>
                     </div>
-                    <div class="change_content" @click="changeProduct">
+                    <div class="change_content" @click="changeProduct(product)">
                         <img :src="changeGood_icon" alt="">
                         <p>换一张</p>
                     </div>
@@ -88,15 +88,35 @@ export default {
             callPhone_icon: require('../../../themes/images/groupGoods/icon_call_phone@3x.png'),
             changeGood_icon: require('../../../themes/images/groupGoods/icon_change@3x.png'),
             triangle_icon: require('../../../themes/images/groupGoods/icon_triangle@3x.png'),
-            groupData: {}
+            groupData: {},
+            changedSku: {},
+            selectProduct: {}
         }
     },
-    activated() {
+    created() {
         this.groupData = this.$route.query.groupData
     },
+    activated() {
+        this.changedSku = utils.getStore('productSkuList')[0]
+        // alert(this.changedSku.productSkuCode)
+        if (this.changedSku.productSkuCode !== undefined) {
+            let index = this.selectProduct.indexOf(this.groupData.products)
+            this.groupData.products[index].colorName = this.changedSku.colorName
+            this.groupData.products[index].sizeName = this.changedSku.sizeName
+            this.groupData.products[index].retailPrice = this.changedSku.retailPrice
+        }
+    },
     methods: {
-        changeProduct() {
-
+        changeProduct(product) {
+            this.selectProduct = product
+            this.$router.push({
+                path: '/picture/imageList',
+                query: {
+                    productCode: product.productCode,
+                    fromPath: 'group',
+                    fromChange: true
+                }
+            })
         },
         savePoster() {
             let _this = this
@@ -144,7 +164,7 @@ export default {
                     this.$toast('保存失败请重试')
                 }
             }
-        },
+        }
 
     }
 }
