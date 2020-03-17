@@ -51,6 +51,7 @@
 
                                 <div class="input-contain">
                                     <input-view v-model='addPrice' formart="digit"/>
+                                    <!-- <field class="price-input" formart="digit" :adjust-position='true' @input="clearNoNum" v-model="addPrice"/> -->
                                 </div>
                             </section>
                             <section :class='["flex-common","posterPrice-contain"]'>
@@ -71,7 +72,8 @@
                             :adjust-position='true'
                             type="digit"
                             placeholder="请填写联系手机"
-                            clearable
+                            clearable="true"
+                            maxlength = 11
                             v-model="phone"
                         />
                     </div>
@@ -155,6 +157,12 @@ export default {
         }
     },
     methods: {
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        handleChoosePriceTitle(title) {
+            this.selectPriceTitle = title
+        },
         clearNoNum(obj) {
             obj = obj.replace(/[^\d.]/g, '') // 清除“数字”和“.”以外的字符
             obj = obj.replace(/\.{2,}/g, '.') // 只保留第一个. 清除多余的
@@ -164,12 +172,6 @@ export default {
                 // obj = parseFloat(obj)
             }
             this.addPrice = obj
-        },
-        getBottomOffset(offset) {
-            return utils.bottomOffset(offset)
-        },
-        handleChoosePriceTitle(title) {
-            this.selectPriceTitle = title
         },
         chooseQRCodeImg() {
             const params = {
