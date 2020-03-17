@@ -58,7 +58,9 @@
                                         <p style="line-height:0.32rem;font-size:0.13rem">海报价:</p>
                                         <p class="price-symbol">¥</p>
                                         <div class="input-contain">
-                                            <input-view class="price-input" :inputColorValue="'#F53030'" v-model="goodsInfo.retailPrice" formart="digit"/>
+                                            <!-- <input-view class="price-input" :inputColorValue="'#F53030'" v-model="goodsInfo.retailPrice" formart="digit"/> -->
+                                            <field class="price-input" type="digit" error :adjust-position='true' v-model="goodsInfo.retailPrice"/>
+
                                         </div>
                                     </section>
                                 </div>
@@ -73,7 +75,13 @@
                             <section style="height:0.32rem"  :class='["flex-common","custom-add"]'>
                                 <p class="price-custom-title" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(88,91,102,1)'">单品均加价:</p>
                                 <div class="input-contain">
-                                    <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="number" :hiddenClear="true" />
+                                    <!-- <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="number" :hiddenClear="true" /> -->
+                                    <field
+                                    class="price-input"
+                                    v-model="customPricePercent"
+                                    :disabled = "isSuggest"
+                                    @input="clearNoNum"
+                                    />
                                     <p class="price-symbol" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(42,43,51,1)'">%</p>
                                 </div>
                             </section>
@@ -137,13 +145,13 @@ import { Field } from 'vant'
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
 // import PopupView from './groupPosterPopup'
-import InputView from '../../common/inputView.vue'
+// import InputView from '../../common/inputView.vue'
 export default {
     components: {
         TitleContent,
         Field,
         FixedView,
-        InputView
+        // InputView
         // PopupView
     },
     data() {
