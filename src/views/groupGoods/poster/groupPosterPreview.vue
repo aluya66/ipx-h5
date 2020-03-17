@@ -45,7 +45,7 @@
                 </div>
                 <!-- mainPic -->
                 <div class="images_list" v-for="product in groupData.products" :key="product.productCode" >
-                    <img :src="product.mainPic" alt="">
+                    <img :src="product.imgs[0].image" alt="">
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
@@ -96,14 +96,18 @@ export default {
     created() {
         this.groupData = this.$route.query.groupData
     },
+    deactivated() {
+        utils.setStore('productSkuList', '')
+    },
     activated() {
         this.changedSku = utils.getStore('productSkuList')[0]
-        // alert(this.changedSku.productSkuCode)
-        if (this.changedSku.productSkuCode !== undefined) {
-            let index = this.selectProduct.indexOf(this.groupData.products)
+        // alert(this.changedSku.colorName)
+        if (this.changedSku !== undefined) {
+            let index = this.groupData.products.indexOf(this.selectProduct)
             this.groupData.products[index].colorName = this.changedSku.colorName
             this.groupData.products[index].sizeName = this.changedSku.sizeName
             this.groupData.products[index].retailPrice = this.changedSku.retailPrice
+            this.groupData.products[index].imgs[0].image = this.changedSku.image
         }
     },
     methods: {
@@ -135,8 +139,13 @@ export default {
                     taintTest: true,
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
-                    _this.photoUrl = canvas.toDataURL('image/png')
-                    _this.downloadIamge(_this.photoUrl, 'poster.png')
+                    _this.photoUrl = canvas.toDataURL()
+                    let file = _this.dataURLtoBlob(_this.photoUrl)
+                    utils.upload([file]).then(result => {
+                        utils.postMessage('download_pictures', result)
+                        Toast.clear()
+                    })
+                    // _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
             }, 3000)
         },
@@ -164,9 +173,16 @@ export default {
                     this.$toast('保存失败请重试')
                 }
             }
+        },
+        dataURLtoBlob(data) {
+            var arr = data.split(','); var mime = arr[0].match(/:(.*?);/)[1]
+            var bstr = atob(arr[1]); var n = bstr.length; var u8arr = new Uint8Array(n)
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n)
+            }
+            return new Blob([u8arr], { type: mime })
         }
-
-    }
+    },
 }
 </script>
 

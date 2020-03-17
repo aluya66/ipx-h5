@@ -215,7 +215,7 @@ export default {
             let skuLsit = this.$route.query.skuCodeList
             let skuCodes = []
             skuLsit.forEach(item => {
-                skuCodes.push(item.productSkuCode)
+                skuCodes.push(item.skuCode)
             })
             const params = {
                 productCode: this.$route.query.productCode,

@@ -1,7 +1,6 @@
 /**
  * 上传文件
  *  由于使用第三方七牛云服务，需要先获取七牛云token，然后在进行上传。
- *  初始化设置一个缓存token，如果缓存token存在值，则直接进行上传。
  * @param {*} context vue上下文
  * @param {*} file 上传文件列表
  * @param {*} Promise  回调
@@ -18,6 +17,7 @@ const day = Math.ceil(
                     (24 * 60 * 60 * 1000)
 ) + 1
 const context = process.env.VUE_APP_serverPath
+const photoHost = process.env.VUE_APP_UploadImg
 
 const qiConfig = {
     useCdnDomain: true, // 表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
@@ -41,16 +41,16 @@ async function upload(file = []) {
             state++
             observable.subscribe({
                 next: (result) => {
-                    // console.info(result); //此处可添加上传图片的上传进度提示
+                    console.info(result) // 此处可添加上传图片的上传进度提示
                 },
                 error: (errResult) => {
-                    // console.info(errResult); //此处提示上传图片的过程中错误信息
+                    console.info(errResult) // 此处提示上传图片的过程中错误信息
                 },
                 complete: (result) => {
-                    imgData.push(result.key)
+                    imgData.push(photoHost + result.key)
                     console.info(result, '上传之后返回的结果')
                     // imgData.push(baseImgUrl+result.key);
-                    if (state == file.length) {
+                    if (state === file.length) {
                         resolve(imgData)
                     }
                 }
@@ -63,12 +63,18 @@ async function upload(file = []) {
 function getToken() {
     return new Promise((resolve) => {
         // 判断是否本地存在token
-        if (store.getSessionStore('qiniuToken')) resolve(store.getSessionStore('qiniuToken'))
-        Http.fetch(`${context}/v1/image/token`, {
+        const params = {
+            type: 1
+        }
+        // if (store.getSessionStore('qiniuToken')) {
+        // resolve(store.getSessionStore('qiniuToken'))
+        //     return
+        // }
+        Http.fetch(`${context}/v1/image/token`, params, {
             method: 'get'
         }).then(res => {
-            store.setSessionStore('qiniuToken', res.data)
-            resolve(res.data)
+            store.setSessionStore('qiniuToken', res)
+            resolve(res)
         })
     })
 }

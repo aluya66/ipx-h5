@@ -89,14 +89,15 @@ export default {
         }
     },
     created() {
-        // alert('create')
-        utils.setStore('productSkuList', '')
         this.productData = this.$route.query.productData
+    },
+    deactivated() {
+        utils.setStore('productSkuList', '')
     },
     activated() {
         this.changedSku = utils.getStore('productSkuList')[0]
-        // alert(this.changedSku.productSkuCode)
-        if (this.changedSku.productSkuCode !== undefined) {
+        // alert(this.changedSku)
+        if (this.changedSku !== undefined) {
             this.handleRequest()
         }
     },
@@ -119,7 +120,7 @@ export default {
                 skuCodes.push(item.skuCode)
             })
             let index = skuCodes.indexOf(this.changeSkuCode)
-            skuCodes[index] = this.changedSku.productSkuCode
+            skuCodes[index] = this.changedSku.skuCode
             const params = {
                 productCode: this.productData.productCode,
                 skuCodes: skuCodes
@@ -158,7 +159,12 @@ export default {
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
                     _this.photoUrl = canvas.toDataURL()
-                    _this.downloadIamge(_this.photoUrl, 'poster.png')
+                    let file = _this.dataURLtoBlob(_this.photoUrl)
+                    utils.upload([file]).then(result => {
+                        utils.postMessage('download_pictures', result)
+                        Toast.clear()
+                    })
+                    // _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
             }, 3000)
         },
@@ -187,6 +193,14 @@ export default {
                 }
             }
             image.src = imgsrc
+        },
+        dataURLtoBlob(data) {
+            var arr = data.split(','); var mime = arr[0].match(/:(.*?);/)[1]
+            var bstr = atob(arr[1]); var n = bstr.length; var u8arr = new Uint8Array(n)
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n)
+            }
+            return new Blob([u8arr], { type: mime })
         }
     }
 }
