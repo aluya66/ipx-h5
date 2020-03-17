@@ -45,7 +45,7 @@
                 </div>
                 <!-- mainPic -->
                 <div class="images_list" v-for="product in groupData.products" :key="product.productCode" >
-                    <img :src="product.mainPic" alt=""> 
+                    <img :src="product.mainPic" alt="">
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
@@ -144,7 +144,7 @@ export default {
                     this.$toast('保存失败请重试')
                 }
             }
-        },
+        }
 
     }
 }
