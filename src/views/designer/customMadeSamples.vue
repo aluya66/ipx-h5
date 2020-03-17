@@ -100,6 +100,8 @@ export default {
             })
         },
         getPictureRect() {
+            this.itemWidth = parseInt((document.documentElement.clientWidth - 48 * window.devicePixelRatio) / 3)
+            console.log(document.body.clientWidth + ', ' + window.devicePixelRatio + ', ' + this.itemWidth)
             return `width:${this.itemWidth}px`
         },
         getCustomPay() {
@@ -142,7 +144,6 @@ export default {
             this.getCustomPay()
         }
         this.handleScroll()
-        this.itemWidth = parseInt((document.body.clientWidth - 48 * window.devicePixelRatio) / 3)
     }
 }
 </script>

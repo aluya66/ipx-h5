@@ -182,7 +182,7 @@ export default {
             }
             return new Blob([u8arr], { type: mime })
         }
-    },
+    }
 }
 </script>
 

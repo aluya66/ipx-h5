@@ -125,7 +125,8 @@ export default {
             })
         },
         getPictureRect() {
-            // `padding-bottom:${y}px !important`
+            this.itemWidth = parseInt((document.documentElement.clientWidth - 40 * window.devicePixelRatio) / 2)
+            console.log(document.body.clientWidth + ', ' + window.devicePixelRatio + ', ' + this.itemWidth)
             return `width:${this.itemWidth}px`
         },
         go2Detail(item) {
@@ -196,8 +197,6 @@ export default {
         } else {
             this.conditionTop = (statusBarHeight + 44) * window.devicePixelRatio
         }
-        this.itemWidth = parseInt((document.body.clientWidth - 40 * window.devicePixelRatio) / 2)
-        console.log(document.body.clientWidth + ', ' + window.devicePixelRatio + ', ' + this.itemWidth)
     }
 }
 </script>

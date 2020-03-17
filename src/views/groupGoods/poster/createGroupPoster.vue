@@ -150,7 +150,7 @@ export default {
     components: {
         TitleContent,
         Field,
-        FixedView,
+        FixedView
         // InputView
         // PopupView
     },
