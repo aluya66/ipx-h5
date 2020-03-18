@@ -72,3 +72,12 @@ export const postCall = params => Http.fetch(`${context}/v1/group/goods/populari
 export const suplyGoods = params => Http.fetch(`${context}/v1/group/goods/replent`, params, {
     method: 'get'
 })
+
+/**
+ * 门店热门组货
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const getHotGroup = params => Http.fetch(`${context}/v1/home/examplelist`, params, {
+    method: 'get'
+})
