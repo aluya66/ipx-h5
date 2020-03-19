@@ -213,6 +213,14 @@ export default {
         }
     },
     methods: {
+        back2Detail() {
+            this.$router.push({
+                path: '/groupDetail',
+                query: {
+                    groupCode: this.selectGroupDetail.groupCode
+                }
+            })
+        },
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
             let btm = 57
@@ -232,16 +240,47 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        dialogAlert(isDialog) {
-            if (!this.isDialog && isDialog) {
-                this.isDialog = true
-                Dialog.alert({
-                    title: '商品信息变更',
-                    message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
-                    confirmButtonText: '我知道了',
+        manageProduct() {
+            this.isManage = !this.isManage
+            this.selectedNum = 0
+            this.isAllSelected = false
+            this.groupGoodsRecords.forEach(item => {
+                item.isSelected = false
+            })
+        },
+        clearSelectedProduct() {
+            console.log('移除')
+            if (this.isAllSelected) {
+                Dialog.confirm({
+                    title: '确定移除？',
+                    message: '至少保留一个商品',
+                    cancelButtonText: '取消',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '不保留',
                     confirmButtonColor: '#007AFF'
-                }).then(() => {})
+                }).then(() => {
+                    this.dialogAlert()
+                })
+                return
             }
+            this.dialogAlert()
+            // for (let i = this.groupGoodsRecords.length - 1; i >= 0; i--) {
+            //     if (this.groupGoodsRecords[i].isSelected) {
+            //         this.groupGoodsRecords.remove(i)
+            //     }
+            // }
+        },
+        dialogAlert() {
+            Dialog.confirm({
+                title: '确定移除？',
+                message: '商品移除后将不再显示在方案内',
+                cancelButtonText: '取消',
+                cancelButtonColor: '#007AFF',
+                confirmButtonText: '确定',
+                confirmButtonColor: '#007AFF'
+            }).then(() => {
+                this.skuCommit()
+            })
         },
         jumpToProduct(product) {
             window.sa.track('IPX_WEB', {
