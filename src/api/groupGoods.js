@@ -83,10 +83,19 @@ export const getHotGroup = params => Http.fetch(`${context}/v1/home/examplelist`
 })
 
 /**
- * 门店热门组货
+ * 本季上新
  * @param params
  * @returns {prmoise对象}
  */
 export const getQuarterLatest = params => Http.fetch(`${context}/v1/home/latestlist`, params, {
+    method: 'get'
+})
+
+/**
+ * 精选热门组货
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const getSelectedGroup = params => Http.fetch(`${context}/v1/home/featuredgrouplist`, params, {
     method: 'get'
 })

@@ -1,14 +1,14 @@
 <template>
     <layout-view class="latest-container">
-        <c-header slot="header" :left-arrow="true" :showBorderBottom="true" :pageOutStatus="isNative">
+        <c-header slot="header" :left-arrow="true" :showBorderBottom="false" :pageOutStatus="isNative" >
             <template slot="right">
                 <img class="header-right" slot="right"
                      src="../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png" @click="rightClick()"/>
             </template>
         </c-header>
         <div class="latest-content">
-            <div class="latest-main">
-                <span class="latest-label">本周上新</span>
+            <div class="latest-main" v-if="latestGroups.length > 0">
+                <span class="latest-label">{{showPage === 'latest' ? '本季上新' : '精选组货'}}</span>
                 <swiper class="swiper" ref="groupSwiper" :style="getListHeight()" :options="swiperOption">
                     <swiper-slide class="slide" v-for="item in latestGroups" :key="item.groupCode">
                         <img class="main-pic" :src="item.groupImg" :style="getImageRect()">
@@ -54,6 +54,7 @@ export default {
             pageNumber: 1,
             pageSize: 10,
             latestGroups: [],
+            showPage: 'latest', // latest:本季上新，feature:精选组货
             isNative: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
@@ -82,23 +83,43 @@ export default {
                 pageNumber: this.pageNumber,
                 pageSize: this.pageSize
             }
-            this.$api.groupGoods.getQuarterLatest(params).then(res => {
-                if (res && res instanceof Array) {
-                    if (this.pageNumber === 1) {
-                        this.latestGroups = res
-                        this.selectGroupDetail = this.latestGroups[0]
-                        this.getGroupDetail(this.selectGroupDetail.groupCode)
+            if (this.showPage === 'latest') {
+                this.$api.groupGoods.getQuarterLatest(params).then(res => {
+                    if (res && res instanceof Array) {
+                        if (this.pageNumber === 1) {
+                            this.latestGroups = res
+                            this.selectGroupDetail = this.latestGroups[0]
+                            this.getGroupDetail(this.selectGroupDetail.groupCode)
+                        } else {
+                            this.latestGroups.concat(res)
+                        }
+                        this.finished = res.length < this.pageSize
                     } else {
-                        this.latestGroups.concat(res)
+                        this.finished = true
                     }
-                    this.finished = res.length < this.pageSize
-                } else {
-                    this.finished = true
-                }
-            }).catch(err => {
-                this.error = true
-                console.log(err)
-            })
+                }).catch(err => {
+                    this.error = true
+                    console.log(err)
+                })
+            } else {
+                this.$api.groupGoods.getSelectedGroup(params).then(res => {
+                    if (res && res instanceof Array) {
+                        if (this.pageNumber === 1) {
+                            this.latestGroups = res
+                            this.selectGroupDetail = this.latestGroups[0]
+                            this.getGroupDetail(this.selectGroupDetail.groupCode)
+                        } else {
+                            this.latestGroups.concat(res)
+                        }
+                        this.finished = res.length < this.pageSize
+                    } else {
+                        this.finished = true
+                    }
+                }).catch(err => {
+                    this.error = true
+                    console.log(err)
+                })
+            }
         },
         getImageRect() {
             this.itemWidth = document.documentElement.clientWidth - 40 * window.devicePixelRatio
@@ -209,12 +230,14 @@ export default {
         }
     },
     mounted() {
-        this.getQuarterLatest()
-    },
-    activated() {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
+        if (this.$route.query.showPage !== undefined) {
+            this.showPage = this.$route.query.showPage
+        }
+        debugger
+        this.getQuarterLatest()
     }
 }
 </script>
