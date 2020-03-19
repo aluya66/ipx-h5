@@ -1,95 +1,108 @@
 <template>
-  <layout-view>
-    <c-header
-      class="my-header"
-      slot="header"
-      :left-arrow="true"
-      :pageOutStatus="isNative"
-    >
-      <div class="title-header" slot="title">
-        组货方案
-      </div>
-    </c-header>
-    <!-- <div class="line" :style="marginTop"></div> -->
-    <div class="panel" :style="getBottomOffset(69)">
-      <div class="top-content">
-        <span>组货名称</span>
-        <div class="group-name">
-          <p>{{ groupName }}</p>
-          <button @click="changeGroupName">更改</button>
-        </div>
-      </div>
-      <div class="list-title">
-        <div class="dot"></div>
-        <p>样衣列表</p>
-      </div>
-      <div class="list-content">
-        <div
-          class="product-cell"
-          v-for="(item, index) in groupGoodsRecords"
-          :key="item.productCode"
+    <layout-view>
+        <c-header
+            class="my-header"
+            slot="header"
+            :left-arrow="true"
+            :pageOutStatus="isNative"
         >
-          <div class="photo_state">
-            <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)" />
-            <div class="state_text" v-show="tipStr(item) !== ''" >{{ tipStr(item) }}</div>
-          </div>
-          <div class="product-info">
-            <p
-              :class="[item.disabled ? 'disableTitle' : '']"
-              @click="jumpToProduct(item)"
-            >
-              {{ item.productName }}
-            </p>
-            <div class="sku-list" @click="jumpToProduct(item)">
-              <p
-                for=""
-                v-for="(sku, i) in item.colorSkuList"
-                :key="i"
-                :class="[item.disabled ? 'disableSku' : '']"
-              >
-                {{ sku | selectSkuStr }}
-              </p>
+            <div class="title-header" slot="title">
+                组货方案
             </div>
-            <div class="sale_price">
-                <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
-                <span class="tip_title">建议零售价</span>
+            <div class="title-right" slot="right" @click="back2Detail()">
+                原始方案
             </div>
-            <div class="footer-btn">
-              <p :class="[item.disabled ? 'disablePrice' : 'price']">
-                ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
-              </p>
-              <button @click="openSku(item, index)" :disabled="item.disabled">
-                调整规格
-              </button>
+        </c-header>
+        <!-- <div class="line" :style="marginTop"></div> -->
+        <div class="panel" :style="getBottomOffset(69)">
+            <div class="top-content">
+                <span>组货名称</span>
+                <div class="group-name">
+                    <p>{{ groupName }}</p>
+                    <button @click="changeGroupName">更改</button>
+                </div>
             </div>
-          </div>
+            <div class="list-title">
+                <div class="dot"></div>
+                <p>样衣列表</p>
+                <div class="list-manage" @click="manageProduct()">{{ isManage ? '完成' : '管理'}}</div>
+            </div>
+            <div class="list-content">
+                <div
+                    class="product-cell"
+                    v-for="(item, index) in groupGoodsRecords"
+                    :class="{ 'move-right' : isManage}"
+                    :key="item.productCode"
+                >
+                    <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click="selectItem(index)"/>
+                    <div class="photo_state">
+                        <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
+                        <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
+                    </div>
+                    <div class="product-info" :class="{'product-info-move' : isManage}">
+                        <p
+                            :class="[item.disabled ? 'disableTitle' : '']"
+                            @click="jumpToProduct(item)"
+                        >
+                            {{ item.productName }}
+                        </p>
+                        <div class="sku-list" @click="jumpToProduct(item)">
+                            <p
+                                for=""
+                                v-for="(sku, i) in item.colorSkuList"
+                                :key="i"
+                                :class="[item.disabled ? 'disableSku' : '']"
+                            >
+                                {{ sku | selectSkuStr }}
+                            </p>
+                        </div>
+                        <div class="sale_price">
+                            <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                            <span class="tip_title">建议零售价</span>
+                        </div>
+                        <div class="footer-btn">
+                            <p :class="[item.disabled ? 'disablePrice' : 'price']">
+                                ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
+                            </p>
+                            <button @click="openSku(item, index)" :disabled="item.disabled">
+                                调整规格
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-content" :style="getBottomOffset(0)">
+                <div class=" total-price" v-show="!isManage">
+                    <div class="group_price">
+                        ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+                    </div>
+                    <div class="sale_price">
+                        <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
+                        <span class="tip_title">建议零售价</span>
+                    </div>
+                </div>
+                <div class="group_tool_btn" v-show="!isManage">
+                    <button class="poster" @click="handleStore">极速上店</button>
+                    <button class="pay" @click="goPay">立即采购</button>
+                </div>
+                <div class="product-manage" v-show="isManage">
+                    <div class="manage-left">
+                        <img :src="isAllSelected ? select_sel: select_def" @click="selectAll()"/>
+                        全选
+                    </div>
+                    <div class="manage-right" @click="clearSelectedProduct()">移除({{selectedNum}})</div>
+                </div>
+            </div>
+            <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage">
         </div>
-      </div>
-      <div class="footer-content" :style="getBottomOffset(0)">
-        <div class=" total-price">
-          <div class="group_price">
-            ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
-          </div>
-          <div class="sale_price">
-            <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
-            <span class="tip_title">建议零售价</span>
-          </div>
-        </div>
-        <div class="group_tool_btn">
-          <button class="poster" @click="handleStore">极速上店</button>
-          <button class="pay" @click="goPay">立即采购</button>
-        </div>
-      </div>
-      <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster">
-    </div>
-    <!-- sku选择 -->
-    <sku-select
-      :seletedDetailsItem="seletedDetailsItem"
-      :goodsId="goodsId"
-      :showSku="showSku"
-      @pointClick="skuCommit"
-    />
-  </layout-view>
+        <!-- sku选择 -->
+        <sku-select
+            :seletedDetailsItem="seletedDetailsItem"
+            :goodsId="goodsId"
+            :showSku="showSku"
+            @pointClick="skuCommit"
+        />
+    </layout-view>
 </template>
 
 <script>
@@ -98,6 +111,7 @@ import order from './groupCreateOrder'
 import cash from './cashFormat.js'
 import utils from 'utils'
 import { Dialog } from 'vant'
+
 export default {
     components: {
         skuSelect
@@ -116,7 +130,12 @@ export default {
             seletedItemIndex: '', // 选择调整商品下标
             isOrderSuply: false,
             isNative: false,
-            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png')
+            isManage: false,
+            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
+            select_def: require('@/themes/images/groupGoods/checkbox_default.png'),
+            select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
+            selectedNum: 0,
+            isAllSelected: false
         }
     },
     mounted() {
@@ -126,7 +145,7 @@ export default {
         }
     },
     activated() {
-    // 上报页面事件
+        // 上报页面事件
         window.sa.track('IPX_WEB', {
             page: 'groupListDetail',
             type: 'pageView',
@@ -168,12 +187,12 @@ export default {
             return 'top:0.64rem'
         },
         goodPicture() {
-            return function(good) {
+            return function (good) {
                 return good.colorSkuList[0].imgUrl
             }
         },
         tipStr() {
-            return function(value) {
+            return function (value) {
                 if (value.productShelves === 0) {
                     value.disabled = true
                     value.unablepay = true
@@ -213,6 +232,14 @@ export default {
         }
     },
     methods: {
+        back2Detail() {
+            this.$router.push({
+                path: '/groupDetail',
+                query: {
+                    groupCode: this.groupDetail.groupCode
+                }
+            })
+        },
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
             let btm = 57
@@ -226,22 +253,73 @@ export default {
                 path: '/deposit'
             })
         },
+        selectItem(index) {
+            console.log('index = ' + index)
+            this.groupGoodsRecords[index].isSelected = !this.groupGoodsRecords[index].isSelected
+            if (this.groupGoodsRecords[index].isSelected) {
+                this.selectedNum++
+            } else {
+                this.selectedNum--
+            }
+        },
+        selectAll() {
+            this.isAllSelected = !this.isAllSelected
+            this.groupGoodsRecords.forEach((item) => {
+                item.isSelected = this.isAllSelected
+            })
+            if (this.isAllSelected) {
+                this.selectedNum = this.groupGoodsRecords.length
+            } else {
+                this.selectedNum = 0
+            }
+        },
         cashFormat(price) {
             return cash.changeFormat(price)
         },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        dialogAlert(isDialog) {
-            if (!this.isDialog && isDialog) {
-                this.isDialog = true
-                Dialog.alert({
-                    title: '商品信息变更',
-                    message: '该组货杆中部分商品信息发生变更，请确认无误后再购买',
-                    confirmButtonText: '我知道了',
+        manageProduct() {
+            this.isManage = !this.isManage
+            this.selectedNum = 0
+            this.isAllSelected = false
+            this.groupGoodsRecords.forEach(item => {
+                item.isSelected = false
+            })
+        },
+        clearSelectedProduct() {
+            console.log('移除')
+            if (this.isAllSelected) {
+                Dialog.confirm({
+                    title: '确定移除？',
+                    message: '至少保留一个商品',
+                    cancelButtonText: '取消',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '不保留',
                     confirmButtonColor: '#007AFF'
-                }).then(() => {})
+                }).then(() => {
+                    this.dialogAlert()
+                })
+                return
             }
+            this.dialogAlert()
+            // for (let i = this.groupGoodsRecords.length - 1; i >= 0; i--) {
+            //     if (this.groupGoodsRecords[i].isSelected) {
+            //         this.groupGoodsRecords.remove(i)
+            //     }
+            // }
+        },
+        dialogAlert() {
+            Dialog.confirm({
+                title: '确定移除？',
+                message: '商品移除后将不再显示在方案内',
+                cancelButtonText: '取消',
+                cancelButtonColor: '#007AFF',
+                confirmButtonText: '确定',
+                confirmButtonColor: '#007AFF'
+            }).then(() => {
+                this.skuCommit()
+            })
         },
         jumpToProduct(product) {
             window.sa.track('IPX_WEB', {
@@ -278,13 +356,13 @@ export default {
                 let seletedColorSkuNum = 0
                 item.skuList.forEach((skuItem, skuIndex) => {
                     skuItem.skuValue =
-            Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
+                        Number(skuItem.entityStock) > 0 ? Number(skuItem.num) : 0
                     seletedColorSkuNum =
-            Number(skuItem.skuValue) + Number(seletedColorSkuNum)
+                        Number(skuItem.skuValue) + Number(seletedColorSkuNum)
                 })
                 item.seletedColorSkuNum = seletedColorSkuNum
                 seletedColorSkuSumNum =
-          Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
+                    Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
             })
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
         },
@@ -303,7 +381,8 @@ export default {
                         return {
                             ...item,
                             disabled: false,
-                            unablepay: false
+                            unablepay: false,
+                            isSelected: false
                         }
                     })
                     this.groupName = this.groupDetail.name
@@ -330,7 +409,8 @@ export default {
                             return {
                                 ...item,
                                 disabled: false,
-                                unablepay: true
+                                unablepay: true,
+                                isSelected: false
                             }
                         })
                         this.groupName = this.groupDetail.name
@@ -350,20 +430,40 @@ export default {
                 groupGoodsId: this.groupDetail.groupGoodsId,
                 name: this.groupDetail.name
             }
-            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-                item.skuList.forEach((skuItem, skuIndex) => {
-                    skuItem.num = skuItem.skuValue
-                    let sku = {
-                        groupGoodsRecordId: skuItem.groupGoodsRecordId,
-                        num: skuItem.skuValue,
-                        productAtrNumber: this.seletedDetailsItem.productAtrNumber,
-                        productCode: this.seletedDetailsItem.productCode,
-                        productSkuCode: skuItem.productSkuCode,
-                        starasSkuCode: skuItem.starasSkuCode
-                    }
-                    groupProducts.push(sku)
+            if (!this.isManage) {
+                this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
+                    item.skuList.forEach((skuItem, skuIndex) => {
+                        skuItem.num = skuItem.skuValue
+                        let sku = {
+                            groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                            num: skuItem.skuValue,
+                            productAtrNumber: this.seletedDetailsItem.productAtrNumber,
+                            productCode: this.seletedDetailsItem.productCode,
+                            productSkuCode: skuItem.productSkuCode,
+                            starasSkuCode: skuItem.starasSkuCode
+                        }
+                        groupProducts.push(sku)
+                    })
                 })
-            })
+            } else {
+                this.groupGoodsRecords.forEach(group => {
+                    group.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
+                            skuItem.num = skuItem.skuValue
+                            let sku = {
+                                groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                                num: skuItem.skuValue,
+                                productAtrNumber: group.productAtrNumber,
+                                productCode: group.productCode,
+                                productSkuCode: skuItem.productSkuCode,
+                                starasSkuCode: skuItem.starasSkuCode,
+                                delFlag: group.isSelected ? 1 : 2
+                            }
+                            groupProducts.push(sku)
+                        })
+                    })
+                })
+            }
             params.groupGoodsRecords = groupProducts
             if (this.isOrderSuply) {
                 this.groupGoodsRecords.forEach((product, index) => {
@@ -386,7 +486,14 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         this.getGroupDetail()
-                        this.$toast.success('已修改')
+                        if (!this.isManage) {
+                            this.$toast.success('已修改')
+                        } else {
+                            this.isManage = false
+                            this.isAllSelected = false
+                            this.selectedNum = 0
+                            this.$toast.success('已移除')
+                        }
                     }
                 })
                 .catch(err => {
