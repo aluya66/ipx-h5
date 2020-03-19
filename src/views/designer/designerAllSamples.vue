@@ -71,7 +71,7 @@ export default {
             headerAlpha: 0,
             isFixedCondition: false,
             conditionTop: 0,
-            itemWidth: 0
+            itemWidth: 166
         }
     },
     methods: {
@@ -297,6 +297,7 @@ export default {
                 flex-wrap: wrap;
                 width: 100%;
                 overflow-x: hidden;
+                padding-bottom: 16px;
                 .cloth-item {
                     margin-top: 8px;
                     background:rgba(255,255,255,1);

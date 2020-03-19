@@ -77,7 +77,7 @@ export default {
                 showUrl: []
             },
             headerAlpha: 0,
-            itemWidth: 0
+            itemWidth: 108
         }
     },
     methods: {
