@@ -21,12 +21,12 @@
         </div>
         <div class="image-footer" :style="getBottomOffset(0)">
             <div class="image-footer-left">
-                <img :src="isAllSelected ? imageSelect: imageUnselect" @click="selectAll"/>
-                全选
+                <img :src="isAllSelected ? imageSelect: imageUnselect" @click="selectAll" v-show="!this.fromChange"/>
+                {{this.fromChange ? "预览" : "全选"}}
             </div>
             <div class="image-footer-right">
-                <div class="image-download" @click="downloadPicture" >下载图片</div>
-                <div class="create-poster" @click="createPoster" >生成海报</div>
+                <div class="image-download" @click="downloadPicture" v-show="!this.fromChange">下载图片</div>
+                <div class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</div>
             </div>
         </div>
     </layout-view>
@@ -153,6 +153,7 @@ export default {
     },
     activated() {
         this.isNative = false
+        this.fromChange = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
