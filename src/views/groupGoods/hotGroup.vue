@@ -1,6 +1,6 @@
 <template>
     <layout-view>
-        <c-header slot="header" :left-arrow="true" :showBorderBottom="true">
+        <c-header slot="header" :left-arrow="true" :showBorderBottom="true" :pageOutStatus="isNative">
             <div slot="title">门店热采组货</div>
         </c-header>
         <div class="group-list">
@@ -33,6 +33,7 @@ export default {
             pageSize: 10,
             reportType: 1,
             hotGroups: [],
+            isNative: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
             error: false, // 加载错误标识
@@ -83,6 +84,11 @@ export default {
     },
     mounted() {
         this.getHotGroup()
+    },
+    activated() {
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
     }
 }
 </script>
