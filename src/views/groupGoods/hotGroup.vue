@@ -113,6 +113,8 @@ export default {
                     right: 0;
                     bottom: 0;
                     z-index: 10;
+                    width: 50px;
+                    height: 32px;
                 }
             }
         }
