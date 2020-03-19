@@ -111,7 +111,7 @@
                             :adjust-position='true'
                             type="digit"
                             placeholder="请填写联系手机"
-                            clearable
+                            :clearable="true"
                             maxlength = 11
                             v-model="phone"
                         />
@@ -182,12 +182,7 @@ export default {
     },
     watch: {
         customPricePercent(val) {
-            console.log(val)
-            // if (parseInt(val) > 999) {
-            //     val = '999'
-            // }
             this.customPricePercent = val
-            console.log('customPricePercent', this.customPricePercent)
         }
         // singlePosterPrice(val) {
         //     // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
@@ -239,14 +234,12 @@ export default {
                 this.$toast('请重新输入组货名称')
             } else {
                 this.posterData.phone = this.phone
+                this.posterData.isSuggest = this.isSuggest
+                this.posterData.percent = this.customPricePercent
                 this.$router.push({
                     path: '/poster/previewGroupPoster',
                     query: { groupData: this.posterData }
                 })
-                // this.isPreview = true
-                // this.isSave = false
-                // this.posterData.groupDesc = this.groupDesc
-                // this.posterData.phone = this.phone
                 // if (this.selectPriceTitle === '单品调价') {
                 //     this.posterData.customPricePercent = '0'
                 //     this.posterData.isRetail = true
@@ -278,6 +271,8 @@ export default {
                     }
                     this.posterData.albumImg_url = this.albumImg_url
                     this.posterData.phone = this.phone
+                    this.posterData.isSuggest = this.isSuggest
+                    this.posterData.percent = this.customPricePercent
                 }
             }).catch(() => {
 

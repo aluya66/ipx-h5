@@ -7,7 +7,7 @@
             <title-content title="商品名称">
                 <template slot="content">
                     <div class="group-descContain">
-                        <field :class='["field-common","group-title"]' maxlength="50" placeholder="请输入商品名称" clearable v-model="posterData.productName" />
+                        <field :class='["field-common","group-title"]' maxlength="50" placeholder="请输入商品名称" :clearable="true" v-model="posterData.productName" />
                     </div>
                 </template>
             </title-content>
@@ -16,7 +16,7 @@
                 <template slot="content">
                     <div class="product-list"
                     >
-                        <img v-for="(sku,index) in posterData.imgs" :key="index" class="image-item" :src="sku.image">
+                        <img v-for="(sku,index) in posterData.colorTypeList" :key="index" class="image-item" :src="sku.image">
                     </div>
                 </template>
             </title-content>
@@ -50,7 +50,7 @@
                                 <p class="price-symbol">¥</p>
 
                                 <div class="input-contain">
-                                    <input-view v-model='addPrice' formart="digit"/>
+                                    <input-view class="price-input" v-model="addPrice" formart="digit"/>
                                     <!-- <field class="price-input" formart="digit" :adjust-position='true' @input="clearNoNum" v-model="addPrice"/> -->
                                 </div>
                             </section>
@@ -72,7 +72,7 @@
                             :adjust-position='true'
                             type="digit"
                             placeholder="请填写联系手机"
-                            clearable="true"
+                            :clearable="true"
                             maxlength = 11
                             v-model="phone"
                         />
@@ -163,16 +163,6 @@ export default {
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
         },
-        clearNoNum(obj) {
-            obj = obj.replace(/[^\d.]/g, '') // 清除“数字”和“.”以外的字符
-            obj = obj.replace(/\.{2,}/g, '.') // 只保留第一个. 清除多余的
-            obj = obj.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')
-            obj = obj.replace(/^(\\-)*(\d+)\.(\d\d).*$/, '$1$2.$3') // 只能输入两个小数
-            if (obj.indexOf('.') < 0 && obj !== '') { // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
-                // obj = parseFloat(obj)
-            }
-            this.addPrice = obj
-        },
         chooseQRCodeImg() {
             const params = {
                 jumpUrl: 'choosePhoto://'
@@ -190,16 +180,13 @@ export default {
             } else if (this.posterData.productName.split(' ').join('').length === 0) {
                 this.$toast('请重新输入商品名称')
             } else {
-                this.posterData.retailPrice = this.posterPrice
+                this.posterData.showPrice = this.posterPrice
                 this.posterData.phone = this.phone
                 this.$router.push({
                     path: '/poster/previewProductPoster',
                     query: { productData: this.posterData }
                 })
-
-                // this.posterData.phone = this.phone
-                // this.isPreview = true
-                // this.isSave = false
+                
                 // if (this.selectPriceTitle === '建议零售价') {
                 //     this.posterData.addPrice = '0'
                 //     this.posterData.isRetail = true
@@ -215,9 +202,12 @@ export default {
         },
         handleRequest() {
             let skuLsit = this.$route.query.skuCodeList
+            if (skuLsit[0].skuCodes === undefined) {
+                return
+            }
             let skuCodes = []
             skuLsit.forEach(item => {
-                skuCodes.push(item.skuCode)
+                skuCodes = skuCodes.concat(item.skuCodes)
             })
             const params = {
                 productCode: this.$route.query.productCode,
@@ -228,13 +218,12 @@ export default {
                 this.phone = baseParams.phoneNumber
                 if (res instanceof Object) {
                     this.posterData = res
-                    this.posterData.addPrice = this.addPrice
-                    this.posterData.addPrice = '0'
                     this.posterData.gapPrice = parseFloat(this.posterData.gapPrice).toFixed(2)
                     this.posterData.tshPrice = parseFloat(this.posterData.tshPrice).toFixed(2)
                     this.posterData.retailPrice = parseFloat(this.posterData.retailPrice).toFixed(2)
                     this.posterData.albumImg_url = this.albumImg_url
                     this.posterData.phone = this.phone
+                    this.posterData.showPrice = this.posterPrice
                 } else {
                     // this.$toast('返回数据错误')
                 }
@@ -250,26 +239,26 @@ export default {
             this.isNative = true
         }
         this.handleRequest()
-    },
-    destroyed() {
-        window.onresize = null
-    },
-    mounted() {
-        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-        if (!isIos) {
-            window.onresize = () => {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                    window.setTimeout(function() {
-                        if ('scrollIntoView' in document.activeElement) {
-                            document.activeElement.scrollIntoView()
-                        } else {
-                            document.activeElement.scrollIntoViewIfNeeded()
-                        }
-                    }, 0)
-                }
-            }
-        }
     }
+    // destroyed() {
+    //     window.onresize = null
+    // },
+    // mounted() {
+    //     let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+    //     if (!isIos) {
+    //         window.onresize = () => {
+    //             if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+    //                 window.setTimeout(function() {
+    //                     if ('scrollIntoView' in document.activeElement) {
+    //                         document.activeElement.scrollIntoView()
+    //                     } else {
+    //                         document.activeElement.scrollIntoViewIfNeeded()
+    //                     }
+    //                 }, 0)
+    //             }
+    //         }
+    //     }
+    // }
 }
 </script>
 
