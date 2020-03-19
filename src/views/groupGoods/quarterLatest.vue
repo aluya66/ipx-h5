@@ -1,6 +1,6 @@
 <template>
     <layout-view class="latest-container">
-        <c-header slot="header" :left-arrow="true" :showBorderBottom="true" :pageOutStatus="isNative">
+        <c-header slot="header" :left-arrow="true" :showBorderBottom="false" :pageOutStatus="isNative" >
             <template slot="right">
                 <img class="header-right" slot="right"
                      src="../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png" @click="rightClick()"/>
