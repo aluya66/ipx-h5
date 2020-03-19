@@ -101,7 +101,7 @@ export default {
     },
     activated() {
         if (this.$route.query.groupData.groupCode !== undefined) {
-            this.groupData = this.$route.query.groupData 
+            this.groupData = this.$route.query.groupData
         }
         this.changedSku = utils.getStore('productSkuList')[0]
         // alert(this.changedSku.colorName)

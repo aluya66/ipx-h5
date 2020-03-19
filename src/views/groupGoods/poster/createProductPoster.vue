@@ -186,7 +186,7 @@ export default {
                     path: '/poster/previewProductPoster',
                     query: { productData: this.posterData }
                 })
-                
+
                 // if (this.selectPriceTitle === '建议零售价') {
                 //     this.posterData.addPrice = '0'
                 //     this.posterData.isRetail = true

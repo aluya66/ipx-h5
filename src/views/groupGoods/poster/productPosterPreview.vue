@@ -89,12 +89,15 @@ export default {
         }
     },
     created() {
-        this.productData = this.$route.query.productData
+        // this.productData = this.$route.query.productData
     },
     deactivated() {
         utils.setStore('productSkuList', '')
     },
     activated() {
+        if (this.$route.query.productData.productCode !== undefined) {
+            this.productData = this.$route.query.productData
+        }
         this.changedSku = utils.getStore('productSkuList')[0]
         if (this.changedSku !== undefined) {
             this.handleRequest()

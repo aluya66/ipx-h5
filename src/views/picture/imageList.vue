@@ -2,7 +2,11 @@
     <layout-view>
         <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative" :showBorderBottom='true'>
             <div slot="title">选择图片</div>
-            <div slot="right">取消</div>
+            <template slot="right" tag="div">
+                <div class="right_title" @click="cancel">
+                    取消
+                </div>
+            </template>
         </c-header>
         <div class="image-content" :style="getBottomOffset(84)">
             <div class="image-list">
@@ -64,6 +68,14 @@ export default {
                 return
             }
             this.images[index].isSelected = !this.images[index].isSelected
+        },
+        cancel() {
+            let method = 'page_out'
+            if (this.isNative) {
+                utils.postMessage(method, '')
+            } else {
+                this.$router.go(-1)
+            }
         },
         selectAll() {
             if (this.fromChange & this.images.length > 1) {
