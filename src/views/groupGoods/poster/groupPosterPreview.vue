@@ -45,11 +45,11 @@
                 </div>
                 <!-- mainPic -->
                 <div class="images_list" v-for="product in groupData.products" :key="product.productCode" >
-                    <img :src="product.imgs[0].image" alt="">
+                    <img :src="product.colorTypeList[0].image" alt="">
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
-                        <p>{{product.retailPrice}}</p>
+                        <p>{{groupData.isSuggest ? product.retailPrice : posterPrice(product.retailPrice)}}</p>
                     </div>
                     <div class="change_content" @click="changeProduct(product)">
                         <img :src="changeGood_icon" alt="">
@@ -94,12 +94,15 @@ export default {
         }
     },
     created() {
-        this.groupData = this.$route.query.groupData
+        // this.groupData = this.$route.query.groupData
     },
     deactivated() {
         utils.setStore('productSkuList', '')
     },
     activated() {
+        if (this.$route.query.groupData.groupCode !== undefined) {
+            this.groupData = this.$route.query.groupData 
+        }
         this.changedSku = utils.getStore('productSkuList')[0]
         // alert(this.changedSku.colorName)
         if (this.changedSku !== undefined) {
@@ -107,7 +110,24 @@ export default {
             this.groupData.products[index].colorName = this.changedSku.colorName
             this.groupData.products[index].sizeName = this.changedSku.sizeName
             this.groupData.products[index].retailPrice = this.changedSku.retailPrice
-            this.groupData.products[index].imgs[0].image = this.changedSku.image
+            this.groupData.products[index].colorTypeList[0].image = this.changedSku.image
+        }
+    },
+    computed: {
+        posterPrice() {
+            return function (price) {
+                let add = this.groupData.percent
+                if (add === '') {
+                    add = '0'
+                }
+                if (add === '0') {
+                    return price
+                } else {
+                    let p = parseFloat(price) * parseFloat(add || '0') / 100
+                    let p2 = p.toFixed(2)
+                    return p2
+                }
+            }
         }
     },
     methods: {

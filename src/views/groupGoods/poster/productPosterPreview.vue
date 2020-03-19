@@ -21,7 +21,7 @@
                         <p>{{productData.productName}}</p>
                         <p>颜色：{{productData.colorName}}</p>
                         <p>尺码：{{productData.sizeName}}</p>
-                        <p>{{productData.retailPrice}}</p>
+                        <p>{{productData.showPrice}}</p>
                     </div>
                 </div>
             </div>
@@ -44,9 +44,9 @@
                 </div>
             </div>
             <div class="product_image">
-                <div class="images_list" v-for="(skuItem,index) in productData.imgs" :key="index" >
+                <div class="images_list" v-for="(skuItem,index) in productData.colorTypeList" :key="index" >
                     <img :src="skuItem.image" alt="">
-                    <div class="change_content" @click="changeImage(skuItem.skuCode)">
+                    <div class="change_content" @click="changeImage(skuItem.skuCodes)">
                         <img :src="changeGood_icon" alt="">
                         <p>换一张</p>
                     </div>
@@ -85,7 +85,7 @@ export default {
             triangle_icon: require('../../../themes/images/groupGoods/icon_triangle@3x.png'),
             productData: {},
             changedSku: {},
-            changeSkuCode: ''
+            changeSkuCodes: []
         }
     },
     created() {
@@ -96,14 +96,13 @@ export default {
     },
     activated() {
         this.changedSku = utils.getStore('productSkuList')[0]
-        // alert(this.changedSku)
         if (this.changedSku !== undefined) {
             this.handleRequest()
         }
     },
     methods: {
-        changeImage(skucode) {
-            this.changeSkuCode = skucode
+        changeImage(skucodes) {
+            this.changeSkuCodes = skucodes
             this.$router.push({
                 path: '/picture/imageList',
                 query: {
@@ -114,26 +113,27 @@ export default {
             })
         },
         handleRequest() {
-            let skuLsit = this.productData.imgs
+            let skuLsit = this.productData.colorTypeList
             let skuCodes = []
             skuLsit.forEach(item => {
-                skuCodes.push(item.skuCode)
+                if (this.changeSkuCodes !== item.skuCodes) {
+                    skuCodes = skuCodes.concat(item.skuCodes)
+                }
             })
-            let index = skuCodes.indexOf(this.changeSkuCode)
-            skuCodes[index] = this.changedSku.skuCode
+            skuCodes = skuCodes.concat(this.changedSku.skuCodes)
             const params = {
                 productCode: this.productData.productCode,
                 skuCodes: skuCodes
             }
             let phone = this.productData.phone
-            let retailPrice = this.productData.retailPrice
+            // let retailPrice = this.productData.showPrice
             let albumImg = this.productData.albumImg_url
             let productName = this.productData.productName
             this.$api.poster.getProductPosterInfo(params).then(res => {
                 if (res instanceof Object) {
                     this.productData = res
                     this.productData.phone = phone
-                    this.productData.retailPrice = retailPrice
+                    this.productData.showPrice = this.productData.retailPrice
                     this.productData.albumImg_url = albumImg
                     this.productData.productName = productName
                 }
