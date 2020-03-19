@@ -72,6 +72,16 @@ export default {
                         let swiper = this.$refs.groupSwiper.swiper
                         this.selectGroupDetail = this.latestGroups[swiper.activeIndex]
                         this.getGroupDetail(this.selectGroupDetail.groupCode)
+                    },
+                    click: () => {
+                        let swiper = this.$refs.groupSwiper.swiper
+                        this.selectGroupDetail = this.latestGroups[swiper.activeIndex]
+                        this.$router.push({
+                            path: '/groupDetail',
+                            query: {
+                                groupCode: this.selectGroupDetail.groupCode
+                            }
+                        })
                     }
                 }
             }

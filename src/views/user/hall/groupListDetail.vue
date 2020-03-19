@@ -233,7 +233,12 @@ export default {
     },
     methods: {
         back2Detail() {
-            this.$router.go(-1)
+            this.$router.push({
+                path: '/groupDetail',
+                query: {
+                    groupCode: this.selectGroupDetail.groupCode
+                }
+            })
         },
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
@@ -284,14 +289,27 @@ export default {
         },
         clearSelectedProduct() {
             console.log('移除')
-            this.dialogAlert(true)
+            if (this.isAllSelected) {
+                Dialog.confirm({
+                    title: '确定移除？',
+                    message: '至少保留一个商品',
+                    cancelButtonText: '取消',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '不保留',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    this.dialogAlert()
+                })
+                return
+            }
+            this.dialogAlert()
             // for (let i = this.groupGoodsRecords.length - 1; i >= 0; i--) {
             //     if (this.groupGoodsRecords[i].isSelected) {
             //         this.groupGoodsRecords.remove(i)
             //     }
             // }
         },
-        dialogAlert(isDialog) {
+        dialogAlert() {
             Dialog.confirm({
                 title: '确定移除？',
                 message: '商品移除后将不再显示在方案内',

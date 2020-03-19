@@ -12,7 +12,7 @@
                 :error="error"
                 :finished="finished"
             >
-                <div class="group-item" v-for="(item, index) in hotGroups" :key="index" :style="getImageRect()">
+                <div class="group-item" v-for="(item, index) in hotGroups" :key="index" :style="getImageRect()" @click="gotoGroupDetail(item.groupCode)">
                     <img class="main-pic" :src="item.groupImg" :style="getImageRect()"/>
                     <img class="detail" src="../../themes/images/groupGoods/btn_detail.png"/>
                 </div>
@@ -64,6 +64,14 @@ export default {
             }).catch((err) => {
                 console.log(err)
                 this.error = true
+            })
+        },
+        gotoGroupDetail(groupCode) {
+            this.$router.push({
+                path: '/groupDetail',
+                query: {
+                    groupCode: groupCode
+                }
             })
         },
         handleMore() {
