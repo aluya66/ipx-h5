@@ -48,7 +48,6 @@ export default {
             }
             this.loading = true
             this.$api.groupGoods.getHotGroup(params).then(res => {
-                debugger
                 this.loading = false
                 if (res && res instanceof Array) {
                     if (this.pageNumber === 1) {

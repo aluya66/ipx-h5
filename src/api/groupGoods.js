@@ -81,3 +81,12 @@ export const suplyGoods = params => Http.fetch(`${context}/v1/group/goods/replen
 export const getHotGroup = params => Http.fetch(`${context}/v1/home/examplelist`, params, {
     method: 'get'
 })
+
+/**
+ * 门店热门组货
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const getQuarterLatest = params => Http.fetch(`${context}/v1/home/latestlist`, params, {
+    method: 'get'
+})
