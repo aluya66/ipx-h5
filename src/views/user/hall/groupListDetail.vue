@@ -433,337 +433,444 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.poster-icon {
-  display: block;
-  width: 80px;
-  height: 80px;
-  position: fixed;
-  right: 8px;
-}
-.my-header {
-  position: relative;
-  &:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: @color-c7;
-  }
-}
-.line {
-  position: fixed;
-  width: 100%;
-  background-color: @color-c7;
-  height: 1px;
-  z-index: 100;
-}
-.panel {
-  background-color: white;
-  height: calc(100vh - 65px);
-  overflow-y: scroll;
-  padding: 16px;
-  margin-top: -1px;
-}
-.top-content {
-  padding: 16px 0 16px 12px;
-  background: white;
-  box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
-  border-radius: 8px;
-  .group-name {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    > p {
-      font-size: 16px;
-      font-weight: 500;
-      color: @color-c1;
-      .ellipsis();
+    .poster-icon {
+        display: block;
+        width: 80px;
+        height: 80px;
+        position: fixed;
+        right: 8px;
     }
-    > button {
-      font-size: 14px;
-      font-weight: 500;
-      color: @color-ec;
-      width: 20%;
-      background: none;
+
+    .my-header {
+        position: relative;
+
+        &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: @color-c7;
+        }
+
+        .title-header {
+            font-weight: bold;
+        }
+
+        .title-right {
+            font-size: 14px;
+            font-family: PingFangSC-Medium,PingFang SC;
+            font-weight: bold;
+            color: @color-ec;
+        }
     }
-  }
-  > span {
-    font-size: 14px;
-    font-weight: 400;
-    color: @color-c3;
-  }
-}
-.list-title {
-  margin-top: 32px;
-  position: relative;
-  height: 28px;
-  > p {
-    position: absolute;
-    font-size: 20px;
-    font-weight: 500;
-    color: @color-ec;
-    line-height: 28px;
-  }
-  .dot {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #fad961;
-    border-radius: 6px;
-    top: 0;
-    left: 73px;
-    z-index: 0;
-  }
-}
-.list-content {
-  margin-top: 16px;
-  padding-bottom: 60px;
-  .product-cell {
-    background: white;
-    height: 106px;
-    margin-bottom: 32px;
-    display: flex;
-    position: relative;
-    .photo_state {
-      position: relative;
-      background-color: @color-c8;
-      > img {
-        flex: none;
-        width: 106px;
-        height: 106px;
-        border-radius: 4px;
-        object-fit: cover;
-        border: 1px solid @color-c7;
-      }
-      .state_text {
-        position: absolute;
-        width:106px;
-        height:18px;
-        background:rgba(0,0,0,0.5);
-        border-radius:0px 0px 4px 4px;
-        font-size:10px;
-        font-weight:400;
-        color:rgba(255,255,255,1);
-        text-align: center;
-        line-height:18px;
-        top: 88px;
-      }
+
+    .line {
+        position: fixed;
+        width: 100%;
+        background-color: @color-c7;
+        height: 1px;
+        z-index: 100;
     }
-    .product-info {
-      margin-left: 12px;
-      width: calc(100vw - 152px);
-      > p {
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 22px;
-        color: @color-c1;
-        .ellipsis();
-      }
-      .disableTitle {
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 22px;
-        color: @color-c4;
-        .ellipsis();
-      }
-      .sku-list {
-        // margin-top: 8px;
-        overflow: hidden;
+
+    .panel {
+        background-color: white;
+        height: calc(100vh - 65px);
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding: 16px;
+        margin-top: -1px;
+    }
+
+    .top-content {
+        padding: 16px 0 16px 12px;
+        background: white;
+        box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
+        border-radius: 8px;
+
+        .group-name {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+
+            > p {
+                font-size: 16px;
+                font-weight: 500;
+                color: @color-c1;
+                .ellipsis();
+            }
+
+            > button {
+                font-size: 14px;
+                font-weight: 500;
+                color: @color-ec;
+                width: 20%;
+                background: none;
+            }
+        }
+
+        > span {
+            font-size: 14px;
+            font-weight: 400;
+            color: @color-c3;
+        }
+    }
+
+    .list-title {
+        margin-top: 32px;
+        position: relative;
+        height: 28px;
+
         > p {
-          font-size: 12px;
-          font-weight: 400;
-          color: @color-c3;
-          line-height: 16px;
-          margin: 8px 0;
+            position: absolute;
+            font-size: 20px;
+            font-weight: 500;
+            color: @color-ec;
+            line-height: 28px;
         }
-        .disableSku {
-          font-size: 12px;
-          font-weight: 400;
-          color: @color-c4;
-          line-height: 16px;
-          margin: 8px 0;
+
+        .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #fad961;
+            border-radius: 6px;
+            top: 0;
+            left: 73px;
+            z-index: 0;
         }
-        // .tips {
-        //   font-size: 12px;
-        //   font-weight: 400;
-        //   color: @color-rc;
-        //   height: 15px;
-        // }
-      }
-      .sale_price {
-        margin-top: 8px;
-        // margin-bottom: 4px;
-        .price {
-          font-size: 12px;
-          font-weight: 400;
-          color: @color-c1;
-          line-height: 14px;
-          font-family: "alibabaRegular";
-          > span {
-            font-size: 14px;
-            font-weight: bold;
-            color: @color-c1;
-            line-height: 14px;
-            font-family: "alibabaBold";
-          }
+
+        .list-manage {
+            width: 52px;
+            height: 28px;
+            border-radius: 16px;
+            border: 1px solid rgba(213, 214, 222, 1);
+            position: absolute;
+            right: 0px;
+            line-height: 28px;
+            text-align: center;
         }
-        .disablePrice {
-          font-size: 12px;
-          font-weight: 400;
-          color: @color-c4;
-          font-family: "alibabaRegular";
-          > span {
-            font-size: 14px;
-            font-weight: bold;
-            color: @color-c4;
-            font-family: "alibabaBold";
-          }
+    }
+
+    .list-content {
+        margin-top: 16px;
+        padding-bottom: 60px;
+
+        .product-cell {
+            background: white;
+            height: 106px;
+            margin-bottom: 32px;
+            display: flex;
+            position: relative;
+            align-items: center;
+
+            .product-item-check {
+                width: 20px;
+                height: 20px;
+                margin-right: 16px;
+            }
+
+            .photo_state {
+                position: relative;
+
+                > img {
+                    flex: none;
+                    width: 106px;
+                    height: 106px;
+                    border-radius: 4px;
+                    object-fit: cover;
+                    border: 1px solid @color-c7;
+                }
+
+                .state_text {
+                    position: absolute;
+                    width: 106px;
+                    height: 18px;
+                    background: rgba(0, 0, 0, 0.5);
+                    border-radius: 0px 0px 4px 4px;
+                    font-size: 10px;
+                    font-weight: 400;
+                    color: rgba(255, 255, 255, 1);
+                    text-align: center;
+                    line-height: 18px;
+                    top: 88px;
+                }
+            }
+
+            .product-info-move {
+                margin-right: -36px;
+            }
+
+            .product-info {
+                margin-left: 12px;
+                width: calc(100vw - 152px);
+                > p {
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 22px;
+                    color: @color-c1;
+                    .ellipsis();
+                }
+
+                .disableTitle {
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 22px;
+                    color: @color-c4;
+                    .ellipsis();
+                }
+
+                .sku-list {
+                    // margin-top: 8px;
+                    overflow: hidden;
+
+                    > p {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: @color-c3;
+                        line-height: 16px;
+                        margin: 8px 0;
+                    }
+
+                    .disableSku {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: @color-c4;
+                        line-height: 16px;
+                        margin: 8px 0;
+                    }
+
+                    // .tips {
+                    //   font-size: 12px;
+                    //   font-weight: 400;
+                    //   color: @color-rc;
+                    //   height: 15px;
+                    // }
+                }
+
+                .sale_price {
+                    margin-top: 8px;
+                    // margin-bottom: 4px;
+                    .price {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: @color-c1;
+                        line-height: 14px;
+                        font-family: "alibabaRegular";
+
+                        > span {
+                            font-size: 14px;
+                            font-weight: bold;
+                            color: @color-c1;
+                            line-height: 14px;
+                            font-family: "alibabaBold";
+                        }
+                    }
+
+                    .disablePrice {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: @color-c4;
+                        font-family: "alibabaRegular";
+
+                        > span {
+                            font-size: 14px;
+                            font-weight: bold;
+                            color: @color-c4;
+                            font-family: "alibabaBold";
+                        }
+                    }
+
+                    .tip_title {
+                        font-size: 10px;
+                        font-weight: 500;
+                        color: @color-c3;
+                        line-height: 12px;
+                        background: rgba(244, 245, 247, 1);
+                        margin-left: 10px;
+                        padding: 2px;
+                        border-radius: 0px 4px 4px 4px;
+                    }
+                }
+
+                .footer-btn {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .price {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: @color-rc;
+                        font-family: "alibabaRegular";
+                        margin-top: 8px;
+
+                        > span {
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: @color-rc;
+                            font-family: "alibabaBold";
+                        }
+                    }
+
+                    .disablePrice {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: @color-c4;
+                        font-family: "alibabaRegular";
+                        margin-top: 8px;
+
+                        > span {
+                            font-size: 18px;
+                            font-weight: bold;
+                            color: @color-c4;
+                            font-family: "alibabaBold";
+                        }
+                    }
+
+                    .yen {
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: @color-rc;
+                        font-family: "alibabaRegular";
+                    }
+
+                    > button {
+                        width: 80px;
+                        height: 28px;
+                        background: @color-ec1;
+                        border-radius: 18px;
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: @color-ec;
+                    }
+
+                    > button:disabled {
+                        background: rgba(249, 250, 252, 1);
+                        color: @color-c4;
+                    }
+                }
+            }
         }
-        .tip_title {
-          font-size:10px;
-          font-weight:500;
-          color: @color-c3;
-          line-height:12px;
-          background:rgba(244,245,247,1);
-          margin-left: 10px;
-          padding: 2px;
-          border-radius:0px 4px 4px 4px;
-        }
-      }
-      .footer-btn {
+    }
+
+    .footer-content {
+        background-color: white;
+        width: 100%;
+        position: fixed;
         display: flex;
         justify-content: space-between;
-        .price {
-          font-size: 12px;
-          font-weight: 400;
-          color: @color-rc;
-          font-family: "alibabaRegular";
-          margin-top: 8px;
-          > span {
-            font-size: 18px;
-            font-weight: bold;
-            color: @color-rc;
-            font-family: "alibabaBold";
-          }
-        }
-        .disablePrice {
-          font-size: 12px;
-          font-weight: 400;
-          color: @color-c4;
-          font-family: "alibabaRegular";
-          margin-top: 8px;
-          > span {
-            font-size: 18px;
-            font-weight: bold;
-            color: @color-c4;
-            font-family: "alibabaBold";
-          }
-        }
-        .yen {
-          font-size: 12px;
-          font-weight: 400;
-          color: @color-rc;
-          font-family: "alibabaRegular";
-        }
-        > button {
-          width: 80px;
-          height: 28px;
-          background: @color-ec1;
-          border-radius: 18px;
-          font-size: 12px;
-          font-weight: 500;
-          color: @color-ec;
-        }
-        > button:disabled {
-          background: rgba(249, 250, 252, 1);
-          color: @color-c4;
-        }
-      }
-    }
-  }
-}
-.footer-content {
-  background-color: white;
-  width: 100%;
-  position: fixed;
-  display: flex;
-  justify-content: space-between;
-  bottom: 0;
-  left: 0;
-  box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
-  border-radius: 12px 12px 0px 0px;
-  padding: 5px 16px 5px;
-  .group_price {
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(245, 48, 48, 1);
-    line-height: 24px;
-    font-family: "alibabaRegular";
-    > span {
-      font-size: 20px;
-      font-weight: bold;
-      color: rgba(245, 48, 48, 1);
-      line-height: 24px;
-      font-family: "alibabaBold";
-    }
-  }
-  .sale_price {
-    margin-bottom: 5px;
-    .price {
-      font-size: 12px;
-      font-weight: 400;
-      color: @color-c1;
-      line-height: 14px;
-      font-family: "alibabaRegular";
-      > span {
-        font-size: 14px;
-        font-weight: bold;
-        color: @color-c1;
-        line-height: 14px;
-        font-family: "alibabaBold";
-      }
-    }
-    .tip_title {
-      font-size:10px;
-      font-weight:500;
-      color: @color-c3;
-      line-height:12px;
-      background:rgba(244,245,247,1);
-      margin-left: 4px;
-      padding: 2px;
-      border-radius:0px 4px 4px 4px;
-    }
-  }
-  .group_tool_btn {
-    display: flex;
-    margin-bottom: 5px;
-     .poster {
-      width: 96px;
-      height: 40px;
-      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);border-radius:20px;
-      font-size:14px;
-      font-weight:500;
-      color:rgba(60,92,246,1);
-      // margin-right: 20px;
-      align-self: center;
-    }
-    .pay {
-      width: 96px;
-      height: 40px;
-      background: linear-gradient(
-        135deg,
-        rgba(85, 122, 244, 1) 0%,
-        rgba(114, 79, 255, 1) 100%
-      );
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: bold;
-      color: white;
-      align-self: center;
-      margin-left: 12px;
-    }
-  }
+        bottom: 0;
+        left: 0;
+        box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
+        border-radius: 12px 12px 0px 0px;
+        padding: 5px 16px 5px;
 
-}
+        .product-manage {
+            display: flex;
+            flex-direction: row;
+            width: calc(100vw - 32px);
+            height: 44px;
+            margin-bottom: 5px;
+            justify-content: space-between;
+            .manage-left {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                img {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
+                }
+            }
+            .manage-right {
+                height:40px;
+                padding-left: 16px;
+                color: white;
+                font-size: 14px;
+                line-height: 40px;
+                padding-right: 16px;
+                background:rgba(245,48,48,1);
+                border-radius:20px;
+            }
+        }
+
+        .group_price {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(245, 48, 48, 1);
+            line-height: 24px;
+            font-family: "alibabaRegular";
+
+            > span {
+                font-size: 20px;
+                font-weight: bold;
+                color: rgba(245, 48, 48, 1);
+                line-height: 24px;
+                font-family: "alibabaBold";
+            }
+        }
+
+        .sale_price {
+            margin-bottom: 5px;
+
+            .price {
+                font-size: 12px;
+                font-weight: 400;
+                color: @color-c1;
+                line-height: 14px;
+                font-family: "alibabaRegular";
+
+                > span {
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: @color-c1;
+                    line-height: 14px;
+                    font-family: "alibabaBold";
+                }
+            }
+
+            .tip_title {
+                font-size: 10px;
+                font-weight: 500;
+                color: @color-c3;
+                line-height: 12px;
+                background: rgba(244, 245, 247, 1);
+                margin-left: 4px;
+                padding: 2px;
+                border-radius: 0px 4px 4px 4px;
+            }
+        }
+
+        .group_tool_btn {
+            display: flex;
+            margin-bottom: 5px;
+
+            .poster {
+                width: 96px;
+                height: 40px;
+                background: linear-gradient(322deg, rgba(238, 236, 255, 1) 0%, rgba(216, 212, 255, 1) 100%);
+                border-radius: 20px;
+                font-size: 14px;
+                font-weight: 500;
+                color: rgba(60, 92, 246, 1);
+                // margin-right: 20px;
+                align-self: center;
+            }
+
+            .pay {
+                width: 96px;
+                height: 40px;
+                background: linear-gradient(135deg,
+                rgba(85, 122, 244, 1) 0%,
+                rgba(114, 79, 255, 1) 100%);
+                border-radius: 20px;
+                font-size: 14px;
+                font-weight: bold;
+                color: white;
+                align-self: center;
+                margin-left: 12px;
+            }
+        }
+
+    }
 </style>

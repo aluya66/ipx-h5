@@ -1,6 +1,6 @@
 <template>
     <div class="input-contain">
-        <input class="price-input" v-model="value" type="text" @input="handleInput" @focus="()=>{ isFocus = true }" @blur="()=>{ isFocus = false }">
+        <input class="price-input" v-model="value" type="text" :style="`color:${inputColorValue}`" :disabled="disabledInput" @input="handleInput" @focus="()=>{ isFocus = true }" @blur="()=>{ isFocus = false }" @blur.prevent="changeBlur()">
         <div @click.stop="handleClear" class="clear-icon">
             <img v-show="value.length > 0 && isFocus && !hiddenClear" :src="deleteIcon" alt="">
         </div>
@@ -19,6 +19,14 @@ export default {
         formart: {
             type: String,
             default: ''
+        },
+        disabledInput: {
+            type: Boolean,
+            default: false
+        },
+        inputColorValue: {
+            type: String,
+            default: '#2A2B33'
         }
     },
     // watch: {
@@ -33,6 +41,16 @@ export default {
         }
     },
     methods: {
+        changeBlur() {
+            let u = navigator.userAgent
+            let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+            if (isIOS) {
+                setTimeout(() => {
+                    const scrollHeight = document.documentElement.scrollTop || document.body.scrollTop || 0
+                    window.scrollTo(0, Math.max(scrollHeight - 1, 0))
+                }, 200)
+            }
+        },
         handleInput(val) {
             if (this.formart !== '') {
                 this.inputFormat(val.target.value)

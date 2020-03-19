@@ -14,7 +14,7 @@
                             maxlength="50"
                             :adjust-position='true'
                             v-model="posterData.groupTitle" />
-                        <div class="descContain">
+                        <!-- <div class="descContain">
                              <field :class='["field-common","group-desc"]'
                                 type="textarea"
                                 placeholder="请输入组货描述"
@@ -23,7 +23,7 @@
                                 maxlength="200"
                             />
                             <p>{{groupDesc.length}}/200</p>
-                        </div>
+                        </div> -->
                     </div>
                 </template>
             </title-content>
@@ -45,30 +45,83 @@
                                 {{menuTitle}}
                             </section>
                         </div>
-                        <p v-if="selectPriceTitle==='建议零售价'" class="price-suggest">各商品均按建议零售价显示(预览查看)</p>
-                        <div v-else class="price-custom delete-field-line">
-                            <p class="price-custom-title">各单品均加价(预览查看)</p>
-                            <div class="input-contain">
-                                <field class="price-input" type="digit" :adjust-position='true' v-model="customPricePercent"/>
-                                <p class="price-symbol">%</p>
+                        <div v-if="selectPriceTitle==='单品调价'" class="price-suggest">
+                            <div class="goodInfo-list" v-for="goodsInfo in posterData.products" :key="goodsInfo.productCode">
+                                <img :src="goodsInfo.mainPic" alt="">
+                                <div class="good-info">
+                                    <p>{{goodsInfo.productName}}</p>
+                                    <section :class='["flex-common","purchase-contain","good-totalPrice"]'>
+                                        <p style="font-size:0.13rem">采货价:</p>
+                                        <p>{{parseFloat(posterData.totalPrice).toFixed(2)}}</p>
+                                    </section>
+                                    <section style="height:0.32rem"  :class='["flex-common","custom-add","good-posterPrice"]'>
+                                        <p style="line-height:0.32rem;font-size:0.13rem">海报价:</p>
+                                        <p class="price-symbol">¥</p>
+                                        <div class="input-contain">
+                                            <input-view class="price-input" :inputColorValue="'#F53030'" v-model="goodsInfo.retailPrice" formart="digit"/>
+                                            <!-- <field class="price-input" type="number" error :adjust-position='true' v-model="goodsInfo.retailPrice"/> -->
+
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
+                        </div>
+                        <div v-else class="price-custom delete-field-line">
+
+                            <section :class='["flex-common","purchase-contain"]'>
+                                <p style="font-size:0.13rem">采货价:</p>
+                                <p>{{parseFloat(posterData.totalPrice).toFixed(2)}}</p>
+                            </section>
+                            <section style="height:0.32rem"  :class='["flex-common","custom-add"]'>
+                                <p class="price-custom-title" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(88,91,102,1)'">单品均加价:</p>
+                                <div class="input-contain">
+                                    <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="number" :hiddenClear="true" />
+                                    <!-- <field
+                                    class="price-input"
+                                    type="number"
+                                    v-model="customPricePercent"
+                                    :disabled = "isSuggest"
+                                    :adjust-position='true'
+                                    @input="clearNoNum"
+                                    /> -->
+                                    <p class="price-symbol" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(42,43,51,1)'">%</p>
+                                </div>
+                            </section>
+                            <section :class='["flex-common","posterPrice-contain"]'>
+                                <p>海报价:</p>
+                                <p>{{isSuggest ? parseFloat(posterData.totalRetailPrice).toFixed(2) : posterPrice}}</p>
+                            </section>
+
+                            <section class="suggest-selected" :style="isSuggest ? 'background:rgba(235,238,255,1)' : 'background:rgba(249,250,252,1)' ">
+                                <img class="suggest-select-icon" :src="isSuggest ? select_sel : select_def" alt="" @click="selectSuggest">
+                                <p :style="isSuggest ? 'color: rgba(60,92,246,1);':'color: rgba(42,43,51,1);'">使用建议零售价</p>
+                            </section>
 
                         </div>
                     </div>
                 </template>
             </title-content>
 
-            <title-content title="联系手机" subTitle="(选填)">
+            <title-content title="联系方式" subTitle="(选填)">
                 <template slot="content">
+                    <p class="phone-title">手机号码</p>
                     <div style="padding:0.12rem 0.16rem">
                         <field
                             :class='["field-common","group-title"]'
                             :adjust-position='true'
                             type="digit"
                             placeholder="请填写联系手机"
-                            clearable
+                            :clearable="true"
+                            maxlength = 11
                             v-model="phone"
                         />
+                    </div>
+                    <div class="qrcode-content">
+                        <p class="phone-title">微信二维码</p>
+                        <div class="photo-choose" v-if="albumImg_url===''" @click="chooseQRCodeImg">
+                            <img :src="choose_qrcode" alt="">
+                        </div>
+                        <img class="Album-selectd" v-else :src="albumImg_url" alt="" @click="chooseQRCodeImg">
                     </div>
                 </template>
             </title-content>
@@ -77,16 +130,15 @@
         <fixed-view class="footer-shadow">
             <template slot="footerContain">
                 <div class="footer-view">
-                    <section :class='["section-common","button-default"]' @click="handlePreviewPoster">预览海报</section>
-                    <section :class='["section-common","button-select"]' @click="handleCreatePoster">保存海报</section>
+                    <section :class='["section-common","button-select"]' @click="handlePreviewPoster">立即生成海报</section>
                 </div>
             </template>
         </fixed-view>
 
-        <div class="popup-view" v-show="isPreview" >
+        <!-- <div class="popup-view" v-show="isPreview" >
             <img :src="deleteIcon" alt="" @click="handleClosePopup" >
             <popup-view ref="imageView" :isDownload='isSave' :isShowPopup="isPreview" :posterData="posterData" @close='handleClosePopup'/>
-        </div>
+        </div> -->
     </layout-view>
 </template>
 
@@ -95,38 +147,58 @@ import TitleContent from '../../common/titleContent.vue'
 import { Field } from 'vant'
 import FixedView from '../../common/bottomFixedView.vue'
 import utils from 'utils'
-import PopupView from './groupPosterPopup'
-
+// import PopupView from './groupPosterPopup'
+import InputView from '../../common/inputView.vue'
 export default {
     components: {
         TitleContent,
         Field,
         FixedView,
-        PopupView
+        InputView
+        // PopupView
     },
     data() {
         return {
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
+            select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
+            select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
+            choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
+            albumImg_url: '',
             groupTitle: '',
             groupDesc: '',
             groupImages: [1, 2],
-            selectPriceTitle: '自主定价',
-            priceMenu: ['自主定价', '建议零售价'],
+            selectPriceTitle: '统一调价',
+            priceMenu: ['统一调价', '单品调价'],
             customPricePercent: '0',
+            singlePosterPrice: 0,
             phone: '',
             posterData: {},
             isPreview: false,
             mainImage: '',
             isSave: false,
-            isNative: false
+            isNative: false,
+            isSuggest: false
         }
     },
     watch: {
         customPricePercent(val) {
             this.customPricePercent = val
-            if (parseInt(val) > 999) {
-                this.customPricePercent = '999'
+        }
+        // singlePosterPrice(val) {
+        //     // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
+        //     let price = parseFloat(val).toFixed(2)
+        //     this.singlePosterPrice = price
+        // }
+    },
+    computed: {
+        posterPrice() {
+            let add = this.customPricePercent
+            if (this.customPricePercent === '') {
+                add = '0'
             }
+            let p = parseFloat(this.posterData.totalPrice) * parseFloat(add || '0') / 100
+            let p2 = p.toFixed(2)
+            return p2
         }
     },
     methods: {
@@ -136,58 +208,50 @@ export default {
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
         },
+        selectSuggest() { // 选中建议零售价
+            this.isSuggest = !this.isSuggest
+            if (this.isSuggest) {
+                this.customPricePercent = ''
+            } else {
+                this.customPricePercent = '0'
+            }
+        },
+        chooseQRCodeImg() {
+            const params = {
+                jumpUrl: 'choosePhoto://'
+            }
+            utils.postMessage('', params)
+            window.getAlbumPhoto = (imgData) => {
+                this.albumImg_url = 'data:image/jpeg;base64,' + imgData
+                this.posterData.albumImg_url = this.albumImg_url
+            }
+        },
         // 预览海报
         handlePreviewPoster() {
             if (this.posterData.groupTitle === '') {
                 this.$toast('请输入组货名称')
             } else if (this.posterData.groupTitle.split(' ').join('').length === 0) {
                 this.$toast('请重新输入组货名称')
-            } else if (this.groupDesc.split(' ').join('').length === 0) {
-                this.$toast('请重新输入组货描述')
-            } else if (this.groupDesc === '') {
-                this.$toast('请输入组货描述')
             } else {
-                this.isPreview = true
-                this.isSave = false
-                this.posterData.groupDesc = this.groupDesc
                 this.posterData.phone = this.phone
-                if (this.selectPriceTitle === '建议零售价') {
-                    this.posterData.customPricePercent = '0'
-                    this.posterData.isRetail = true
-                } else {
-                    this.posterData.isRetail = false
-                    this.posterData.customPricePercent = this.customPricePercent || '0'
-                }
+                this.posterData.isSuggest = this.isSuggest
+                this.posterData.percent = this.customPricePercent
+                this.$router.push({
+                    path: '/poster/previewGroupPoster',
+                    query: { groupData: this.posterData }
+                })
+                // if (this.selectPriceTitle === '单品调价') {
+                //     this.posterData.customPricePercent = '0'
+                //     this.posterData.isRetail = true
+                // } else {
+                //     this.posterData.isRetail = false
+                //     this.posterData.customPricePercent = this.customPricePercent || '0'
+                // }
             }
         },
         handleClosePopup() {
             this.isPreview = false
             this.isSave = false
-        },
-
-        // 生成海报
-        handleCreatePoster() {
-            if (this.posterData.groupTitle === '') {
-                this.$toast('请输入组货名称')
-            } else if (this.posterData.groupTitle.split(' ').join('').length === 0) {
-                this.$toast('请重新输入组货名称')
-            } else if (this.groupDesc.split(' ').join('').length === 0) {
-                this.$toast('请重新输入组货描述')
-            } else if (this.groupDesc === '') {
-                this.$toast('请输入组货描述')
-            } else {
-                this.isPreview = true
-                this.isSave = true
-                this.posterData.groupDesc = this.groupDesc
-                this.posterData.phone = this.phone
-                if (this.selectPriceTitle === '建议零售价') {
-                    this.posterData.customPricePercent = '0'
-                    this.posterData.isRetail = true
-                } else {
-                    this.posterData.isRetail = false
-                    this.posterData.customPricePercent = this.customPricePercent || '0'
-                }
-            }
         },
         handleRequest() {
             let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
@@ -203,6 +267,10 @@ export default {
                     if (this.posterData.labelDescs && this.posterData.labelDescs.length > 5) {
                         this.posterData.labelDescs = this.posterData.labelDescs.slice(0, 5)
                     }
+                    this.posterData.albumImg_url = this.albumImg_url
+                    this.posterData.phone = this.phone
+                    this.posterData.isSuggest = this.isSuggest
+                    this.posterData.percent = this.customPricePercent
                 }
             }).catch(() => {
 
@@ -419,54 +487,185 @@ export default {
         }
         .price-suggest {
             margin: 6px 16px;
-            font-size:13px;
-            font-weight:400;
-            color:@color-c2;
-            line-height:50px;
-            height: 50px;
             border:1px solid rgba(244,245,247,1);
-            padding-left: 16px;
+            padding: 16px;
             border-radius: 5px;
+            .goodInfo-list {
+                margin-bottom: 24px;
+                display: flex;
+                > img {
+                    width:106px;
+                    height:106px;
+                    border-radius:4px;
+                    border:1px solid rgba(244,245,247,1);
+                    background: @color-c8;
+                }
+                .good-info {
+                    margin-left: 12px;
+                    height:106px;
+                    width: calc(100vw - 182px);
+                    > p {
+                        font-size:16px;
+                        font-weight:bold;
+                        color: @color-c1;
+                        line-height:22px;
+                    }
+                    .good-totalPrice {
+                        margin-top: 28px;
+                        > p {
+                            &:nth-child(2) {
+                                margin-left: 12px;
+                            }
+                        }
+                    }
+                    .good-posterPrice {
+                        margin-top: 5px;
+                        margin-bottom: 0;
+                        .input-contain {
+                            margin-right: 0;
+                            margin-left: 9px;
+                        }
+                        .price-symbol {
+                            margin-left: 12px;
+                            color: @color-rc;
+                        }
+                    }
+                }
+            }
         }
         .price-custom {
-            display: flex;
-            flex-direction: row;
-            align-content: flex-start;
             border:1px solid rgba(244,245,247,1);
             border-radius: 5px;
-            height: 60px;
-            align-items: center;
             margin: 6px 16px 0;
-            padding-left: 16px;
-            .price-custom-title {
-                line-height: 16px;
-                font-size:13px;
-                font-weight:400;
-                color:@color-c2;
-                line-height: 40px;
-            }
-            .input-contain {
-                flex: 1;
-                margin-right: 16px;
-                background:rgba(249,250,252,1);
-                border-radius: 5px;
+            padding: 4px 0 14px 16px;
+            .posterPrice-contain {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: flex-start;
-                margin-left: 16px;
                 p {
-                    padding-right: 8px;
-                    height:14px;
-                    font-size:12px;
+                    font-size:13px;
                     font-weight:400;
-                    color:rgba(42,43,51,1);
-                    line-height:14px;
+                    color:@color-c2;
+                    &:nth-child(2) {
+                        font-size:16px;
+                        font-weight:400;
+                        color:@color-rc;
+                        margin-left: 46px;
+                        position: relative;
+                        font-family: "alibabaBold";
+                        &::before {
+                            content: '¥ ';
+                            font-family: "alibabaRegular";
+                            width: 20px;
+                            font-weight:400;
+                            line-height: 40px;
+                            font-size: 12px;
+                            position: relative;
+                        }
+                    }
+                    &:nth-child(3) {
+                        margin-left: 12px;
+                        font-size:12px;
+                        font-weight:500;
+                        color:@color-c3;
+                        height: 16px;
+                        line-height: 14px;
+                        background:rgba(244,245,247,1);
+                        padding: 1px 4px;
+                        border-top-left-radius: 0;
+                        border-top-right-radius: 3px;
+                        border-bottom-right-radius: 3px;
+                        border-bottom-left-radius: 3px;
+                    }
                 }
+            }
+            .suggest-selected {
+                display: flex;
+                width:120px;
+                height:32px;
+                background:rgba(249,250,252,1);
+                border-radius:8px;
+                align-items: center;
+                margin: auto;
+                margin-top: 8px;
+                > img {
+                    width: 16px;
+                    height: 16px;
+                    margin-left: 8px;
+                }
+                > p {
+                    font-size:12px;
+                    font-weight:bold;
+                    color: @color-c1;
+                    margin-left: 4px;
+                    line-height: 16px;
+                }
+            }
+        }
+        .flex-common {
+                display: flex;
+                flex-direction: row;
+                align-content: flex-start;
+                width: 100%;
+                height: 19px;
+                text-align: center;
+                line-height: 14px;
+                margin-top: 12px;
+        }
+        .purchase-contain {
+                font-weight:400;
+                color:@color-c2;
+                font-size:13px;
+                p {
+                    &:nth-child(2) {
+                        margin-left: 46px;
+                        font-family: "alibabaBold";
+                        font-size:16px;
+                        &::before {
+                                content: '¥ ';
+                                width: 20px;
+                                font-weight:400;
+                                line-height: 14px;
+                                font-size: 12px;
+                                position: relative;
+                                font-family: "alibabaRegular";
+                            }
+                    }
+                }
+        }
+        .custom-add {
+            .price-custom-title {
+                    line-height: 16px;
+                    font-size:13px;
+                    font-weight:400;
+                    color:@color-c2;
+                    line-height: 32px;
+                    // flex: 1 0
+            }
+            .input-contain {
+                    flex: 1 1;
+                    margin-right: 16px;
+                    background: rgba(249,250,252,1);
+                    border-radius: 5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-start;
+                    margin-left: 20px;
+                    p {
+                        padding-right: 8px;
+                        height:14px;
+                        font-size:12px;
+                        font-weight:400;
+                        color:rgba(42,43,51,1);
+                        line-height:14px;
+                    }
             }
             .price-input {
                 width: 90%;
-                height: 40px;
+                margin-left: 8px;
+                margin-right: 8px;
+                height: 32px;
                 background:rgba(249,250,252,1);
                 font-size:14px;
                 color:rgba(42,43,51,1);
@@ -474,12 +673,36 @@ export default {
                 font-weight:bold;
             }
             .price-symbol {
-                font-size:12px;
-                font-weight:400;
-                color:@color-c1;
-                line-height:40px;
-                margin-left: 4px;
+                    font-size:12px;
+                    font-weight:400;
+                    color:@color-c1;
+                    line-height:32px;
+                    margin-left: 4px;
             }
+        }
+
+    }
+    .phone-title {
+        font-size:13px;
+        font-weight:bold;
+        color: @color-c1;
+        margin: 12px 16px 0;
+    }
+    .qrcode-content {
+        margin-top: -8px;
+        .photo-choose {
+            margin: 13px 16px 32px;
+            width:109px;
+            height:109px;
+            background:rgba(249,250,252,1);
+            border-radius:8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .Album-selectd {
+            margin: 13px 16px 32px;
+            height: calc(100vw - 32px);
         }
     }
     .bottom-prompt {
@@ -492,25 +715,25 @@ export default {
     }
 }
 .footer-shadow {
-    box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+    // box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
     border-radius:12px 12px 0px 0px;
 }
 .footer-view {
-        margin: 5px 24px 0;
-        display: flex;
-        width: calc(100vw - 48px);
-        flex-direction: row;
-        justify-content :space-between;
+        margin: 5px 20px 0;
+        width: calc(100vw - 40px);
+        // display: flex;
+        // flex-direction: row;
+        // justify-content :space-between;
         .section-common {
-            font-size:14px;
-            font-weight:500;
-            line-height:20px;
+            font-size:16px;
+            font-weight:bold;
+            line-height:22px;
         }
-        .button-default {
-            .btn-select-default(calc(50vw - 31.5px),40px,false);
-        }
+        // .button-default {
+        //     .btn-select-default(calc(50vw - 31.5px),40px,false);
+        // }
         .button-select {
-            .btn-select(calc(50vw - 31.5px),40px,true);
+            .btn-select(calc(100vw - 40px),50px,true);
         }
     }
 </style>
