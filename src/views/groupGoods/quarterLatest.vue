@@ -8,7 +8,7 @@
         </c-header>
         <div class="latest-content">
             <div class="latest-main" v-if="latestGroups.length > 0">
-                <span class="latest-label">{{showPage === 'latest' ? '本季上新' : '精选组货'}}</span>
+                <span class="latest-label">{{showPage === 'latest' ? '本周上新' : '精选组货'}}</span>
                 <swiper class="swiper" ref="groupSwiper" :style="getListHeight()" :options="swiperOption">
                     <swiper-slide class="slide" v-for="item in latestGroups" :key="item.groupCode">
                         <img class="main-pic" :src="item.groupImg" :style="getImageRect()">
