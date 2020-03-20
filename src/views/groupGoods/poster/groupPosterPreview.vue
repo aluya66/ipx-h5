@@ -370,7 +370,6 @@ export default {
                 // height: calc(100vw - 64px);
                 background:rgba(249,250,252,1);
                 border-radius:12px;
-                margin: 32px 16px 12px 16px;
             }
             > p {
                 font-size:16px;
