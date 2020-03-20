@@ -12,8 +12,8 @@
                 :error="error"
                 :finished="finished"
             >
-                <div class="group-item" v-for="(item, index) in hotGroups" :key="index" :style="getImageRect()" @click="gotoGroupDetail(item.groupCode)">
-                    <img class="main-pic" :src="item.groupImg" :style="getImageRect()"/>
+                <div class="group-item" v-for="(item, index) in hotGroups" :key="index" :style="getImageRect()" @click="gotoHotPurchase(item.exampleCode)">
+                    <img class="main-pic" :src="item.exampleMainPic" :style="getImageRect()"/>
                     <img class="detail" src="../../themes/images/groupGoods/btn_detail.png"/>
                 </div>
             </c-list>
@@ -23,6 +23,7 @@
 
 <script>
 import CList from 'components/c-list'
+import utils from 'utils'
 export default {
     components: {
         CList
@@ -66,13 +67,18 @@ export default {
                 this.error = true
             })
         },
-        gotoGroupDetail(groupCode) {
-            this.$router.push({
-                path: '/groupDetail',
-                query: {
-                    groupCode: groupCode
-                }
-            })
+        gotoHotPurchase(exampleCode) {
+            // this.$router.push({
+            //     path: '/groupDetail',
+            //     query: {
+            //         groupCode: groupCode
+            //     }
+            // })
+            const params = {
+                jumpUrl: 'hotPurchase://',
+                exampleCode: exampleCode
+            }
+            utils.postMessage('', params)
         },
         handleMore() {
             if (!this.isFinished) {
