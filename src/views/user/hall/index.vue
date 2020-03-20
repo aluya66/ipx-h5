@@ -1,6 +1,6 @@
 <template>
   <layout-view class="hall-bg" :style="handleAdjustHeaderBg()">
-    <c-header 
+    <c-header
       style="z-index:2"
       slot="header"
       class="hall-header"
