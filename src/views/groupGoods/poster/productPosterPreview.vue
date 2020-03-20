@@ -390,7 +390,7 @@ export default {
             > img {
                 margin: 16px;
                 margin-bottom: 0;
-                height: calc(100vw - 64px);
+                width: calc(100vw - 64px);
                 border-radius:12px;
                 border:1px solid rgba(244,245,247,1);
             }
@@ -420,7 +420,7 @@ export default {
             flex-direction: column;
             > img {
                 margin: 32px 16px 12px 16px;
-                // height: calc(100vw - 64px);
+                width: calc(100vw - 64px);
                 // object-fit: cover;
             }
             .tell_info {

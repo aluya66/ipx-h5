@@ -99,3 +99,19 @@ export const getQuarterLatest = params => Http.fetch(`${context}/v1/home/latestl
 export const getSelectedGroup = params => Http.fetch(`${context}/v1/home/featuredgrouplist`, params, {
     method: 'get'
 })
+
+/**
+ * 【 get 】样衣搜索
+ * @param {*} params
+ */
+export const searchProductList = params => Http.fetch(`${context}/v1/product/search`, params, {
+    method: 'get'
+})
+
+/**
+ * 【 get 】组货搜索
+ * @param {*} params
+ */
+export const searchGroupList = params => Http.fetch(`${context}/v1/group/goods/info`, params, {
+    method: 'get'
+})
