@@ -238,7 +238,8 @@ export default {
             border-radius:12px 12px 0 0;
             &:nth-child(2) {
                 margin: 8px 0 12px;
-                height: calc(100vw - 32px);
+                width: calc(100vw - 64px);
+                // height: calc(100vw - 32px);
             }
         }
         > p {
@@ -365,9 +366,11 @@ export default {
             padding-bottom: 16px;
             > img {
                 margin: 0;
-                height: calc(100vw - 64px);
+                width: calc(100vw - 64px);
+                // height: calc(100vw - 64px);
                 background:rgba(249,250,252,1);
                 border-radius:12px;
+                margin: 32px 16px 12px 16px;
             }
             > p {
                 font-size:16px;
@@ -428,6 +431,7 @@ export default {
             flex-direction: column;
             > img {
                 margin: 32px 16px 12px 16px;
+                width: calc(100vw - 64px);
                 // height: calc(100vw - 64px);
                 // object-fit: cover;
             }
