@@ -270,10 +270,10 @@ export default {
             swiper.slideTo(0, 0, false)
         }
 
-        let gSwiper = this.$refs.groupSwiper && this.$refs.groupSwiper.swiper
-        if (gSwiper !== undefined) {
-            gSwiper.slideTo(0, 0, false)
-        }
+        // let gSwiper = this.$refs.groupSwiper && this.$refs.groupSwiper.swiper
+        // if (gSwiper !== undefined) {
+        //     gSwiper.slideTo(0, 0, false)
+        // }
     }
 }
 </script>
