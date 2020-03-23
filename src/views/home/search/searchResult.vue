@@ -72,13 +72,50 @@
             </div>
           </div>
         </c-list>
+        <c-list
+          ref="grouplist"
+          class="groupList"
+          :style="getBottomOffset(0)"
+          v-else-if="menuIndex == 1"
+          :loading="loading"
+          :finished="finished"
+          finished-text="已到底，没有更多数据"
+          emptyType="groupEmpty"
+          emptyDesc="组货搜索结果是空的"
+          :listItems="groupDatas"
+          @load-data="handleMore"
+        >
+        <div
+            class="groupItem"
+            v-for="item in groupDatas"
+            :key="item.groupCode"
+          >
+          <img :src="item.groupGoodsKoc.headPic" alt="">
+          <div class="infoContain">
+            <div class="group_title">
+                <p class="group_name">时尚时尚对阿大蛋糕非手动</p>
+                <div class="percentage">
+                    <p> &nbsp; 时尚指数 80% &nbsp;</p>
+                    <p>&nbsp; 推荐指数 100% &nbsp;</p>
+                </div>
+                <span class="hot_number">&nbsp; 热销指数 90% &nbsp;</span>
+            </div>
+            <div class="price">
+                <div class="group_retail_price">
+                    <p>24.90</p>
+                    <span>建议零售价</span>
+                </div>
+                <p>434.88</p>
+            </div>
+        </div>
+        </div>
+        </c-list>
    </div>
 
    </layout-view>
 </template>
 
 <script>
-            // @click.stop="handleSelectProduct(item)"
 import { Search } from 'vant'
 import utils from 'utils'
 import components from 'components'
@@ -120,7 +157,6 @@ export default {
             this.isNative = true
         }
         this.searchKey = this.$route.query.keyWords
-        this.resetParams()
         this.handleRefresh()
     },
     methods: {
@@ -134,12 +170,19 @@ export default {
         },
         changeActive(value) {
             this.menuIndex = value
-            this.resetParams()
             this.handleRefresh()
         },
         resetParams() {
             this.pageNo = 1
             this.finished = false
+            this.loading = false
+        },
+        setSuccessStatus() {
+            this.loading = false
+        },
+        setFailureStatus() {
+            this.pageNo -= 1
+            this.finished = true
             this.loading = false
         },
         // 刷新
@@ -171,12 +214,59 @@ export default {
                 pageNo: this.pageNo,
                 pageSize: this.pageSize
             }
-            this.$api.groupGoods.searchProductList(params).then(res =>{
-                this.productDatas = res
+            this.loading = true
+            this.$api.groupGoods.searchProductList(params).then(res => {
+                this.setSuccessStatus()
+                if (res instanceof Array) {
+                    if (this.pageNo === 1) {
+                        this.productDatas = res
+                    } else {
+                        this.productDatas = this.productDatas.concat(res)
+                    }
+                    if (res.length < this.pageSize) {
+                        this.finished = true
+                    } else {
+                        this.finished = false
+                    }
+                } else {
+                    if (this.pageNo === 1) {
+                        this.productDatas = []
+                    }
+                    this.finished = true
+                }
+            }).catch(() => {
+                this.setFailureStatus()
             })
         },
         handleRequestGroup() {
-
+            const params = {
+                searchKeyWord: this.searchKey,
+                pageNo: this.pageNo,
+                pageSize: this.pageSize
+            }
+            this.loading = true
+            this.$api.groupGoods.searchGroup(params).then(res => {
+                this.setSuccessStatus()
+                if (res instanceof Array) {
+                    if (this.pageNo === 1) {
+                        this.groupDatas = res
+                    } else {
+                        this.groupDatas = this.groupDatas.concat(res)
+                    }
+                    if (res.length < this.pageSize) {
+                        this.finished = true
+                    } else {
+                        this.finished = false
+                    }
+                } else {
+                    if (this.pageNo === 1) {
+                        this.groupDatas = []
+                    }
+                    this.finished = true
+                }
+            }).catch(() =>{
+                this.setFailureStatus()
+            })
         }
     }
 }
@@ -235,7 +325,7 @@ export default {
   background: #fff;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0 16px; // overflow: auto;
+//   padding: 0 16px; // overflow: auto;
   justify-content: space-between;
   margin-top: -1px;
   .van-list__finished-text {
@@ -258,22 +348,22 @@ export default {
 <style lang='less' scoped>
 .search_result_content {
   position: relative;
-  height: 100%;
+  height: 100%; //calc(100vh - 90px);
   overflow: auto;
     .product-list {
-        margin-top: 8px;
+        margin: 12px 11px 20px;
         .item {
             background:rgba(255,255,255,1);
             box-shadow:0px 2px 10px 0px rgba(33,44,98,0.08);
             border-radius:8px;
-            width: calc(50vw - 20.5px);
-            margin-top: 8px;
+            width: calc(50vw - 21px);
+            margin: 4px 5px;
             position: relative;
             > img {
                 object-fit: cover;
                 width: 100%;
                 background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(249,250,252,1) 100%);
-                height: calc(50vw - 20.5px);
+                // height: calc(50vw - 20.5px);
             }
             .product_info {
                 padding: 12px;
@@ -307,6 +397,7 @@ export default {
                         line-height:12px;
                         background:rgba(244,245,247,1);
                         padding: 2px 4px;
+                        border-radius:4px;
                     }
                 }
                 .product_price {
@@ -330,6 +421,111 @@ export default {
                     > img {
                         width: 16px;
                         height: 16px;
+                    }
+                }
+            }
+        }
+    }
+
+    .groupList {
+        // margin-top: 16px;
+        .groupItem {
+            background:rgba(255,255,255,1);
+            box-shadow:0px 2px 10px 0px rgba(33,44,98,0.08);
+            border-radius:12px;
+            padding: 16px;
+            display: flex;
+            // flex-direction: row;
+            // justify-content: space-between;
+            margin: 16px 0;
+            >img {
+                width:123px;
+                min-width: 123px;
+                height:138px;
+                object-fit: cover;
+                border-radius:4px;
+                border:1px solid rgba(230,230,230,1);
+            }
+            .infoContain {
+                margin-left: 17px;
+                .group_title {
+                    .group_name {
+                        font-size:16px;
+                        font-weight:bold;
+                        color: @color-c1;
+                        line-height:22px;
+                    }
+                    .percentage {
+                        display: flex;
+                        margin: 9px 0;
+                        p {
+                            display: inline-block;
+                            font-size:10px;
+                            font-weight:bold;
+                            line-height:14px;
+                            border-radius:2px;
+                            &:nth-child(1) {
+                                color:@color-ec;
+                                background: @color-ec1;
+                            }
+                            &:nth-child(2){
+                                color:@color-oc;
+                                background: @color-oc1;
+                                margin-left:10px;
+                            }
+                        }
+                    }
+                    .hot_number {
+                        font-size:10px;
+                        font-weight:bold;
+                        color: @color-rc;
+                        line-height:14px;
+                        background:rgba(255,235,237,1);
+                        border-radius:0px 4px 4px 4px;
+                    }
+                }
+                .price {
+                    margin-top: 30px;
+                    .group_retail_price {
+                        display: flex;
+                        margin-bottom: 4px;
+                        > p {
+                            font-family: "alibabaBold";
+                            font-size:14px;
+                            font-weight:bold;
+                            color: @color-c1;
+                            &::before {
+                                content: '¥ ';
+                                font-weight:400;
+                                line-height: 16px;
+                                font-size: 12px;
+                                font-family: "alibabaRegular";
+                            }
+                        }
+                        > span {
+                            margin-left: 10px;
+                            font-size:10px;
+                            font-weight:bold;
+                            color: @color-c3;
+                            line-height:12px;
+                            background:rgba(244,245,247,1);
+                            padding: 2px 4px;
+                            border-radius:4px;
+                        }
+                    }
+                    > p {
+                        font-size:16px;
+                        font-weight:bold;
+                        color:@color-rc;
+                        font-family: "alibabaBold";
+                        bottom: 0;
+                        &::before {
+                            content: '¥ ';
+                            font-family: "alibabaRegular";
+                            font-weight:400;
+                            line-height: 20px;
+                            font-size: 12px;
+                        }
                     }
                 }
             }
