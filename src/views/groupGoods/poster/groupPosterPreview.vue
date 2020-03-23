@@ -51,7 +51,7 @@
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
                         <p>{{groupData.isSuggest ? product.retailPrice : posterPrice(product.retailPrice)}}</p>
                     </div>
-                    <div class="change_content" @click="changeProduct(product)" :v-show="!isHiddenChange">
+                    <div class="change_content" @click="changeProduct(product)"  v-show="!isHiddenChange">
                         <img :src="changeGood_icon" alt="">
                         <p>换一张</p>
                     </div>
