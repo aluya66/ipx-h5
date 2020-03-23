@@ -51,7 +51,7 @@
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
                         <p>{{groupData.isSuggest ? product.retailPrice : posterPrice(product.retailPrice)}}</p>
                     </div>
-                    <div class="change_content" @click="changeProduct(product)">
+                    <div class="change_content" @click="changeProduct(product)" :v-show="!isHiddenChange">
                         <img :src="changeGood_icon" alt="">
                         <p>换一张</p>
                     </div>
@@ -90,7 +90,8 @@ export default {
             triangle_icon: require('../../../themes/images/groupGoods/icon_triangle@3x.png'),
             groupData: {},
             changedSku: {},
-            selectProduct: {}
+            selectProduct: {},
+            isHiddenChange: false
         }
     },
     created() {
@@ -130,7 +131,10 @@ export default {
             }
         }
     },
-    methods: {
+    methods: {// 是否iPhoneX底部
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
         changeProduct(product) {
             this.selectProduct = product
             this.$router.push({
@@ -149,6 +153,7 @@ export default {
                 forbidClick: true,
                 duration: 0
             })
+            _this.isHiddenChange = true
             setTimeout(() => {
                 let img = _this.$refs['image']
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
@@ -159,13 +164,13 @@ export default {
                     taintTest: true,
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
+                    _this.isHiddenChange = false
                     _this.photoUrl = canvas.toDataURL()
                     let file = _this.dataURLtoBlob(_this.photoUrl)
                     utils.upload([file]).then(result => {
                         utils.postMessage('download_pictures', result)
                         Toast.clear()
                     })
-                    // _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
             }, 3000)
         },
@@ -191,6 +196,7 @@ export default {
                     Toast.clear()
                 } else {
                     this.$toast('保存失败请重试')
+                    Toast.clear()
                 }
             }
         },

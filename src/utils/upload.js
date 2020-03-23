@@ -45,6 +45,7 @@ async function upload(file = []) {
                 },
                 error: (errResult) => {
                     console.info(errResult) // 此处提示上传图片的过程中错误信息
+                    // reject(errResult)
                 },
                 complete: (result) => {
                     imgData.push(photoHost + result.key)
@@ -61,7 +62,7 @@ async function upload(file = []) {
 
 // 获取token
 function getToken() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         // 判断是否本地存在token
         const params = {
             type: 1

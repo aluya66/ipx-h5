@@ -57,17 +57,18 @@
             class="item"
             v-for="item in productDatas"
             :key="item.productCode"
+            @click="productDetail(item)"
           >
             <img :src="item.mainPic" alt="" />
             <div class="product_info">
                 <p class="product_title">{{ item.productName }}</p>
                 <div class="product_retail_price">
-                    <p>{{item.tshPrice}}</p>
+                    <p>{{parseFloat(item.retailPrice).toFixed(2)}}</p>
                     <span>建议零售价</span>
                 </div>
                 <div class="product_price">
-                    <p>{{item.tshPrice}}</p>
-                    <img :src="item.isCollect === 1 ? selectIcon : unselectIcon"/>
+                    <p>{{parseFloat(item.tshPrice).toFixed(2)}}</p>
+                    <img :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click="collectProduct(item)"/>
                 </div>
             </div>
           </div>
@@ -89,6 +90,7 @@
             class="groupItem"
             v-for="item in groupDatas"
             :key="item.groupCode"
+            @click="groupDetail(item)"
           >
           <img :src="item.groupImg" alt="">
           <div class="infoContain">
@@ -102,10 +104,10 @@
             </div>
             <div class="price">
                 <div class="group_retail_price">
-                    <p>{{item.totalRetailPrice}}</p>
+                    <p>{{parseFloat(item.totalRetailPrice).toFixed(2)}}</p>
                     <span>建议零售价</span>
                 </div>
-                <p>{{item.totalPrice}}</p>
+                <p>{{parseFloat(item.totalPrice).toFixed(2)}}</p>
             </div>
         </div>
         </div>
@@ -152,11 +154,13 @@ export default {
             clearIcon: require('@/themes/images/app/control_delete.png')
         }
     },
+    created() {
+        this.searchKey = this.$route.query.keyWords
+    },
     activated() {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
-        this.searchKey = this.$route.query.keyWords
         this.handleRefresh()
     },
     methods: {
@@ -207,6 +211,24 @@ export default {
                     this.handleRequestGroup()
                 }
             }
+        },
+        productDetail(product) {
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: product.productCode
+            }
+            utils.postMessage('', params)
+        },
+        groupDetail(group) {
+            this.$router.push({
+                path: '/groupDetail',
+                query: {
+                    groupCode: group.groupCode
+                }
+            })
+        },
+        collectProduct(product) { /// 收藏商品
+
         },
         handleRequestProduct() {
             const params = {
@@ -264,7 +286,7 @@ export default {
                     }
                     this.finished = true
                 }
-            }).catch(() =>{
+            }).catch(() => {
                 this.setFailureStatus()
             })
         }

@@ -13,7 +13,7 @@
                 <div class="image-item" :class="[index % 4 !== 0 ? 'margin-left' : '', index >= 4 ? 'margin-top' : '']"
                      v-for="(item, index) in images"
                      :key="index" :style="getPictureRect()">
-                    <img :src="item.image" :style="getPictureRect()" alt=""/>
+                    <img :src="item.image" :style="getPictureRect()" alt="" @click="fromChangePreview(index)"/>
                     <img class="select-box" :src="item.isSelected ? imageSelect: imageUnselect" @click="switchSelectState(index)" alt=""/>
                 </div>
             </div>
@@ -65,7 +65,7 @@ export default {
                 this.images.forEach((item) => {
                     item.isSelected = false
                 })
-            } 
+            }
             this.images[index].isSelected = !this.images[index].isSelected
             let skuList = this.images.filter(item => {
                 return item.isSelected
@@ -153,18 +153,25 @@ export default {
                 }
             })
         },
-        fromChangePreview() {
-            if (!this.fromChange) { // 不是预览图片
-                return
+        fromChangePreview(index) {
+            if (index !== undefined) {
+                let imgs = this.images.filter((item, imgIndex) => {
+                    return imgIndex === index
+                })
+                this.previewSlide(imgs, 0)
+            } else {
+                if (!this.fromChange) { // 不是预览图片
+                    return
+                }
+                let imgs = this.images.filter((item) => {
+                    return item.isSelected
+                })
+                if (imgs.length <= 0) {
+                    this.$toast('请选择预览的图片')
+                    return
+                }
+                this.previewSlide(imgs, 0)
             }
-            let imgs = this.images.filter((item) => {
-                return item.isSelected
-            })
-            if (imgs.length <= 0) {
-                this.$toast('请选择预览的图片')
-                return
-            }
-            this.previewSlide(imgs, 0)
         },
         previewSlide(slidImages, index) {
             let imgs = slidImages.filter((item) => {
@@ -285,6 +292,8 @@ export default {
 
         img {
             margin-right: 8px;
+            width: 24px;
+            height: 24px;
         }
     }
 
