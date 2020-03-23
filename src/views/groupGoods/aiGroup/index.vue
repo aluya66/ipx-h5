@@ -110,9 +110,24 @@ export default {
             footerTitles: ['推荐指数', '时尚指数', '热销指数'],
             designerSlidesPerView: 3,
             swiperOption: {
-                slidesPerView: 1.2,
+                // slidesPerView: 1.1,
+                // centeredSlides: true,
+                // spaceBetween: 16 * window.devicePixelRatio,
+                effect: 'coverflow',
                 centeredSlides: true,
-                spaceBetween: 16 * window.devicePixelRatio,
+                spaceBetween: '8%',
+                slidesPerView: 'auto',
+                // loop: true,
+                // autoplay: {
+                //     disableOnInteraction: false
+                // },
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 300,
+                    modifier: 1,
+                    slideShadows: false
+                },
                 on: {
                     click: () => {
                         window.sa.track('IPX_WEB', {
@@ -319,6 +334,9 @@ export default {
     .designer-container {
         position: absolute;
         height: 146px;
+        top: 0;
+        left: 0;
+        right: 0;
         background: rgba(255, 255, 255, 1);
         box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
         border-radius: 12px;
