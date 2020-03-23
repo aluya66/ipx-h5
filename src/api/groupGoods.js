@@ -112,6 +112,6 @@ export const searchProductList = params => Http.fetch(`${context}/v1/product/sea
  * 【 get 】组货搜索
  * @param {*} params
  */
-// export const searchGroupList = params => Http.fetch(`${context}/v1/group/goods/info`, params, {
-//     method: 'get'
-// })
+export const searchGroupList = params => Http.fetch(`${context}/v1/group/search`, params, {
+    method: 'get'
+})

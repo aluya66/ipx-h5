@@ -24,9 +24,9 @@
                 <div class="designer_label">KOC说</div>
 
                 <div class="designer_header">
-                    <img :src="groupData.avatar" alt="">
+                    <img :src="groupData.groupGoodsKoc.headPic" alt="">
                     <div class="name_label">
-                        <p>{{groupData.nickname}}</p>
+                        <p>{{groupData.groupGoodsKoc.kocNickName}}</p>
                         <p>IPX时尚买手</p>
                     </div>
                 </div>
@@ -82,7 +82,7 @@ export default {
     },
     data () {
         return {
-            selected_logo: require('../../../themes/images/groupGoods/poster_selected_garment@3x.png'),
+            selected_logo: require('../../../themes/images/groupGoods/poster_selected_collocation@3x.png'),
             left_icon: require('../../../themes/images/groupGoods/poster_left_icon@3x.png'),
             right_icon: require('../../../themes/images/groupGoods/poster_right_icon@3x.png'),
             callPhone_icon: require('../../../themes/images/groupGoods/icon_call_phone@3x.png'),
@@ -368,7 +368,7 @@ export default {
                 margin: 0;
                 width: calc(100vw - 64px);
                 // height: calc(100vw - 64px);
-                background:rgba(249,250,252,1);
+                background: @color-c8;
                 border-radius:12px;
             }
             > p {
@@ -444,7 +444,7 @@ export default {
                 }
                 > p {
                     font-size:14px;
-                    font-weight:blod;
+                    font-weight:bold;
                     color:@color-c1;
                     line-height:20px;
                 }

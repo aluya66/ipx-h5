@@ -115,7 +115,7 @@ export default create({
     margin-bottom: @f1;
     .van-nav-bar__title {
         font-size: 18px;
-        font-weight: 600;
+        font-weight: bold;
         height: 44px;
         line-height: 44px;
         .title_light {

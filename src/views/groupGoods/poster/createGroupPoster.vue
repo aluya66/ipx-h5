@@ -94,7 +94,7 @@
 
                             <section class="suggest-selected" :style="isSuggest ? 'background:rgba(235,238,255,1)' : 'background:rgba(249,250,252,1)' ">
                                 <img class="suggest-select-icon" :src="isSuggest ? select_sel : select_def" alt="" @click="selectSuggest">
-                                <p :style="isSuggest ? 'color: rgba(60,92,246,1);':'color: rgba(42,43,51,1);'">使用建议零售价</p>
+                                <p :style="isSuggest ? 'color: rgba(60,92,246,1);':'color: rgba(42,43,51,1);'" @click="selectSuggest">使用建议零售价</p>
                             </section>
 
                         </div>
@@ -465,7 +465,7 @@ export default {
             line-height: 26px;
             position: relative;
             font-size:12px;
-            font-weight:500;
+            font-weight:bold;
             color: @color-ec3;
             background:#EBEEFF;
             border-radius:16px;
@@ -479,7 +479,7 @@ export default {
             line-height: 26px;
             position: relative;
             font-size:12px;
-            font-weight:500;
+            font-weight:bold;
             color:@color-c1;
             background: @color-c7;
             border-radius:16px;
@@ -566,7 +566,7 @@ export default {
                     &:nth-child(3) {
                         margin-left: 12px;
                         font-size:12px;
-                        font-weight:500;
+                        font-weight:bold;
                         color:@color-c3;
                         height: 16px;
                         line-height: 14px;
@@ -619,6 +619,7 @@ export default {
                 p {
                     &:nth-child(2) {
                         margin-left: 46px;
+                        color:@color-c1;
                         font-family: "alibabaBold";
                         font-size:16px;
                         &::before {

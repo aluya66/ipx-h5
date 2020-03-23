@@ -61,21 +61,16 @@ export default {
             return `width:${width}px`
         },
         switchSelectState(index) {
+            if (this.fromChange) {
+                this.images.forEach((item) => {
+                    item.isSelected = false
+                })
+            } 
+            this.images[index].isSelected = !this.images[index].isSelected
             let skuList = this.images.filter(item => {
                 return item.isSelected
             })
-            if (skuList.length === 1 & this.fromChange & !this.images[index].isSelected) {
-                this.$toast('只能选择一张图片替换')
-                return
-            }
-            this.images[index].isSelected = !this.images[index].isSelected
-            let selectedImageCount = 0
-            this.images.forEach((item) => {
-                if (item.isSelected) {
-                    selectedImageCount++
-                }
-            })
-            if (selectedImageCount === this.images.length) {
+            if (skuList.length === this.images.length) {
                 this.isAllSelected = true
             } else {
                 this.isAllSelected = false
@@ -90,10 +85,6 @@ export default {
             }
         },
         selectAll() {
-            if (this.fromChange && this.images.length > 1) {
-                this.$toast('只能选择一张图片替换')
-                return
-            }
             this.isAllSelected = !this.isAllSelected
             this.images.forEach((item) => {
                 item.isSelected = this.isAllSelected
@@ -196,9 +187,10 @@ export default {
             })
         }
     },
-    mounted() {
+    activated() {
         this.isNative = false
         this.fromChange = false
+        this.isAllSelected = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }

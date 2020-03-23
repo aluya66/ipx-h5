@@ -90,22 +90,22 @@
             v-for="item in groupDatas"
             :key="item.groupCode"
           >
-          <img :src="item.groupGoodsKoc.headPic" alt="">
+          <img :src="item.groupImg" alt="">
           <div class="infoContain">
             <div class="group_title">
-                <p class="group_name">时尚时尚对阿大蛋糕非手动</p>
+                <p class="group_name">{{item.groupTitle}}</p>
                 <div class="percentage">
-                    <p> &nbsp; 时尚指数 80% &nbsp;</p>
-                    <p>&nbsp; 推荐指数 100% &nbsp;</p>
+                    <p> &nbsp; 时尚指数 {{item.fashionIndexNum}}% &nbsp;</p>
+                    <p>&nbsp; 推荐指数 {{item.adviceIndexNum}}% &nbsp;</p>
                 </div>
-                <span class="hot_number">&nbsp; 热销指数 90% &nbsp;</span>
+                <span class="hot_number">&nbsp; 热销指数 {{item.hotIndexNum}}% &nbsp;</span>
             </div>
             <div class="price">
                 <div class="group_retail_price">
-                    <p>24.90</p>
+                    <p>{{item.totalRetailPrice}}</p>
                     <span>建议零售价</span>
                 </div>
-                <p>434.88</p>
+                <p>{{item.totalPrice}}</p>
             </div>
         </div>
         </div>
@@ -240,12 +240,12 @@ export default {
         },
         handleRequestGroup() {
             const params = {
-                searchKeyWord: this.searchKey,
+                keyword: this.searchKey,
                 pageNo: this.pageNo,
                 pageSize: this.pageSize
             }
             this.loading = true
-            this.$api.groupGoods.searchGroup(params).then(res => {
+            this.$api.groupGoods.searchGroupList(params).then(res => {
                 this.setSuccessStatus()
                 if (res instanceof Array) {
                     if (this.pageNo === 1) {
