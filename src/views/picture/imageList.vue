@@ -68,6 +68,17 @@ export default {
                 return
             }
             this.images[index].isSelected = !this.images[index].isSelected
+            let selectedImageCount = 0
+            this.images.forEach((item) => {
+                if (item.isSelected) {
+                    selectedImageCount++
+                }
+            })
+            if (selectedImageCount === this.images.length) {
+                this.isAllSelected = true
+            } else {
+                this.isAllSelected = false
+            }
         },
         cancel() {
             let method = 'page_out'
@@ -78,7 +89,7 @@ export default {
             }
         },
         selectAll() {
-            if (this.fromChange & this.images.length > 1) {
+            if (this.fromChange && this.images.length > 1) {
                 this.$toast('只能选择一张图片替换')
                 return
             }
@@ -151,7 +162,7 @@ export default {
             })
         }
     },
-    activated() {
+    mounted() {
         this.isNative = false
         this.fromChange = false
         if (this.$route.query.fromNative === '1') {
