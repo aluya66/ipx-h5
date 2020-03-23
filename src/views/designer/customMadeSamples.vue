@@ -96,7 +96,8 @@ export default {
             }
             this.$api.designer.getDesignerHall(params).then(res => {
                 this.designer = res
-                console.log(this.designer)
+                this.designsHallId = this.designer.id
+                this.getCustomPay()
             })
         },
         getPictureRect() {
@@ -138,10 +139,6 @@ export default {
         if (this.$route.query.designerId !== undefined) {
             this.designerId = this.$route.query.designerId
             this.getDesignerHall()
-        }
-        if (this.$route.query.designsHallId !== undefined) {
-            this.designsHallId = this.$route.query.designsHallId
-            this.getCustomPay()
         }
         this.handleScroll()
     }

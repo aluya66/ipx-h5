@@ -22,7 +22,7 @@
         <div class="image-footer" :style="getBottomOffset(0)">
             <div class="image-footer-left">
                 <img :src="isAllSelected ? imageSelect: imageUnselect" @click="selectAll" v-show="!this.fromChange"/>
-                {{this.fromChange ? "预览" : "全选"}}
+                <span @click="fromChangePreview()">{{this.fromChange ? "预览" : "全选"}}</span>
             </div>
             <div class="image-footer-right">
                 <div class="image-download" @click="downloadPicture" v-show="!this.fromChange">下载图片</div>
@@ -34,6 +34,7 @@
 
 <script>
 import utils from 'utils'
+import { ImagePreview } from 'vant'
 export default {
     name: 'imageList',
     data() {
@@ -68,6 +69,17 @@ export default {
                 return
             }
             this.images[index].isSelected = !this.images[index].isSelected
+            let selectedImageCount = 0
+            this.images.forEach((item) => {
+                if (item.isSelected) {
+                    selectedImageCount++
+                }
+            })
+            if (selectedImageCount === this.images.length) {
+                this.isAllSelected = true
+            } else {
+                this.isAllSelected = false
+            }
         },
         cancel() {
             let method = 'page_out'
@@ -78,7 +90,7 @@ export default {
             }
         },
         selectAll() {
-            if (this.fromChange & this.images.length > 1) {
+            if (this.fromChange && this.images.length > 1) {
                 this.$toast('只能选择一张图片替换')
                 return
             }
@@ -149,9 +161,42 @@ export default {
                     })
                 }
             })
+        },
+        fromChangePreview() {
+            if (!this.fromChange) { // 不是预览图片
+                return
+            }
+            let imgs = this.images.filter((item) => {
+                return item.isSelected
+            })
+            if (imgs.length <= 0) {
+                this.$toast('请选择预览的图片')
+                return
+            }
+            this.previewSlide(imgs, 0)
+        },
+        previewSlide(slidImages, index) {
+            let imgs = slidImages.filter((item) => {
+                return !item.image.endsWith('.mp4')
+            })
+            let previewImages = []
+            imgs.forEach(item => {
+                previewImages.push(item.image)
+            })
+            if (previewImages.length <= 0) {
+                return
+            }
+            ImagePreview({
+                images: previewImages,
+                startPosition: index,
+                loop: false,
+                onClose() {
+                    // do something
+                }
+            })
         }
     },
-    activated() {
+    mounted() {
         this.isNative = false
         this.fromChange = false
         if (this.$route.query.fromNative === '1') {
