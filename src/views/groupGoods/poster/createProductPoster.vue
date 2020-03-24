@@ -151,7 +151,7 @@ export default {
             if (this.addPrice === '') {
                 add = '0'
             }
-            let p = parseFloat(this.posterData.retailPrice) + parseFloat(add || '0')
+            let p = parseFloat(this.posterData.tshPrice) + parseFloat(add || '0')
             let p2 = p.toFixed(2)
             return p2
         }
