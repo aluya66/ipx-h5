@@ -207,7 +207,7 @@ export default {
       background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
       color: #fff;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: bold;
       line-height: 40px;
       text-align: center;
     }
@@ -250,7 +250,7 @@ export default {
                             text-overflow:ellipsis;
                             height: 22px;
                             font-size:16px;
-                            font-weight:500;
+                            font-weight:bold;
                             color:@color-c1;
                             line-height:22px;
                             width: calc(100vw - 186px);
@@ -274,7 +274,7 @@ export default {
                         &:nth-child(1) {
                             // height: 16px;
                             font-size:14px;
-                            font-weight:500;
+                            font-weight:bold;
                             color:@color-c1;
                             margin-left: 12px;
                             font-family: "alibabaBold";
@@ -283,7 +283,7 @@ export default {
                                 font-family:PingFangSC-Medium,PingFang SC;
                                 margin-left: 12px;
                                 font-size:10px;
-                                font-weight:500;
+                                font-weight:bold;
                                 color:@color-c3;
                                 height: 16px;
                                 line-height: 16px;
@@ -307,7 +307,7 @@ export default {
                             // height: 24px;
                             line-height: 24px;
                             font-size:22px;
-                            font-weight:500;
+                            font-weight:bold;
                             color:#F41F1F;
                             margin-left: 12px;
                             font-family: "alibabaBold";
@@ -315,7 +315,7 @@ export default {
                                 content: '¥';
                                 font-family: "alibabaRegular";
                                 width: 20px;
-                                font-weight:600;
+                                font-weight:bold;
                                 line-height: 24px;
                                 font-size: 12px;
                             }

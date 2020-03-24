@@ -656,7 +656,7 @@ export default {
   .van-search__action {
     color: #fff;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: bold;
     line-height: 20px;
     padding-right: 0;
     background: rgba(255, 255, 255, 0);
@@ -826,11 +826,11 @@ export default {
       margin-top: 4px;
       font-size: 12px;
       line-height: 16px;
-      font-weight: 500;
+      font-weight: bold;
       color: @color-c4;
       &:first-child {
         font-size: 18px;
-        font-weight: 500;
+        font-weight: bold;
         color: @color-c1;
         line-height: 26px;
         margin: 16px 0 0 16px;
@@ -871,7 +871,7 @@ export default {
       margin-left: 16px;
       .menu-item {
         font-size: 20px;
-        font-weight: 500;
+        font-weight: bold;
         line-height: 28px;
         position: relative;
         &:last-child {
@@ -933,7 +933,7 @@ export default {
       background: @color-rc;
       color: #fff;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: bold;
       line-height: 40px;
       text-align: center;
     }

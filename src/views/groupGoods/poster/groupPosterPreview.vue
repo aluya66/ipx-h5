@@ -50,7 +50,7 @@
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
-                        <p>{{groupData.isSuggest ? parseFloat(product.retailPrice).toFixed(2) : posterPrice(product.retailPrice)}}</p>
+                        <p>{{groupData.isSinglePrice ? parseFloat(product.showPrice).toFixed(2) : posterPrice(product)}}</p>
                     </div>
                     <div class="change_content" @click="changeProduct(product)"  v-show="!isHiddenChange">
                         <img :src="changeGood_icon" alt="">
@@ -118,15 +118,18 @@ export default {
     },
     computed: {
         posterPrice() {
-            return function (price) {
+            return function (product) {
+                if (this.groupData.isSuggest) { //建议零售价
+                    return parseFloat(product.retailPrice).toFixed(2)
+                }
                 let add = this.groupData.percent
                 if (add === '') {
                     add = '0'
                 }
                 if (add === '0') {
-                    return parseFloat(price).toFixed(2)
+                    return parseFloat(product.tshPrice).toFixed(2)
                 } else {
-                    let p = parseFloat(price) * parseFloat(add || '0') / 100
+                    let p = parseFloat(product.tshPrice) * parseFloat(add || '0') / 100
                     let p2 = p.toFixed(2)
                     return p2
                 }

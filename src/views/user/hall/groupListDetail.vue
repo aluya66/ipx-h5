@@ -19,7 +19,10 @@
                 <span>组货名称</span>
                 <div class="group-name">
                     <p>{{ groupName }}</p>
-                    <button @click="changeGroupName">更改</button>
+                    <div class="change_name" @click="changeGroupName">
+                        <p>更改</p>
+                        <img :src="changeName_img" alt="">
+                    </div>
                 </div>
             </div>
             <div class="list-title">
@@ -134,6 +137,7 @@ export default {
             postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
             select_def: require('@/themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
+            changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
             selectedNum: 0,
             isAllSelected: false
         }
@@ -602,17 +606,22 @@ export default {
 
             > p {
                 font-size: 16px;
-                font-weight: 500;
+                font-weight: bold;
                 color: @color-c1;
                 .ellipsis();
             }
 
-            > button {
+            .change_name {
                 font-size: 14px;
-                font-weight: 500;
-                color: @color-ec;
+                font-weight: bold;
+                color: @color-c2;
                 width: 20%;
                 background: none;
+                display: flex;
+                > img {
+                    width: 16px;
+                    height: 16px;
+                }
             }
         }
 
@@ -631,7 +640,7 @@ export default {
         > p {
             position: absolute;
             font-size: 20px;
-            font-weight: 500;
+            font-weight: bold;
             color: @color-ec;
             line-height: 28px;
         }
@@ -713,7 +722,7 @@ export default {
                 width: calc(100vw - 152px);
                 > p {
                     font-size: 16px;
-                    font-weight: 500;
+                    font-weight: bold;
                     line-height: 22px;
                     color: @color-c1;
                     .ellipsis();
@@ -721,7 +730,7 @@ export default {
 
                 .disableTitle {
                     font-size: 16px;
-                    font-weight: 500;
+                    font-weight: bold;
                     line-height: 22px;
                     color: @color-c4;
                     .ellipsis();
@@ -790,7 +799,7 @@ export default {
 
                     .tip_title {
                         font-size: 10px;
-                        font-weight: 500;
+                        font-weight: bold;
                         color: @color-c3;
                         line-height: 12px;
                         background: rgba(244, 245, 247, 1);
@@ -847,7 +856,7 @@ export default {
                         background: @color-ec1;
                         border-radius: 18px;
                         font-size: 12px;
-                        font-weight: 500;
+                        font-weight: bold;
                         color: @color-ec;
                     }
 
@@ -938,7 +947,7 @@ export default {
 
             .tip_title {
                 font-size: 10px;
-                font-weight: 500;
+                font-weight: bold;
                 color: @color-c3;
                 line-height: 12px;
                 background: rgba(244, 245, 247, 1);
@@ -958,7 +967,7 @@ export default {
                 background: linear-gradient(322deg, rgba(238, 236, 255, 1) 0%, rgba(216, 212, 255, 1) 100%);
                 border-radius: 20px;
                 font-size: 14px;
-                font-weight: 500;
+                font-weight: bold;
                 color: rgba(60, 92, 246, 1);
                 // margin-right: 20px;
                 align-self: center;

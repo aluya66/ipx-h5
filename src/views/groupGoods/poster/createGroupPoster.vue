@@ -52,13 +52,13 @@
                                     <p>{{goodsInfo.productName}}</p>
                                     <section :class='["flex-common","purchase-contain","good-totalPrice"]'>
                                         <p style="font-size:0.13rem">采货价:</p>
-                                        <p>{{parseFloat(posterData.totalPrice).toFixed(2)}}</p>
+                                        <p>{{parseFloat(goodsInfo.tshPrice).toFixed(2)}}</p>
                                     </section>
                                     <section style="height:0.32rem"  :class='["flex-common","custom-add","good-posterPrice"]'>
                                         <p style="line-height:0.32rem;font-size:0.13rem">海报价:</p>
                                         <p class="price-symbol">¥</p>
                                         <div class="input-contain">
-                                            <input-view class="price-input" :inputColorValue="'#F53030'" v-model="goodsInfo.retailPrice" formart="digit"/>
+                                            <input-view class="price-input" :inputColorValue="'#F53030'" v-model="goodsInfo.showPrice" formart="digit"/>
                                             <!-- <field class="price-input" type="number" error :adjust-position='true' v-model="goodsInfo.retailPrice"/> -->
 
                                         </div>
@@ -119,7 +119,7 @@
             </title-content>
             <p class="bottom-prompt">海报可以分享至微信好友、朋友圈</p>
         </div>
-        <fixed-view class="footer-shadow">
+        <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
             <template slot="footerContain">
                 <div class="footer-view">
                     <section :class='["section-common","button-select"]' @click="handlePreviewPoster">立即生成海报</section>
@@ -188,6 +188,9 @@ export default {
             if (this.customPricePercent === '') {
                 add = '0'
             }
+            if (add === '0') {
+                return parseFloat(this.posterData.totalPrice).toFixed(2)
+            }
             let p = parseFloat(this.posterData.totalPrice) * parseFloat(add || '0') / 100
             let p2 = p.toFixed(2)
             return p2
@@ -228,17 +231,15 @@ export default {
                 this.posterData.phone = this.phone
                 this.posterData.isSuggest = this.isSuggest
                 this.posterData.percent = this.customPricePercent
+                if (this.selectPriceTitle === '单品调价') {
+                    this.posterData.isSinglePrice = true
+                } else {
+                    this.posterData.isSinglePrice = false
+                }
                 this.$router.push({
                     path: '/poster/previewGroupPoster',
                     query: { groupData: this.posterData }
                 })
-                // if (this.selectPriceTitle === '单品调价') {
-                //     this.posterData.customPricePercent = '0'
-                //     this.posterData.isRetail = true
-                // } else {
-                //     this.posterData.isRetail = false
-                //     this.posterData.customPricePercent = this.customPricePercent || '0'
-                // }
             }
         },
         handleClosePopup() {
@@ -263,6 +264,13 @@ export default {
                     this.posterData.phone = this.phone
                     this.posterData.isSuggest = this.isSuggest
                     this.posterData.percent = this.customPricePercent
+                    this.posterData.isSinglePrice = false
+                    this.posterData.products = this.posterData.products.map(item => {
+                        return {
+                            ...item,
+                            showPrice: item.retailPrice,
+                        }
+                    })
                 }
             }).catch(() => {
 
