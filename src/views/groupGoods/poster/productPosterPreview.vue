@@ -1,6 +1,6 @@
 <template>
-   <layout-view>
-   <c-header class="my-header" slot="header" :left-arrow="true">
+   <layout-view :style="paddingTop()">
+   <c-header slot="header" :left-arrow="true" :showBorderBottom='true'>
        <div slot="title">
            预览海报
        </div>
@@ -12,54 +12,56 @@
    </c-header>
 
     <div class="panel_content">
-        <div class="content" ref="image">
-            <div class="product_content">
-                <img :src="selected_logo" alt="">
-                <div class="product_info">
-                    <img :src="productData.mainPic" alt="">
-                    <div class="product_text_info">
-                        <p>{{productData.productName}}</p>
-                        <p>颜色：{{productData.colorName}}</p>
-                        <p>尺码：{{productData.sizeName}}</p>
-                        <p>{{productData.showPrice}}</p>
+        <div class="poster_img_content" ref="image" :style="getBottomOffset(0)">
+            <div class="content">
+                <div class="product_content">
+                    <img :src="selected_logo" alt="">
+                    <div class="product_info">
+                        <img :src="productData.mainPic" alt="">
+                        <div class="product_text_info">
+                            <p>{{productData.productName}}</p>
+                            <p>颜色：{{productData.colorName}}</p>
+                            <p>尺码：{{productData.sizeName}}</p>
+                            <p>{{productData.showPrice}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="designer_content">
-                <img class="triangle_top" :src="triangle_icon" alt="">
-                <div class="designer_label">设计师说</div>
+                <div class="designer_content">
+                    <img class="triangle_top" :src="triangle_icon" alt="">
+                    <div class="designer_label">设计师说</div>
 
-                <div class="designer_header">
-                    <img :src="productData.designer.avatar" alt="">
-                    <div class="name_label">
-                        <p>{{productData.designer.nickname}}</p>
-                        <p>IPX原创设计师</p>
+                    <div class="designer_header">
+                        <img :src="productData.designer.avatar" alt="">
+                        <div class="name_label">
+                            <p>{{productData.designer.nickname}}</p>
+                            <p>IPX原创设计师</p>
+                        </div>
+                    </div>
+
+                    <div class="designer_distribute">
+                        <img class="left" :src="left_icon" alt="">
+                        <p>{{productData.importantDesc}}</p>
+                        <img class="right" :src="right_icon" alt="">
+                    </div>
+                </div>
+                <div class="product_image">
+                    <div class="images_list" v-for="(skuItem,index) in productData.colorTypeList" :key="index" >
+                        <img :src="skuItem.image" alt="">
+                        <div class="change_content" @click="changeImage(skuItem.skuCodes)" v-show="!isHiddenChange">
+                            <img :src="changeGood_icon" alt="">
+                            <p>换一张</p>
+                        </div>
+                    </div>
+                    <div class="footer_content">
+                        <img :src="productData.albumImg_url" alt="">
+                        <div class="tell_info">
+                            <img :src="callPhone_icon" alt="">
+                            <p>联系电话：{{productData.phone}}</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="designer_distribute">
-                    <img class="left" :src="left_icon" alt="">
-                    <p>{{productData.importantDesc}}</p>
-                    <img class="right" :src="right_icon" alt="">
-                </div>
             </div>
-            <div class="product_image">
-                <div class="images_list" v-for="(skuItem,index) in productData.colorTypeList" :key="index" >
-                    <img :src="skuItem.image" alt="">
-                    <div class="change_content" @click="changeImage(skuItem.skuCodes)" v-show="!isHiddenChange">
-                        <img :src="changeGood_icon" alt="">
-                        <p>换一张</p>
-                    </div>
-                </div>
-                <div class="footer_content">
-                    <img :src="productData.albumImg_url" alt="">
-                    <div class="tell_info">
-                        <img :src="callPhone_icon" alt="">
-                        <p>联系电话：{{productData.phone}}</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -105,6 +107,16 @@ export default {
         }
     },
     methods: {
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        paddingTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'padding-top: 0.4rem;'
+            }
+            return 'padding-top: 0.2rem;'
+        },
         changeImage(skucodes) {
             this.changeSkuCodes = skucodes
             this.$router.push({
@@ -169,6 +181,9 @@ export default {
                     utils.upload([file]).then(result => {
                         utils.postMessage('download_pictures', result)
                         Toast.clear()
+                    }).catch(() => {
+                        _this.$toast('保存失败请重试')
+                        Toast.clear()
                     })
                 })
             }, 3000)
@@ -212,22 +227,15 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.my-header {
-    position: relative;
-    &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: @color-c7;
-    }
-}
 .panel_content {
     background:rgba(244,245,247,1);
-    height: calc(100vh - 48px);
+    height: 100%;//calc(100vh - 48px);
     overflow-y: scroll;
-    padding-bottom: 48px;
+}
+.poster_img_content {
+    background: @color-c8;
+    padding-top: 4px;
+    padding-bottom: 25px;
 }
 .content {
     margin: 16px;

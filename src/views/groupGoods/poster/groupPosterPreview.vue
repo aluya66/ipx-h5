@@ -1,6 +1,6 @@
 <template>
-   <layout-view>
-   <c-header  class="my-header" slot="header" :left-arrow="true">
+   <layout-view :style="paddingTop()">
+   <c-header slot="header" :left-arrow="true" :showBorderBottom='true'>
        <div slot="title">
            预览海报
        </div>
@@ -12,7 +12,8 @@
    </c-header>
 
    <div class="panel_content" >
-       <div class="content" ref="image">
+    <div class="poster_img_content" ref="image" :style="getBottomOffset(0)">
+       <div class="content">
            <div class="product_content">
                 <img :src="selected_logo" alt="">
                 <img :src="groupData.groupImg" alt="">
@@ -66,6 +67,7 @@
             </div>
 
        </div>
+    </div>
    </div>
 
    </layout-view>
@@ -131,9 +133,17 @@ export default {
             }
         }
     },
-    methods: {// 是否iPhoneX底部
+    methods: {
+        // 是否iPhoneX底部
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        paddingTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'padding-top: 0.4rem;'
+            }
+            return 'padding-top: 0.2rem;'
         },
         changeProduct(product) {
             this.selectProduct = product
@@ -213,22 +223,15 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.my-header {
-    position: relative;
-    &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: @color-c7;
-    }
-}
 .panel_content {
     background: rgba(244,245,247,1);
-    height: calc(100vh - 48px);
+    height: 100%;//calc(100vh - 48px);
     overflow-y: scroll;
-    padding-bottom: 48px;
+}
+.poster_img_content {
+    background: @color-c8;
+    padding-top: 4px;
+    padding-bottom: 25px;
 }
 .content {
     margin: 16px;

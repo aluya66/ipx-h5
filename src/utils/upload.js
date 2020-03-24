@@ -45,7 +45,7 @@ async function upload(file = []) {
                 },
                 error: (errResult) => {
                     console.info(errResult) // 此处提示上传图片的过程中错误信息
-                    // reject(errResult)
+                    reject(errResult)
                 },
                 complete: (result) => {
                     imgData.push(photoHost + result.key)
