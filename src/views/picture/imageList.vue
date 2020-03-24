@@ -13,7 +13,7 @@
                 <div class="image-item" :class="[index % 4 !== 0 ? 'margin-left' : '', index >= 4 ? 'margin-top' : '']"
                      v-for="(item, index) in images"
                      :key="index" :style="getPictureRect()">
-                    <img :src="item.image" :style="getPictureRect()" alt=""/>
+                    <img :src="item.image" :style="getPictureRect()" alt="" @click="fromChangePreview(index)"/>
                     <img class="select-box" :src="item.isSelected ? imageSelect: imageUnselect" @click="switchSelectState(index)" alt=""/>
                 </div>
             </div>
@@ -61,21 +61,16 @@ export default {
             return `width:${width}px`
         },
         switchSelectState(index) {
+            if (this.fromChange) {
+                this.images.forEach((item) => {
+                    item.isSelected = false
+                })
+            }
+            this.images[index].isSelected = !this.images[index].isSelected
             let skuList = this.images.filter(item => {
                 return item.isSelected
             })
-            if (skuList.length === 1 & this.fromChange & !this.images[index].isSelected) {
-                this.$toast('只能选择一张图片替换')
-                return
-            }
-            this.images[index].isSelected = !this.images[index].isSelected
-            let selectedImageCount = 0
-            this.images.forEach((item) => {
-                if (item.isSelected) {
-                    selectedImageCount++
-                }
-            })
-            if (selectedImageCount === this.images.length) {
+            if (skuList.length === this.images.length) {
                 this.isAllSelected = true
             } else {
                 this.isAllSelected = false
@@ -90,10 +85,6 @@ export default {
             }
         },
         selectAll() {
-            if (this.fromChange && this.images.length > 1) {
-                this.$toast('只能选择一张图片替换')
-                return
-            }
             this.isAllSelected = !this.isAllSelected
             this.images.forEach((item) => {
                 item.isSelected = this.isAllSelected
@@ -162,18 +153,25 @@ export default {
                 }
             })
         },
-        fromChangePreview() {
-            if (!this.fromChange) { // 不是预览图片
-                return
+        fromChangePreview(index) {
+            if (index !== undefined) {
+                let imgs = this.images.filter((item, imgIndex) => {
+                    return imgIndex === index
+                })
+                this.previewSlide(imgs, 0)
+            } else {
+                if (!this.fromChange) { // 不是预览图片
+                    return
+                }
+                let imgs = this.images.filter((item) => {
+                    return item.isSelected
+                })
+                if (imgs.length <= 0) {
+                    this.$toast('请选择预览的图片')
+                    return
+                }
+                this.previewSlide(imgs, 0)
             }
-            let imgs = this.images.filter((item) => {
-                return item.isSelected
-            })
-            if (imgs.length <= 0) {
-                this.$toast('请选择预览的图片')
-                return
-            }
-            this.previewSlide(imgs, 0)
         },
         previewSlide(slidImages, index) {
             let imgs = slidImages.filter((item) => {
@@ -196,9 +194,10 @@ export default {
             })
         }
     },
-    mounted() {
+    activated() {
         this.isNative = false
         this.fromChange = false
+        this.isAllSelected = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
@@ -293,6 +292,8 @@ export default {
 
         img {
             margin-right: 8px;
+            width: 24px;
+            height: 24px;
         }
     }
 

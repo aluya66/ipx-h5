@@ -1,6 +1,6 @@
 <template>
-   <layout-view>
-   <c-header  class="my-header" slot="header" :left-arrow="true">
+   <layout-view :style="paddingTop()">
+   <c-header slot="header" :left-arrow="true" :showBorderBottom='true'>
        <div slot="title">
            预览海报
        </div>
@@ -12,7 +12,8 @@
    </c-header>
 
    <div class="panel_content" >
-       <div class="content" ref="image">
+    <div class="poster_img_content" ref="image" :style="getBottomOffset(0)">
+       <div class="content">
            <div class="product_content">
                 <img :src="selected_logo" alt="">
                 <img :src="groupData.groupImg" alt="">
@@ -24,9 +25,9 @@
                 <div class="designer_label">KOC说</div>
 
                 <div class="designer_header">
-                    <img :src="groupData.avatar" alt="">
+                    <img :src="groupData.groupGoodsKoc.headPic" alt="">
                     <div class="name_label">
-                        <p>{{groupData.nickname}}</p>
+                        <p>{{groupData.groupGoodsKoc.kocNickName}}</p>
                         <p>IPX时尚买手</p>
                     </div>
                 </div>
@@ -49,9 +50,9 @@
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
-                        <p>{{groupData.isSuggest ? product.retailPrice : posterPrice(product.retailPrice)}}</p>
+                        <p>{{groupData.isSuggest ? parseFloat(product.retailPrice).toFixed(2) : posterPrice(product.retailPrice)}}</p>
                     </div>
-                    <div class="change_content" @click="changeProduct(product)">
+                    <div class="change_content" @click="changeProduct(product)"  v-show="!isHiddenChange">
                         <img :src="changeGood_icon" alt="">
                         <p>换一张</p>
                     </div>
@@ -66,6 +67,7 @@
             </div>
 
        </div>
+    </div>
    </div>
 
    </layout-view>
@@ -82,7 +84,7 @@ export default {
     },
     data () {
         return {
-            selected_logo: require('../../../themes/images/groupGoods/poster_selected_garment@3x.png'),
+            selected_logo: require('../../../themes/images/groupGoods/poster_selected_collocation@3x.png'),
             left_icon: require('../../../themes/images/groupGoods/poster_left_icon@3x.png'),
             right_icon: require('../../../themes/images/groupGoods/poster_right_icon@3x.png'),
             callPhone_icon: require('../../../themes/images/groupGoods/icon_call_phone@3x.png'),
@@ -90,7 +92,8 @@ export default {
             triangle_icon: require('../../../themes/images/groupGoods/icon_triangle@3x.png'),
             groupData: {},
             changedSku: {},
-            selectProduct: {}
+            selectProduct: {},
+            isHiddenChange: false
         }
     },
     created() {
@@ -121,7 +124,7 @@ export default {
                     add = '0'
                 }
                 if (add === '0') {
-                    return price
+                    return parseFloat(price).toFixed(2)
                 } else {
                     let p = parseFloat(price) * parseFloat(add || '0') / 100
                     let p2 = p.toFixed(2)
@@ -131,6 +134,17 @@ export default {
         }
     },
     methods: {
+        // 是否iPhoneX底部
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
+        paddingTop() {
+            let basepara = utils.getStore('baseParams')
+            if (basepara.isIphoneX) {
+                return 'padding-top: 0.4rem;'
+            }
+            return 'padding-top: 0.2rem;'
+        },
         changeProduct(product) {
             this.selectProduct = product
             this.$router.push({
@@ -149,6 +163,7 @@ export default {
                 forbidClick: true,
                 duration: 0
             })
+            _this.isHiddenChange = true
             setTimeout(() => {
                 let img = _this.$refs['image']
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
@@ -159,13 +174,15 @@ export default {
                     taintTest: true,
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
+                    _this.isHiddenChange = false
                     _this.photoUrl = canvas.toDataURL()
                     let file = _this.dataURLtoBlob(_this.photoUrl)
                     utils.upload([file]).then(result => {
                         utils.postMessage('download_pictures', result)
                         Toast.clear()
+                    }).catch(() => {
+                        _this.$toast('保存失败请重试')
                     })
-                    // _this.downloadIamge(_this.photoUrl, 'poster.png')
                 })
             }, 3000)
         },
@@ -191,6 +208,7 @@ export default {
                     Toast.clear()
                 } else {
                     this.$toast('保存失败请重试')
+                    Toast.clear()
                 }
             }
         },
@@ -207,22 +225,15 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.my-header {
-    position: relative;
-    &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: @color-c7;
-    }
-}
 .panel_content {
     background: rgba(244,245,247,1);
-    height: calc(100vh - 48px);
+    height: 100%;//calc(100vh - 48px);
     overflow-y: scroll;
-    padding-bottom: 48px;
+}
+.poster_img_content {
+    background: @color-c8;
+    padding-top: 4px;
+    padding-bottom: 25px;
 }
 .content {
     margin: 16px;
@@ -368,7 +379,7 @@ export default {
                 margin: 0;
                 width: calc(100vw - 64px);
                 // height: calc(100vw - 64px);
-                background:rgba(249,250,252,1);
+                background: @color-c8;
                 border-radius:12px;
             }
             > p {
@@ -444,7 +455,7 @@ export default {
                 }
                 > p {
                     font-size:14px;
-                    font-weight:blod;
+                    font-weight:bold;
                     color:@color-c1;
                     line-height:20px;
                 }

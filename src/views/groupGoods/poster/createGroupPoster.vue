@@ -76,14 +76,6 @@
                                 <p class="price-custom-title" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(88,91,102,1)'">单品均加价:</p>
                                 <div class="input-contain">
                                     <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="number" :hiddenClear="true" />
-                                    <!-- <field
-                                    class="price-input"
-                                    type="number"
-                                    v-model="customPricePercent"
-                                    :disabled = "isSuggest"
-                                    :adjust-position='true'
-                                    @input="clearNoNum"
-                                    /> -->
                                     <p class="price-symbol" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(42,43,51,1)'">%</p>
                                 </div>
                             </section>
@@ -94,7 +86,7 @@
 
                             <section class="suggest-selected" :style="isSuggest ? 'background:rgba(235,238,255,1)' : 'background:rgba(249,250,252,1)' ">
                                 <img class="suggest-select-icon" :src="isSuggest ? select_sel : select_def" alt="" @click="selectSuggest">
-                                <p :style="isSuggest ? 'color: rgba(60,92,246,1);':'color: rgba(42,43,51,1);'">使用建议零售价</p>
+                                <p :style="isSuggest ? 'color: rgba(60,92,246,1);':'color: rgba(42,43,51,1);'" @click="selectSuggest">使用建议零售价</p>
                             </section>
 
                         </div>
@@ -170,7 +162,7 @@ export default {
             selectPriceTitle: '统一调价',
             priceMenu: ['统一调价', '单品调价'],
             customPricePercent: '0',
-            singlePosterPrice: 0,
+            singlePosterPrice: '0',
             phone: '',
             posterData: {},
             isPreview: false,
@@ -185,7 +177,7 @@ export default {
             this.customPricePercent = val
         }
         // singlePosterPrice(val) {
-        //     // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
+            // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
         //     let price = parseFloat(val).toFixed(2)
         //     this.singlePosterPrice = price
         // }
@@ -465,7 +457,7 @@ export default {
             line-height: 26px;
             position: relative;
             font-size:12px;
-            font-weight:500;
+            font-weight:bold;
             color: @color-ec3;
             background:#EBEEFF;
             border-radius:16px;
@@ -479,7 +471,7 @@ export default {
             line-height: 26px;
             position: relative;
             font-size:12px;
-            font-weight:500;
+            font-weight:bold;
             color:@color-c1;
             background: @color-c7;
             border-radius:16px;
@@ -566,7 +558,7 @@ export default {
                     &:nth-child(3) {
                         margin-left: 12px;
                         font-size:12px;
-                        font-weight:500;
+                        font-weight:bold;
                         color:@color-c3;
                         height: 16px;
                         line-height: 14px;
@@ -619,6 +611,7 @@ export default {
                 p {
                     &:nth-child(2) {
                         margin-left: 46px;
+                        color:@color-c1;
                         font-family: "alibabaBold";
                         font-size:16px;
                         &::before {
