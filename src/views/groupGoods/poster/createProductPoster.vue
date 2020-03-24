@@ -88,7 +88,7 @@
             </title-content>
             <p class="bottom-prompt">海报可以分享至微信好友、朋友圈</p>
         </div>
-        <fixed-view class="footer-shadow">
+        <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
             <template slot="footerContain">
                 <div class="footer-view">
                     <section :class='["section-common","button-select"]' @click="handlePreviewPoster">立即生成海报</section>
@@ -271,7 +271,7 @@ export default {
     .van-field__body textarea{
         font-family:PingFangSC-Medium,PingFang SC;
         font-size:9px !important;
-        font-weight:500 !important;
+        font-weight: bold !important;
         color: @color-c1;
     }
 }
@@ -281,7 +281,7 @@ export default {
 .phone-input {
     height: 40px;
     font-size:14px ;
-    font-weight:500;
+    font-weight:bold;
     color:@color-c1;
     background:rgba(249,250,252,1);
     border-radius:8px;
@@ -321,12 +321,12 @@ export default {
             // margin: 12px 16px 0;
             height: 40px;
             font-size:14px ;
-            font-weight:500;
+            font-weight: bold;
             color:@color-c1;
         }
         .group-desc {
             font-size:14px;
-            font-weight:500;
+            font-weight:bold;
             color:@color-c1;
             margin-top: 10px;
         }
@@ -375,7 +375,7 @@ export default {
             line-height: 26px;
             position: relative;
             font-size:12px;
-            font-weight:500;
+            font-weight: bold;
             color: @color-ec3;
             background:#EBEEFF;
             border-radius:16px;
@@ -389,7 +389,7 @@ export default {
             line-height: 26px;
             position: relative;
             font-size:12px;
-            font-weight:500;
+            font-weight: bold;
             color:@color-c1;
             background: @color-c7;
             border-radius:16px;
@@ -454,7 +454,7 @@ export default {
                 &:nth-child(3) {
                     margin-left: 12px;
                     font-size:12px;
-                    font-weight:500;
+                    font-weight: bold;
                     color:@color-c3;
                     height: 16px;
                     line-height: 14px;
@@ -520,7 +520,7 @@ export default {
                     outline: 0;
                     height: 32px;
                     font-size:16px;
-                    font-weight:500;
+                    font-weight: bold;
                     font-family: "alibabaBold";
                     color:rgba(42,43,51,1);
                     background:rgba(244,245,247,1);
@@ -570,7 +570,7 @@ export default {
     }
 }
 .footer-view {
-        margin: 5px 20px 0;
+        margin: 5px 20px;
         // display: flex;
         width: calc(100vw - 40px);
         // flex-direction: row;

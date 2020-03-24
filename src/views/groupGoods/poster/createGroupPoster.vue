@@ -119,7 +119,7 @@
             </title-content>
             <p class="bottom-prompt">海报可以分享至微信好友、朋友圈</p>
         </div>
-        <fixed-view class="footer-shadow">
+        <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
             <template slot="footerContain">
                 <div class="footer-view">
                     <section :class='["section-common","button-select"]' @click="handlePreviewPoster">立即生成海报</section>

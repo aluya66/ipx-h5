@@ -248,6 +248,7 @@ export default {
         padding-bottom: 4px;
         > img {
             margin-top: 16px;
+            object-fit: cover;
         }
         .product_info {
             margin: 8px 16px 4px;
@@ -346,7 +347,7 @@ export default {
                 margin-top: 16px;
                 > p {
                     font-size:13px;
-                    font-weight:500;
+                    font-weight: bold;
                     color:@color-c1;
                     line-height:18px;
                     margin-bottom: 5px;
@@ -402,6 +403,7 @@ export default {
                 width: calc(100vw - 64px);
                 border-radius:12px;
                 border:1px solid rgba(244,245,247,1);
+                background: @color-c8;
             }
             .change_content {
                 z-index: 100;
@@ -442,7 +444,7 @@ export default {
                 }
                 > p {
                     font-size:14px;
-                    font-weight:blod;
+                    font-weight: bold;
                     color:@color-c1;
                     line-height:20px;
                 }
