@@ -183,7 +183,6 @@ export default {
                         Toast.clear()
                     }).catch(() => {
                         _this.$toast('保存失败请重试')
-                        Toast.clear()
                     })
                 })
             }, 3000)

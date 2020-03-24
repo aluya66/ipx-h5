@@ -31,7 +31,12 @@ const putExtra = {
 }
 
 async function upload(file = []) {
-    let token = await getToken()
+    let token = await getToken().catch(err => {
+        console.log('err:', err)
+        return new Promise((resolve, reject) => {
+            reject(err)
+        })
+    })
     console.info(token, '获取七牛云token')
     let state = 0; let imgData = []
     return new Promise((resolve, reject) => {
@@ -44,7 +49,7 @@ async function upload(file = []) {
                     console.info(result) // 此处可添加上传图片的上传进度提示
                 },
                 error: (errResult) => {
-                    console.info(errResult) // 此处提示上传图片的过程中错误信息
+                    console.info('errResult:', errResult) // 此处提示上传图片的过程中错误信息
                     reject(errResult)
                 },
                 complete: (result) => {
@@ -76,6 +81,8 @@ function getToken() {
         }).then(res => {
             store.setSessionStore('qiniuToken', res)
             resolve(res)
+        }).catch(err => {
+            reject(err.message)
         })
     })
 }

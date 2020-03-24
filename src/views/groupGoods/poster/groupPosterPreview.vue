@@ -180,6 +180,8 @@ export default {
                     utils.upload([file]).then(result => {
                         utils.postMessage('download_pictures', result)
                         Toast.clear()
+                    }).catch(() => {
+                        _this.$toast('保存失败请重试')
                     })
                 })
             }, 3000)
