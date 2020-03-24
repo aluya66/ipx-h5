@@ -1,14 +1,15 @@
 <template>
     <layout-view>
         <c-header slot="header" :left-arrow="true" :showBorderBottom="true" :pageOutStatus="isNative">
-            <div slot="title">门店热采组货</div>
+            <div slot="title" class="hot-title">门店热采组货</div>
         </c-header>
-        <div class="group-list">
+        <div class="group-list" v-if="hotGroups.length > 0">
             <c-list
                 class="report-list"
                 @load-data="handleMore"
                 :loading="loading"
                 :listItems="hotGroups"
+                @on-refresh="handleRefresh"
                 :error="error"
                 :finished="finished"
             >
@@ -18,6 +19,7 @@
                 </div>
             </c-list>
         </div>
+        <empty-view class="empty" emptyType="groupEmpty" :emptyDesc="emptyDesc" v-else/>
     </layout-view>
 </template>
 
@@ -34,6 +36,7 @@ export default {
             pageSize: 10,
             reportType: 1,
             hotGroups: [],
+            emptyDesc: '正在加载数据.....',
             isNative: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
@@ -61,10 +64,14 @@ export default {
                 } else {
                     this.finished = true
                 }
+                if (this.hotGroups.length <= 0) {
+                    this.emptyDesc = '没有数据'
+                }
                 console.log(this.hotGroups)
             }).catch((err) => {
                 console.log(err)
                 this.error = true
+                this.emptyDesc = '没有数据'
             })
         },
         gotoHotPurchase(exampleCode) {
@@ -108,6 +115,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+    .hot-title {
+        font-weight: bold;
+    }
     .group-list {
         overflow: scroll;
         .report-list {
@@ -120,7 +130,6 @@ export default {
                     left: 0;
                     top: 0;
                     border-radius: 8px;
-                    box-shadow:0px 2px 10px 0px rgba(33,44,98,0.08);
                 }
                 .detail {
                     position: absolute;

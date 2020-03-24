@@ -41,3 +41,10 @@ export const getStatistics = params => Http.fetch(`${context}/goods/statistics`,
 export const getVisitors = params => Http.fetch(`${context}/goods/visitors`, params, {
     method: 'get'
 })
+
+/**
+ * 【 get 】首页热销爆款
+ */
+export const getHotSale = params => Http.fetch(`${context}/v1/home/hotsale`, params, {
+    method: 'get'
+})

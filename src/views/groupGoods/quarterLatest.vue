@@ -6,8 +6,8 @@
                      src="../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png" @click="rightClick()"/>
             </template>
         </c-header>
-        <div class="latest-content">
-            <div class="latest-main" v-if="latestGroups.length > 0">
+        <div class="latest-content" v-if="latestGroups.length > 0">
+            <div class="latest-main">
                 <span class="latest-label">{{showPage === 'latest' ? '本周上新' : '精选组货'}}</span>
                 <swiper class="swiper" ref="groupSwiper" :style="getListHeight()" :options="swiperOption">
                     <swiper-slide class="slide" v-for="item in latestGroups" :key="item.groupCode">
@@ -24,13 +24,17 @@
                     class="total-price-number">{{selectGroupDetail.totalPrice}}</span><span class="total-label">零售货值</span>
                 </div>
                 <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
-                <div class="group-labels">
-                    <span v-for="(label, index) in selectGroupDetail.labelDescs" :key="index"
-                          :style="getLabelMargin(index)">{{label}}</span>
-                </div>
-                <div class="add-store" @click="addHall()">加入我的展厅</div>
+                <!--UI确认，去掉标签，标签没有运营-->
+                <!--<div class="group-labels-container">
+                    <div class="group-labels">
+                        <label v-for="(label, index) in selectGroupDetail.labelDescs" :key="index"
+                              :style="getLabelMargin(index)">{{label}}</label>
+                    </div>
+                </div>-->
             </div>
+            <div class="add-store" @click="addHall()">加入我的展厅</div>
         </div>
+        <empty-view class="empty" emptyType="groupEmpty" :emptyDesc="emptyDesc" v-else/>
     </layout-view>
 </template>
 
@@ -43,9 +47,11 @@ import {
     swiperSlide
 } from 'vue-awesome-swiper'
 import { Dialog } from 'vant'
+import EmptyView from '../error/emptyView'
 
 export default {
     components: {
+        EmptyView,
         swiper,
         swiperSlide
     },
@@ -63,10 +69,30 @@ export default {
             itemHeight: 376,
             selectGroupDetail: {},
             groupDetail: {},
+            emptyDesc: '正在加载数据.....',
             swiperOption: {
                 slidesPerView: 'auto',
                 centeredSlides: true,
                 spaceBetween: 12 * window.devicePixelRatio,
+
+                // slidesPerView: 1.2,
+                // slidesPerView: 1.1,
+                // centeredSlides: true,
+                // spaceBetween: 16 * window.devicePixelRatio,
+                effect: 'coverflow',
+                // spaceBetween: 16 * window.devicePixelRatio,
+                // spaceBetween: '8%',
+                // loop: true,
+                // autoplay: {
+                //     disableOnInteraction: false
+                // },
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 300,
+                    modifier: 1,
+                    slideShadows: false
+                },
                 on: {
                     slideChange: () => {
                         let swiper = this.$refs.groupSwiper.swiper
@@ -246,7 +272,6 @@ export default {
         if (this.$route.query.showPage !== undefined) {
             this.showPage = this.$route.query.showPage
         }
-        debugger
         this.getQuarterLatest()
     }
 }
@@ -263,6 +288,11 @@ export default {
         width: 26px;
         height: 26px;
     }
+    .empty {
+        margin-top: 24px;
+        border-radius: 12px 12px 0 0;
+        padding-top: 112px;
+    }
     .latest-content {
         position: relative;
         height: 100%;
@@ -276,6 +306,7 @@ export default {
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-bottom: 100px;
             .latest-label {
                 width: calc(100vw - 40px);
                 font-size: 24px;
@@ -310,6 +341,10 @@ export default {
                         display: flex;
                         flex-direction: row;
                         justify-content: center;
+                        >img {
+                            width: 108px;
+                            height: 28px;
+                        }
                     }
                 }
             }
@@ -322,22 +357,24 @@ export default {
 
                 .patch-flag {
                     font-size: 14px;
-                    font-family: ALIBABAFont-Regular, ALIBABAFont;
+                    font-family: "alibabaRegular";
                     font-weight: 400;
+                    padding-bottom: 4px;
                     color: rgba(245, 48, 48, 1);
                 }
 
                 .patch-price-number {
                     font-size: 22px;
-                    font-family: ALIBABAFont-Bold, ALIBABAFont;
+                    font-family: "alibabaBold";
                     font-weight: bold;
+                    line-height:26px;
                     color: rgba(245, 48, 48, 1);
                 }
 
                 .patch-count {
                     font-size: 14px;
-                    font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: 400;
+                    padding-bottom: 4px;
                     margin-left: 8px;
                     color: rgba(138, 140, 153, 1);
                 }
@@ -351,21 +388,22 @@ export default {
 
                 .total-flag {
                     font-size: 12px;
-                    font-family: ALIBABAFont-Regular, ALIBABAFont;
+                    font-family: "alibabaRegular";
                     font-weight: 400;
+                    padding-bottom: 1px;
                     color: rgba(88, 91, 102, 1);
                 }
 
                 .total-price-number {
                     font-size: 14px;
-                    font-family: ALIBABAFont-Bold, ALIBABAFont;
+                    font-family: "alibabaBold";
+                    line-height:14px;
                     font-weight: bold;
                     color: rgba(88, 91, 102, 1);
                 }
 
                 .total-label {
                     font-size: 10px;
-                    font-family: PingFangSC-Regular, PingFang SC;
                     font-weight: bold;
                     color: @color-c3;
                     line-height: 14px;
@@ -378,43 +416,57 @@ export default {
 
             .group-title {
                 font-size: 18px;
-                font-family: PingFangSC-Medium, PingFang SC;
                 font-weight: bold;
                 color: rgba(42, 43, 51, 1);
                 margin-top: 12px;
+                line-height:26px;
             }
 
-            .group-labels {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin: 8px 20px 48px 20px;
+            .group-labels-container {
+                width: 100%;
+                overflow-x: scroll;
+                text-align: center;
+                .group-labels {
+                    /*display: flex;
+                    justify-content: center;
+                    overflow-x: scroll;
+                    width: 100%;*/
+                    white-space:nowrap;
+                    margin: 12px 0 48px 0;
+                    padding: 0 20px;
 
-                > span {
-                    height: 28px;
-                    border-radius: 14px;
-                    margin-top: 4px;
-                    color: @color-ec;
-                    font-weight: bold;
-                    padding: 0 12px;
-                    line-height: 28px;
-                    text-align: center;
-                    border: 1px solid rgba(60, 92, 246, 1);
+                    > label {
+                        min-width: 64px;
+                        height: 28px;
+                        border-radius: 14px;
+                        margin: auto;
+                        color: @color-ec;
+                        font-size: 10px;
+                        font-weight: bold;
+                        display: inline-block;
+                        padding: 0 12px;
+                        line-height: 28px;
+                        text-align: center;
+                        border: 1px solid rgba(60, 92, 246, 1);
+                    }
                 }
             }
 
-            .add-store {
-                width: calc(100vw - 40px);
-                color: white;
-                text-align: center;
-                line-height: 50px;
-                font-size: 16px;
-                font-weight: bold;
-                margin-bottom: 20px;
-                height: 50px;
-                background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
-                border-radius: 12px;
-            }
         }
+    }
+
+    .add-store {
+        width: calc(100vw - 40px);
+        color: white;
+        text-align: center;
+        line-height: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        height: 50px;
+        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
+        border-radius: 12px;
+        position: fixed;
+        bottom: 36px;
+        left: 20px;
     }
 </style>
