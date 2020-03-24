@@ -507,7 +507,6 @@ export default {
             this.$api.hall
                 .getHallCollectList(params)
                 .then(res => {
-                    this.setSuccessStatus()
                     if (res.code === 0) {
                         if (res.data.productList && res.data.productList instanceof Array) {
                             if (this.pageNo === 1) {
@@ -515,6 +514,7 @@ export default {
                             } else {
                                 this.datas = this.datas.concat(res.data.productList)
                             }
+                            this.setSuccessStatus()
                             if (res.data.productList.length < this.pageSize) {
                                 this.finished = true
                             } else {
@@ -570,7 +570,6 @@ export default {
             this.$api.hall
                 .getGroupGoods(params)
                 .then(res => {
-                    this.setSuccessStatus()
                     if (res.code === 0) {
                         if (res.data && res.data instanceof Array) {
                             if (this.pageNo === 1) {
@@ -578,6 +577,7 @@ export default {
                             } else {
                                 this.groupDatas = this.groupDatas.concat(res.data)
                             }
+                            this.setSuccessStatus()
                             if (res.data.length < this.pageSize) {
                                 this.finished = true
                             } else {
