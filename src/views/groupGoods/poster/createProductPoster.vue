@@ -180,20 +180,16 @@ export default {
             } else if (this.posterData.productName.split(' ').join('').length === 0) {
                 this.$toast('请重新输入商品名称')
             } else {
-                this.posterData.showPrice = this.posterPrice
+                if (this.selectPriceTitle === '建议零售价') {
+                    this.posterData.showPrice = this.posterData.retailPrice
+                } else {
+                    this.posterData.showPrice = this.posterPrice
+                }
                 this.posterData.phone = this.phone
                 this.$router.push({
                     path: '/poster/previewProductPoster',
                     query: { productData: this.posterData }
                 })
-
-                // if (this.selectPriceTitle === '建议零售价') {
-                //     this.posterData.addPrice = '0'
-                //     this.posterData.isRetail = true
-                // } else {
-                //     this.posterData.addPrice = this.addPrice
-                //     this.posterData.isRetail = false
-                // }
             }
         },
         handleClosePopup() {
