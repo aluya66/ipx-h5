@@ -50,7 +50,7 @@
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
-                        <p>{{groupData.isSuggest ? product.retailPrice : posterPrice(product.retailPrice)}}</p>
+                        <p>{{groupData.isSuggest ? parseFloat(product.retailPrice).toFixed(2) : posterPrice(product.retailPrice)}}</p>
                     </div>
                     <div class="change_content" @click="changeProduct(product)"  v-show="!isHiddenChange">
                         <img :src="changeGood_icon" alt="">
@@ -124,7 +124,7 @@ export default {
                     add = '0'
                 }
                 if (add === '0') {
-                    return price
+                    return parseFloat(price).toFixed(2)
                 } else {
                     let p = parseFloat(price) * parseFloat(add || '0') / 100
                     let p2 = p.toFixed(2)

@@ -57,9 +57,8 @@
             class="item"
             v-for="item in productDatas"
             :key="item.productCode"
-            @click="productDetail(item)"
           >
-            <img :src="item.mainPic" alt="" />
+            <img :src="item.mainPic" alt="" @click="productDetail(item)"/>
             <div class="product_info">
                 <p class="product_title">{{ item.productName }}</p>
                 <div class="product_retail_price">
@@ -228,6 +227,28 @@ export default {
             })
         },
         collectProduct(product) { /// 收藏商品
+            const params = {
+                productName: product.productName,
+                productCode: product.productCode,
+                productPrice: product.tshPrice,
+                shopId: product.shopId
+            }
+            if (product.isCollect === 1) { 
+                //取消收藏
+                params.isCollect = 2
+                this.$api.product.deleteCollectionProduct(params).then(res => {
+                    product.isCollect = 2
+                }).catch(err => {
+                    console.log(err)
+                })
+            } else { //添加收藏
+                params.isCollect = 1
+                this.$api.product.addCollectionProduct(params).then(res => {
+                    product.isCollect = 1
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
 
         },
         handleRequestProduct() {

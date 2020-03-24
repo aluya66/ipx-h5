@@ -76,14 +76,6 @@
                                 <p class="price-custom-title" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(88,91,102,1)'">单品均加价:</p>
                                 <div class="input-contain">
                                     <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="number" :hiddenClear="true" />
-                                    <!-- <field
-                                    class="price-input"
-                                    type="number"
-                                    v-model="customPricePercent"
-                                    :disabled = "isSuggest"
-                                    :adjust-position='true'
-                                    @input="clearNoNum"
-                                    /> -->
                                     <p class="price-symbol" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(42,43,51,1)'">%</p>
                                 </div>
                             </section>
@@ -170,7 +162,7 @@ export default {
             selectPriceTitle: '统一调价',
             priceMenu: ['统一调价', '单品调价'],
             customPricePercent: '0',
-            singlePosterPrice: 0,
+            singlePosterPrice: '0',
             phone: '',
             posterData: {},
             isPreview: false,
@@ -185,7 +177,7 @@ export default {
             this.customPricePercent = val
         }
         // singlePosterPrice(val) {
-        //     // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
+            // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
         //     let price = parseFloat(val).toFixed(2)
         //     this.singlePosterPrice = price
         // }
