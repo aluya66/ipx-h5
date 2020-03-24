@@ -142,14 +142,14 @@ export default {
                 skuCodes: skuCodes
             }
             let phone = this.productData.phone
-            // let retailPrice = this.productData.showPrice
+            let retailPrice = this.productData.showPrice
             let albumImg = this.productData.albumImg_url
             let productName = this.productData.productName
             this.$api.poster.getProductPosterInfo(params).then(res => {
                 if (res instanceof Object) {
                     this.productData = res
                     this.productData.phone = phone
-                    this.productData.showPrice = this.productData.retailPrice
+                    this.productData.showPrice = retailPrice
                     this.productData.albumImg_url = albumImg
                     this.productData.productName = productName
                 }
