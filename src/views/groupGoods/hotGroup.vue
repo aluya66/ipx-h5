@@ -58,7 +58,7 @@ export default {
                     if (this.pageNumber === 1) {
                         this.hotGroups = res
                     } else {
-                        this.hotGroups.concat(res)
+                        this.hotGroups = this.hotGroups.concat(res)
                     }
                     this.finished = res.length < this.pageSize
                 } else {
