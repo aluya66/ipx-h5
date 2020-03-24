@@ -11,11 +11,14 @@
             </template>-->
         </c-header>
         <c-list
+            ref="productList"
             class="function-list"
             @load-data="handleMore"
             @on-refresh="handleRefresh"
             :loading="loading"
             :listItems="hotProducts"
+            immediateCheck="false"
+            :offset="loadOffset"
             :error="error"
             :finished="finished"
         >
@@ -23,7 +26,7 @@
                 <div class="product-item"
                      :class="[index % 2 === 1 ? 'vertical-divider': '', index > 1 ? 'horizontal-divider' : '']"
                      :style="getItemWidth()"
-                     v-for="(item, index) in hotProducts" :key="index">
+                     v-for="(item, index) in hotProducts" :key="index" @click="gotoDetail(item)">
                     <img class="product-image" :style="getImageRect()" :src="item.mainPic"/>
                     <span class="product-title">{{item.productName}}</span>
                     <div class="product-retail-price">
@@ -52,6 +55,7 @@ export default {
             hotProducts: [],
             pageNumber: 1,
             pageSize: 10,
+            loadOffset: 10,
             isNative: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
@@ -67,6 +71,13 @@ export default {
             let width = parseInt((this.screenWidth - 42 * window.devicePixelRatio) / 2)
             return `width:${width}px;height:${width}px`
         },
+        gotoDetail(product) {
+            const params = {
+                jumpUrl: 'productDetail://',
+                productCode: product.productCode
+            }
+            utils.postMessage('', params)
+        },
         getHotSale() {
             const params = {
                 pageNumber: this.pageNumber,
@@ -80,7 +91,7 @@ export default {
                     if (this.pageNumber === 1) {
                         this.hotProducts = res
                     } else {
-                        this.hotProducts.concat(res)
+                        this.hotProducts = this.hotProducts.concat(res)
                     }
                     this.finished = res.length < this.pageSize
                 } else {
