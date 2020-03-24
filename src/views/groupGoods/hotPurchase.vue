@@ -4,10 +4,11 @@
             <template slot="title">
                 <div>热销爆款</div>
             </template>
-            <template slot="right">
+            <!--康悦说去掉搜索-->
+            <!--<template slot="right">
                 <img class="header-right" slot="right"
                      src="../../themes/images/groupGoods/header_search.png" @click="rightClick()"/>
-            </template>
+            </template>-->
         </c-header>
         <c-list
             class="function-list"
