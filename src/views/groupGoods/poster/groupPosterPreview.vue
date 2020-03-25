@@ -101,6 +101,7 @@ export default {
     },
     deactivated() {
         utils.setStore('productSkuList', '')
+        Toast.clear()
     },
     activated() {
         if (this.$route.query.groupData.groupCode !== undefined) {
@@ -119,7 +120,7 @@ export default {
     computed: {
         posterPrice() {
             return function (product) {
-                if (this.groupData.isSuggest) { //建议零售价
+                if (this.groupData.isSuggest) { // 建议零售价
                     return parseFloat(product.retailPrice).toFixed(2)
                 }
                 let add = this.groupData.percent
@@ -163,7 +164,6 @@ export default {
             let _this = this
             Toast.loading({
                 message: '生成海报...',
-                forbidClick: true,
                 duration: 0
             })
             _this.isHiddenChange = true

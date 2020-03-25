@@ -20,6 +20,7 @@ const context = process.env.VUE_APP_serverPath
 const photoHost = process.env.VUE_APP_UploadImg
 
 const qiConfig = {
+    timeout: 10000,
     useCdnDomain: true, // 表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
     region: qiniu.region.z2 // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
 }

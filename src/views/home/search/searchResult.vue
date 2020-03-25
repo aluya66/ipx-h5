@@ -33,84 +33,87 @@
     </c-header>
 
    <div class="search_result_content">
-        <c-tabs
-          :tabs="tabs"
-          :line-width="8/100+'rem'"
-          :border="false"
-          @change="changeActive"
-        ></c-tabs>
-        <c-list
-          ref="productlist"
-          class="product-list"
-          :style="getBottomOffset(0)"
-          v-if="menuIndex == 0"
-          :loading="loading"
-          :finished="finished"
-          finished-text="已到底，没有更多数据"
-          emptyType="build"
-          emptyDesc="搜索结果是空的"
-          :listItems="productDatas"
-          :isWaterFall="true"
-          @load-data="handleMore"
-        >
-          <div
-            class="item"
-            v-for="item in productDatas"
-            :key="item.productCode"
-          >
-            <img :src="item.mainPic" alt="" @click="productDetail(item)"/>
-            <div class="product_info">
-                <p class="product_title">{{ item.productName }}</p>
-                <div class="product_retail_price">
-                    <p>{{parseFloat(item.retailPrice).toFixed(2)}}</p>
-                    <span>建议零售价</span>
-                </div>
-                <div class="product_price">
-                    <p>{{parseFloat(item.tshPrice).toFixed(2)}}</p>
-                    <img :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click="collectProduct(item)"/>
+       <div class="list_contain">
+           <c-tabs
+            :tabs="tabs"
+            :line-width="8/100+'rem'"
+            :border="false"
+            @change="changeActive"
+            ></c-tabs>
+            <c-list
+            ref="productlist"
+            class="product-list"
+            :style="getBottomOffset(0)"
+            v-if="menuIndex == 0"
+            :loading="loading"
+            :finished="finished"
+            finished-text="已到底，没有更多数据"
+            emptyType="build"
+            emptyDesc="搜索结果是空的"
+            :listItems="productDatas"
+            :isWaterFall="true"
+            @load-data="handleMore"
+            >
+            <div
+                class="item"
+                v-for="item in productDatas"
+                :key="item.productCode"
+            >
+                <img :src="item.mainPic" alt="" @click="productDetail(item)"/>
+                <div class="product_info">
+                    <p class="product_title">{{ item.productName }}</p>
+                    <div class="product_retail_price">
+                        <p>{{parseFloat(item.retailPrice).toFixed(2)}}</p>
+                        <span>建议零售价</span>
+                    </div>
+                    <div class="product_price">
+                        <p>{{parseFloat(item.tshPrice).toFixed(2)}}</p>
+                        <img :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click="collectProduct(item)"/>
+                    </div>
                 </div>
             </div>
-          </div>
-        </c-list>
-        <c-list
-          ref="grouplist"
-          class="groupList"
-          :style="getBottomOffset(0)"
-          v-else-if="menuIndex == 1"
-          :loading="loading"
-          :finished="finished"
-          finished-text="已到底，没有更多数据"
-          emptyType="groupEmpty"
-          emptyDesc="组货搜索结果是空的"
-          :listItems="groupDatas"
-          @load-data="handleMore"
-        >
-        <div
-            class="groupItem"
-            v-for="item in groupDatas"
-            :key="item.groupCode"
-            @click="groupDetail(item)"
-          >
-          <img :src="item.groupImg" alt="">
-          <div class="infoContain">
-            <div class="group_title">
-                <p class="group_name">{{item.groupTitle}}</p>
-                <div class="percentage">
-                    <p> &nbsp; 时尚指数 {{item.fashionIndexNum}}% &nbsp;</p>
-                    <p>&nbsp; 推荐指数 {{item.adviceIndexNum}}% &nbsp;</p>
+            </c-list>
+            <c-list
+            ref="grouplist"
+            class="groupList"
+            :style="getBottomOffset(0)"
+            v-else-if="menuIndex == 1"
+            :loading="loading"
+            :finished="finished"
+            finished-text="已到底，没有更多数据"
+            emptyType="groupEmpty"
+            emptyDesc="组货搜索结果是空的"
+            :listItems="groupDatas"
+            @load-data="handleMore"
+            >
+            <div
+                class="groupItem"
+                v-for="item in groupDatas"
+                :key="item.groupCode"
+                @click="groupDetail(item)"
+            >
+            <img :src="item.groupImg" alt="">
+            <div class="infoContain">
+                <div class="group_title">
+                    <p class="group_name">{{item.groupTitle}}</p>
+                    <div class="percentage">
+                        <p> &nbsp; 时尚指数 {{item.fashionIndexNum}}% &nbsp;</p>
+                        <p>&nbsp; 推荐指数 {{item.adviceIndexNum}}% &nbsp;</p>
+                    </div>
+                    <span class="hot_number">&nbsp; 热销指数 {{item.hotIndexNum}}% &nbsp;</span>
                 </div>
-                <span class="hot_number">&nbsp; 热销指数 {{item.hotIndexNum}}% &nbsp;</span>
-            </div>
-            <div class="price">
-                <div class="group_retail_price">
-                    <p>{{parseFloat(item.totalRetailPrice).toFixed(2)}}</p>
-                    <span>建议零售价</span>
+                <div class="price">
+                    <div class="group_retail_price">
+                        <p>{{parseFloat(item.totalRetailPrice).toFixed(2)}}</p>
+                        <span>建议零售价</span>
+                    </div>
+                    <p>{{parseFloat(item.totalPrice).toFixed(2)}}</p>
                 </div>
-                <p>{{parseFloat(item.totalPrice).toFixed(2)}}</p>
             </div>
-        </div>
-        </div>
-        </c-list>
+            </div>
+            </c-list>
+       </div>
+        
    </div>
 
    </layout-view>
@@ -169,16 +172,20 @@ export default {
         },
         handleSearchClear() {
             this.searchKey = ''
+            this.resetParams()
             this.handleRefresh()
         },
         changeActive(value) {
             this.menuIndex = value
+            // this.groupDatas = []
+            // this.productDatas = []
+            this.resetParams()
             this.handleRefresh()
         },
         resetParams() {
             this.pageNo = 1
             this.finished = false
-            this.loading = false
+            this.loading = true
         },
         setSuccessStatus() {
             this.loading = false
@@ -233,15 +240,15 @@ export default {
                 productPrice: product.tshPrice,
                 shopId: product.shopId
             }
-            if (product.isCollect === 1) { 
-                //取消收藏
+            if (product.isCollect === 1) {
+                // 取消收藏
                 params.isCollect = 2
                 this.$api.product.deleteCollectionProduct(params).then(res => {
                     product.isCollect = 2
                 }).catch(err => {
                     console.log(err)
                 })
-            } else { //添加收藏
+            } else { // 添加收藏
                 params.isCollect = 1
                 this.$api.product.addCollectionProduct(params).then(res => {
                     product.isCollect = 1
@@ -249,7 +256,6 @@ export default {
                     console.log(err)
                 })
             }
-
         },
         handleRequestProduct() {
             const params = {
@@ -259,8 +265,7 @@ export default {
             }
             this.loading = true
             this.$api.groupGoods.searchProductList(params).then(res => {
-                this.setSuccessStatus()
-                if (res instanceof Array) {
+                if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
                         this.productDatas = res
                     } else {
@@ -277,6 +282,7 @@ export default {
                     }
                     this.finished = true
                 }
+                this.setSuccessStatus()
             }).catch(() => {
                 this.setFailureStatus()
             })
@@ -289,8 +295,7 @@ export default {
             }
             this.loading = true
             this.$api.groupGoods.searchGroupList(params).then(res => {
-                this.setSuccessStatus()
-                if (res instanceof Array) {
+                if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
                         this.groupDatas = res
                     } else {
@@ -307,6 +312,7 @@ export default {
                     }
                     this.finished = true
                 }
+                this.setSuccessStatus()
             }).catch(() => {
                 this.setFailureStatus()
             })
@@ -391,8 +397,10 @@ export default {
 <style lang='less' scoped>
 .search_result_content {
   position: relative;
-  height: 100%; //calc(100vh - 90px);
+  height: calc(100vh - 65px);
   overflow: auto;
+  .list_contain {
+      margin: 0;
     .product-list {
         margin: 12px 11px 20px;
         .item {
@@ -574,5 +582,6 @@ export default {
             }
         }
     }
+  }
 }
 </style>
