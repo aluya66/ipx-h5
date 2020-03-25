@@ -20,7 +20,6 @@ const context = process.env.VUE_APP_serverPath
 const photoHost = process.env.VUE_APP_UploadImg
 
 const qiConfig = {
-    timeout: 10000,
     useCdnDomain: true, // 表示是否使用 cdn 加速域名，为布尔值，true 表示使用，默认为 false。
     region: qiniu.region.z2 // 根据具体提示修改上传地区,当为 null 或 undefined 时，自动分析上传域名区域
 }
@@ -45,9 +44,17 @@ async function upload(file = []) {
             let key = new Date().getFullYear().toString().replace('20', '') + '/' + day + '/' + new Date().getTime()
             let observable = qiniu.upload(file[i], key, token, putExtra, qiConfig)
             state++
-            observable.subscribe({
+            var subscription = observable.subscribe({
                 next: (result) => {
                     console.info(result) // 此处可添加上传图片的上传进度提示
+                    setTimeout(() => {
+                        console.info('percent: ', result.total.percent)
+                        if (result.total.percent < 100) {
+                            console.info('errrrrrrr')
+                            reject(result)
+                            subscription.unsubscribe()
+                        }
+                    }, 10000)
                 },
                 error: (errResult) => {
                     console.info('errResult:', errResult) // 此处提示上传图片的过程中错误信息
