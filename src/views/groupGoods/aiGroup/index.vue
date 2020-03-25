@@ -394,7 +394,7 @@ export default {
 
     .empty {
         margin-top: 24px;
-        border-radius: 12px 12px 0px 0px;
+        border-radius: 12px 12px 0 0;
         padding-top: 112px;
     }
 
@@ -537,7 +537,7 @@ export default {
         vertical-align: middle;
         position: relative;
         background: linear-gradient(180deg, rgba(246, 246, 250, 1) 0%, rgba(232, 233, 237, 1) 100%);
-        border-radius: 8px 8px 0px 0px;
+        border-radius: 8px 8px 0 0;
         padding: 0 12px;
         height: 50px;
 
@@ -594,9 +594,8 @@ export default {
     }
 
     .box-content {
-        background: url("../../../themes/images/groupGoods/bg_clothes_hanger.png");
         background-size: 100% 100%;
-        background-repeat: no-repeat;
+        background: url("../../../themes/images/groupGoods/bg_clothes_hanger.png") no-repeat;
         display: flex;
         align-items: center;
 
@@ -652,11 +651,10 @@ export default {
     }
 
     .rank {
-        margin: 12px 16px 0;
+        margin: 12px 16px 21px;
         background:linear-gradient(137deg,rgba(234,241,251,1) 0%,rgba(234,231,251,1) 100%);
         border-radius: 35px;
         height: 70px;
-        margin-bottom: 21px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -677,12 +675,11 @@ export default {
                 }
 
                 p {
-                    margin: 0;
+                    margin: 4px 0 0;
                     font-size: 12px;
                     font-weight: 400;
                     color: @color-c4;
                     line-height: 16px;
-                    margin-top: 4px;
                 }
             }
         }
@@ -691,7 +688,7 @@ export default {
             // display: in;
             width: 28px;
             height: 28px;
-            margin-right: 12px;
+            margin-right: 20px;
 
             &:first-child {
                 display: block;
