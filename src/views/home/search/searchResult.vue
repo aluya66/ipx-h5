@@ -33,8 +33,7 @@
     </c-header>
 
    <div class="search_result_content">
-       <div class="list_contain">
-           <c-tabs
+        <c-tabs
             :tabs="tabs"
             :line-width="8/100+'rem'"
             :border="false"
@@ -47,9 +46,10 @@
             v-if="menuIndex == 0"
             :loading="loading"
             :finished="finished"
+            :offset="loadOffset"
             finished-text="已到底，没有更多数据"
             emptyType="build"
-            emptyDesc="搜索结果是空的"
+            emptyDesc="无搜索结果，可以试试其他关键词"
             :listItems="productDatas"
             :isWaterFall="true"
             @load-data="handleMore"
@@ -80,9 +80,10 @@
             v-else-if="menuIndex == 1"
             :loading="loading"
             :finished="finished"
+            :offset="loadOffset"
             finished-text="已到底，没有更多数据"
             emptyType="groupEmpty"
-            emptyDesc="组货搜索结果是空的"
+            emptyDesc="无搜索结果，可以试试其他关键词"
             :listItems="groupDatas"
             @load-data="handleMore"
             >
@@ -112,7 +113,7 @@
             </div>
             </div>
             </c-list>
-       </div>
+
 
    </div>
 
@@ -143,6 +144,7 @@ export default {
             ],
             isNative: false,
             menuIndex: 0,
+            loadOffset: 10,
             searchKey: '',
             groupDatas: [],
             productDatas: [],
@@ -176,14 +178,14 @@ export default {
         },
         changeActive(value) {
             this.menuIndex = value
-            // this.groupDatas = []
-            // this.productDatas = []
             this.handleRefresh()
         },
         resetParams() {
+            this.groupDatas = []
+            this.productDatas = []
             this.pageNo = 1
             this.finished = false
-            this.loading = false
+            this.loading = true
         },
         setSuccessStatus() {
             this.loading = false
@@ -205,15 +207,15 @@ export default {
         // 加载更多
         handleMore() {
             if (this.menuIndex === 0) {
-                if (this.productDatas.length > 0) {
+                // if (this.productDatas.length > 0) {
                     this.pageNo += 1
                     this.handleRequestProduct()
-                }
+                // }
             } else { // 组货
-                if (this.groupDatas.length > 0) {
+                // if (this.groupDatas.length > 0) {
                     this.pageNo += 1
                     this.handleRequestGroup()
-                }
+                // }
             }
         },
         productDetail(product) {
@@ -263,9 +265,9 @@ export default {
             }
             this.loading = true
             this.$api.groupGoods.searchProductList(params).then(res => {
+                this.loading = false
                 if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
-                        this.productDatas = []
                         this.productDatas = res
                     } else {
                         this.productDatas = this.productDatas.concat(res)
@@ -281,7 +283,6 @@ export default {
                     }
                     this.finished = true
                 }
-                this.setSuccessStatus()
             }).catch(() => {
                 this.setFailureStatus()
             })
@@ -294,9 +295,9 @@ export default {
             }
             this.loading = true
             this.$api.groupGoods.searchGroupList(params).then(res => {
+                this.setSuccessStatus()
                 if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
-                        this.groupDatas = []
                         this.groupDatas = res
                     } else {
                         this.groupDatas = this.groupDatas.concat(res)
@@ -312,7 +313,6 @@ export default {
                     }
                     this.finished = true
                 }
-                this.setSuccessStatus()
             }).catch(() => {
                 this.setFailureStatus()
             })
@@ -397,10 +397,8 @@ export default {
 <style lang='less' scoped>
 .search_result_content {
   position: relative;
-  height: 100%;//calc(100vh - 65px);
-  overflow: auto;
-  .list_contain {
-      margin: 0;
+  height: 100%;//calc(100vh - 85px);
+  overflow-y: scroll;
     .product-list {
         margin: 12px 11px 20px;
         .item {
@@ -481,6 +479,8 @@ export default {
     .groupList {
         // margin-top: 16px;
         .groupItem {
+            height: 100%;
+            overflow: auto;
             background:rgba(255,255,255,1);
             box-shadow:0px 2px 10px 0px rgba(33,44,98,0.08);
             border-radius:12px;
@@ -582,6 +582,6 @@ export default {
             }
         }
     }
-  }
+  
 }
 </style>
