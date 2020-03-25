@@ -9,7 +9,7 @@ import route from './routes'
 // 需要用到vuex时，打开
 import store from './store'
 // 添加全局提示框
-import { Toast } from 'vant'
+import { Toast, ImagePreview } from 'vant'
 // 入口文件
 import App from './App.vue'
 // 将接口挂载vue上，全局使用
@@ -47,6 +47,8 @@ window.sa.quick('autoTrack', {
 })
 
 Vue.use(preview)
+
+Vue.use(ImagePreview)
 
 Vue.mixin(mixin)
 

@@ -51,7 +51,6 @@
                         </p>
                         <div class="sku-list" @click="jumpToProduct(item)">
                             <p
-                                for=""
                                 v-for="(sku, i) in item.colorSkuList"
                                 :key="i"
                                 :class="[item.disabled ? 'disableSku' : '']"
@@ -265,6 +264,20 @@ export default {
             } else {
                 this.selectedNum--
             }
+            if (!this.groupGoodsRecords[index].isSelected) {
+                this.isAllSelected = false
+            } else {
+                let selectedNum = 0
+                for (let i = 0; i < this.groupGoodsRecords.length; i++) {
+                    if (!this.groupGoodsRecords[i].isSelected) {
+                        this.isAllSelected = false
+                        break
+                    } else {
+                        selectedNum++
+                    }
+                }
+                this.isAllSelected = selectedNum === this.groupGoodsRecords.length
+            }
         },
         selectAll() {
             this.isAllSelected = !this.isAllSelected
@@ -292,26 +305,18 @@ export default {
             })
         },
         clearSelectedProduct() {
-            console.log('移除')
             if (this.isAllSelected) {
-                Dialog.confirm({
-                    title: '确定移除？',
+                Dialog.alert({
+                    title: '提示',
                     message: '至少保留一个商品',
-                    cancelButtonText: '取消',
+                    cancelButtonText: '确认',
                     cancelButtonColor: '#007AFF',
-                    confirmButtonText: '不保留',
+                    confirmButtonText: '确认',
                     confirmButtonColor: '#007AFF'
-                }).then(() => {
-                    this.dialogAlert()
                 })
                 return
             }
             this.dialogAlert()
-            // for (let i = this.groupGoodsRecords.length - 1; i >= 0; i--) {
-            //     if (this.groupGoodsRecords[i].isSelected) {
-            //         this.groupGoodsRecords.remove(i)
-            //     }
-            // }
         },
         dialogAlert() {
             Dialog.confirm({
