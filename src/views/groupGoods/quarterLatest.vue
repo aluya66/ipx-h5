@@ -6,7 +6,7 @@
                      src="../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png" @click="rightClick()"/>
             </template>
         </c-header>
-        <div class="latest-content" v-if="latestGroups.length > 0">
+        <div class="latest-content">
             <div class="latest-main">
                 <span class="latest-label">{{showPage === 'latest' ? '本周上新' : '精选组货'}}</span>
                 <swiper class="swiper" ref="groupSwiper" :style="getListHeight()" :options="swiperOption">
@@ -34,7 +34,6 @@
             </div>
             <div class="add-store" @click="addHall()">加入我的展厅</div>
         </div>
-        <empty-view class="empty" emptyType="groupEmpty" :emptyDesc="emptyDesc" v-else/>
     </layout-view>
 </template>
 
@@ -47,11 +46,9 @@ import {
     swiperSlide
 } from 'vue-awesome-swiper'
 import { Dialog } from 'vant'
-import EmptyView from '../error/emptyView'
 
 export default {
     components: {
-        EmptyView,
         swiper,
         swiperSlide
     },
@@ -383,7 +380,7 @@ export default {
             .total-price {
                 display: flex;
                 justify-content: center;
-                margin-top: 4px;
+                margin-top: 6px;
                 align-items: flex-end;
 
                 .total-flag {

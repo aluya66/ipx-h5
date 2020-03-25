@@ -3,7 +3,7 @@
         <c-header class="header" slot="header" :left-arrow="true" :isLight='false' :pageOutStatus='!isFromWeb'>
             <div class="title" slot="title">
                 <div class="titleContain">
-                    <span :class='["title-slider",titleIndex===1?"title-slider-right":"title-slider-left"]'></span>
+                    <span :class='["title-slider",titleIndex===1?"title-slider-right":"title-slider-left"]'/>
                     <section :class='[titleIndex===1?"title-default":"title-select"]' @click="handleSelectRec">买手推荐
                     </section>
                     <section :class='[titleIndex===0?"title-default":"title-select"]' @click="handleSelectAi">智能组货
@@ -47,6 +47,7 @@
                         </swiper>
                     </div>
                 </div>
+                <div class="triangle"/>
                 <div class="half-bg"/>
             </div>
             <swiper v-if="showGroup" class="swiper" ref="groupSwiper" :options="swiperOption">
@@ -182,14 +183,15 @@ export default {
             return `height:${height}px`
         },
         getImgHeight() {
-            let width = this.screenWidth - 104 * window.devicePixelRatio
+            let width = this.screenWidth - 110 * window.devicePixelRatio
             let height = width * 295 / 265
-            return `height:${height}px`
+            return `height:${height}px;width:${width}px`
         },
         getBoxContainHeight() {
-            let width = this.screenWidth - 104 * window.devicePixelRatio
-            let height = width * (295 / 265) + 20 * window.devicePixelRatio
-            return `height:${height}px`
+            let width = this.screenWidth - 110 * window.devicePixelRatio
+            let height = width * (295 / 265) + 12 * window.devicePixelRatio
+            let conWidth = width + 30 * window.devicePixelRatio
+            return `height:${height}px;width:${conWidth}px`
         }
     },
     methods: {
@@ -322,6 +324,15 @@ export default {
         height: 178px;
     }
 
+    .triangle {
+        border: 8px solid;
+        border-color: white transparent transparent transparent;
+        position: absolute;
+        top: 158px;
+        z-index: 10;
+        left: 50px;
+    }
+
     .half-bg {
         position: absolute;
         top: 120px;
@@ -333,14 +344,14 @@ export default {
 
     .designer-container {
         position: absolute;
-        height: 146px;
+        height: 138px;
         top: 0;
         left: 0;
         right: 0;
         background: rgba(255, 255, 255, 1);
         box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
         border-radius: 12px;
-        margin: 20px 16px 12px 16px;
+        margin: 20px 16px 0 16px;
         padding: 16px 0 24px 20px;
         display: flex;
         z-index: 5;
@@ -642,8 +653,8 @@ export default {
 
     .rank {
         margin: 12px 16px 0;
-        background: @color-ec1;
-        border-radius: 12px;
+        background:linear-gradient(137deg,rgba(234,241,251,1) 0%,rgba(234,231,251,1) 100%);
+        border-radius: 35px;
         height: 70px;
         margin-bottom: 21px;
         display: flex;
@@ -651,17 +662,17 @@ export default {
         justify-content: space-between;
         align-items: center;
 
-        div {
+        >div {
             &:first-child {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
 
                 h3 {
-                    font-size: 18px;
-                    font-weight: 500;
-                    color: @color-c1;
-                    line-height: 26px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: @color-ec;
+                    line-height: 22px;
                     margin: 0;
                 }
 
@@ -669,7 +680,7 @@ export default {
                     margin: 0;
                     font-size: 12px;
                     font-weight: 400;
-                    color: @color-c3;
+                    color: @color-c4;
                     line-height: 16px;
                     margin-top: 4px;
                 }
