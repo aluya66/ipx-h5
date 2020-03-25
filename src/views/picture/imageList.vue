@@ -337,6 +337,9 @@ export default {
         top: 0;
         left: 0;
         background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .image-footer-left {
