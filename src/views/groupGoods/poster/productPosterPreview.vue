@@ -96,6 +96,7 @@ export default {
     },
     deactivated() {
         utils.setStore('productSkuList', '')
+        Toast.clear()
     },
     activated() {
         if (this.$route.query.productData.productCode !== undefined) {
@@ -161,7 +162,6 @@ export default {
             let _this = this
             Toast.loading({
                 message: '生成海报...',
-                forbidClick: true,
                 duration: 0
             })
             _this.isHiddenChange = true
