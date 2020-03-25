@@ -148,6 +148,9 @@ export default {
         }
     },
     activated() {
+        this.isManage = false
+        this.isAllSelected = false
+        this.selectedNum = 0
         // 上报页面事件
         window.sa.track('IPX_WEB', {
             page: 'groupListDetail',
