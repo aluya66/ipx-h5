@@ -29,15 +29,14 @@
                 <div class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</div>
             </div>
         </div>
-        <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart()" @touchmove="touchMove()">
+        <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart" @touchend="touchEnd" @touchmove="touchMove">
             <van-image-preview
                 v-model="isShowPreview"
                 :images="previewImages"
                 :loop="isLoop"
                 @close="onClose()"
-                @click="clickImage()"
             >
-                <template v-slot:index>第{ index }页</template>
+                <!--<template v-slot:index>第{ index }页</template>-->
             </van-image-preview>
 
         </div>
@@ -56,13 +55,17 @@ export default {
             isShowPreview: false,
             isLoop: false,
             isAllSelected: false,
-            isShowSaveDialog: false,
+            isLongClick: false,
             screenWidth: document.body.clientWidth,
             productCode: '',
             fromPath: 'product', // product单品，group组货
             fromChange: false,
             images: [],
             previewImages: [],
+            touchStartX: 0,
+            touchStartY: 0,
+            touchEndX: 0,
+            touchEndY: 0,
             imageUnselect: require('../../themes/images/groupGoods/checkbox_default.png'),
             imageSelect: require('../../themes/images/groupGoods/selected_icon.png')
         }
@@ -71,17 +74,27 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        touchStart(e) {
-            console.log(e)
-            this.isShowSaveDialog = true
+        touchStart(event) {
+            this.touchStartX = event.changedTouches[0].clientX
+            this.touchStartY = event.changedTouches[0].clientY
+            console.log(event)
             setTimeout(() => {
-                if (this.isShowPreview && this.isShowSaveDialog) {
-                    this.dialogAlert()
+                if (this.isShowPreview) {
+                    // this.dialogAlert()
+                    this.isLongClick = true
                 }
             }, 1000)
         },
-        touchMove() {
-            this.isShowSaveDialog = false
+        touchEnd(event) {
+            this.touchEndX = event.changedTouches[0].clientX
+            this.touchEndY = event.changedTouches[0].clientY
+            if (Math.abs(this.touchEndX - this.touchStartX) < 10 && Math.abs(this.touchEndY - this.touchStartY) < 10 && this.isLongClick) {
+                this.dialogAlert()
+            }
+        },
+        touchMove(event) {
+            console.log(event)
+            this.isLongClick = false
         },
         dialogAlert() {
             Dialog.confirm({
@@ -94,13 +107,11 @@ export default {
             }).then(() => {
                 this.downloadPicture()
             })
+            this.isLongClick = false
         },
         onClose() {
             this.isShowPreview = false
-            this.isShowSaveDialog = false
-        },
-        clickImage() {
-            console.log('点了图片')
+            this.isLongClick = false
         },
         getPictureRect() {
             // `padding-bottom:${y}px !important`
@@ -118,11 +129,7 @@ export default {
             let skuList = this.images.filter(item => {
                 return item.isSelected
             })
-            if (skuList.length === this.images.length) {
-                this.isAllSelected = true
-            } else {
-                this.isAllSelected = false
-            }
+            this.isAllSelected = skuList.length === this.images.length
         },
         cancel() {
             let method = 'page_out'
@@ -225,12 +232,14 @@ export default {
             let imgs = slidImages.filter((item) => {
                 return !item.image.endsWith('.mp4')
             })
+            let tempImages = []
             imgs.forEach(item => {
-                this.previewImages.push(item.image)
+                tempImages.push(item.image)
             })
-            if (this.previewImages.length <= 0) {
+            if (tempImages.length <= 0) {
                 return
             }
+            this.previewImages = tempImages
             // utils.setStore('previewImages', previewImages)
             // this.$router.push({
             //     path: '/previewImages',
