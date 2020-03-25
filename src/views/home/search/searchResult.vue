@@ -113,7 +113,7 @@
             </div>
             </c-list>
        </div>
-        
+
    </div>
 
    </layout-view>
@@ -172,20 +172,18 @@ export default {
         },
         handleSearchClear() {
             this.searchKey = ''
-            this.resetParams()
-            this.handleRefresh()
+            // this.handleRefresh()
         },
         changeActive(value) {
             this.menuIndex = value
             // this.groupDatas = []
             // this.productDatas = []
-            this.resetParams()
             this.handleRefresh()
         },
         resetParams() {
             this.pageNo = 1
             this.finished = false
-            this.loading = true
+            this.loading = false
         },
         setSuccessStatus() {
             this.loading = false
@@ -267,6 +265,7 @@ export default {
             this.$api.groupGoods.searchProductList(params).then(res => {
                 if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
+                        this.productDatas = []
                         this.productDatas = res
                     } else {
                         this.productDatas = this.productDatas.concat(res)
@@ -297,6 +296,7 @@ export default {
             this.$api.groupGoods.searchGroupList(params).then(res => {
                 if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
+                        this.groupDatas = []
                         this.groupDatas = res
                     } else {
                         this.groupDatas = this.groupDatas.concat(res)
@@ -397,7 +397,7 @@ export default {
 <style lang='less' scoped>
 .search_result_content {
   position: relative;
-  height: calc(100vh - 65px);
+  height: 100%;//calc(100vh - 65px);
   overflow: auto;
   .list_contain {
       margin: 0;
