@@ -29,7 +29,7 @@
                 <div class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</div>
             </div>
         </div>
-        <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart()">
+        <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart()" @touchmove="touchMove()">
             <van-image-preview
                 v-model="isShowPreview"
                 :images="previewImages"
@@ -56,6 +56,7 @@ export default {
             isShowPreview: false,
             isLoop: false,
             isAllSelected: false,
+            isShowSaveDialog: false,
             screenWidth: document.body.clientWidth,
             productCode: '',
             fromPath: 'product', // product单品，group组货
@@ -70,12 +71,17 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        touchStart() {
+        touchStart(e) {
+            console.log(e)
+            this.isShowSaveDialog = true
             setTimeout(() => {
-                if (this.isShowPreview) {
+                if (this.isShowPreview && this.isShowSaveDialog) {
                     this.dialogAlert()
                 }
-            }, 750)
+            }, 1000)
+        },
+        touchMove() {
+            this.isShowSaveDialog = false
         },
         dialogAlert() {
             Dialog.confirm({
@@ -91,6 +97,7 @@ export default {
         },
         onClose() {
             this.isShowPreview = false
+            this.isShowSaveDialog = false
         },
         clickImage() {
             console.log('点了图片')
