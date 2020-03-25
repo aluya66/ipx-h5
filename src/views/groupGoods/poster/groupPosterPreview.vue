@@ -119,7 +119,7 @@ export default {
     computed: {
         posterPrice() {
             return function (product) {
-                if (this.groupData.isSuggest) { //建议零售价
+                if (this.groupData.isSuggest) { // 建议零售价
                     return parseFloat(product.retailPrice).toFixed(2)
                 }
                 let add = this.groupData.percent

@@ -177,7 +177,7 @@ export default {
             this.customPricePercent = val
         }
         // singlePosterPrice(val) {
-            // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
+        // let price = parseFloat(this.posterData.totalRetailPrice).toFixed(2)
         //     let price = parseFloat(val).toFixed(2)
         //     this.singlePosterPrice = price
         // }
@@ -268,7 +268,7 @@ export default {
                     this.posterData.products = this.posterData.products.map(item => {
                         return {
                             ...item,
-                            showPrice: item.retailPrice,
+                            showPrice: item.retailPrice
                         }
                     })
                 }

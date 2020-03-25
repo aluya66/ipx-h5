@@ -29,23 +29,39 @@
                 <div class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</div>
             </div>
         </div>
+        <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart()">
+            <van-image-preview
+                v-model="isShowPreview"
+                :images="previewImages"
+                :loop="isLoop"
+                @close="onClose()"
+                @click="clickImage()"
+            >
+                <template v-slot:index>第{ index }页</template>
+            </van-image-preview>
+
+        </div>
     </layout-view>
 </template>
 
 <script>
 import utils from 'utils'
-import { ImagePreview } from 'vant'
+import { Dialog } from 'vant'
+
 export default {
     name: 'imageList',
     data() {
         return {
             isNative: false,
+            isShowPreview: false,
+            isLoop: false,
             isAllSelected: false,
             screenWidth: document.body.clientWidth,
             productCode: '',
             fromPath: 'product', // product单品，group组货
             fromChange: false,
             images: [],
+            previewImages: [],
             imageUnselect: require('../../themes/images/groupGoods/checkbox_default.png'),
             imageSelect: require('../../themes/images/groupGoods/selected_icon.png')
         }
@@ -53,6 +69,31 @@ export default {
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        touchStart() {
+            setTimeout(() => {
+                if (this.isShowPreview) {
+                    this.dialogAlert()
+                }
+            }, 750)
+        },
+        dialogAlert() {
+            Dialog.confirm({
+                title: '保存图片',
+                message: '',
+                cancelButtonText: '取消',
+                cancelButtonColor: '#007AFF',
+                confirmButtonText: '确定',
+                confirmButtonColor: '#007AFF'
+            }).then(() => {
+                this.downloadPicture()
+            })
+        },
+        onClose() {
+            this.isShowPreview = false
+        },
+        clickImage() {
+            console.log('点了图片')
         },
         getPictureRect() {
             // `padding-bottom:${y}px !important`
@@ -177,21 +218,26 @@ export default {
             let imgs = slidImages.filter((item) => {
                 return !item.image.endsWith('.mp4')
             })
-            let previewImages = []
             imgs.forEach(item => {
-                previewImages.push(item.image)
+                this.previewImages.push(item.image)
             })
-            if (previewImages.length <= 0) {
+            if (this.previewImages.length <= 0) {
                 return
             }
-            ImagePreview({
-                images: previewImages,
-                startPosition: index,
-                loop: false,
-                onClose() {
-                    // do something
-                }
-            })
+            // utils.setStore('previewImages', previewImages)
+            // this.$router.push({
+            //     path: '/previewImages',
+            //     query: { position: 0 }
+            // })
+            // ImagePreview({
+            //     images: previewImages,
+            //     startPosition: index,
+            //     loop: false,
+            //     onClose() {
+            //         // do something
+            //     }
+            // })
+            this.isShowPreview = true
         }
     },
     activated() {
@@ -281,6 +327,16 @@ export default {
         justify-content: space-between;
         box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
         border-radius: 20px 20px 0 0;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 3;
+        top: 0;
+        left: 0;
+        background: black;
     }
 
     .image-footer-left {

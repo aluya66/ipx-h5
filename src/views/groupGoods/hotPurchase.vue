@@ -17,7 +17,6 @@
             @on-refresh="handleRefresh"
             :loading="loading"
             :listItems="hotProducts"
-            immediateCheck="false"
             :offset="loadOffset"
             :error="error"
             :finished="finished"

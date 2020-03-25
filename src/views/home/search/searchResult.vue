@@ -233,15 +233,15 @@ export default {
                 productPrice: product.tshPrice,
                 shopId: product.shopId
             }
-            if (product.isCollect === 1) { 
-                //取消收藏
+            if (product.isCollect === 1) {
+                // 取消收藏
                 params.isCollect = 2
                 this.$api.product.deleteCollectionProduct(params).then(res => {
                     product.isCollect = 2
                 }).catch(err => {
                     console.log(err)
                 })
-            } else { //添加收藏
+            } else { // 添加收藏
                 params.isCollect = 1
                 this.$api.product.addCollectionProduct(params).then(res => {
                     product.isCollect = 1
@@ -249,7 +249,6 @@ export default {
                     console.log(err)
                 })
             }
-
         },
         handleRequestProduct() {
             const params = {
