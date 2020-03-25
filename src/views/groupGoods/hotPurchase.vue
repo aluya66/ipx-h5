@@ -34,7 +34,7 @@
                     </div>
                     <div class="product-special-price">
                         <span class="special-flag">¥</span><span class="special-number">{{item.tshPrice}}</span><img
-                        :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click="doCollect(index, item)"/>
+                        :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click.stop="doCollect(index, item)"/>
                     </div>
                 </div>
             </div>
