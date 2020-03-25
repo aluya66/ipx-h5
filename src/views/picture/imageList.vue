@@ -29,7 +29,7 @@
                 <div class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</div>
             </div>
         </div>
-        <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart" @touchend="touchEnd" @touchmove="touchMove">
+        <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart" @touchend="touchEnd">
             <van-image-preview
                 v-model="isShowPreview"
                 :images="previewImages"
@@ -80,7 +80,6 @@ export default {
             console.log(event)
             setTimeout(() => {
                 if (this.isShowPreview) {
-                    // this.dialogAlert()
                     this.isLongClick = true
                 }
             }, 1000)
@@ -91,10 +90,6 @@ export default {
             if (Math.abs(this.touchEndX - this.touchStartX) < 10 && Math.abs(this.touchEndY - this.touchStartY) < 10 && this.isLongClick) {
                 this.dialogAlert()
             }
-        },
-        touchMove(event) {
-            console.log(event)
-            this.isLongClick = false
         },
         dialogAlert() {
             Dialog.confirm({
