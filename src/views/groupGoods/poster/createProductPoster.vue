@@ -557,7 +557,10 @@ export default {
         }
         .Album-selectd {
             margin: 13px 16px 32px;
-            width: calc(100vw - 32px);
+            height: 250px;
+            width: 188px;
+            object-fit: cover;
+            // width: calc(100vw - 32px);
             border-radius: 12px;
         }
     }

@@ -98,7 +98,7 @@
             isStickyTop ? 'enableScroll' : 'disableScroll'
           ]"
           :style="getBottomOffset(0)"
-          v-if="menuIndex == 1 && showList"
+          v-if="menuIndex == 1"
           :loading="loading"
           :finished="finished"
           finished-text="已到底，没有更多数据"
@@ -107,7 +107,7 @@
           :listItems="datas"
           :isWaterFall="true"
           @load-data="handleMore"
-          v-show="datas.length > 0"
+          v-show="showList"
         >
           <div
             class="item"
@@ -136,7 +136,7 @@
           ref="grouplist"
           :class="['groupList', isStickyTop ? 'enableScroll' : 'disableScroll']"
           :style="getBottomOffset(0)"
-          v-else-if="menuIndex == 0 && showList"
+          v-else-if="menuIndex == 0"
           :loading="loading"
           :finished="finished"
           finished-text="已到底，没有更多数据"
@@ -144,7 +144,7 @@
           emptyDesc="哎呀～清单是空的"
           :listItems="groupDatas"
           @load-data="handleMore"
-          v-show="groupDatas.length > 0"
+          v-show="showList"
         >
           <div
             class="groupItemContain"
@@ -470,10 +470,12 @@ export default {
         },
         setSuccessStatus() {
             Toast.clear()
+            this.showList = true
             this.loading = false
         },
         setFailureStatus() {
             Toast.clear()
+            this.showList = true
             this.pageNo -= 1
             this.finished = true
             this.loading = false
@@ -629,10 +631,10 @@ export default {
             type: 'pageView', // 固定参数，不用改
             event: 'pageView' // 固定参数，不用改
         })
-        this.showList = false
-        setTimeout(() => {
-            this.showList = true
-        }, 300)
+        // this.showList = false
+        // setTimeout(() => {
+        //     this.showList = true
+        // }, 300)
         this.isStickyTop = false
         this.flag = false
         this.isInSearch = false
@@ -643,6 +645,7 @@ export default {
         this.handleScroll()
     },
     created() {
+        this.showList = false
         Toast.loading({
           message: '加载中...',
           forbidClick: true

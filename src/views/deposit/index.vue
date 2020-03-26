@@ -52,6 +52,7 @@
 import PlanView from './depositPlanView.vue'
 import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
+import { Toast } from 'vant'
 
 export default {
     components: {
@@ -125,16 +126,24 @@ export default {
             this.$api.deposit.getDepositConfig().then(res => {
                 if (res instanceof Array) {
                     this.planItems = res
+                    Toast.clear()
                 }
             }).catch(() => {
 
             })
         }
     },
+    created() {
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        })
+    },
     activated() {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
+        utils.postMessage('changeStatus', 'default')
         this.headerAlpha = 0
         this.handleRequest()
     },
