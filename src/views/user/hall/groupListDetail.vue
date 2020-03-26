@@ -101,7 +101,7 @@
         <sku-select
             :seletedDetailsItem="seletedDetailsItem"
             :goodsId="goodsId"
-            :showSku="showSku"
+            :showSku="showSkuDialog"
             @pointClick="skuCommit"
         />
     </layout-view>
@@ -120,7 +120,7 @@ export default {
     },
     data() {
         return {
-            showSku: false, // 是否弹出sku选择框
+            showSkuDialog: false, // 是否弹出sku选择框
             groupName: ' ', // 组货名称
             groupGoodsId: '', // 组货id
             goodsId: '',
@@ -257,7 +257,7 @@ export default {
             })
         },
         selectItem(index) {
-            this.showSku = false
+            this.showSkuDialog = false
             this.groupGoodsRecords[index].isSelected = !this.groupGoodsRecords[index].isSelected
             if (this.groupGoodsRecords[index].isSelected) {
                 this.selectedNum++
@@ -297,8 +297,8 @@ export default {
             return utils.bottomOffset(offset)
         },
         manageProduct() {
-            this.showSku = false
-            console.log(this.showSku)
+            this.showSkuDialog = false
+            console.log(this.showSkuDialog)
             this.isManage = !this.isManage
             this.selectedNum = 0
             this.isAllSelected = false
@@ -357,7 +357,7 @@ export default {
             })
             this.seletedDetailsItem = {}
             this.colorSkuAction = '0'
-            this.showSku = true//! this.showSku
+            this.showSkuDialog = true//! this.showSku
             this.seletedItemIndex = index
             this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
             this.seletedDetailsItem = {
@@ -410,7 +410,7 @@ export default {
         resetData() { // 重置页面
             this.isManage = false
             this.isAllSelected = false
-            this.showSku = false
+            this.showSkuDialog = false
             this.selectedNum = 0
             if (this.groupGoodsRecords && this.groupGoodsRecords instanceof Array && this.groupGoodsRecords.length > 0) {
                 this.groupGoodsRecords.forEach(item => {
@@ -425,14 +425,12 @@ export default {
             const params = {
                 groupGoodsId: this.$route.query.groupId
             }
-            this.$api.groupGoods
-                .getGroupListDetail(params)
+            this.$api.groupGoods.getGroupListDetail(params)
                 .then(res => {
                     this.resetData()
                     if (res.code === 0) {
                         const { data } = res
                         const { groupGoodsRecords } = data
-
                         this.groupDetail = data
                         this.groupGoodsRecords = groupGoodsRecords
                         this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
@@ -453,8 +451,12 @@ export default {
         },
         skuCommit(seletedDetailsItem) {
             // sku修改 确定
-            this.seletedDetailsItem = seletedDetailsItem
-            this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
+            if (seletedDetailsItem) {
+                this.seletedDetailsItem = seletedDetailsItem
+            }
+            if (this.seletedDetailsItem) {
+                this.groupGoodsRecords[this.seletedItemIndex] = this.seletedDetailsItem
+            }
             let totalPrice = 0
             let groupProducts = []
             const params = {
@@ -478,33 +480,29 @@ export default {
                 })
             } else {
                 this.groupGoodsRecords.forEach(group => {
-                    if (group && group.colorSkuList && group.colorSkuList instanceof Array && group.colorSkuList.length > 0) {
-                        group.colorSkuList.forEach((item) => {
-                            if (item && item.skuList && item.skuList instanceof Array && item.skuList.length > 0) {
-                                item.skuList.forEach((skuItem) => {
-                                    skuItem.num = skuItem.skuValue
-                                    let sku = {
-                                        groupGoodsRecordId: skuItem.groupGoodsRecordId,
-                                        num: skuItem.skuValue,
-                                        productAtrNumber: group.productAtrNumber,
-                                        productCode: group.productCode,
-                                        productSkuCode: skuItem.productSkuCode,
-                                        starasSkuCode: skuItem.starasSkuCode,
-                                        delFlag: group.isSelected ? 1 : 2
-                                    }
-                                    groupProducts.push(sku)
-                                })
+                    group.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
+                            skuItem.num = skuItem.skuValue
+                            let sku = {
+                                groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                                num: skuItem.skuValue,
+                                productAtrNumber: group.productAtrNumber,
+                                productCode: group.productCode,
+                                productSkuCode: skuItem.productSkuCode,
+                                starasSkuCode: skuItem.starasSkuCode,
+                                delFlag: group.isSelected ? 1 : 2
                             }
+                            groupProducts.push(sku)
                         })
-                    }
+                    })
                 })
             }
             params.groupGoodsRecords = groupProducts
             if (this.isOrderSuply) {
-                this.groupGoodsRecords.forEach((product, index) => {
+                this.groupGoodsRecords.forEach((product) => {
                     let unablepay = product.unablepay
-                    product.colorSkuList.forEach((item, index) => {
-                        item.skuList.forEach((skuItem, skuIndex) => {
+                    product.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
                             if (!unablepay) {
                                 totalPrice += skuItem.tshPrice * skuItem.num
                             }
