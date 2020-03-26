@@ -6,7 +6,7 @@
                      src="../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png" @click="rightClick()"/>
             </template>
         </c-header>
-        <div class="latest-content">
+        <div class="latest-content" v-if="latestGroups.length > 0">
             <div class="latest-main">
                 <span class="latest-label">{{showPage === 'latest' ? '本周上新' : '精选组货'}}</span>
                 <swiper class="swiper" ref="groupSwiper" :style="getListHeight()" :options="swiperOption">
@@ -34,12 +34,14 @@
             </div>
             <div class="add-store" @click="addHall()">加入我的展厅</div>
         </div>
+        <empty-view class="empty" emptyType="groupEmpty" :emptyDesc="emptyDesc" v-else/>
     </layout-view>
 </template>
 
 <script>
 import 'swiper/dist/css/swiper.css'
 import utils from 'utils'
+import EmptyView from '../error/emptyView'
 
 import {
     swiper,
@@ -50,7 +52,8 @@ import { Dialog } from 'vant'
 export default {
     components: {
         swiper,
-        swiperSlide
+        swiperSlide,
+        EmptyView
     },
     data() {
         return {

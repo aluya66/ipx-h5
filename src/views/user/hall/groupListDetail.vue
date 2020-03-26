@@ -499,10 +499,10 @@ export default {
             }
             params.groupGoodsRecords = groupProducts
             if (this.isOrderSuply) {
-                this.groupGoodsRecords.forEach((product, index) => {
+                this.groupGoodsRecords.forEach((product) => {
                     let unablepay = product.unablepay
-                    product.colorSkuList.forEach((item, index) => {
-                        item.skuList.forEach((skuItem, skuIndex) => {
+                    product.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
                             if (!unablepay) {
                                 totalPrice += skuItem.tshPrice * skuItem.num
                             }
