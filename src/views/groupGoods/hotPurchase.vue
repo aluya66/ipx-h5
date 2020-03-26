@@ -148,7 +148,7 @@ export default {
             forbidClick: true
         })
     },
-    mounted() {
+    activated() {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }

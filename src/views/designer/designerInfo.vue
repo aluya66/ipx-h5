@@ -72,9 +72,8 @@ export default {
 <style lang="less" scoped>
     .designer-container {
         height: 156px;
-        margin: 16px;
         background: white;
-        box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
+        box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.08);
         border-radius: 8px;
         display: flex;
         flex-direction: column;

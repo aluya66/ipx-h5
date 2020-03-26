@@ -110,7 +110,7 @@ export default {
         },
         getPictureRect() {
             // `padding-bottom:${y}px !important`
-            let width = (this.screenWidth - 15 * window.devicePixelRatio) / 4
+            let width = Math.floor((this.screenWidth - 15 * window.devicePixelRatio) / 4)
             console.log(this.screenWidth + ', width = ' + width)
             return `width:${width}px`
         },
@@ -384,8 +384,6 @@ export default {
         color: @color-ec;
         line-height: 40px;
         text-align: center;
-        font-weight:bold;
-        font-size:14px;
     }
 
     .create-poster {
@@ -398,7 +396,5 @@ export default {
         margin-right: 16px;
         color: white;
         text-align: center;
-        font-weight:bold;
-        font-size:14px;
     }
 </style>

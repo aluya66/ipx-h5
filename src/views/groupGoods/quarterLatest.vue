@@ -74,7 +74,6 @@ export default {
                 spaceBetween: '4%',
                 slidesPerView: 'auto',
                 loop: false,
-
                 effect: 'slide',
                 coverflowEffect: {
                     rotate: 0,

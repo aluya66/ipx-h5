@@ -32,19 +32,24 @@
                         <div class="designer-select">
                             <img class="designer-header designer-header-select" :src="curDesigner.groupGoodsKoc.headPic"
                                  alt="">
-                            <p class="designer-name designer-name-select">{{curDesigner.groupGoodsKoc.kocNickName}}</p>
+                            <span class="designer-name designer-name-select">{{curDesigner.groupGoodsKoc.kocNickName}}</span>
                         </div>
                         <div class="designer-divider"></div>
-                        <swiper v-if="showDesigner" class="d-swiper" ref="designerSwiper" :options="dSwiperOption">
-                            <swiper-slide class="designer-contain" v-for="item in allDatas"
-                                          :key="item.groupGoodsKoc.kocCode">
+                        <div class="d-swiper">
+                            <div class="designer-contain" v-for="(item, index) in allDatas" :key="index" @click="setCurrentDesigner(item)">
                                 <img
                                     :class='["designer-header",getIsCurrentDesigner(item)?"designer-header-select":"designer-header-default"]'
                                     :src="item.groupGoodsKoc.headPic" alt="">
-                                <p :class='["designer-name",getIsCurrentDesigner(item)?"designer-name-select":"designer-name-default"]'>
-                                    {{item.groupGoodsKoc.kocNickName}}</p>
-                            </swiper-slide>
-                        </swiper>
+                                <span :class='["designer-name",getIsCurrentDesigner(item)?"designer-name-select":"designer-name-default"]'>
+                                    {{item.groupGoodsKoc.kocNickName}}</span>
+                            </div>
+                        </div>
+<!--                        <swiper v-if="showDesigner" class="d-swiper" ref="designerSwiper" :options="dSwiperOption">-->
+<!--                            <swiper-slide class="designer-contain" v-for="item in allDatas"-->
+<!--                                          :key="item.groupGoodsKoc.kocCode">-->
+<!--                                -->
+<!--                            </swiper-slide>-->
+<!--                        </swiper>-->
                     </div>
                 </div>
                 <div class="triangle"/>
@@ -114,7 +119,7 @@ export default {
                 // slidesPerView: 1.1,
                 // centeredSlides: true,
                 // spaceBetween: 16 * window.devicePixelRatio,
-                effect: 'slide',
+                effect: 'coverflow',
                 centeredSlides: true,
                 spaceBetween: '8%',
                 slidesPerView: 'auto',
@@ -200,6 +205,9 @@ export default {
             if (!baseParams.isIphoneX) {
                 return 'background-size:100% 2.22rem'
             }
+        },
+        setCurrentDesigner(designer) {
+            this.curDesigner = designer
         },
         getBottomOffset() {
             let offsetStr = utils.bottomOffset(0)
@@ -352,7 +360,7 @@ export default {
         box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
         border-radius: 12px;
         margin: 20px 16px 0 16px;
-        padding: 16px 0 24px 20px;
+        padding: 16px 0 0 20px;
         display: flex;
         z-index: 5;
         flex-direction: column;
@@ -411,31 +419,40 @@ export default {
     }
 
     .designer-header-default {
-        border: 1px solid rgba(255, 255, 255, 1);
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 1);
     }
 
     .designer-header-select {
-        border: 2px solid @color-ec
+        border: 2px solid @color-ec;
+        object-fit: cover;
     }
 
     .designer-name {
         text-align: center;
         font-size: 14px;
         margin-top: 10px;
+        line-height: 20px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        width: 48px;
+        width: 60px;
     }
 
+    .d-swiper::-webkit-scrollbar {
+        display: none;
+    }
     .d-swiper {
         /*padding: 0 8px;*/
         flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+        overflow-x: scroll;
 
         .designer-contain {
             display: flex;
             flex-direction: column;
-            /*align-items: center;*/
+            align-items: center;
             justify-content: center;
         }
 
@@ -446,7 +463,7 @@ export default {
 
         .designer-name-select {
             color: @color-ec;
-            font-weight: 500;
+            font-weight: bold;
         }
     }
 
@@ -506,10 +523,12 @@ export default {
 
             .title-select {
                 color: @color-ec;
+                font-weight: bold;
             }
 
             .title-default {
                 color: #fff;
+                font-weight: bold;
             }
 
             .title-slider {
@@ -554,7 +573,7 @@ export default {
                 max-width: 60%;
                 display: inline-block;
                 font-size: 18px;
-                font-weight: 500;
+                font-weight: bold;
                 color: @color-c1;
                 line-height: 50px;
                 z-index: 2;
