@@ -3,18 +3,21 @@
     <c-header slot="header" :left-arrow="true" class="my-header">
       <div slot="title">{{ reportType === 1 ? "充值记录" : "支付记录" }}</div>
     </c-header>
-    <div class="panel" v-show="reportList.length > 0">
+    <div class="panel" >
       <c-list
         class="report-list"
         @load-data="handleMore"
         :loading="loading"
         :error="error"
+        emptyType="build"
+        emptyDesc="哎呀～ 记录为空"
         :finished="finished"
         :hasPullRefresh="true"
         :immediateCheck="false"
+        :listItems="reportList"
         @on-refresh="handleRefresh"
       >
-        <div class="content" v-for="item in reportList" :key="item.id">
+        <div class="content" v-for="item in reportList" :key="item.rltId">
           <div class="title-content">
             <p class="title">
               {{ reportType === 1 ? "充值单号" : "支付单号" }}-{{ item.rltId }}
@@ -30,24 +33,24 @@
         </div>
       </c-list>
     </div>
-    <empty-view
+    <!-- <empty-view
       class="empty"
       style="padding-top:25%"
       v-else-show
       emptyType="error"
       emptyDesc="暂无数据"
-    />
+    /> -->
   </layout-view>
 </template>
 
 <script>
 import CList from 'components/c-list'
 import utils from 'utils'
-import EmptyView from '../error/emptyView.vue'
+// import EmptyView from '../error/emptyView.vue'
 export default {
     components: {
-        CList,
-        EmptyView
+        CList
+        // EmptyView
     },
     data() {
         return {
