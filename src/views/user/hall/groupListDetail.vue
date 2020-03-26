@@ -112,7 +112,7 @@ import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
 import cash from './cashFormat.js'
 import utils from 'utils'
-import { Dialog } from 'vant'
+import { Dialog,Toast } from 'vant'
 
 export default {
     components: {
@@ -146,6 +146,12 @@ export default {
             this.isOrderSuply = true
             this.suplyGoods()
         }
+    },
+    created() {
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        });
     },
     activated() {
         // 上报页面事件
@@ -402,12 +408,14 @@ export default {
                         }
                     })
                     this.groupName = this.groupDetail.name
+                    Toast.clear()
                 })
                 .catch(err => {
                     console.log(err)
                 })
         },
         resetData() { // 重置页面
+            Toast.clear()
             this.isManage = false
             this.isAllSelected = false
             this.showSkuDialog = false

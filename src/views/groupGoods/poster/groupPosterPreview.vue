@@ -20,7 +20,7 @@
                 <p>{{groupData.groupTitle}}</p>
             </div>
 
-            <div class="designer_content">
+            <div class="designer_content" v-show="groupData.groupDesc !== ''">
                 <img class="triangle_top" :src="triangle_icon" alt="">
                 <div class="designer_label">KOC说</div>
 

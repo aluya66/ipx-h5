@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="designer_content">
+                <div class="designer_content" v-show="productData.importantDesc !== ''">
                     <img class="triangle_top" :src="triangle_icon" alt="">
                     <div class="designer_label">设计师说</div>
 
