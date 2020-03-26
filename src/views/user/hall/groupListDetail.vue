@@ -453,9 +453,7 @@ export default {
             // sku修改 确定
             if (seletedDetailsItem) {
                 this.seletedDetailsItem = seletedDetailsItem
-            }
-            if (this.seletedDetailsItem) {
-                this.groupGoodsRecords[this.seletedItemIndex] = this.seletedDetailsItem
+                this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
             }
             let totalPrice = 0
             let groupProducts = []

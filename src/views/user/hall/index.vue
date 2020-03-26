@@ -192,7 +192,7 @@
 </template>
 
 <script>
-import { Search,Toast } from 'vant'
+import { Search, Toast } from 'vant'
 import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
@@ -203,7 +203,7 @@ export default {
     components: {
         ManageView,
         groupItem,
-        Search,
+        Search
     },
     props: {},
     data() {
@@ -646,7 +646,7 @@ export default {
         Toast.loading({
           message: '加载中...',
           forbidClick: true
-        });
+        })
     },
     mounted() {},
     deactivated() {

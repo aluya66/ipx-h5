@@ -20,7 +20,6 @@
             :offset="loadOffset"
             :error="error"
             :finished="finished"
-            v-if="hotProducts.length > 0"
         >
             <div class="product-list">
                 <div class="product-item"
@@ -40,16 +39,14 @@
                 </div>
             </div>
         </c-list>
-        <empty-view emptyType="groupEmpty" :emptyDesc="emptyDesc" v-else/>
     </layout-view>
 
 </template>
 
 <script>
 import utils from 'utils'
-import EmptyView from '../error/emptyView'
+import { Toast } from 'vant'
 export default {
-    components: { EmptyView },
     data() {
         return {
             unselectIcon: require('../../themes/images/designer/icon_collect_def_16_16@2x.png'),
@@ -60,7 +57,6 @@ export default {
             pageSize: 10,
             loadOffset: 10,
             isNative: false,
-            emptyDesc: '正在加载数据.....',
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
             error: false // 加载错误标识
@@ -145,6 +141,12 @@ export default {
             }
             utils.postMessage('', params)
         }
+    },
+    created() {
+        Toast.loading({
+            message: '加载中...',
+            forbidClick: true
+        })
     },
     mounted() {
         if (this.$route.query.fromNative === '1') {

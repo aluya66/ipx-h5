@@ -191,7 +191,7 @@ export default {
             let width = this.screenWidth - 110 * window.devicePixelRatio
             let height = width * (295 / 265) + 12 * window.devicePixelRatio
             let conWidth = width + 30 * window.devicePixelRatio
-            return `height:${height}px;width:${conWidth}px`
+            return `height:${height}px;width:${conWidth}px;background-size:100% 100%;`
         }
     },
     methods: {

@@ -3,7 +3,7 @@
         <c-header slot="header" :left-arrow="true" :showBorderBottom="true" :pageOutStatus="isNative">
             <div slot="title" class="hot-title">门店热采组货</div>
         </c-header>
-        <div class="group-list" v-if="hotGroups.length > 0">
+        <div class="group-list">
             <c-list
                 class="report-list"
                 @load-data="handleMore"
@@ -19,13 +19,13 @@
                 </div>
             </c-list>
         </div>
-        <empty-view class="empty" emptyType="groupEmpty" :emptyDesc="emptyDesc" v-else/>
     </layout-view>
 </template>
 
 <script>
 import CList from 'components/c-list'
 import utils from 'utils'
+import { Toast } from 'vant'
 export default {
     components: {
         CList
@@ -36,7 +36,6 @@ export default {
             pageSize: 10,
             reportType: 1,
             hotGroups: [],
-            emptyDesc: '正在加载数据.....',
             isNative: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
@@ -64,14 +63,10 @@ export default {
                 } else {
                     this.finished = true
                 }
-                if (this.hotGroups.length <= 0) {
-                    this.emptyDesc = '没有数据'
-                }
                 console.log(this.hotGroups)
             }).catch((err) => {
                 console.log(err)
                 this.error = true
-                this.emptyDesc = '没有数据'
             })
         },
         gotoHotPurchase(exampleCode) {
@@ -105,6 +100,12 @@ export default {
     },
     mounted() {
         this.getHotGroup()
+    },
+    created() {
+        Toast.loading({
+            message: '加载中...',
+            forbidClick: true
+        })
     },
     activated() {
         if (this.$route.query.fromNative === '1') {
