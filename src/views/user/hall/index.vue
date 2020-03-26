@@ -170,12 +170,6 @@
             <group-item :groupGood="item" />
           </div>
         </c-list>
-      <empty-view
-        class="empty"
-        style="padding-top:25%"
-        v-show="(menuIndex == 1 && datas.length === 0) || (menuIndex == 0 && groupDatas.length === 0)"
-        emptyDesc="加载中..."
-      />
       </div>
       <manage-view ref="manageView">
         <template>
@@ -198,19 +192,18 @@
 </template>
 
 <script>
-import { Search } from 'vant'
+import { Search,Toast } from 'vant'
 import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 import utils from 'utils'
-import EmptyView from '../../error/emptyView.vue'
+// import EmptyView from '../../error/emptyView.vue'
 // import Clist from 'components/c-list/list.vue'
 export default {
     components: {
         ManageView,
         groupItem,
         Search,
-        EmptyView
     },
     props: {},
     data() {
@@ -476,9 +469,11 @@ export default {
             this.loading = false
         },
         setSuccessStatus() {
+            Toast.clear()
             this.loading = false
         },
         setFailureStatus() {
+            Toast.clear()
             this.pageNo -= 1
             this.finished = true
             this.loading = false
@@ -646,6 +641,12 @@ export default {
         this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
         this.handleScroll()
+    },
+    created() {
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        });
     },
     mounted() {},
     deactivated() {
