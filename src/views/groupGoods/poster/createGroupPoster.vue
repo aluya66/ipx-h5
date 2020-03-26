@@ -494,7 +494,7 @@ export default {
                 margin-bottom: 24px;
                 display: flex;
                 > img {
-                    flex: 1;
+                    flex-shrink: 0;
                     width:106px;
                     height:106px;
                     border-radius:4px;
