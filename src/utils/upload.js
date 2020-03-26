@@ -50,7 +50,6 @@ async function upload(file = []) {
                     setTimeout(() => {
                         console.info('percent: ', result.total.percent)
                         if (result.total.percent < 100) {
-                            console.info('errrrrrrr')
                             reject(result)
                             subscription.unsubscribe()
                         }

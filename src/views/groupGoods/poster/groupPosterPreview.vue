@@ -57,7 +57,7 @@
                         <p>换一张</p>
                     </div>
                 </div>
-                <div class="footer_content">
+                <div class="footer_content" v-show="groupData.phone !== ''">
                     <img :src="groupData.albumImg_url" alt="">
                     <div class="tell_info">
                         <img :src="callPhone_icon" alt="">
@@ -167,7 +167,7 @@ export default {
                 duration: 0
             })
             _this.isHiddenChange = true
-            setTimeout(() => {
+            // setTimeout(() => {
                 let img = _this.$refs['image']
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
                 html2canvas(img, {
@@ -187,7 +187,7 @@ export default {
                         _this.$toast('保存失败请重试')
                     })
                 })
-            }, 3000)
+            // }, 3000)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
