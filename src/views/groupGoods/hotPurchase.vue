@@ -85,6 +85,7 @@ export default {
             }
             this.loading = true
             this.$api.goods.getHotSale(params).then(res => {
+                Toast.clear(true)
                 this.loading = false
                 this.finished = false
                 if (res && res instanceof Array) {
@@ -142,16 +143,14 @@ export default {
             utils.postMessage('', params)
         }
     },
-    created() {
-        Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-        })
-    },
     activated() {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
+        Toast.loading({
+            message: '加载中...',
+            forbidClick: true
+        })
         console.log('screenWidth = ' + this.screenWidth)
         this.getHotSale()
     }

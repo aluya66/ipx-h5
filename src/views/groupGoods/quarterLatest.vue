@@ -110,6 +110,7 @@ export default {
             }
             if (this.showPage === 'latest') {
                 this.$api.groupGoods.getQuarterLatest(params).then(res => {
+                    Toast.clear(true)
                     if (res && res instanceof Array) {
                         if (this.pageNumber === 1) {
                             this.latestGroups = res
