@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="footer_content" >
-                    <img :src="groupData.albumImg_url" alt="">
+                    <img :src="groupData.albumImg_url" alt="" :style="groupData.albumImg_url === '' ? 'height: 0' : 'height: 2.50rem'">
                     <div class="tell_info" v-show="groupData.phone !== ''">
                         <img :src="callPhone_icon" alt="">
                         <p>联系电话：{{groupData.phone}}</p>
