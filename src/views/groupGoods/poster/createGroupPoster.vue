@@ -188,10 +188,10 @@ export default {
             if (this.customPricePercent === '') {
                 add = '0'
             }
-            if (add === '0') {
-                return parseFloat(this.posterData.totalPrice).toFixed(2)
-            }
-            let p = parseFloat(this.posterData.totalPrice) * parseFloat(add || '0') / 100
+            // if (add === '0') {
+            //     return parseFloat(this.posterData.totalPrice).toFixed(2)
+            // }
+            let p = parseFloat(this.posterData.totalPrice) * parseFloat(add || '0') / 100 + parseFloat(this.posterData.totalPrice)
             let p2 = p.toFixed(2)
             return p2
         }

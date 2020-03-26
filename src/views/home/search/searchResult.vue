@@ -374,13 +374,6 @@ export default {
 }
 .product-list {
   height: calc(100vh - 85px);
-//   display: flex;
-//   background: #fff;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-// //   padding: 0 16px; // overflow: auto;
-//   justify-content: space-between;
-//   margin-top: -1px;
   .van-list__finished-text {
     width: 100%;
   }
@@ -400,11 +393,7 @@ export default {
 
 <style lang='less' scoped>
 .search_result_content {
-//   position: relative;
-//   height: 100%;//calc(100vh - 85px);
-//   overflow-y: scroll;
     .product-list {
-        // height: calc(100vh - 85px);
         margin: 12px 11px 20px;
         .item {
             background:rgba(255,255,255,1);
@@ -483,7 +472,6 @@ export default {
 
     .groupList {
         height: calc(100vh - 85px);
-        // margin-top: 16px;
         .groupItem {
             height: 100%;
             overflow: auto;
@@ -492,8 +480,6 @@ export default {
             border-radius:12px;
             padding: 16px;
             display: flex;
-            // flex-direction: row;
-            // justify-content: space-between;
             margin: 16px 0;
             >img {
                 width:123px;
