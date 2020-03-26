@@ -52,7 +52,7 @@
                             <p>换一张</p>
                         </div>
                     </div>
-                    <div class="footer_content">
+                    <div class="footer_content" v-show="productData.phone !== ''">
                         <img :src="productData.albumImg_url" alt="">
                         <div class="tell_info">
                             <img :src="callPhone_icon" alt="">
