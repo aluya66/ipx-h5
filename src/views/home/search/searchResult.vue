@@ -33,7 +33,7 @@
     </c-header>
 
    <div class="search_result_content">
-        <c-tabs
+            <c-tabs
             :tabs="tabs"
             :line-width="8/100+'rem'"
             :border="false"
@@ -42,16 +42,16 @@
             <c-list
             ref="productlist"
             class="product-list"
-            :style="getBottomOffset(0)"
             v-if="menuIndex == 0"
             :loading="loading"
             :finished="finished"
-            :offset="loadOffset"
-            finished-text="已到底，没有更多数据"
             emptyType="build"
             emptyDesc="无搜索结果，可以试试其他关键词"
             :listItems="productDatas"
             :isWaterFall="true"
+            :hasPullRefresh="true"
+            :immediateCheck="false"
+            @on-refresh="handleRefresh"
             @load-data="handleMore"
             >
             <div
@@ -80,11 +80,12 @@
             v-else-if="menuIndex == 1"
             :loading="loading"
             :finished="finished"
-            :offset="loadOffset"
-            finished-text="已到底，没有更多数据"
             emptyType="groupEmpty"
             emptyDesc="无搜索结果，可以试试其他关键词"
             :listItems="groupDatas"
+            :hasPullRefresh="true"
+            :immediateCheck="false"
+            @on-refresh="handleRefresh"
             @load-data="handleMore"
             >
             <div
@@ -114,7 +115,6 @@
             </div>
             </c-list>
 
-
    </div>
 
    </layout-view>
@@ -123,12 +123,14 @@
 <script>
 import { Search } from 'vant'
 import utils from 'utils'
+import CList from 'components/c-list'
 import components from 'components'
 const { CTabs } = components
 export default {
     components: {
         Search,
-        CTabs
+        CTabs,
+        CList
     },
     data () {
         return {
@@ -166,6 +168,7 @@ export default {
             this.isNative = true
         }
         this.handleRefresh()
+        // this.handleScroll()
     },
     methods: {
         // 是否iPhoneX底部
@@ -181,11 +184,11 @@ export default {
             this.handleRefresh()
         },
         resetParams() {
-            this.groupDatas = []
-            this.productDatas = []
+            // this.groupDatas = []
+            // this.productDatas = []
             this.pageNo = 1
             this.finished = false
-            this.loading = true
+            this.loading = false
         },
         setSuccessStatus() {
             this.loading = false
@@ -207,15 +210,15 @@ export default {
         // 加载更多
         handleMore() {
             if (this.menuIndex === 0) {
-                // if (this.productDatas.length > 0) {
+                if (this.productDatas.length > 0) {
                     this.pageNo += 1
                     this.handleRequestProduct()
-                // }
+                }
             } else { // 组货
-                // if (this.groupDatas.length > 0) {
+                if (this.groupDatas.length > 0) {
                     this.pageNo += 1
                     this.handleRequestGroup()
-                // }
+                }
             }
         },
         productDetail(product) {
@@ -370,13 +373,7 @@ export default {
     }
 }
 .product-list {
-  display: flex; // height: 100%;
-  background: #fff;
-  flex-direction: row;
-  flex-wrap: wrap;
-//   padding: 0 16px; // overflow: auto;
-  justify-content: space-between;
-  margin-top: -1px;
+  height: calc(100vh - 85px);
   .van-list__finished-text {
     width: 100%;
   }
@@ -396,9 +393,6 @@ export default {
 
 <style lang='less' scoped>
 .search_result_content {
-  position: relative;
-  height: 100%;//calc(100vh - 85px);
-  overflow-y: scroll;
     .product-list {
         margin: 12px 11px 20px;
         .item {
@@ -477,7 +471,7 @@ export default {
     }
 
     .groupList {
-        // margin-top: 16px;
+        height: calc(100vh - 85px);
         .groupItem {
             height: 100%;
             overflow: auto;
@@ -486,8 +480,6 @@ export default {
             border-radius:12px;
             padding: 16px;
             display: flex;
-            // flex-direction: row;
-            // justify-content: space-between;
             margin: 16px 0;
             >img {
                 width:123px;
@@ -582,6 +574,6 @@ export default {
             }
         }
     }
-  
+
 }
 </style>
