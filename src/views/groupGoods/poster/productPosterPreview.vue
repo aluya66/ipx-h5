@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="footer_content" >
-                        <img :src="productData.albumImg_url" alt="">
+                        <img :src="productData.albumImg_url" alt="" :style="productData.albumImg_url === '' ? 'height: 0' : 'height: 2.50rem'">
                         <div class="tell_info" v-show="productData.phone !== ''">
                             <img :src="callPhone_icon" alt="">
                             <p>联系电话：{{productData.phone}}</p>
