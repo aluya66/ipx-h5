@@ -268,7 +268,7 @@ export default {
                     this.posterData.products = this.posterData.products.map(item => {
                         return {
                             ...item,
-                            showPrice: item.retailPrice
+                            showPrice: parseFloat(item.retailPrice).toFixed(2)
                         }
                     })
                 }
@@ -703,7 +703,9 @@ export default {
         }
         .Album-selectd {
             margin: 13px 16px 32px;
-            height: calc(100vw - 32px);
+            border-radius: 12px;
+            // height: calc(100vw - 32px);
+            width: calc(100vw - 32px);
         }
     }
     .bottom-prompt {

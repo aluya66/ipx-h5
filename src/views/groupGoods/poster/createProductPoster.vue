@@ -557,7 +557,8 @@ export default {
         }
         .Album-selectd {
             margin: 13px 16px 32px;
-            height: calc(100vw - 32px);
+            width: calc(100vw - 32px);
+            border-radius: 12px;
         }
     }
     .bottom-prompt {

@@ -47,7 +47,7 @@ export default {
     margin: 0px 0;
     .title {
         font-size:16px;
-        font-weight:600;
+        font-weight:bold;
         color:@color-c1;
         line-height:22px;
         vertical-align: middle;

@@ -384,6 +384,8 @@ export default {
         color: @color-ec;
         line-height: 40px;
         text-align: center;
+        font-weight:bold;
+        font-size:14px;
     }
 
     .create-poster {
@@ -396,5 +398,7 @@ export default {
         margin-right: 16px;
         color: white;
         text-align: center;
+        font-weight:bold;
+        font-size:14px;
     }
 </style>

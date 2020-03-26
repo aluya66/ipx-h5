@@ -12,9 +12,9 @@
    </c-header>
 
     <div class="panel_content">
-        <div class="poster_img_content" ref="image" :style="getBottomOffset(0)">
-            <div class="content">
-                <div class="product_content">
+        <div class="poster_img_content" :style="getBottomOffset(0)">
+            <div class="content" ref="image">
+                <div class="product_content"  :style="isHiddenChange ? 'border-radius: 0' : 'border-radius: 0.12rem'">
                     <img :src="selected_logo" alt="">
                     <div class="product_info">
                         <img :src="productData.mainPic" alt="">
@@ -52,9 +52,9 @@
                             <p>换一张</p>
                         </div>
                     </div>
-                    <div class="footer_content" v-show="productData.phone !== ''">
+                    <div class="footer_content" >
                         <img :src="productData.albumImg_url" alt="">
-                        <div class="tell_info">
+                        <div class="tell_info" v-show="productData.phone !== ''">
                             <img :src="callPhone_icon" alt="">
                             <p>联系电话：{{productData.phone}}</p>
                         </div>
@@ -114,9 +114,9 @@ export default {
         paddingTop() {
             let basepara = utils.getStore('baseParams')
             if (basepara.isIphoneX) {
-                return 'padding-top: 0.4rem;'
+                return 'padding-top: 0.49rem;'
             }
-            return 'padding-top: 0.2rem;'
+            return 'padding-top: 0.26rem;'
         },
         changeImage(skucodes) {
             this.changeSkuCodes = skucodes
@@ -159,13 +159,13 @@ export default {
             })
         },
         savePoster() {
+            this.isHiddenChange = true
             let _this = this
             Toast.loading({
                 message: '生成海报...',
                 duration: 0
             })
-            _this.isHiddenChange = true
-            // setTimeout(() => {
+            setTimeout(() => {
                 let img = _this.$refs['image']
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
                 html2canvas(img, {
@@ -175,17 +175,18 @@ export default {
                     taintTest: true,
                     dpi: window.devicePixelRatio
                 }).then(function(canvas) {
-                    _this.isHiddenChange = false
                     _this.photoUrl = canvas.toDataURL()
                     let file = _this.dataURLtoBlob(_this.photoUrl)
                     utils.upload([file]).then(result => {
+                        _this.isHiddenChange = false
                         utils.postMessage('download_pictures', result)
                         Toast.clear()
                     }).catch(() => {
+                        _this.isHiddenChange = false
                         _this.$toast('保存失败请重试')
                     })
                 })
-            // }, 3000)
+            }, 30)
         },
         downloadIamge(imgsrc, name) {
             var image = new Image()
@@ -227,12 +228,12 @@ export default {
 
 <style lang='less' scoped>
 .panel_content {
-    background:rgba(244,245,247,1);
+    background:@color-c7;
     height: 100%;//calc(100vh - 48px);
     overflow-y: scroll;
 }
 .poster_img_content {
-    background: @color-c8;
+    background: @color-c7;
     padding-top: 4px;
     padding-bottom: 25px;
 }
@@ -249,6 +250,7 @@ export default {
         > img {
             margin-top: 16px;
             object-fit: cover;
+            height: 45px;
         }
         .product_info {
             margin: 8px 16px 4px;
@@ -310,7 +312,7 @@ export default {
     }
     .designer_content {
         margin: 0;
-        background:linear-gradient(360deg,rgba(253,253,254,1) 0%,rgba(249,250,252,1) 100%);
+        background:linear-gradient(360deg,rgba(255,255,255,1) 0%,rgba(249,250,252,1) 100%);
         border-radius:0px 0px 12px 12px;
         position: relative;
         .triangle_top {
@@ -356,7 +358,7 @@ export default {
                         font-size:10px;
                         font-weight:bold;
                         color:rgba(60,92,246,1);
-                        border-radius:4px;
+                        border-radius: 0px 4px 4px 4px;
                         line-height:12px;
                         background:rgba(235,238,255,1);
                     }
@@ -404,6 +406,7 @@ export default {
                 border-radius:12px;
                 border:1px solid rgba(244,245,247,1);
                 background: @color-c8;
+                background:linear-gradient(360deg,rgba(249,250,252,1) 0%,rgba(255,255,255,1) 100%);
             }
             .change_content {
                 z-index: 100;
@@ -432,6 +435,7 @@ export default {
             > img {
                 margin: 32px 16px 12px 16px;
                 width: calc(100vw - 64px);
+                border-radius: 12px;
                 // object-fit: cover;
             }
             .tell_info {

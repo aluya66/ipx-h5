@@ -107,6 +107,7 @@
           :listItems="datas"
           :isWaterFall="true"
           @load-data="handleMore"
+          v-show="datas.length > 0"
         >
           <div
             class="item"
@@ -143,6 +144,7 @@
           emptyDesc="哎呀～清单是空的"
           :listItems="groupDatas"
           @load-data="handleMore"
+          v-show="groupDatas.length > 0"
         >
           <div
             class="groupItemContain"
@@ -168,6 +170,12 @@
             <group-item :groupGood="item" />
           </div>
         </c-list>
+      <empty-view
+        class="empty"
+        style="padding-top:25%"
+        v-show="(menuIndex == 1 && datas.length === 0) || (menuIndex == 0 && groupDatas.length === 0)"
+        emptyDesc="加载中..."
+      />
       </div>
       <manage-view ref="manageView">
         <template>
@@ -195,13 +203,14 @@ import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 import utils from 'utils'
+import EmptyView from '../../error/emptyView.vue'
 // import Clist from 'components/c-list/list.vue'
-// import EmptyView from '../../error/emptyView.vue'
 export default {
     components: {
         ManageView,
         groupItem,
-        Search
+        Search,
+        EmptyView
     },
     props: {},
     data() {

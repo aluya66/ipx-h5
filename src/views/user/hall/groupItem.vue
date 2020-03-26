@@ -138,7 +138,7 @@ export default {
                     display: inline-block;
                     max-width: 60%;
                     font-size: 18px;
-                    font-weight: 500;
+                    font-weight: bold;
                     color: @color-c1;
                     line-height: 50px;
                     z-index: 2;
@@ -244,11 +244,12 @@ export default {
                 justify-content: flex-end;
 
                 .default {
+                    font-weight: bold;
                     margin-right: 12px;
                     .btn-gray(96px, 36px)
                 }
                 .select {
-                    font-weight: 500;
+                    font-weight: bold;
                     .btn-select(96px,36px,true)
                 }
                 .inManage {
