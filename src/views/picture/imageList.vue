@@ -13,7 +13,7 @@
                 <div class="image-item" :class="[index % 4 !== 0 ? 'margin-left' : '', index >= 4 ? 'margin-top' : '']"
                      v-for="(item, index) in images"
                      :key="index" :style="getPictureRect()">
-                    <img :src="item.image" :style="getPictureRect()" alt="" @click="fromChangePreview(index)"/>
+                    <img :src="item.image" :style="getPictureRect()" alt=""/>
                     <img class="select-box" :src="item.isSelected ? imageSelect: imageUnselect" @click="switchSelectState(index)" alt=""/>
                 </div>
             </div>

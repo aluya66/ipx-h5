@@ -28,7 +28,7 @@
             <div class="list-title">
                 <div class="dot"></div>
                 <p>样衣列表</p>
-                <div class="list-manage" @click="manageProduct()">{{ isManage ? '完成' : '管理'}}</div>
+                <div class="list-manage" @click.stop="manageProduct()">{{ isManage ? '完成' : '管理'}}</div>
             </div>
             <div class="list-content">
                 <div
@@ -37,7 +37,7 @@
                     :class="{ 'move-right' : isManage}"
                     :key="item.productCode"
                 >
-                    <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click="selectItem(index)"/>
+                    <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
                     <div class="photo_state">
                         <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
                         <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
@@ -148,16 +148,13 @@ export default {
         }
     },
     activated() {
-        this.isManage = false
-        this.isAllSelected = false
-        this.selectedNum = 0
         // 上报页面事件
         window.sa.track('IPX_WEB', {
             page: 'groupListDetail',
             type: 'pageView',
             event: 'pageView'
         })
-        this.showSku = false
+        this.resetData()
         this.isNative = false
         this.isDialog = false
         if (this.$route.query.fromNative === '1') {
@@ -260,7 +257,7 @@ export default {
             })
         },
         selectItem(index) {
-            console.log('index = ' + index)
+            this.showSku = false
             this.groupGoodsRecords[index].isSelected = !this.groupGoodsRecords[index].isSelected
             if (this.groupGoodsRecords[index].isSelected) {
                 this.selectedNum++
@@ -300,11 +297,15 @@ export default {
             return utils.bottomOffset(offset)
         },
         manageProduct() {
+            this.showSku = false
+            console.log(this.showSku)
             this.isManage = !this.isManage
             this.selectedNum = 0
             this.isAllSelected = false
             this.groupGoodsRecords.forEach(item => {
-                item.isSelected = false
+                if (item) {
+                    item.isSelected = false
+                }
             })
         },
         clearSelectedProduct() {
@@ -346,6 +347,9 @@ export default {
             utils.postMessage('', params)
         },
         openSku(item, index) {
+            if (this.isManage) {
+                return
+            }
             window.sa.track('IPX_WEB', {
                 page: 'groupListDetail', // 页面名字
                 type: 'click', // 固定参数，表明是点击事件
@@ -403,6 +407,19 @@ export default {
                     console.log(err)
                 })
         },
+        resetData() { // 重置页面
+            this.isManage = false
+            this.isAllSelected = false
+            this.showSku = false
+            this.selectedNum = 0
+            if (this.groupGoodsRecords && this.groupGoodsRecords instanceof Array && this.groupGoodsRecords.length > 0) {
+                this.groupGoodsRecords.forEach(item => {
+                    if (item) {
+                        item.isSelected = false
+                    }
+                })
+            }
+        },
         getGroupDetail() {
             // 获取组货详情列表
             const params = {
@@ -411,6 +428,7 @@ export default {
             this.$api.groupGoods
                 .getGroupListDetail(params)
                 .then(res => {
+                    this.resetData()
                     if (res.code === 0) {
                         const { data } = res
                         const { groupGoodsRecords } = data
@@ -426,9 +444,10 @@ export default {
                             }
                         })
                         this.groupName = this.groupDetail.name
+                        this.resetData()
                     }
-                })
-                .catch(err => {
+                }).catch(err => {
+                    this.resetData()
                     console.log(err)
                 })
         },
@@ -459,21 +478,25 @@ export default {
                 })
             } else {
                 this.groupGoodsRecords.forEach(group => {
-                    group.colorSkuList.forEach((item) => {
-                        item.skuList.forEach((skuItem) => {
-                            skuItem.num = skuItem.skuValue
-                            let sku = {
-                                groupGoodsRecordId: skuItem.groupGoodsRecordId,
-                                num: skuItem.skuValue,
-                                productAtrNumber: group.productAtrNumber,
-                                productCode: group.productCode,
-                                productSkuCode: skuItem.productSkuCode,
-                                starasSkuCode: skuItem.starasSkuCode,
-                                delFlag: group.isSelected ? 1 : 2
+                    if (group && group.colorSkuList && group.colorSkuList instanceof Array && group.colorSkuList.length > 0) {
+                        group.colorSkuList.forEach((item) => {
+                            if (item && item.skuList && item.skuList instanceof Array && item.skuList.length > 0) {
+                                item.skuList.forEach((skuItem) => {
+                                    skuItem.num = skuItem.skuValue
+                                    let sku = {
+                                        groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                                        num: skuItem.skuValue,
+                                        productAtrNumber: group.productAtrNumber,
+                                        productCode: group.productCode,
+                                        productSkuCode: skuItem.productSkuCode,
+                                        starasSkuCode: skuItem.starasSkuCode,
+                                        delFlag: group.isSelected ? 1 : 2
+                                    }
+                                    groupProducts.push(sku)
+                                })
                             }
-                            groupProducts.push(sku)
                         })
-                    })
+                    }
                 })
             }
             params.groupGoodsRecords = groupProducts
@@ -490,12 +513,13 @@ export default {
                 })
                 this.groupDetail.totalPrice = totalPrice
                 this.$toast.success('已修改')
-                this.showSku = false
+                this.resetData()
                 return
             }
             this.$api.groupGoods
                 .updateGroupListDetail(params)
                 .then(res => {
+                    this.resetData()
                     if (res.code === 0) {
                         this.getGroupDetail()
                         if (!this.isManage) {
@@ -511,7 +535,7 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-            this.showSku = false
+            this.resetData()
         },
         changeGroupName() {
             this.$router.push({

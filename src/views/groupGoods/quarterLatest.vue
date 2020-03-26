@@ -17,11 +17,11 @@
                 </swiper>
                 <div class="patch-price">
                     <span class="patch-flag">¥</span><span
-                    class="patch-price-number">{{selectGroupDetail.totalRetailPrice}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
+                    class="patch-price-number">{{selectGroupDetail.totalPrice}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
                 </div>
                 <div class="total-price">
                     <span class="total-flag">¥</span><span
-                    class="total-price-number">{{selectGroupDetail.totalPrice}}</span><span class="total-label">零售货值</span>
+                    class="total-price-number">{{selectGroupDetail.totalRetailPrice}}</span><span class="total-label">建议零售价</span>
                 </div>
                 <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
                 <!--UI确认，去掉标签，标签没有运营-->
@@ -68,21 +68,15 @@ export default {
             groupDetail: {},
             emptyDesc: '正在加载数据.....',
             swiperOption: {
-                slidesPerView: 'auto',
-                centeredSlides: true,
-                spaceBetween: 12 * window.devicePixelRatio,
-
-                // slidesPerView: 1.2,
-                // slidesPerView: 1.1,
+                // slidesPerView: 'auto',
                 // centeredSlides: true,
-                // spaceBetween: 16 * window.devicePixelRatio,
-                effect: 'coverflow',
-                // spaceBetween: 16 * window.devicePixelRatio,
-                // spaceBetween: '8%',
-                // loop: true,
-                // autoplay: {
-                //     disableOnInteraction: false
-                // },
+                // spaceBetween: 12 * window.devicePixelRatio,
+                centeredSlides: true,
+                spaceBetween: '4%',
+                slidesPerView: 'auto',
+                loop: false,
+
+                effect: 'slide',
                 coverflowEffect: {
                     rotate: 0,
                     stretch: 0,
