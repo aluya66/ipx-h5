@@ -29,11 +29,11 @@
                     <img class="product-image" :style="getImageRect()" :src="item.mainPic"/>
                     <span class="product-title">{{item.productName}}</span>
                     <div class="product-retail-price">
-                        <span class="price-flag">¥</span><span class="price-number">{{item.retailPrice}}</span><span
+                        <span class="price-flag">¥</span><span class="price-number">{{parseFloat(item.retailPrice).toFixed(2)}}</span><span
                         class="tip_title">建议零售价</span>
                     </div>
                     <div class="product-special-price">
-                        <span class="special-flag">¥</span><span class="special-number">{{item.tshPrice}}</span><img
+                        <span class="special-flag">¥</span><span class="special-number">{{parseFloat(item.tshPrice).toFixed(2)}}</span><img
                         :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click.stop="doCollect(index, item)"/>
                     </div>
                 </div>

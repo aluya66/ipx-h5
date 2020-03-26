@@ -17,11 +17,11 @@
                 </swiper>
                 <div class="patch-price">
                     <span class="patch-flag">¥</span><span
-                    class="patch-price-number">{{selectGroupDetail.totalPrice}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
+                    class="patch-price-number">{{parseFloat(selectGroupDetail.totalPrice).toFixed(2)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
                 </div>
                 <div class="total-price">
                     <span class="total-flag">¥</span><span
-                    class="total-price-number">{{selectGroupDetail.totalRetailPrice}}</span><span class="total-label">建议零售价</span>
+                    class="total-price-number">{{parseFloat(selectGroupDetail.totalRetailPrice).toFixed(2)}}</span><span class="total-label">建议零售价</span>
                 </div>
                 <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
                 <!--UI确认，去掉标签，标签没有运营-->

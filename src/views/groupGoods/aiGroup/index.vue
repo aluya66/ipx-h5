@@ -114,7 +114,7 @@ export default {
                 // slidesPerView: 1.1,
                 // centeredSlides: true,
                 // spaceBetween: 16 * window.devicePixelRatio,
-                effect: 'coverflow',
+                effect: 'slide',
                 centeredSlides: true,
                 spaceBetween: '8%',
                 slidesPerView: 'auto',
