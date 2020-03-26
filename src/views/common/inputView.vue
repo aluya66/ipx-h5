@@ -81,7 +81,7 @@ export default {
             return obj
         },
         handleClear() {
-            this.value = '0'
+            this.value = ''
             this.$emit('input', this.value)
         }
     }

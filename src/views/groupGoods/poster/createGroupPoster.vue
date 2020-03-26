@@ -75,7 +75,7 @@
                             <section style="height:0.32rem"  :class='["flex-common","custom-add"]'>
                                 <p class="price-custom-title" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(88,91,102,1)'">单品均加价:</p>
                                 <div class="input-contain">
-                                    <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="number" :hiddenClear="true" />
+                                    <input-view class="price-input" v-model="customPricePercent" :disabledInput="isSuggest" formart="digit" :hiddenClear="true" />
                                     <p class="price-symbol" :style="isSuggest ? 'color: rgba(178,181,193,1)':'color: rgba(42,43,51,1)'">%</p>
                                 </div>
                             </section>
