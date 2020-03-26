@@ -432,10 +432,14 @@ export default {
         .footer_content {
             display: flex;
             flex-direction: column;
+            align-items: center;
             > img {
                 margin: 32px 16px 12px 16px;
-                width: calc(100vw - 64px);
+                // width: calc(100vw - 64px);
                 border-radius: 12px;
+                height: 250px;
+                width: 188px;
+                object-fit: cover;
                 // object-fit: cover;
             }
             .tell_info {

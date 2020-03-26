@@ -127,13 +127,13 @@ export default {
                 if (add === '') {
                     add = '0'
                 }
-                if (add === '0') {
-                    return parseFloat(product.tshPrice).toFixed(2)
-                } else {
-                    let p = parseFloat(product.tshPrice) * parseFloat(add || '0') / 100
+                // if (add === '0') {
+                //     return parseFloat(product.tshPrice).toFixed(2)
+                // } else {
+                    let p = parseFloat(product.tshPrice) * parseFloat(add || '0') / 100 + parseFloat(product.tshPrice)
                     let p2 = p.toFixed(2)
                     return p2
-                }
+                // }
             }
         }
     },
@@ -447,10 +447,14 @@ export default {
         .footer_content {
             display: flex;
             flex-direction: column;
+            align-items: center;
             > img {
-                margin: 32px 16px 12px 16px;
-                width: calc(100vw - 64px);
+                margin: 32px 16px 13px 16px;
+                // width: calc(100vw - 64px);
                 border-radius: 12px;
+                height: 250px;
+                width: 188px;
+                object-fit: cover;
                 // height: calc(100vw - 64px);
                 // object-fit: cover;
             }
