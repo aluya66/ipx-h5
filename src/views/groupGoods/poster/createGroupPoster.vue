@@ -185,7 +185,7 @@ export default {
     computed: {
         posterPrice() {
             let add = this.customPricePercent
-            if (this.customPricePercent === '') {
+            if (this.customPricePercent === '' || this.customPricePercent === '.') {
                 add = '0'
             }
             // if (add === '0') {
@@ -435,6 +435,7 @@ export default {
         overflow: scroll;
         // width: 100%;
         .image-item {
+            flex-shrink: 0;
             display: block;
             width: 74px;//calc(28.57vw - 19.43px);
             height: 74px;//calc(28.57vw - 19.43px);

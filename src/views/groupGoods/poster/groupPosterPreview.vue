@@ -50,7 +50,7 @@
                     <p>{{product.productName}}</p>
                     <div class="goods_information">
                         <p>{{product.colorName}}：{{product.sizeName}}</p>
-                        <p>{{groupData.isSinglePrice ? parseFloat(product.showPrice).toFixed(2) : posterPrice(product)}}</p>
+                        <p>{{groupData.isSinglePrice ? showRetailPrice(product) : posterPrice(product)}}</p>
                     </div>
                     <div class="change_content" @click="changeProduct(product)"  v-show="!isHiddenChange">
                         <img :src="changeGood_icon" alt="">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="footer_content" >
-                    <img :src="groupData.albumImg_url" alt="" :style="groupData.albumImg_url === '' ? 'height: 0' : 'height: 2.50rem'">
+                    <img :src="groupData.albumImg_url" alt="" v-show="groupData.albumImg_url !== ''">
                     <div class="tell_info" v-show="groupData.phone !== ''">
                         <img :src="callPhone_icon" alt="">
                         <p>联系电话：{{groupData.phone}}</p>
@@ -124,7 +124,7 @@ export default {
                     return parseFloat(product.retailPrice).toFixed(2)
                 }
                 let add = this.groupData.percent
-                if (add === '') {
+                if (add === '' || add === '.') {
                     add = '0'
                 }
                 // if (add === '0') {
@@ -134,6 +134,14 @@ export default {
                     let p2 = p.toFixed(2)
                     return p2
                 // }
+            }
+        },
+        showRetailPrice() {
+            return function (product) {
+                if (product.showPrice === '' || product.showPrice === '.') {
+                    return parseFloat(product.tshPrice).toFixed(2)
+                }
+                return parseFloat(product.showPrice).toFixed(2)
             }
         }
     },
@@ -449,7 +457,7 @@ export default {
             flex-direction: column;
             align-items: center;
             > img {
-                margin: 32px 16px 13px 16px;
+                margin: 32px 16px 0 16px;
                 // width: calc(100vw - 64px);
                 border-radius: 12px;
                 height: 250px;
@@ -461,6 +469,7 @@ export default {
             .tell_info {
                 display: flex;
                 justify-content: center;
+                margin-top: 13px;
                 > img {
                     width: 20px;
                     height: 20px;

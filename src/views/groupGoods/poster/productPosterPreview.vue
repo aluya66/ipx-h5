@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="footer_content" >
-                        <img :src="productData.albumImg_url" alt="" :style="productData.albumImg_url === '' ? 'height: 0' : 'height: 2.50rem'">
+                        <img :src="productData.albumImg_url" alt="" v-show="productData.albumImg_url !== ''">
                         <div class="tell_info" v-show="productData.phone !== ''">
                             <img :src="callPhone_icon" alt="">
                             <p>联系电话：{{productData.phone}}</p>
@@ -259,6 +259,7 @@ export default {
             border-radius:12px;
             display: flex;
             > img {
+                flex-shrink: 0;
                 width:93px;
                 height:124px;
                 background:rgba(249,250,252,1);
@@ -434,7 +435,7 @@ export default {
             flex-direction: column;
             align-items: center;
             > img {
-                margin: 32px 16px 12px 16px;
+                margin: 32px 16px 0px 16px;
                 // width: calc(100vw - 64px);
                 border-radius: 12px;
                 height: 250px;
@@ -445,6 +446,7 @@ export default {
             .tell_info {
                 display: flex;
                 justify-content: center;
+                margin-top: 13px;
                 > img {
                     width: 20px;
                     height: 20px;
