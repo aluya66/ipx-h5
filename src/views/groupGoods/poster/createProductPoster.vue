@@ -561,7 +561,7 @@ export default {
             width: 188px;
             object-fit: cover;
             // width: calc(100vw - 32px);
-            border-radius: 12px;
+            border-radius: 8px;
         }
     }
     .bottom-prompt {

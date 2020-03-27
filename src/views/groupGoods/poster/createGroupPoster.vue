@@ -705,7 +705,7 @@ export default {
         }
         .Album-selectd {
             margin: 13px 16px 32px;
-            border-radius: 12px;
+            border-radius: 8px;
             height: 250px;
             width: 188px;
             object-fit: cover;
