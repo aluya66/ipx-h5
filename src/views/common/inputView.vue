@@ -113,7 +113,7 @@ export default {
     width: 100%;
     height: 32px;
     font-size:16px;
-    font-weight:500;
+    font-weight:bold;
     font-family: "alibabaBold";
     color:rgba(42,43,51,1);
     background:rgba(244,245,247,0);

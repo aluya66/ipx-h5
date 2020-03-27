@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { Search } from 'vant'
+import { Search,Toast } from 'vant'
 import utils from 'utils'
 import CList from 'components/c-list'
 import components from 'components'
@@ -185,6 +185,10 @@ export default {
             }
         },
         changeActive(value) {
+            Toast.loading({
+            message: '加载中...',
+            forbidClick: true
+            })
             this.menuIndex = value
             this.handleRefresh()
         },
@@ -196,9 +200,11 @@ export default {
             this.loading = false
         },
         setSuccessStatus() {
+            Toast.clear();
             this.loading = false
         },
         setFailureStatus() {
+            Toast.clear();
             this.pageNo -= 1
             this.finished = true
             this.loading = false
@@ -291,6 +297,7 @@ export default {
                     }
                     this.finished = true
                 }
+                this.setSuccessStatus()
             }).catch(() => {
                 this.setFailureStatus()
             })
@@ -303,7 +310,7 @@ export default {
             }
             this.loading = true
             this.$api.groupGoods.searchGroupList(params).then(res => {
-                this.setSuccessStatus()
+                
                 if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
                         this.groupDatas = res
@@ -321,6 +328,7 @@ export default {
                     }
                     this.finished = true
                 }
+                this.setSuccessStatus()
             }).catch(() => {
                 this.setFailureStatus()
             })
@@ -409,10 +417,10 @@ export default {
             position: relative;
             > img {
                 object-fit: cover;
-                width: 100%;
+                width: 100%;//calc(50vw - 21px);
                 border-radius: 12px;
-                background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(249,250,252,1) 100%);
-                // height: calc(50vw - 20.5px);
+                // background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(249,250,252,1) 100%);
+                height: calc(50vw - 20.5px);
             }
             .product_info {
                 padding: 12px;
