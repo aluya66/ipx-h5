@@ -360,7 +360,7 @@ export default {
         box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.06);
         border-radius: 12px;
         margin: 20px 16px 0 16px;
-        padding: 16px 0 0 20px;
+        padding: 16px 0 0 12px;
         display: flex;
         z-index: 5;
         flex-direction: column;
@@ -382,8 +382,8 @@ export default {
     .designer-divider {
         width: 1px;
         height: 36px;
-        margin-left: 24px;
-        margin-right: 24px;
+        margin-left: 16px;
+        margin-right: 16px;
         background: linear-gradient(90deg, rgba(227, 226, 230, 0) 0%, rgba(227, 226, 230, 1) 0%, rgba(227, 226, 230, 1) 100%);
     }
 
@@ -464,16 +464,17 @@ export default {
             color: @color-c3;
             font-weight: 400;
         }
+    }
 
-        .designer-name-select {
-            color: @color-ec;
-            font-weight: bold;
-        }
+    .designer-name-select {
+        color: @color-ec;
+        font-weight: bold;
     }
 
     .c-title {
         font-size: 18px;
         font-weight: bold;
+        margin-left: 8px;
         color: @color-c1;
         position: relative;
         width: 80px;
