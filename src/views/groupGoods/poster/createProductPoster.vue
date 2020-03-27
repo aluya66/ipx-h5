@@ -148,7 +148,7 @@ export default {
     computed: {
         posterPrice() {
             let add = this.addPrice
-            if (this.addPrice === '') {
+            if (this.addPrice === '' || this.addPrice === '.') {
                 add = '0'
             }
             let p = parseFloat(this.posterData.tshPrice) + parseFloat(add || '0')

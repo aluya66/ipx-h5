@@ -98,7 +98,7 @@
             isStickyTop ? 'enableScroll' : 'disableScroll'
           ]"
           :style="getBottomOffset(0)"
-          v-if="menuIndex == 1"
+          v-if="menuIndex == 1 && showList"
           :loading="loading"
           :finished="finished"
           finished-text="已到底，没有更多数据"
@@ -107,7 +107,6 @@
           :listItems="datas"
           :isWaterFall="true"
           @load-data="handleMore"
-          v-show="showList"
         >
           <div
             class="item"
@@ -136,7 +135,7 @@
           ref="grouplist"
           :class="['groupList', isStickyTop ? 'enableScroll' : 'disableScroll']"
           :style="getBottomOffset(0)"
-          v-else-if="menuIndex == 0"
+          v-else-if="menuIndex == 0 && showList"
           :loading="loading"
           :finished="finished"
           finished-text="已到底，没有更多数据"
@@ -144,7 +143,6 @@
           emptyDesc="哎呀～清单是空的"
           :listItems="groupDatas"
           @load-data="handleMore"
-          v-show="showList"
         >
           <div
             class="groupItemContain"
@@ -520,7 +518,6 @@ export default {
                             } else {
                                 this.datas = this.datas.concat(res.data.productList)
                             }
-                            this.setSuccessStatus()
                             if (res.data.productList.length < this.pageSize) {
                                 this.finished = true
                             } else {
@@ -535,6 +532,7 @@ export default {
                     } else {
                         this.finished = true
                     }
+                    this.setSuccessStatus()
                 })
                 .catch(() => {
                     this.setFailureStatus()
@@ -583,7 +581,6 @@ export default {
                             } else {
                                 this.groupDatas = this.groupDatas.concat(res.data)
                             }
-                            this.setSuccessStatus()
                             if (res.data.length < this.pageSize) {
                                 this.finished = true
                             } else {
@@ -598,6 +595,7 @@ export default {
                     } else {
                         this.finished = true
                     }
+                    this.setSuccessStatus()
                 })
                 .catch(() => {
                     this.setFailureStatus()
