@@ -15,9 +15,11 @@
             class="function-list"
             @load-data="handleMore"
             @on-refresh="handleRefresh"
+            :showEmpty="isShowEmpty"
             :loading="loading"
             :listItems="hotProducts"
             :offset="loadOffset"
+            :immediate-check="immediateCheck"
             :error="error"
             :finished="finished"
         >
@@ -56,8 +58,10 @@ export default {
             pageNumber: 1,
             pageSize: 10,
             selectIndex: -1,
+            isShowEmpty: false,
             loadOffset: 10,
             isNative: false,
+            immediateCheck: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
             error: false // 加载错误标识
@@ -99,7 +103,6 @@ export default {
             this.loading = true
             this.$api.goods.getHotSale(params).then(res => {
                 Toast.clear(true)
-                this.loading = false
                 this.finished = false
                 if (res && res instanceof Array) {
                     if (this.pageNumber === 1) {
@@ -111,7 +114,10 @@ export default {
                 } else {
                     this.finished = true
                 }
-                console.log(this.hotProducts)
+                this.loading = false
+                if (this.hotProducts.length <= 0) {
+                    this.isShowEmpty = true
+                }
             }).catch(error => {
                 console.log(error)
                 this.error = true

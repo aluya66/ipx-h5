@@ -1,6 +1,6 @@
 <template>
   <div :class="bem()">
-    <empty-view class="empty-list" v-if="listItems.length <= 0"  :emptyType="emptyType" :emptyDesc="emptyDesc" />
+    <empty-view class="empty-list" v-if="showEmpty && listItems.length <= 0"  :emptyType="emptyType" :emptyDesc="emptyDesc" />
     <van-pull-refresh v-else v-model="isLoading" @refresh="onRefresh" :disabled="!hasPullRefresh">
       <van-list
         v-model="mLoading"
@@ -31,6 +31,10 @@ export default create({
         [PullRefresh.name]: PullRefresh
     },
     props: {
+        showEmpty: { // 是否需要空页面，由于一进入页面后首先会显示空页面，UI提出加载完成后没有数据才显示空页面
+            type: Boolean,
+            default: true
+        },
         listItems: {
             type: Array,
             default () {
