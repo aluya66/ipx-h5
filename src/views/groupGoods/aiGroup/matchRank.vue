@@ -155,7 +155,7 @@ export default {
     .top-title {
         height:40px;
         font-size:28px;
-        font-weight:500;
+        font-weight:bold;
         color:rgba(255,255,255,1);
         line-height:40px;
         margin-top: 15px;
@@ -214,7 +214,7 @@ export default {
                     // line-height: 24px;
                     margin-top: 5px;
                     font-size:10px;
-                    font-weight:500;
+                    font-weight:bold;
                     color:rgba(255,255,255,1);
                     position: relative;
                 }
@@ -231,7 +231,7 @@ export default {
                 margin-left: 12px;
                 h3 {
                     font-size:16px;
-                    font-weight:500;
+                    font-weight:bold;
                     color:@color-c1;
                     line-height:22px;
                     margin: 0;
@@ -242,7 +242,7 @@ export default {
                         margin: 8px 0 0;
                         display: inline-block;
                         font-size:10px;
-                        font-weight:500;
+                        font-weight:bold;
                         line-height:20px;
                         border-radius:2px;
                         &:nth-child(1) {
