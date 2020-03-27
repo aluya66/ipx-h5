@@ -45,7 +45,7 @@
             v-if="menuIndex == 0"
             :loading="loading"
             :finished="finished"
-            emptyType="build"
+            emptyType="search"
             emptyDesc="无搜索结果，可以试试其他关键词"
             :listItems="productDatas"
             :isWaterFall="true"
@@ -80,7 +80,7 @@
             v-else-if="menuIndex == 1"
             :loading="loading"
             :finished="finished"
-            emptyType="groupEmpty"
+            emptyType="search"
             emptyDesc="无搜索结果，可以试试其他关键词"
             :listItems="groupDatas"
             :hasPullRefresh="true"
@@ -154,8 +154,8 @@ export default {
             pageSize: 10, // 每页请求数
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
-            unselectIcon: require('@/themes/images/designer/icon_collect_def_16_16@2x.png'),
-            selectIcon: require('@/themes/images/designer/icon_collect_sel_16_16@2x.png'),
+            unselectIcon: require('@/themes/images/app/icon_collect_unselect@3x.png'),
+            selectIcon: require('@/themes/images/app/icon_collect_select@3x.png'),
             headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
             clearIcon: require('@/themes/images/app/control_delete.png')
         }
@@ -177,7 +177,12 @@ export default {
         },
         handleSearchClear() {
             this.searchKey = ''
-            // this.handleRefresh()
+            let method = 'page_out'
+            if (this.isNative) {
+                utils.postMessage(method, '')
+            } else {
+                this.$router.go(-1)
+            }
         },
         changeActive(value) {
             this.menuIndex = value
@@ -405,6 +410,7 @@ export default {
             > img {
                 object-fit: cover;
                 width: 100%;
+                border-radius: 12px;
                 background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(249,250,252,1) 100%);
                 // height: calc(50vw - 20.5px);
             }
@@ -440,7 +446,7 @@ export default {
                         line-height:12px;
                         background:rgba(244,245,247,1);
                         padding: 2px 4px;
-                        border-radius:4px;
+                        border-radius: 0 4px 4px 4px;
                     }
                 }
                 .product_price {
@@ -487,7 +493,7 @@ export default {
                 height:138px;
                 object-fit: cover;
                 border-radius:4px;
-                border:1px solid rgba(230,230,230,1);
+                border:0.5px solid rgba(230,230,230,1);
             }
             .infoContain {
                 margin-left: 17px;
@@ -506,7 +512,8 @@ export default {
                             font-size:10px;
                             font-weight:bold;
                             line-height:14px;
-                            border-radius:2px;
+                            border-radius:0px 4px 4px 4px;
+                            padding: 1px 2px;
                             &:nth-child(1) {
                                 color:@color-ec;
                                 background: @color-ec1;
@@ -525,6 +532,7 @@ export default {
                         line-height:14px;
                         background:rgba(255,235,237,1);
                         border-radius:0px 4px 4px 4px;
+                        padding: 1px 2px;
                     }
                 }
                 .price {
