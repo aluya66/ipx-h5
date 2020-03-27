@@ -42,7 +42,7 @@
             <c-list
             ref="productlist"
             class="product-list"
-            v-if="menuIndex == 0"
+            v-if="menuIndex == 0 && isShow"
             :loading="loading"
             :finished="finished"
             emptyType="search"
@@ -77,7 +77,7 @@
             ref="grouplist"
             class="groupList"
             :style="getBottomOffset(0)"
-            v-else-if="menuIndex == 1"
+            v-else-if="menuIndex == 1 && isShow"
             :loading="loading"
             :finished="finished"
             emptyType="search"
@@ -144,6 +144,7 @@ export default {
                     title: '组货'
                 }
             ],
+            isShow: false,
             isNative: false,
             menuIndex: 0,
             loadOffset: 10,
@@ -185,25 +186,21 @@ export default {
             }
         },
         changeActive(value) {
-            Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-            })
             this.menuIndex = value
             this.handleRefresh()
         },
         resetParams() {
-            // this.groupDatas = []
-            // this.productDatas = []
             this.pageNo = 1
             this.finished = false
             this.loading = false
         },
         setSuccessStatus() {
+            this.isShow = true
             Toast.clear();
             this.loading = false
         },
         setFailureStatus() {
+            this.isShow = true
             Toast.clear();
             this.pageNo -= 1
             this.finished = true
@@ -211,6 +208,11 @@ export default {
         },
         // 刷新
         handleRefresh() {
+            this.isShow = false
+            Toast.loading({
+            message: '加载中...',
+            forbidClick: true
+            })
             this.resetParams()
             if (this.menuIndex === 0) {
                 this.handleRequestProduct()
@@ -569,7 +571,7 @@ export default {
                             line-height:12px;
                             background:rgba(244,245,247,1);
                             padding: 2px 4px;
-                            border-radius:4px;
+                            border-radius:0px 4px 4px 4px;
                         }
                     }
                     > p {

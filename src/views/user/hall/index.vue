@@ -410,6 +410,7 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
             })
+            this.showList = false
             Toast.loading({
             message: '加载中...',
             forbidClick: true
@@ -816,6 +817,7 @@ export default {
         font-weight: bold;
         font-family: "alibabaBold";
         padding-bottom: 12px;
+        color: @color-rc;
       }
     }
   }
