@@ -25,7 +25,7 @@
                 <div class="product-item"
                      :class="[index % 2 === 1 ? 'vertical-divider': '', index > 1 ? 'horizontal-divider' : '']"
                      :style="getItemWidth()"
-                     v-for="(item, index) in hotProducts" :key="index" @click="gotoDetail(item)">
+                     v-for="(item, index) in hotProducts" :key="index" @click="gotoDetail(item, index)">
                     <img class="product-image" :style="getImageRect()" :src="item.mainPic"/>
                     <span class="product-title">{{item.productName}}</span>
                     <div class="product-retail-price">
@@ -34,7 +34,7 @@
                     </div>
                     <div class="product-special-price">
                         <span class="special-flag">¥</span><span class="special-number">{{parseFloat(item.tshPrice).toFixed(2)}}</span><img
-                        :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click.stop="doCollect(index, item)"/>
+                        :src="parseInt(item.isCollect) === 1 ? selectIcon : unselectIcon" @click.stop="doCollect(index, item)"/>
                     </div>
                 </div>
             </div>
@@ -55,6 +55,7 @@ export default {
             hotProducts: [],
             pageNumber: 1,
             pageSize: 10,
+            selectIndex: -1,
             loadOffset: 10,
             isNative: false,
             finished: false, // 加载完标识
@@ -71,18 +72,23 @@ export default {
             let width = parseInt((this.screenWidth - 42 * window.devicePixelRatio) / 2)
             return `width:${width}px;height:${width}px`
         },
-        gotoDetail(product) {
+        gotoDetail(product, index) {
+            this.selectIndex = index
+            console.log('点击：' + product.productCode)
             const params = {
                 jumpUrl: 'productDetail://',
                 productCode: product.productCode
             }
             utils.postMessage('', params)
             window.refreshCollect = (productCode, isCollect) => {
-                this.hotProducts.forEach(product => {
-                    if (product.productCode === productCode) {
-                        product.isCollect = isCollect
-                    }
-                })
+                console.log('回调：' + productCode + ', ' + isCollect)
+                this.hotProducts[this.selectIndex].isCollect = isCollect
+                console.log(this.hotProducts)
+                // this.hotProducts.forEach(product => {
+                //     if (product.productCode === productCode) {
+                //         product.isCollect = isCollect
+                //     }
+                // })
             }
         },
         getHotSale() {
