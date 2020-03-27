@@ -817,6 +817,7 @@ export default {
         font-weight: bold;
         font-family: "alibabaBold";
         padding-bottom: 12px;
+        color: @color-rc;
       }
     }
   }
