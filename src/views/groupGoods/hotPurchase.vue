@@ -115,9 +115,7 @@ export default {
                     this.finished = true
                 }
                 this.loading = false
-                if (this.hotProducts.length <= 0) {
-                    this.isShowEmpty = true
-                }
+                this.isShowEmpty = this.hotProducts.length <= 0
             }).catch(error => {
                 console.log(error)
                 this.error = true
