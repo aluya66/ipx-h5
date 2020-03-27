@@ -112,7 +112,7 @@ import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
 import cash from './cashFormat.js'
 import utils from 'utils'
-import { Dialog,Toast } from 'vant'
+import { Dialog, Toast } from 'vant'
 
 export default {
     components: {
@@ -149,9 +149,9 @@ export default {
     },
     created() {
         Toast.loading({
-          message: '加载中...',
-          forbidClick: true
-        });
+            message: '加载中...',
+            forbidClick: true
+        })
     },
     activated() {
         // 上报页面事件

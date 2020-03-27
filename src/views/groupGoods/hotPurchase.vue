@@ -77,6 +77,13 @@ export default {
                 productCode: product.productCode
             }
             utils.postMessage('', params)
+            window.refreshCollect = (productCode, isCollect) => {
+                this.hotProducts.forEach(product => {
+                    if (product.productCode === productCode) {
+                        product.isCollect = isCollect
+                    }
+                })
+            }
         },
         getHotSale() {
             const params = {

@@ -36,7 +36,7 @@
                         </div>
                         <div class="designer-divider"></div>
                         <div class="d-swiper">
-                            <div class="designer-contain" v-for="(item, index) in allDatas" :key="index" @click="setCurrentDesigner(item)">
+                            <div class="designer-contain" :class="[index > 0 ? 'margin-left-8' : '']" v-for="(item, index) in allDatas" :key="index" @click="setCurrentDesigner(item)">
                                 <img
                                     :class='["designer-header",getIsCurrentDesigner(item)?"designer-header-select":"designer-header-default"]'
                                     :src="item.groupGoodsKoc.headPic" alt="">
@@ -454,6 +454,10 @@ export default {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+        }
+
+        .margin-left-8 {
+            margin-left: 8px;
         }
 
         .designer-name-default {
