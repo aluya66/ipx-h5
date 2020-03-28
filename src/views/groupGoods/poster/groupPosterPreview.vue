@@ -385,7 +385,7 @@ export default {
         }
         .images_list {
             position: relative;
-            background:rgba(255,255,255,1);
+            background: rgba(255,255,255,1);
             box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
             border-radius:12px;
             margin: 24px 16px 0;
@@ -399,6 +399,7 @@ export default {
                 border-radius:12px;
             }
             > p {
+                width: calc(100vw - 64px);
                 font-size:16px;
                 font-weight: bold;
                 color: @color-c1;
@@ -406,15 +407,17 @@ export default {
                 margin: 12px 16px 8px;
             }
             .goods_information {
+                width: calc(100vw - 64px);
                 display: flex;
                 justify-content: space-between;
-                margin: 0 16px;
+                // margin: 0 ;
                 p {
                     align-self: center;
                     font-size:12px;
                     font-weight:400;
                     color: @color-c3;
                     line-height:16px;
+                    margin: 0 16px;
                     &:nth-child(2) {
                         font-size:20px;
                         font-weight:400;
