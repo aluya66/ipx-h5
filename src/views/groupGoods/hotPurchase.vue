@@ -2,7 +2,7 @@
     <layout-view>
         <c-header slot="header" :left-arrow="true" :showBorderBottom="true" :isNative="isNative" :pageOutStatus="isNative">
             <template slot="title">
-                <div>热销爆款</div>
+                <div>直播爆款</div>
             </template>
             <!--康悦说去掉搜索-->
             <!--<template slot="right">
