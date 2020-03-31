@@ -495,7 +495,7 @@ export default {
             .photo-choose {
                 width: calc(33.33vw - 16px);
                 height: calc(33.33vw - 16px);
-                background:rgba(244,245,247,1);
+                background: @color-c8;
                 border-radius:8px;
                 display: flex;
                 justify-content: center;
