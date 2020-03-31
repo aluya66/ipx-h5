@@ -6,7 +6,7 @@
         <div class="flex-column customized-main">
             <div class="mask-mode flex-column flex-center">
                 <img class="mode-logo" src="../../themes/images/mask/alienmade_logo@2x.png"/>
-                <img class="mode-title" src="../../themes/images/mask/title_customized@2x.png"/>
+                <img class="mode-title" :style="getModeTitleRect()" src="../../themes/images/mask/title_customized@2x.png"/>
                 <div class="mode-samples">
                     <img :style="getRoundRect()" src="../../themes/images/mask/img_word_white@2x.png"/>
                     <img :style="getRoundRect()" class="img-margin-left" src="../../themes/images/mask/img_word_black@2x.png"/>
@@ -90,7 +90,10 @@
                     <span class="subtitle-gray">设计定稿</span>
                     <span class="subtitle-gray">口罩打样</span>
                 </div>
-                <div class="width-100vw-52 flex-row flex-center flex-between margin-top-40 margin-top-52">
+                <div class="process-trans width-100vw-52 flex-row margin-top-16">
+                    <img class="rect-20 transform-90" src="../../themes/images/mask/icon_next.png"/>
+                </div>
+                <div class="width-100vw-52 flex-row flex-center flex-between margin-top-16">
                     <img src="../../themes/images/mask/img_process4.png" class="rect-56"/>
                     <img class="rect-20 transform-180" src="../../themes/images/mask/icon_next.png"/>
                     <img src="../../themes/images/mask/img_process5.png" class="rect-56"/>
@@ -102,7 +105,6 @@
                     <span class="subtitle-gray">订单生产</span>
                     <span class="subtitle-gray">合同签订</span>
                 </div>
-                <img class="rect-20 transform-90" src="../../themes/images/mask/icon_next.png"/>
             </div>
             <div class="mask-detail flex-column">
                 <div class="team-title flex-row margin-l-r-28">
@@ -198,8 +200,13 @@ export default {
     },
     methods: {
         getModeShowRect() {
-            let width = this.screenWidth - 56 * window.devicePixelRatio
-            let height = width * 523 / 319
+            let width = parseInt(this.screenWidth - 56 * window.devicePixelRatio)
+            let height = parseInt(width * 523 / 319)
+            return `width:${width}px;height:${height}px`
+        },
+        getModeTitleRect() {
+            let width = parseInt(this.screenWidth - 32 * window.devicePixelRatio)
+            let height = parseInt(width * 80 / 343)
             return `width:${width}px;height:${height}px`
         },
         getTeamShowRect() {
@@ -402,6 +409,7 @@ export default {
             background-size: 100%;
             width: 100%;
             padding-bottom: 80px;
+            flex-shrink: 0;
 
             .mode-logo {
                 width: 85px;
@@ -409,8 +417,6 @@ export default {
             }
 
             .mode-title {
-                width: calc(100vw - 32px);
-                height: 80px;
                 margin-top: 8px;
             }
 
@@ -467,6 +473,7 @@ export default {
             background-size: 100% 100%;
             width: 100%;
             padding-bottom: 24px;
+            flex-shrink: 0;
 
             .supply-title {
                 margin-top: 56px;
@@ -504,11 +511,11 @@ export default {
             position: relative;
             width: 100%;
             padding-bottom: 80px;
+            flex-shrink: 0;
 
-            > img {
-                position: absolute;
-                right: 69px;
-                top: 79px;
+            .process-trans {
+                justify-content: flex-end;
+                margin-right: 18px;
             }
         }
 
@@ -516,6 +523,7 @@ export default {
             background: white;
             width: 100%;
             padding: 56px 0 48px 0;
+            flex-shrink: 0;
 
             .team-title {
                 justify-content: space-between;
@@ -584,6 +592,7 @@ export default {
             align-items: flex-end;
             padding: 56px 0 80px 0;
             color: white;
+            flex-shrink: 0;
             .mask-title {
                 width: calc(100vw - 56px);
             }
@@ -610,6 +619,7 @@ export default {
 
         .mask-cooperation {
             padding: 56px 26px 125px 26px;
+            flex-shrink: 0;
             .cooperation-image {
                 border: solid 1px @color-c7;
                 border-radius: 8px;
