@@ -8,10 +8,10 @@
                 <img class="mode-logo" src="../../themes/images/mask/alienmade_logo@2x.png"/>
                 <img class="mode-title" src="../../themes/images/mask/title_customized@2x.png"/>
                 <div class="mode-samples">
-                    <img src="../../themes/images/mask/img_word_white@2x.png"/>
-                    <img class="img-margin-left" src="../../themes/images/mask/img_word_black@2x.png"/>
-                    <img class="img-margin-top" src="../../themes/images/mask/img_tiger.png"/>
-                    <img class="img-margin-top img-margin-left" src="../../themes/images/mask/img_marmot.png"/>
+                    <img :style="getRoundRect()" src="../../themes/images/mask/img_word_white@2x.png"/>
+                    <img :style="getRoundRect()" class="img-margin-left" src="../../themes/images/mask/img_word_black@2x.png"/>
+                    <img :style="getRoundRect()" class="img-margin-top" src="../../themes/images/mask/img_tiger.png"/>
+                    <img :style="getRoundRect()" class="img-margin-top img-margin-left" src="../../themes/images/mask/img_marmot.png"/>
                 </div>
                 <img src="../../themes/images/mask/pic_model@2x.png" :style="getModeShowRect()"/>
             </div>
@@ -65,10 +65,10 @@
                     <span class="data">300W+</span>
                 </div>
                 <div class="mode-samples">
-                    <img src="../../themes/images/mask/img_supply_chain1.png"/>
-                    <img class="img-margin-left" src="../../themes/images/mask/img_supply_chain2.png"/>
-                    <img class="img-margin-top" src="../../themes/images/mask/img_supply_chain3.png"/>
-                    <img class="img-margin-top img-margin-left" src="../../themes/images/mask/img_supply_chain4.png"/>
+                    <img :style="getRoundRect()" src="../../themes/images/mask/img_supply_chain1.png"/>
+                    <img :style="getRoundRect()" class="img-margin-left" src="../../themes/images/mask/img_supply_chain2.png"/>
+                    <img :style="getRoundRect()" class="img-margin-top" src="../../themes/images/mask/img_supply_chain3.png"/>
+                    <img :style="getRoundRect()" class="img-margin-top img-margin-left" src="../../themes/images/mask/img_supply_chain4.png"/>
                 </div>
             </div>
             <div class="mask-process flex-column flex-center">
@@ -116,13 +116,13 @@
                 </div>
                 <span class="describe margin-top-16 margin-l-r-28">Product details <br>Subtlety is also superior</span>
                 <div class="detail-show flex-row margin-top-40 flex-between margin-l-r-36">
-                    <div class="detail-show-item flex-column flex-center">
-                        <img src="../../themes/images/mask/img_detail_nose.png"/>
+                    <div class="detail-show-item flex-column flex-center" :style="getDetailItemRect()">
+                        <img :style="getDetailItemImageRect()" src="../../themes/images/mask/img_detail_nose.png"/>
                         <span class="show-item-title">鼻梁处软骨塑形<br>贴合面部</span>
                         <span class="show-item-subtitle">Nasal cartilage<br>Fit to the face</span>
                     </div>
-                    <div class="detail-show-item flex-column flex-center">
-                        <img src="../../themes/images/mask/img_detail_material.png"/>
+                    <div class="detail-show-item flex-column flex-center" :style="getDetailItemRect()">
+                        <img :style="getDetailItemImageRect()" src="../../themes/images/mask/img_detail_material.png"/>
                         <span class="show-item-title">婴儿级面料<br>完全无敏</span>
                         <span class="show-item-subtitle">Baby fabric<br>Skin-friendlye</span>
                     </div>
@@ -170,9 +170,9 @@
                     <i class="divider-right"/>
                 </div>
                 <div class="cooperation-width flex-row flex-between margin-top-35">
-                    <img class="cooperation-image" src="../../themes/images/mask/img_st_john.png"/>
-                    <img class="cooperation-image" src="../../themes/images/mask/img_wolford.png"/>
-                    <img class="cooperation-image" src="../../themes/images/mask/img_more.png"/>
+                    <img class="cooperation-image" :style="getCooperationImageRect()" src="../../themes/images/mask/img_st_john.png"/>
+                    <img class="cooperation-image" :style="getCooperationImageRect()" src="../../themes/images/mask/img_wolford.png"/>
+                    <img class="cooperation-image" :style="getCooperationImageRect()" src="../../themes/images/mask/img_more.png"/>
                 </div>
                 <div class="cooperation-width flex-row flex-between margin-top-7">
                     <span class="cooperation-name">ST.JOHN</span>
@@ -221,6 +221,23 @@ export default {
             this.$router.push({
                 path: '/mask/intention'
             })
+        },
+        getRoundRect() {
+            let width = parseInt((this.screenWidth - 73 * window.devicePixelRatio) / 2)
+            return `width:${width}px;height:${width}px`
+        },
+        getDetailItemRect() {
+            let width = parseInt((this.screenWidth - 90 * window.devicePixelRatio) / 2)
+            return `width:${width}px`
+        },
+        getDetailItemImageRect() {
+            let width = parseInt((this.screenWidth - 90 * window.devicePixelRatio) / 2)
+            return `width:${width}px;height:${width}px`
+        },
+        getCooperationImageRect() {
+            let width = parseInt((this.screenWidth - 72 * window.devicePixelRatio) / 3)
+            let height = parseInt(width * 74 / 100)
+            return `width:${width}px;height:${height}px`
         }
     },
     activated() {
@@ -314,15 +331,11 @@ export default {
 
     .mode-samples {
         flex-wrap: wrap;
+        justify-content: space-between;
         margin: 40px 28px 56px 28px;
 
-        > img {
-            width: 150px;
-            height: 150px;
-        }
-
         .img-margin-left {
-            margin-left: 16px;
+            margin-left: 17px;
         }
 
         .img-margin-top {
@@ -598,8 +611,6 @@ export default {
         .mask-cooperation {
             padding: 56px 26px 125px 26px;
             .cooperation-image {
-                width: 100px;
-                height: 74px;
                 border: solid 1px @color-c7;
                 border-radius: 8px;
             }
