@@ -1,6 +1,6 @@
 <template>
    <layout-view>
-   <c-header slot="header" :left-arrow="true">
+   <c-header class="my-header" slot="header" :left-arrow="true">
        <div slot="title">填写定制信息</div>
    </c-header>
 
@@ -78,9 +78,22 @@
 
         <div class="choose_photo">
             <p>设计图上传<span>(选填)</span></p>
-            <div class="photo-choose"  >
-                <img :src="choose_picture" alt="">
-            </div>
+
+            <van-grid class="pictures" :border="false" :column-num="3" :gutter="8">
+                <van-grid-item v-for="(img,index) in designPictures" :key="index" v-show="designPictures.length != 0">
+                    <img class="photo_item" :src="img" alt="">
+                    <img class="photo_delete" :src="deletePic" alt="" @click="deletePhoto(img)">
+                </van-grid-item>
+                <van-grid-item>
+                    <div class="choose_content">
+                        <div class="photo-choose"  >
+                            <img :src="choose_picture" alt="">
+                        </div>
+                        <input ref="inputer" type="file" @change="choosePhoto" accept="image/jpg,image/png,image/jpeg" name="imgUrls" multiple>
+                    </div>
+                </van-grid-item>
+            </van-grid>
+
         </div>
 
     </div>
@@ -92,21 +105,26 @@
 </template>
 
 <script>
-import { Field, Dialog } from 'vant'
+import { Field, Dialog, Grid, GridItem } from 'vant'
 import utils from 'utils'
 export default {
     components: {
-        Field
+        Field,
+        [Grid.name]: Grid,
+        [GridItem.name]: GridItem
     },
     data () {
         return {
             choose_picture: require('../../themes/images/groupGoods/icon_choose_camera@3x.png'),
+            deletePic: require('../../themes/images/app/control_delete_blue@3x.png'),
             userName: '',
             userPhone: '',
             purchaseNum: '',
             purchaseUse: '',
             postName: '',
             companyName: '',
+            designPictures: [],
+            pictureUrls: [],
 
             phoneFormartResult: false,
             userNameFormartResult: false,
@@ -171,6 +189,56 @@ export default {
                 path: '/mask/purchaseUse' 
             })
         },
+        imgPreview (file) {
+            // 创建一个reader
+            let reader = new FileReader();
+            // 将图片将转成 base64 格式
+            reader.readAsDataURL(file);
+            // 读取成功后的回调
+            reader.onload = function () {
+                console.log('result: ',reader.result)
+                return reader.result
+            }
+            
+        },
+        uploadPicture(files) {
+            utils.upload(files).then(result => {
+                this.pictureUrls = this.pictureUrls.concat(result)
+                console.log('pictureUrls: ',this.pictureUrls)
+                // this.$toast('上传成功')
+                // Toast.clear()
+            }).catch(() => {
+                // this.$toast('上传图片失败')
+            })
+        },
+        choosePhoto(e) {
+            let inputDOM = this.$refs['inputer']
+            // 通过DOM取文件数据
+            this.files  = inputDOM.files;
+            if (this.files.length > 0) {
+                this.files.forEach(element => {
+                    let _this = this
+                    let size = Math.floor(element.size / 1024);
+                    console.log('size: ',size)
+                    if (size > 1000) {
+                        this.$toast('所选图片不能大于1M')
+                        return false 
+                    }
+                    let reader = new FileReader()
+                    reader.readAsDataURL(element)
+                    reader.onload = function () {
+                        _this.uploadPicture([reader.result])
+                        _this.designPictures = _this.designPictures.concat(reader.result)
+                    }
+                });
+            }
+        },
+        deletePhoto(img) {
+            let index = this.designPictures.indexOf(img)
+            this.designPictures.splice(index,1)
+            console.log(this.designPictures)
+            this.pictureUrls.splice(index,1)
+        },
         // 确定提交 
         commitForm() {
             if (this.phoneFormartResult & this.userNameFormartResult & this.postFormartResult & this.companyFormartResult & this.purchaseUse !== '' & this.purchaseNum !== '') {
@@ -181,6 +249,9 @@ export default {
                     jobName: this.postName,
                     companyName: this.companyName,
                     used: this.purchaseUse
+                }
+                if (this.pictureUrls.length > 0) {
+                    params.imgUrl = this.pictureUrls.join(',')
                 }
                 
                 this.$api.deposit.createMaskIntention(params).then(res => {
@@ -270,6 +341,21 @@ export default {
 }
 </script>
 
+<style lang="less">
+.content {
+    .van-field__control {
+        &::-webkit-input-placeholder {
+            font-size:14px;
+            font-weight:500;
+            color:@color-c4;
+        }
+    }
+    .van-grid-item__content {
+        padding: 0;
+    }
+}
+</style>
+
 <style lang='less' scoped>
 .my-header {
   position: relative;
@@ -285,7 +371,7 @@ export default {
 .content {
     overflow-y: scroll;
     // overflow-x:hidden;
-    // height: 80%;
+    height: 89%;
     margin: 16px 0;
     > p {
         margin: 0 16px 4px;
@@ -359,15 +445,45 @@ export default {
                 line-height:16px;
             }
         }
-        .photo-choose {
+        .pictures {
+            // background: lightgray;
             margin-top: 12px;
-            width:109px;
-            height:109px;
-            background:rgba(244,245,247,1);
-            border-radius:4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: relative;
+            .photo_item {
+                width: calc(33.33vw - 16px);
+                height: calc(33.33vw - 16px);
+                object-fit: cover;
+            }
+            .photo_delete {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                top:0;
+                right: 3px;
+            }
+        }
+        .choose_content {
+            position: relative;
+            .photo-choose {
+                width: calc(33.33vw - 16px);
+                height: calc(33.33vw - 16px);
+                background:rgba(244,245,247,1);
+                border-radius:4px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 100;
+            }
+            > input {
+                position: absolute;
+                width: calc(33.33vw - 16px);
+                height: calc(33.33vw - 16px);
+                top: 0;
+                font-size: 0;
+            }
+            input::-webkit-file-upload-button {
+                font-size: 0;
+            }
         }
     }
 
