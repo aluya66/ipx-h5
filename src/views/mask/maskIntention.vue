@@ -14,7 +14,7 @@
             v-model="userName"
             :border="false"
             placeholder="请输入您的姓名"
-            maxlength="10"
+            maxlength="20"
             :error="showUserNameError"
             @blur="handleVerifyUserName"
             />
@@ -61,7 +61,7 @@
             v-model="companyName"
             :border="false"
             placeholder="请输入您的公司名称"
-            maxlength="20"
+            maxlength="50"
             :error="showCompanyNameError"
             @blur="handleVerifyUserName"
             />
@@ -169,7 +169,6 @@ export default {
         },
         handleVerifyPhone () {
             window.scroll(0, 0)
-            this.handleBottom = '0'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
                 this.showPhoneError = true
@@ -177,7 +176,6 @@ export default {
         },
         handleVerifyUserName () {
             window.scroll(0, 0)
-            this.handleBottom = '0'
         },
         changeBuyNumber() {
             this.$router.push({
@@ -241,7 +239,23 @@ export default {
         },
         // 确定提交 
         commitForm() {
-            if (this.phoneFormartResult & this.userNameFormartResult & this.postFormartResult & this.companyFormartResult & this.purchaseUse !== '' & this.purchaseNum !== '') {
+            if (!this.phoneFormartResult) {
+                this.$toast('手机号码填写有误')
+                return
+            }
+            if (!this.userNameFormartResult) {
+                this.$toast('联系人填写有误')
+                return
+            }
+            if (!this.postFormartResult) {
+                this.$toast('岗位名称填写有误')
+                return
+            }
+            if (!this.companyFormartResult) {
+                this.$toast('公司名称填写有误')
+                return
+            }
+            if (this.userPhone !== '' & this.userName !== ''  & this.this.postName !=='' & this.companyName !=='' & this.purchaseUse !== '' & this.purchaseNum !== '') {
                 const params = {
                     mobile: this.userPhone,
                     realName: this.userName,
