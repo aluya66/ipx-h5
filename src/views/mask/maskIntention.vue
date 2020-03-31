@@ -425,7 +425,7 @@ export default {
             position: relative;
             width: calc(100vw - 104px);
             height: 44px;
-            border-radius: 4px;
+            border-radius: 8px;
             background-color: @color-c8;
             margin-top: 16px;
             font-size: 14px;
