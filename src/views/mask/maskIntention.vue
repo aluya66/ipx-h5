@@ -79,12 +79,12 @@
         <div class="choose_photo">
             <p>设计图上传<span>(选填)</span></p>
 
-            <van-grid class="pictures" :border="false" :column-num="3" :gutter="8">
-                <van-grid-item v-for="(img,index) in designPictures" :key="index" v-show="designPictures.length != 0">
+            <van-grid class="pictures" :border="false" :column-num="3" :gutter="8" style="padding-left: 0;">
+                <van-grid-item v-for="(img,index) in designPictures" :key="index" v-show="designPictures.length != 0" style="padding-bottom: 8px;">
                     <img class="photo_item" :src="img" alt="">
                     <img class="photo_delete" :src="deletePic" alt="" @click="deletePhoto(img)">
                 </van-grid-item>
-                <van-grid-item>
+                <van-grid-item style="padding-bottom: 8px;">
                     <div class="choose_content">
                         <div class="photo-choose"  >
                             <img :src="choose_picture" alt="">
@@ -353,6 +353,11 @@ export default {
     .van-grid-item__content {
         padding: 0;
     }
+    .pictures {
+        // .van-grid {
+        //     padding-left: 0px;
+        // }
+    }
 }
 </style>
 
@@ -452,6 +457,7 @@ export default {
             .photo_item {
                 width: calc(33.33vw - 16px);
                 height: calc(33.33vw - 16px);
+                border-radius:4px;
                 object-fit: cover;
             }
             .photo_delete {
