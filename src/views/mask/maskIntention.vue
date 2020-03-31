@@ -102,18 +102,29 @@
 
     </div>
 
-        <div class="footview" :style="getBottomOffset(0)">
+        <!-- <div class="footview" :style="getBottomOffset(0)">
             <button @click="commitForm">确定</button>
-        </div>
+        </div> -->
+
+        <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
+            <template slot="footerContain">
+                <div class="footer-view">
+                    <section :class='["section-common","button-select"]' @click="commitForm">确定</section>
+                </div>
+            </template>
+        </fixed-view>
+
    </layout-view>
 </template>
 
 <script>
 import { Field, Dialog, Grid, GridItem } from 'vant'
+import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
 export default {
     components: {
         Field,
+        FixedView,
         [Grid.name]: Grid,
         [GridItem.name]: GridItem
     },
@@ -517,22 +528,36 @@ export default {
     }
 
 }
-
-    .footview {
-        // position: absolute;
-        // margin: 0 16px 5px;
-        bottom: 0;
-        position: fixed;
-        left: 16px;
-        margin-bottom: 5px;
-        > button {
-            width: calc(100vw - 32px);
-            height:50px;
-            background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-            border-radius:25px;
+.footer-shadow {
+    border-radius:12px 12px 0px 0px;
+}
+.footer-view {
+        margin: 5px 20px;
+        width: calc(100vw - 32px);
+        .section-common {
             font-size:18px;
             font-weight:bold;
-            color:rgba(255,255,255,1);
+            line-height:22px;
+        }
+        .button-select {
+            .btn-select(calc(100vw - 32px),50px,true);
         }
     }
+    // .footview {
+    //     // position: absolute;
+    //     // margin: 0 16px 5px;
+    //     bottom: 0;
+    //     position: fixed;
+    //     left: 16px;
+    //     margin-bottom: 5px;
+    //     > button {
+    //         width: calc(100vw - 32px);
+    //         height:50px;
+    //         background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
+    //         border-radius:25px;
+    //         font-size:18px;
+    //         font-weight:bold;
+    //         color:rgba(255,255,255,1);
+    //     }
+    // }
 </style>
