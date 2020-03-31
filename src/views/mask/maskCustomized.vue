@@ -569,14 +569,14 @@ export default {
                         font-size: 12px;
                         text-align: center;
                         line-height: 16px;
-                        margin-top: 4px;
+                        margin-top: 8px;
                         color: rgba(255, 255, 255, 1);
                     }
 
                     .show-item-subtitle {
                         font-size: 9px;
                         font-weight: 300;
-                        margin-top: 8px;
+                        margin-top: 6px;
                         text-align: center;
                         color: rgba(255, 255, 255, 1);
                         line-height: 14px;
