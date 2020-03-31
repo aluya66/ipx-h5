@@ -44,12 +44,12 @@
                     <i class="divider-left"/>
                     <i class="divider-right"/>
                 </div>
-                <div class="supply-days flex-row margin-top-31">
+                <div class="flex-row supply-days margin-top-31">
                     <span class="data">3天</span>
-                    <span class="describe">设计打样  </span>
-                    <span class="data">7天</span>
-                    <span class="describe">交付入仓  </span>
-                    <span class="data">3天</span>
+                    <span class="describe">设计打样</span>
+                    <span class="margin-left-8 data">7天</span>
+                    <span class="describe">交付入仓</span>
+                    <span class="margin-left-8 data">3天</span>
                     <span class="describe">快速翻单</span>
                 </div>
                 <div class="supply-days flex-row margin-top-10">
@@ -136,7 +136,7 @@
                     <span class="title-white">滤芯优势</span>
                 </div>
                 <img class="percent margin-top-24  margin-l-r-28" src="../../themes/images/mask/img_advantage_percent.png"/>
-                <div class="yellow-divider flex-row  margin-l-r-28">
+                <div class="yellow-divider flex-row  margin-l-r-28 margin-top-important-16">
                     <i class="divider-left"/>
                     <i class="divider-right"/>
                 </div>
@@ -146,7 +146,7 @@
                 <p class="margin-top-16  margin-l-r-28">
                     经过权威机构检测证明，滤阻滤效高达98.7%。
                 </p>
-                <img class="filter" src="../../themes/images/mask/img_filter.png" :style="getFilterShowRect()"/>
+                <img class="margin-top-7" src="../../themes/images/mask/img_filter.png" :style="getFilterShowRect()"/>
                 <div class="margin-top-24 flex-row flex-between mask-title margin-l-r-28">
                     <div class="mask-circle flex-column">
                         新材料
@@ -248,6 +248,10 @@ export default {
 
     .flex-between {
         justify-content: space-between;
+    }
+
+    .margin-left-8 {
+        margin-left: 8px;
     }
 
     .margin-top-2 {
@@ -468,8 +472,7 @@ export default {
             }
 
             .supply-days {
-                align-items: end;
-                line-height: 20px;
+                align-items: flex-end;
                 color: white;
 
                 .data {
@@ -616,6 +619,10 @@ export default {
 
     .width-100vw-52 {
         width: calc(100vw - 104px);
+    }
+
+    .margin-top-important-16 {
+        margin-top: 16px !important;
     }
 
     .yellow-divider {

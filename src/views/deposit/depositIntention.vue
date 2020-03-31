@@ -198,7 +198,7 @@ export default {
         },
         chooseStyle() { // 选择风格
             this.$router.push({
-                path: '/chooseBusiStyle' 
+                path: '/chooseBusiStyle'
             })
         },
         commitForm() { // 提交
