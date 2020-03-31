@@ -224,10 +224,10 @@ export default {
                         this.$toast('所选图片不能大于1M')
                         return false 
                     }
+                    _this.uploadPicture([element])
                     let reader = new FileReader()
                     reader.readAsDataURL(element)
                     reader.onload = function () {
-                        _this.uploadPicture([reader.result])
                         _this.designPictures = _this.designPictures.concat(reader.result)
                     }
                 });
@@ -353,11 +353,11 @@ export default {
     .van-grid-item__content {
         padding: 0;
     }
-    .pictures {
+    // .pictures {
         // .van-grid {
         //     padding-left: 0px;
         // }
-    }
+    // }
 }
 </style>
 
