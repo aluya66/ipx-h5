@@ -91,7 +91,9 @@
                     <span class="subtitle-gray">口罩打样</span>
                 </div>
                 <div class="process-trans width-100vw-52 flex-row margin-top-16">
-                    <img class="rect-20 transform-90" src="../../themes/images/mask/icon_next.png"/>
+                    <div>
+                        <img class="rect-20 transform-90" src="../../themes/images/mask/icon_next.png"/>
+                    </div>
                 </div>
                 <div class="width-100vw-52 flex-row flex-center flex-between margin-top-16">
                     <img src="../../themes/images/mask/img_process4.png" class="rect-56"/>
@@ -116,7 +118,7 @@
                     <i class="divider-left"/>
                     <i class="divider-right"/>
                 </div>
-                <span class="describe margin-top-16 margin-l-r-28">Product details <br>Subtlety is also superior</span>
+                <span class="describe margin-top-16 margin-l-r-28">PRODUCT DETAILS <br>SUBTLETY IS ALSO SUPERIOR</span>
                 <div class="detail-show flex-row margin-top-40 flex-between margin-l-r-36">
                     <div class="detail-show-item flex-column flex-center" :style="getDetailItemRect()">
                         <img :style="getDetailItemImageRect()" src="../../themes/images/mask/img_detail_nose.png"/>
@@ -502,6 +504,7 @@ export default {
 
                 .describe {
                     font-size: 12px;
+                    line-height: 14px;
                 }
             }
         }
@@ -515,7 +518,10 @@ export default {
 
             .process-trans {
                 justify-content: flex-end;
-                margin-right: 18px;
+                >div {
+                    width: 56px;
+                    text-align: center;
+                }
             }
         }
 
@@ -544,8 +550,6 @@ export default {
                 font-weight: 100;
                 color: rgba(138, 140, 153, 1);
                 line-height: 14px;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
             }
 
             .detail-show {
