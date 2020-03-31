@@ -153,11 +153,7 @@ export default {
         }
     },
     created() {
-        this.purchaseNum = ''
-        this.purchaseUse = ''
-        utils.setStore('purchaseNumber', '')
-        utils.setStore('purchaseUse', '')
-        this.scrollTop()
+        this.resetData()
     },
     activated() {
         this.purchaseNum = utils.getStore('purchaseNumber')
@@ -167,20 +163,17 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        scrollTop() {
-            let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-            if (!isIos) {
-                window.onresize = () => {
-                    window.setTimeout(function() {
-                        if ('scrollIntoView' in document.activeElement) {
-                            window.scroll(0, 0)
-                            document.getElementById('footview').scrollIntoView(false)
-                        } else {
-                            document.activeElement.scrollIntoViewIfNeeded()
-                        }
-                    }, 100)
-                }
-            }
+        resetData() {
+            utils.setStore('purchaseNumber', '')
+            utils.setStore('purchaseUse', '')
+            this.userName = ''
+            this.userPhone = ''
+            this.purchaseNum = ''
+            this.purchaseUse = ''
+            this.postName = ''
+            this.companyName = ''
+            this.designPictures = []
+            this.pictureUrls = []
         },
         handleVerifyPhone () {
             window.scroll(0, 0)
@@ -288,6 +281,7 @@ export default {
                         message: '您的意向已收到！请耐心等待客服人员来电沟通哦～',
                         confirmButtonText: '我知道了'
                     }).then(() => {
+                        this.resetData()
                         this.$router.go(-1)
                     })
                 }).catch(err => {
