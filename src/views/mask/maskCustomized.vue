@@ -452,20 +452,16 @@ export default {
 
             .team-data {
                 line-height: 20px;
-                font-weight: bold;
 
                 .blue {
                     color: @color-ec;
                     font-size: 14px;
+                    font-weight: bold;
                 }
 
                 .black {
                     color: @color-c1;
                     font-size: 12px;
-                }
-
-                .span1 {
-
                 }
             }
 
