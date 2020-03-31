@@ -134,7 +134,7 @@ export default {
             showPhoneError: false,
             showUserNameError: false,
             showPostNameError: false,
-            showCompanyNameError: false,
+            showCompanyNameError: false
         }
     },
     created() {
@@ -181,30 +181,29 @@ export default {
         },
         changeBuyNumber() {
             this.$router.push({
-                path: '/mask/purchaseNum' 
+                path: '/mask/purchaseNum'
             })
         },
         changeBuyUse() {
             this.$router.push({
-                path: '/mask/purchaseUse' 
+                path: '/mask/purchaseUse'
             })
         },
         imgPreview (file) {
             // 创建一个reader
-            let reader = new FileReader();
+            let reader = new FileReader()
             // 将图片将转成 base64 格式
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file)
             // 读取成功后的回调
             reader.onload = function () {
-                console.log('result: ',reader.result)
+                console.log('result: ', reader.result)
                 return reader.result
             }
-            
         },
         uploadPicture(files) {
             utils.upload(files).then(result => {
                 this.pictureUrls = this.pictureUrls.concat(result)
-                console.log('pictureUrls: ',this.pictureUrls)
+                console.log('pictureUrls: ', this.pictureUrls)
                 // this.$toast('上传成功')
                 // Toast.clear()
             }).catch(() => {
@@ -214,15 +213,15 @@ export default {
         choosePhoto(e) {
             let inputDOM = this.$refs['inputer']
             // 通过DOM取文件数据
-            this.files  = inputDOM.files;
+            this.files = inputDOM.files
             if (this.files.length > 0) {
                 this.files.forEach(element => {
                     let _this = this
-                    let size = Math.floor(element.size / 1024);
-                    console.log('size: ',size)
+                    let size = Math.floor(element.size / 1024)
+                    console.log('size: ', size)
                     if (size > 1000) {
                         this.$toast('所选图片不能大于1M')
-                        return false 
+                        return false
                     }
                     _this.uploadPicture([element])
                     let reader = new FileReader()
@@ -230,16 +229,16 @@ export default {
                     reader.onload = function () {
                         _this.designPictures = _this.designPictures.concat(reader.result)
                     }
-                });
+                })
             }
         },
         deletePhoto(img) {
             let index = this.designPictures.indexOf(img)
-            this.designPictures.splice(index,1)
+            this.designPictures.splice(index, 1)
             console.log(this.designPictures)
-            this.pictureUrls.splice(index,1)
+            this.pictureUrls.splice(index, 1)
         },
-        // 确定提交 
+        // 确定提交
         commitForm() {
             if (this.phoneFormartResult & this.userNameFormartResult & this.postFormartResult & this.companyFormartResult & this.purchaseUse !== '' & this.purchaseNum !== '') {
                 const params = {
@@ -253,7 +252,7 @@ export default {
                 if (this.pictureUrls.length > 0) {
                     params.imgUrl = this.pictureUrls.join(',')
                 }
-                
+
                 this.$api.deposit.createMaskIntention(params).then(res => {
                     Dialog.alert({
                         message: '您的意向已收到！请耐心等待客服人员来电沟通哦～',
@@ -337,7 +336,7 @@ export default {
                 this.showCompanyNameError = false
             }
         }
-    },
+    }
 }
 </script>
 
@@ -432,9 +431,8 @@ export default {
             }
         }
 
-
     }
-    
+
     .choose_photo {
         margin: 28px 16px 32px;
         > p {
@@ -492,7 +490,6 @@ export default {
             }
         }
     }
-
 
 }
 
