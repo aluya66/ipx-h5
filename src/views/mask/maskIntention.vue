@@ -17,6 +17,7 @@
             maxlength="20"
             :error="showUserNameError"
             @blur="handleVerifyUserName"
+            :clearable="true"
             />
         </div>
         <div class="info-input">
@@ -30,6 +31,7 @@
                 placeholder="请输入您的电话"
                 :error="showPhoneError"
                 @blur="handleVerifyPhone"
+                :clearable="true"
             />
         </div>
         <div class="info-input">
@@ -51,6 +53,7 @@
             maxlength="20"
             :error="showPostNameError"
             @blur="handleVerifyUserName"
+            :clearable="true"
             />
         </div>
 
@@ -64,6 +67,7 @@
             maxlength="50"
             :error="showCompanyNameError"
             @blur="handleVerifyUserName"
+            :clearable="true"
             />
         </div>
 
@@ -98,18 +102,29 @@
 
     </div>
 
-        <div class="footview" :style="getBottomOffset(0)">
+        <!-- <div class="footview" :style="getBottomOffset(0)">
             <button @click="commitForm">确定</button>
-        </div>
+        </div> -->
+
+        <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
+            <template slot="footerContain">
+                <div class="footer-view">
+                    <section :class='["section-common","button-select"]' @click="commitForm">确定</section>
+                </div>
+            </template>
+        </fixed-view>
+
    </layout-view>
 </template>
 
 <script>
 import { Field, Dialog, Grid, GridItem } from 'vant'
+import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
 export default {
     components: {
         Field,
+        FixedView,
         [Grid.name]: Grid,
         [GridItem.name]: GridItem
     },
@@ -238,23 +253,24 @@ export default {
         },
         // 确定提交
         commitForm() {
-            if (!this.phoneFormartResult) {
-                this.$toast('手机号码填写有误')
-                return
-            }
-            if (!this.userNameFormartResult) {
-                this.$toast('联系人填写有误')
-                return
-            }
-            if (!this.postFormartResult) {
-                this.$toast('岗位名称填写有误')
-                return
-            }
-            if (!this.companyFormartResult) {
-                this.$toast('公司名称填写有误')
-                return
-            }
-            if (this.userPhone !== '' & this.userName !== ''  & this.this.postName !=='' & this.companyName !=='' & this.purchaseUse !== '' & this.purchaseNum !== '') {
+            if (this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '' & this.purchaseUse !== '' & this.purchaseNum !== '') {
+                debugger
+                if (!this.phoneFormartResult) {
+                    this.$toast('手机号码填写有误')
+                    return
+                }
+                if (!this.userNameFormartResult) {
+                    this.$toast('联系人填写有误')
+                    return
+                }
+                if (!this.postFormartResult) {
+                    this.$toast('岗位名称填写有误')
+                    return
+                }
+                if (!this.companyFormartResult) {
+                    this.$toast('公司名称填写有误')
+                    return
+                }
                 const params = {
                     mobile: this.userPhone,
                     realName: this.userName,
@@ -285,6 +301,11 @@ export default {
     },
     watch: {
         userPhone (val) {
+            if (this.userPhone === '') {
+                this.phoneFormartResult = true
+                this.showPhoneError = false
+                return
+            }
             let phoneResult = utils.isPhone(this.userPhone)
             this.phoneFormartResult = phoneResult
             if (val.length === 11) {
@@ -307,7 +328,7 @@ export default {
             }
             let userNameResult = reg.test(val)
 
-            if (!userNameResult) {
+            if (!userNameResult & this.userName !== '') {
                 this.userNameFormartResult = false
                 this.showUserNameError = true
                 this.$toast('请输入中英文字符')
@@ -324,7 +345,7 @@ export default {
             }
             let postNameResult = reg.test(val)
 
-            if (!postNameResult) {
+            if (!postNameResult & this.postName !== '') {
                 this.postFormartResult = false
                 this.showPostNameError = true
                 this.$toast('请输入中英文字符')
@@ -341,7 +362,7 @@ export default {
             }
             let companyNameResult = reg.test(val)
 
-            if (!companyNameResult) {
+            if (!companyNameResult & this.companyName !== '') {
                 this.companyFormartResult = false
                 this.showCompanyNameError = true
                 this.$toast('请输入中英文字符')
@@ -415,7 +436,7 @@ export default {
             position: relative;
             width: calc(100vw - 104px);
             height: 44px;
-            border-radius: 4px;
+            border-radius: 8px;
             background-color: @color-c8;
             margin-top: 16px;
             font-size: 14px;
@@ -469,7 +490,7 @@ export default {
             .photo_item {
                 width: calc(33.33vw - 16px);
                 height: calc(33.33vw - 16px);
-                border-radius:4px;
+                border-radius:8px;
                 object-fit: cover;
             }
             .photo_delete {
@@ -485,8 +506,8 @@ export default {
             .photo-choose {
                 width: calc(33.33vw - 16px);
                 height: calc(33.33vw - 16px);
-                background:rgba(244,245,247,1);
-                border-radius:4px;
+                background: @color-c8;
+                border-radius:8px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -501,27 +522,42 @@ export default {
             }
             input::-webkit-file-upload-button {
                 font-size: 0;
+                display: none;
             }
         }
     }
 
 }
-
-    .footview {
-        // position: absolute;
-        // margin: 0 16px 5px;
-        bottom: 0;
-        position: fixed;
-        left: 16px;
-        margin-bottom: 5px;
-        > button {
-            width: calc(100vw - 32px);
-            height:50px;
-            background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-            border-radius:25px;
+.footer-shadow {
+    border-radius:12px 12px 0px 0px;
+}
+.footer-view {
+        margin: 5px 20px;
+        width: calc(100vw - 32px);
+        .section-common {
             font-size:18px;
             font-weight:bold;
-            color:rgba(255,255,255,1);
+            line-height:22px;
+        }
+        .button-select {
+            .btn-select(calc(100vw - 32px),50px,true);
         }
     }
+    // .footview {
+    //     // position: absolute;
+    //     // margin: 0 16px 5px;
+    //     bottom: 0;
+    //     position: fixed;
+    //     left: 16px;
+    //     margin-bottom: 5px;
+    //     > button {
+    //         width: calc(100vw - 32px);
+    //         height:50px;
+    //         background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
+    //         border-radius:25px;
+    //         font-size:18px;
+    //         font-weight:bold;
+    //         color:rgba(255,255,255,1);
+    //     }
+    // }
 </style>
