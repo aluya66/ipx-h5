@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { Search,Toast } from 'vant'
+import { Search, Toast } from 'vant'
 import utils from 'utils'
 import CList from 'components/c-list'
 import components from 'components'
@@ -196,12 +196,12 @@ export default {
         },
         setSuccessStatus() {
             this.isShow = true
-            Toast.clear();
+            Toast.clear()
             this.loading = false
         },
         setFailureStatus() {
             this.isShow = true
-            Toast.clear();
+            Toast.clear()
             this.pageNo -= 1
             this.finished = true
             this.loading = false
@@ -210,8 +210,8 @@ export default {
         handleRefresh() {
             this.isShow = false
             Toast.loading({
-            message: '加载中...',
-            forbidClick: true
+                message: '加载中...',
+                forbidClick: true
             })
             this.resetParams()
             if (this.menuIndex === 0) {
@@ -312,7 +312,6 @@ export default {
             }
             this.loading = true
             this.$api.groupGoods.searchGroupList(params).then(res => {
-                
                 if (res instanceof Array && res.length > 0) {
                     if (this.pageNo === 1) {
                         this.groupDatas = res

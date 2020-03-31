@@ -412,8 +412,8 @@ export default {
             })
             this.showList = false
             Toast.loading({
-            message: '加载中...',
-            forbidClick: true
+                message: '加载中...',
+                forbidClick: true
             })
             this.menuIndex = 1
             this.handleResetOffset()
@@ -650,8 +650,8 @@ export default {
     created() {
         this.showList = false
         Toast.loading({
-          message: '加载中...',
-          forbidClick: true
+            message: '加载中...',
+            forbidClick: true
         })
     },
     mounted() {},

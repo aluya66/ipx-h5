@@ -77,6 +77,7 @@
 import { Toast } from 'vant'
 import utils from 'utils'
 import html2canvas from 'html2canvas'
+// import CanvasRenderer from 'CanvasRenderer'
 
 export default {
     components: {
@@ -130,9 +131,9 @@ export default {
                 // if (add === '0') {
                 //     return parseFloat(product.tshPrice).toFixed(2)
                 // } else {
-                    let p = parseFloat(product.tshPrice) * parseFloat(add || '0') / 100 + parseFloat(product.tshPrice)
-                    let p2 = p.toFixed(2)
-                    return p2
+                let p = parseFloat(product.tshPrice) * parseFloat(add || '0') / 100 + parseFloat(product.tshPrice)
+                let p2 = p.toFixed(2)
+                return p2
                 // }
             }
         },
