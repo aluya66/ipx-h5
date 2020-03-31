@@ -186,13 +186,14 @@
             </div>
         </div>
 
-        <div class="customized-right-now" @click="goToCustomized()">
+        <div class="customized-right-now" @click="goToCustomized()" :style="getBottomOffset(0)">
             立即定制
         </div>
     </layout-view>
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     data() {
         return {
@@ -201,6 +202,9 @@ export default {
         }
     },
     methods: {
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
+        },
         getModeShowRect() {
             let width = parseInt(this.screenWidth - 56 * window.devicePixelRatio)
             let height = parseInt(width * 523 / 319)
@@ -622,7 +626,7 @@ export default {
         }
 
         .mask-cooperation {
-            padding: 56px 26px 125px 26px;
+            padding: 56px 26px 170px 26px;
             flex-shrink: 0;
             .cooperation-image {
                 border: solid 1px @color-c7;
