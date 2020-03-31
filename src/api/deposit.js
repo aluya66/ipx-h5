@@ -37,3 +37,12 @@ export const getIntentionStyle = params => Http.fetch(`${context}/v1/deposit/int
 export const createIntention = params => Http.fetch(`${context}/v1/deposit/intention`, params, {
     method: 'post'
 })
+
+/**
+ * 生成口罩意向单记录
+ * @param {*} params params数据对象
+ * @param {Object} mockFile 接口名称对应的mock数据文件
+ */
+export const createMaskIntention = params => Http.fetch(`${context}/v1/maskdeposit/add`, params, {
+    method: 'post'
+})
