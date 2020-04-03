@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { Field, Dialog, Grid, GridItem } from 'vant'
+import { Field, Grid, GridItem } from 'vant'
 import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
 import lottie from 'lottie-web'
@@ -162,7 +162,7 @@ export default {
 
             isAnimate: false,
             isAnimateEnd: false,
-            animateTips: '',
+            animateTips: ''
             // loopCount: 1
         }
     },
@@ -279,15 +279,15 @@ export default {
         // },
         resetLott(isEnd) {
             if (isEnd) {
-                this.animateTips = "已匹配设计师,"
+                this.animateTips = '已匹配设计师,'
             } else {
-                this.animateTips = "已收到定制需求，智能派单中..."
+                this.animateTips = '已收到定制需求，智能派单中...'
             }
             lottie.destroy()
             lottie.loadAnimation({
                 container: this.$refs.matching, // 容器节点
                 renderer: 'svg',
-                loop: isEnd ? false : true,
+                loop: !isEnd,
                 autoplay: true,
                 animationData: isEnd ? matchedJson : matchingJson
             })
