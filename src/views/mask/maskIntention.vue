@@ -101,13 +101,17 @@
         </div>
 
     </div>
-    <fixed-view class="footer-shadow" id="footview" :style="getBottomOffset(60)">
+    <!-- <fixed-view class="footer-shadow" id="footview" :style="getBottomOffset(60)">
         <template slot="footerContain">
             <div class="footer-view">
                 <section :class='["section-common","button-select"]' @click="commitForm">确定</section>
             </div>
         </template>
-    </fixed-view>
+    </fixed-view> -->
+
+    <div class="footview" :style="getBottomOffset(0)">
+        <button @click="commitForm">确定</button>
+    </div>
 
     <div class="animate_content" v-show="isAnimate">
         <div class="loadding_window">
@@ -192,30 +196,30 @@ export default {
             this.isAnimate = false
             this.isAnimateEnd = false
         },
-        // scrollTop() {
-        //     let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-        //     if (!isIos) {
-        //         window.onresize = () => {
-        //             window.setTimeout(function() {
-        //                 if ('scrollIntoView' in document.activeElement) {
-        //                     window.scroll(0, 0)
-        //                     document.getElementById('footview').scrollIntoView(false)
-        //                 } else {
-        //                     document.activeElement.scrollIntoViewIfNeeded()
-        //                 }
-        //             }, 100)
-        //         }
-        //     }
-        // },
+        scrollTop() {
+            let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+            if (!isIos) {
+                window.onresize = () => {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            window.scroll(0, 0)
+                            document.getElementById('footview').scrollIntoView(false)
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 100)
+                }
+            }
+        },
         handleVerifyPhone () {
-            // window.scroll(0, 0)
+            window.scroll(0, 0)
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
                 this.showPhoneError = true
             }
         },
         handleVerifyUserName () {
-            // window.scroll(0, 0)
+            window.scroll(0, 0)
         },
         changeBuyNumber() {
             this.$router.push({
@@ -618,6 +622,23 @@ export default {
     }
     .button-select {
         .btn-select(calc(100vw - 32px),50px,true);
+    }
+}
+.footview {
+    // position: absolute;
+    // margin: 0 16px 5px;
+    bottom: 0;
+    position: fixed;
+    left: 16px;
+    margin-bottom: 5px;
+    > button {
+        width: calc(100vw - 32px);
+        height:50px;
+        background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
+        border-radius:25px;
+        font-size:18px;
+        font-weight:bold;
+        color:rgba(255,255,255,1);
     }
 }
 
