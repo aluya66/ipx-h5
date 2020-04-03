@@ -202,7 +202,7 @@ export default {
     methods: {
         selectItem(product) {
             if (product.disabled) {
-                return 
+                return
             }
             product.isSelected = !product.isSelected
             if (product.isSelected) {
@@ -210,7 +210,7 @@ export default {
             } else {
                 let index = this.selecteProducts.indexOf(product)
                 if (index > -1) {
-                    this.selecteProducts.splice(index,1)
+                    this.selecteProducts.splice(index, 1)
                 }
             }
         },
@@ -309,7 +309,7 @@ export default {
                 this.seletedDetailsItem = seletedDetailsItem
                 this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
             }
-            let totalPrice = 0
+            // let totalPrice = 0
             // let groupProducts = []
             // const params = {
             //     groupGoodsId: this.groupDetail.groupGoodsId,
@@ -344,9 +344,9 @@ export default {
             //     })
         },
         goPay() {
-            if (this.selecteProducts.length == 0) {
+            if (this.selecteProducts.length === 0) {
                 this.$toast('请选择需要购买的商品')
-                return 
+                return
             }
             order.createOrder(
                 this.groupDetail.groupTitle,

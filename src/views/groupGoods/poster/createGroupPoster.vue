@@ -427,6 +427,7 @@ export default {
     .product-list {
         display: flex;
         flex-direction: row;
+        flex-wrap: nowrap;
         align-content: flex-start;
         padding: 16px 16px 16px 4px;
         margin: 12px 16px 0;

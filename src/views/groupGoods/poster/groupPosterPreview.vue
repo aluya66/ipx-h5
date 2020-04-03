@@ -77,6 +77,7 @@
 import { Toast } from 'vant'
 import utils from 'utils'
 import html2canvas from 'html2canvas'
+// import CanvasRenderer from 'CanvasRenderer'
 
 export default {
     components: {

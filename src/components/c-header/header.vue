@@ -139,6 +139,11 @@ export default create({
     background: url("../../themes/images/app/icon_nav_back_white@3x.png");
     .background-common(@f26);
   }
+  .van-icon-arrow-left:active {
+    // background: url("../../themes/images/app/icon_next20_white1@3x.png");
+    background: url("../../themes/images/app/icon_nav_back26_press@2x.png");
+    .background-common(@f26);
+  }
 }
 
 .van-icon-arrow-left {
@@ -146,6 +151,16 @@ export default create({
   height: @f26;
   // background: url("../../themes/images/icon_nav_gray1_def.png");
   background: url("../../themes/images/app/icon_nav_back1_def@3x.png");
+  .background-common(@f26);
+  &.van-icon-arrow-left:before {
+    content: "";
+  }
+}
+.van-icon-arrow-left:active {
+  width: @f26;
+  height: @f26;
+  // background: url("../../themes/images/icon_nav_gray1_def.png");
+  background: url("../../themes/images/app/icon_nav_back26_press@2x.png");
   .background-common(@f26);
   &.van-icon-arrow-left:before {
     content: "";
