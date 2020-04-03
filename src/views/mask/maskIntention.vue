@@ -129,7 +129,7 @@
 
 <script>
 import { Field, Grid, GridItem } from 'vant'
-import FixedView from '../common/bottomFixedView.vue'
+// import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
 import lottie from 'lottie-web'
 import matchingJson from '@/utils/matching.json'
@@ -137,7 +137,7 @@ import matchedJson from '@/utils/matched.json'
 export default {
     components: {
         Field,
-        FixedView,
+        // FixedView,
         [Grid.name]: Grid,
         [GridItem.name]: GridItem
     },
