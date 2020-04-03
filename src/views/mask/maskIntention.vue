@@ -18,6 +18,7 @@
             :error="showUserNameError"
             @blur="handleVerifyUserName"
             :clearable="true"
+            :adjust-position='true'
             />
         </div>
         <div class="info-input">
@@ -32,6 +33,7 @@
                 :error="showPhoneError"
                 @blur="handleVerifyPhone"
                 :clearable="true"
+                :adjust-position='true'
             />
         </div>
         <div class="info-input">
@@ -54,6 +56,7 @@
             :error="showPostNameError"
             @blur="handleVerifyUserName"
             :clearable="true"
+            :adjust-position='true'
             />
         </div>
 
@@ -67,6 +70,7 @@
             maxlength="50"
             :error="showCompanyNameError"
             @blur="handleVerifyUserName"
+            :adjust-position='true'
             :clearable="true"
             />
         </div>
@@ -425,32 +429,30 @@ export default {
         window.onresize = null
     },
     mounted() {
-        // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-        // if (!isIos) {
-        // window.onresize = () => {
-        //     alert(document.documentElement.clientHeight)
-        //     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-        //         window.setTimeout(function() {
-        //             if ('scrollIntoView' in document.activeElement) {
-        //                 document.activeElement.scrollIntoView()
-        //             } else {
-        //                 document.activeElement.scrollIntoViewIfNeeded()
-        //             }
-        //         }, 0)
-        //     }
-        // }
-
-        let winH = document.documentElement.clientHeight// 关键代码
-        // alert(winH)
-        window.addEventListener('resize', function () {
-            // alert(document.documentElement.clientHeight)
-            if (document.documentElement.clientHeight < winH) {
-                document.getElementById('footview').hide()
-            } else {
-                document.getElementById('footview').show()
+        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        if (!isIos) {
+        window.onresize = () => {
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                window.setTimeout(function() {
+                    if ('scrollIntoView' in document.activeElement) {
+                        document.activeElement.scrollIntoView()
+                    } else {
+                        document.activeElement.scrollIntoViewIfNeeded()
+                    }
+                }, 0)
             }
-        })
-        // }
+        }
+        // let winH = document.documentElement.clientHeight// 关键代码
+        // // alert(window)
+        // window.addEventListener('resize', function () {
+        //     // alert(document.documentElement.clientHeight)
+        //     if (document.documentElement.clientHeight < winH) {
+        //         document.getElementById('footview').hide()
+        //     } else {
+        //         document.getElementById('footview').show()
+        //     }
+        // })
+        }
     }
 }
 </script>
