@@ -295,7 +295,7 @@ export default {
         // },
         resetLott(isEnd) {
             if (isEnd) {
-                this.animateTips = '已匹配设计师,'
+                this.animateTips = '已匹配设计师'
             } else {
                 this.animateTips = '已收到定制需求，智能派单中...'
             }
