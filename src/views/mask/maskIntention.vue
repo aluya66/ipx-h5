@@ -284,19 +284,6 @@ export default {
             this.resetData()
             this.$router.go(-1)
         },
-        // oneByOne()
-        // {
-        //     let tips = document.getElementById('tips')
-        //     var screen = "已收到定制需求，智能派单中" + this.animateTips.substr(13, this.loopCount)
-        //     tips.innerHTML = screen
-        //     this.loopCount++
-        //     if (this.loopCount > 3) {
-        //         this.loopCount = 1
-        //     }
-        //     setTimeout(() => {
-        //         this.oneByOne()
-        //     }, 800)
-        // },
         resetLott(isEnd) {
             if (isEnd) {
                 this.animateTips = '已匹配设计师'
@@ -438,29 +425,32 @@ export default {
         window.onresize = null
     },
     mounted() {
-        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-        if (!isIos) {
-            // window.onresize = () => {
-            //     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-            //         window.setTimeout(function() {
-            //             if ('scrollIntoView' in document.activeElement) {
-            //                 document.activeElement.scrollIntoView()
-            //             } else {
-            //                 document.activeElement.scrollIntoViewIfNeeded()
-            //             }
-            //         }, 0)
-            //     }
-            // }
+        // let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        // if (!isIos) {
+        // window.onresize = () => {
+        //     alert(document.documentElement.clientHeight)
+        //     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        //         window.setTimeout(function() {
+        //             if ('scrollIntoView' in document.activeElement) {
+        //                 document.activeElement.scrollIntoView()
+        //             } else {
+        //                 document.activeElement.scrollIntoViewIfNeeded()
+        //             }
+        //         }, 0)
+        //     }
+        // }
 
-            var win_h = $(window).height()// 关键代码
-            window.addEventListener('resize', function () {
-                if ($(window).height() < win_h) {
-                    $('.footview').hide()
-                } else {
-                    $('.footview').show()
-                }
-            })
-        }
+        let winH = document.documentElement.clientHeight// 关键代码
+        // alert(winH)
+        window.addEventListener('resize', function () {
+            // alert(document.documentElement.clientHeight)
+            if (document.documentElement.clientHeight < winH) {
+                document.getElementById('footview').hide()
+            } else {
+                document.getElementById('footview').show()
+            }
+        })
+        // }
     }
 }
 </script>
