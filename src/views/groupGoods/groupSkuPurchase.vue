@@ -52,7 +52,7 @@
                         ¥<span>{{completeTotalPrice}}</span>
                     </div>
                     <div class="sale_price">
-                        <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
+                        <span class="price">¥<span>{{totalRetailPrice}}</span></span>
                         <span class="tip_title">建议零售价</span>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ export default {
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
             selectedNum: 0,
             // isAllSelected: false
-            totalPrice: 0
+            totalRetailPrice: 0
         }
     },
     mounted() {
@@ -201,15 +201,20 @@ export default {
         },
         completeTotalPrice() {
             let totalPrice = 0
+            let totalRetailPrice = 0
             this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.unablepay) {
+                if (!product.disabled) {
                     product.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
-                            totalPrice += skuItem.defaultSkuPrice * skuItem.num
+                            if (skuItem.entityStock > 0) {
+                                totalPrice += skuItem.defaultSkuPrice * skuItem.num
+                                totalRetailPrice += skuItem.skuRetailPrice * skuItem.num
+                            }
                         })
                     })
                 }
             })
+            this.totalRetailPrice = cash.changeFormat(totalRetailPrice)
             // this.totalPrice = cash.changeFormat(totalPrice)
             // groupDetail.totalPrice
             return cash.changeFormat(totalPrice)
@@ -295,46 +300,18 @@ export default {
             }
         },
         skuCommit(seletedDetailsItem) {
+            this.showSkuDialog = false
             // sku修改 确定
             if (seletedDetailsItem) {
                 this.seletedDetailsItem = seletedDetailsItem
                 this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
             }
-            // let totalPrice = 0
-            // let groupProducts = []
-            // const params = {
-            //     groupGoodsId: this.groupDetail.groupGoodsId,
-            //     name: this.groupDetail.name
-            // }
             this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
                 item.skuList.forEach((skuItem, skuIndex) => {
                     skuItem.num = skuItem.skuValue
-                    // let sku = {
-                    //     groupGoodsRecordId: skuItem.groupGoodsRecordId,
-                    //     num: skuItem.skuValue,
-                    //     productAtrNumber: this.seletedDetailsItem.productAtrNumber,
-                    //     productCode: this.seletedDetailsItem.productCode,
-                    //     productSkuCode: skuItem.productSkuCode,
-                    //     starasSkuCode: skuItem.starasSkuCode
-                    // }
-                    // groupProducts.push(sku)
                 })
             })
             this.groupGoodsRecords[this.seletedItemIndex] = this.seletedDetailsItem
-            this.completeTotalPrice()
-            this.showSkuDialog = false
-            // params.groupGoodsRecords = groupProducts
-            // this.$api.groupGoods
-            //     .updateGroupListDetail(params)
-            //     .then(res => {
-            //         if (res.code === 0) {
-            //             this.getGroupDetail()
-            //             this.$toast.success('已修改')
-            //         }
-            //     })
-            //     .catch(err => {
-            //         console.log(err)
-            //     })
         },
         goPay() {
             if (this.selecteProducts.length === 0) {
