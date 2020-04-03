@@ -109,7 +109,7 @@
         </template>
     </fixed-view> -->
 
-    <div class="footview" :style="getBottomOffset(0)">
+    <div class="footview" id="footview" :style="getBottomOffset(0)">
         <button @click="commitForm">确定</button>
     </div>
 
@@ -440,17 +440,26 @@ export default {
     mounted() {
         let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
         if (!isIos) {
-            window.onresize = () => {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                    window.setTimeout(function() {
-                        if ('scrollIntoView' in document.activeElement) {
-                            document.activeElement.scrollIntoView()
-                        } else {
-                            document.activeElement.scrollIntoViewIfNeeded()
-                        }
-                    }, 0)
+            // window.onresize = () => {
+            //     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+            //         window.setTimeout(function() {
+            //             if ('scrollIntoView' in document.activeElement) {
+            //                 document.activeElement.scrollIntoView()
+            //             } else {
+            //                 document.activeElement.scrollIntoViewIfNeeded()
+            //             }
+            //         }, 0)
+            //     }
+            // }
+
+            var win_h = $(window).height()// 关键代码
+            window.addEventListener('resize', function () {
+                if ($(window).height() < win_h) {
+                    $('.footview').hide()
+                } else {
+                    $('.footview').show()
                 }
-            }
+            })
         }
     }
 }
