@@ -117,7 +117,7 @@
         </template>
     </fixed-view> -->
 
-    <div class="footview" id="footview" >
+    <div class="footview" id="footview" :style="getBottomOffset(0)">
         <button @click="commitForm">确定</button>
     </div>
 
@@ -453,16 +453,6 @@ export default {
                 }, 0)
             }
         }
-        // let winH = document.documentElement.clientHeight// 关键代码
-        // // alert(window)
-        // window.addEventListener('resize', function () {
-        //     // alert(document.documentElement.clientHeight)
-        //     if (document.documentElement.clientHeight < winH) {
-        //         document.getElementById('footview').hide()
-        //     } else {
-        //         document.getElementById('footview').show()
-        //     }
-        // })
         }
     }
 }
