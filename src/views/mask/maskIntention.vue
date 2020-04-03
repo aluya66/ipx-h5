@@ -109,10 +109,15 @@
         </template>
     </fixed-view>
 
-    <div class="animate_content">
+    <div class="animate_content" v-show="isAnimate">
         <div class="loadding_window">
             <div class="loadding_animate" ref="matching"></div>
-            <p>已收到定制需求，智能派单中...</p>
+            <p id="tips" :style="isAnimateEnd ? 'margin-bottom: 0.04rem' : 'margin-bottom: 0.38rem'" >{{animateTips}}</p>
+            <div class="loadding_end" v-show="isAnimateEnd">
+                <p>可联系客服了解进度</p>
+                <section></section>
+                <button @click="dismiss">我知道了</button>
+            </div>
         </div>
     </div>
    </layout-view>
@@ -124,6 +129,7 @@ import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
 import lottie from 'lottie-web'
 import matchingJson from '@/utils/matching.json'
+import matchedJson from '@/utils/matched.json'
 export default {
     components: {
         Field,
@@ -152,21 +158,16 @@ export default {
             showPhoneError: false,
             showUserNameError: false,
             showPostNameError: false,
-            showCompanyNameError: false
+            showCompanyNameError: false,
+
+            isAnimate: false,
+            isAnimateEnd: false,
+            animateTips: '',
+            // loopCount: 1
         }
     },
     created() {
         this.resetData()
-    },
-    mounted() {
-        lottie.loadAnimation({
-            container: this.$refs.matching, // 容器节点
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: matchingJson
-        })
-        lottie.play()
     },
     activated() {
         this.purchaseNum = utils.getStore('purchaseNumber')
@@ -187,6 +188,8 @@ export default {
             this.companyName = ''
             this.designPictures = []
             this.pictureUrls = []
+            this.isAnimate = false
+            this.isAnimateEnd = false
         },
         handleVerifyPhone () {
             window.scroll(0, 0)
@@ -257,6 +260,38 @@ export default {
             console.log(this.designPictures)
             this.pictureUrls.splice(index, 1)
         },
+        dismiss() {
+            this.resetData()
+            this.$router.go(-1)
+        },
+        // oneByOne()
+        // {
+        //     let tips = document.getElementById('tips')
+        //     var screen = "已收到定制需求，智能派单中" + this.animateTips.substr(13, this.loopCount)
+        //     tips.innerHTML = screen
+        //     this.loopCount++
+        //     if (this.loopCount > 3) {
+        //         this.loopCount = 1
+        //     }
+        //     setTimeout(() => {
+        //         this.oneByOne()
+        //     }, 800)
+        // },
+        resetLott(isEnd) {
+            if (isEnd) {
+                this.animateTips = "已匹配设计师,"
+            } else {
+                this.animateTips = "已收到定制需求，智能派单中..."
+            }
+            lottie.destroy()
+            lottie.loadAnimation({
+                container: this.$refs.matching, // 容器节点
+                renderer: 'svg',
+                loop: isEnd ? false : true,
+                autoplay: true,
+                animationData: isEnd ? matchedJson : matchingJson
+            })
+        },
         // 确定提交
         commitForm() {
             if (this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '' & this.purchaseUse !== '' & this.purchaseNum !== '') {
@@ -290,13 +325,13 @@ export default {
                 }
 
                 this.$api.deposit.createMaskIntention(params).then(res => {
-                    Dialog.alert({
-                        message: '您的意向已收到！请耐心等待客服人员来电沟通哦～',
-                        confirmButtonText: '我知道了'
-                    }).then(() => {
-                        this.resetData()
-                        this.$router.go(-1)
-                    })
+                    this.isAnimate = true
+                    lottie.play()
+                    this.resetLott(false)
+                    setTimeout(() => {
+                        this.isAnimateEnd = true
+                        this.resetLott(true)
+                    }, 3000)
                 }).catch(err => {
                     console.log(err)
                 })
@@ -577,7 +612,28 @@ export default {
             font-weight: bold;
             color: @color-c1;
             line-height:22px;
-            margin-bottom: 38px;
+        }
+
+        .loadding_end {
+            > p {
+            font-size:16px;
+            font-weight: bold;
+            color: @color-c1;
+            line-height:22px;
+            margin-bottom: 12px;
+            }
+            > section {
+                height:0.5px;
+                background:linear-gradient(180deg,rgba(225,226,230,0) 0%,rgba(227,226,230,1) 0%,rgba(225,226,230,1) 100%);
+            }
+            > button {
+                height:50px;
+                border-radius:0px 0px 14px 14px;
+                font-size:17px;
+                font-weight:bold;
+                color:rgba(0,122,255,1);
+                line-height:24px;
+            }
         }
     }
 }
