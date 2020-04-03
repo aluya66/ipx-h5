@@ -629,7 +629,7 @@ export default {
     // position: absolute;
     // margin: 0 16px 5px;
     bottom: 0;
-    position: fixed;
+    position: absolute;
     left: 16px;
     margin-bottom: 5px;
     > button {
