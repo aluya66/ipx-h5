@@ -4,7 +4,7 @@
        <div slot="title">填写定制信息</div>
    </c-header>
 
-       <div class="content">
+    <div class="content">
         <p>请填写相关采购信息，确认提交后我们会尽快联系您</p>
 
         <div class="info-input">
@@ -101,19 +101,20 @@
         </div>
 
     </div>
+    <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
+        <template slot="footerContain">
+            <div class="footer-view">
+                <section :class='["section-common","button-select"]' @click="commitForm">确定</section>
+            </div>
+        </template>
+    </fixed-view>
 
-        <!-- <div class="footview" :style="getBottomOffset(0)">
-            <button @click="commitForm">确定</button>
-        </div> -->
-
-        <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
-            <template slot="footerContain">
-                <div class="footer-view">
-                    <section :class='["section-common","button-select"]' @click="commitForm">确定</section>
-                </div>
-            </template>
-        </fixed-view>
-
+    <div class="animate_content">
+        <div class="loadding_window">
+            <div class="loadding_animate" ref="matching"></div>
+            <p>已收到定制需求，智能派单中...</p>
+        </div>
+    </div>
    </layout-view>
 </template>
 
@@ -121,6 +122,8 @@
 import { Field, Dialog, Grid, GridItem } from 'vant'
 import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
+import lottie from 'lottie-web'
+import matchingJson from '@/utils/matching.json'
 export default {
     components: {
         Field,
@@ -154,6 +157,16 @@ export default {
     },
     created() {
         this.resetData()
+    },
+    mounted() {
+        lottie.loadAnimation({
+            container: this.$refs.matching, // 容器节点
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: matchingJson
+        })
+        lottie.play()
     },
     activated() {
         this.purchaseNum = utils.getStore('purchaseNumber')
@@ -526,32 +539,46 @@ export default {
     border-radius:12px 12px 0px 0px;
 }
 .footer-view {
-        margin: 5px 20px;
-        width: calc(100vw - 32px);
-        .section-common {
-            font-size:18px;
-            font-weight:bold;
-            line-height:22px;
+    margin: 5px 20px;
+    width: calc(100vw - 32px);
+    .section-common {
+        font-size:18px;
+        font-weight:bold;
+        line-height:22px;
+    }
+    .button-select {
+        .btn-select(calc(100vw - 32px),50px,true);
+    }
+}
+
+.animate_content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background:rgba(0,0,0,0.3);
+    text-align: center;
+    .loadding_window {
+        display: inline-block;
+        margin-top: calc(60vh - 200px);
+        width: calc(100vw - 105px);
+        background:rgba(255,255,255,0.8);
+        border-radius:14px;
+
+        .loadding_animate {
+            width: calc(100vw - 94px);
+            height: 176px;
         }
-        .button-select {
-            .btn-select(calc(100vw - 32px),50px,true);
+        > p {
+            margin-top: 2px;
+            font-size:16px;
+            font-weight: bold;
+            color: @color-c1;
+            line-height:22px;
+            margin-bottom: 38px;
         }
     }
-    // .footview {
-    //     // position: absolute;
-    //     // margin: 0 16px 5px;
-    //     bottom: 0;
-    //     position: fixed;
-    //     left: 16px;
-    //     margin-bottom: 5px;
-    //     > button {
-    //         width: calc(100vw - 32px);
-    //         height:50px;
-    //         background:linear-gradient(135deg,rgba(85,122,244,1) 0%,rgba(114,79,255,1) 100%);
-    //         border-radius:25px;
-    //         font-size:18px;
-    //         font-weight:bold;
-    //         color:rgba(255,255,255,1);
-    //     }
-    // }
+}
 </style>
