@@ -49,7 +49,7 @@
             <div class="footer-content" :style="getBottomOffset(0)">
                 <div class=" total-price" >
                     <div class="group_price">
-                        ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+                        ¥<span>{{totalPrice}}</span>
                     </div>
                     <div class="sale_price">
                         <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
@@ -102,8 +102,9 @@ export default {
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
             select_disable: require('@/themes/images/groupGoods/checkbox_disabled@3x.png'),
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
-            selectedNum: 0
+            selectedNum: 0,
             // isAllSelected: false
+            totalPrice: 0
         }
     },
     mounted() {
@@ -129,7 +130,7 @@ export default {
                 return {
                     ...item,
                     disabled: false,
-                    unablepay: true,
+                    unablepay: false,
                     isSelected: false
                 }
             })
@@ -164,6 +165,8 @@ export default {
                 if (value.productShelves === 0) {
                     value.disabled = true
                     value.unablepay = true
+
+                    this.completeTotalPrice()
                     return '商品已失效' // 下架 置灰
                 }
                 let batchNum = value.minBatchNum
@@ -186,10 +189,14 @@ export default {
                 if (stockAll === 0 || stockAll < batchNum) {
                     value.disabled = true
                     value.unablepay = true
+
+                    this.completeTotalPrice()
                     return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
                 }
                 if (!isEnough && stockAll >= batchNum) {
                     value.unablepay = true
+
+                    this.completeTotalPrice()
                     return '不足起订量，需调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
                 }
                 if (isChanged && isEnough) {
@@ -231,6 +238,21 @@ export default {
                 productCode: product.productCode
             }
             utils.postMessage('', params)
+        },
+        completeTotalPrice() {
+            let totalPrice = 0
+            this.groupGoodsRecords.forEach((product, index) => {
+                if (!product.unablepay) {
+                    product.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
+                            totalPrice += skuItem.defaultSkuPrice * skuItem.num
+                        })
+                    })
+                }
+            })
+            this.totalPrice = cash.changeFormat(totalPrice)
+            // groupDetail.totalPrice
+            // return cash.changeFormat(totalPrice)
         },
         openSku(item, index) {
             window.sa.track('IPX_WEB', {
@@ -278,31 +300,6 @@ export default {
                 })
             }
         },
-        getGroupDetail() {
-            // 获取组货详情列表
-            const params = {
-                groupGoodsId: this.groupDetail.groupGoodsId
-            }
-            this.$api.groupGoods.getGroupListDetail(params)
-                .then(res => {
-                    if (res.code === 0) {
-                        const { data } = res
-                        const { groupGoodsRecords } = data
-                        this.groupDetail = data
-                        this.groupGoodsRecords = groupGoodsRecords
-                        this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
-                            return {
-                                ...item,
-                                disabled: false,
-                                unablepay: true,
-                                isSelected: false
-                            }
-                        })
-                    }
-                }).catch(err => {
-                    console.log(err)
-                })
-        },
         skuCommit(seletedDetailsItem) {
             // sku修改 确定
             if (seletedDetailsItem) {
@@ -329,6 +326,8 @@ export default {
                     // groupProducts.push(sku)
                 })
             })
+            this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
+            this.completeTotalPrice()
             this.showSkuDialog = false
             // params.groupGoodsRecords = groupProducts
             // this.$api.groupGoods
