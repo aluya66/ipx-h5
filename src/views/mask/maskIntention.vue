@@ -633,6 +633,8 @@ export default {
                 font-weight:bold;
                 color:rgba(0,122,255,1);
                 line-height:24px;
+                background: none;
+                background-color: transparent;
             }
         }
     }
