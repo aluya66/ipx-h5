@@ -4,7 +4,7 @@
        <div slot="title">填写定制信息</div>
    </c-header>
 
-    <div class="content">
+    <div class="content" :style="sHeight">
         <p>请填写相关采购信息，确认提交后我们会尽快联系您</p>
 
         <div class="info-input">
@@ -17,6 +17,7 @@
             maxlength="20"
             :error="showUserNameError"
             @blur="handleVerifyUserName"
+            @focus="handlePosition"
             :clearable="true"
             :adjust-position='true'
             />
@@ -32,6 +33,7 @@
                 placeholder="请输入您的电话"
                 :error="showPhoneError"
                 @blur="handleVerifyPhone"
+                @focus="handlePosition"
                 :clearable="true"
                 :adjust-position='true'
             />
@@ -55,6 +57,7 @@
             maxlength="20"
             :error="showPostNameError"
             @blur="handleVerifyUserName"
+            @focus="handlePosition"
             :clearable="true"
             :adjust-position='true'
             />
@@ -70,6 +73,7 @@
             maxlength="50"
             :error="showCompanyNameError"
             @blur="handleVerifyUserName"
+            @focus="handlePosition"
             :adjust-position='true'
             :clearable="true"
             />
@@ -113,7 +117,7 @@
         </template>
     </fixed-view> -->
 
-    <div class="footview" id="footview" :style="getBottomOffset(0)">
+    <div class="footview" id="footview" :style="setposition">
         <button @click="commitForm">确定</button>
     </div>
 
@@ -170,13 +174,17 @@ export default {
 
             isAnimate: false,
             isAnimateEnd: false,
-            animateTips: ''
-            // loopCount: 1
+            animateTips: '',
+            sHeight:{
+               minHeight:window.screen.height + "px"
+            },  //设置当前最小高度为屏幕高度
+            setposition: 'position: fixed'
         }
     },
     created() {
         this.resetData()
-        this.scrollTop()
+        
+        //this.scrollTop()
     },
     activated() {
         this.purchaseNum = utils.getStore('purchaseNumber')
@@ -185,6 +193,9 @@ export default {
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        handlePosition() {
+            this.setposition = 'position: absolute'
         },
         resetData() {
             utils.setStore('purchaseNumber', '')
@@ -217,6 +228,7 @@ export default {
         },
         handleVerifyPhone () {
             window.scroll(0, 0)
+            this.setposition = 'position: fixed'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
                 this.showPhoneError = true
@@ -224,6 +236,7 @@ export default {
         },
         handleVerifyUserName () {
             window.scroll(0, 0)
+            this.setposition = 'position: fixed'
         },
         changeBuyNumber() {
             this.$router.push({
@@ -459,6 +472,7 @@ export default {
 
 <style lang="less">
 .content {
+    position: relative;
     .van-field__control {
         &::-webkit-input-placeholder {
             font-size:14px;
