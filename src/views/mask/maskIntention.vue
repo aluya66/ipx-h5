@@ -101,7 +101,7 @@
         </div>
 
     </div>
-    <fixed-view class="footer-shadow" :style="getBottomOffset(60)">
+    <fixed-view class="footer-shadow" id="footview" :style="getBottomOffset(60)">
         <template slot="footerContain">
             <div class="footer-view">
                 <section :class='["section-common","button-select"]' @click="commitForm">确定</section>
@@ -168,6 +168,7 @@ export default {
     },
     created() {
         this.resetData()
+        this.scrollTop()
     },
     activated() {
         this.purchaseNum = utils.getStore('purchaseNumber')
@@ -190,6 +191,21 @@ export default {
             this.pictureUrls = []
             this.isAnimate = false
             this.isAnimateEnd = false
+        },
+        scrollTop() {
+            let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+            if (!isIos) {
+                window.onresize = () => {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            window.scroll(0, 0)
+                            document.getElementById('footview').scrollIntoView(false)
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 100)
+                }
+            }
         },
         handleVerifyPhone () {
             window.scroll(0, 0)
