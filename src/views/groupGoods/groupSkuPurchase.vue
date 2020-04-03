@@ -49,7 +49,7 @@
             <div class="footer-content" :style="getBottomOffset(0)">
                 <div class=" total-price" >
                     <div class="group_price">
-                        ¥<span>{{totalPrice}}</span>
+                        ¥<span>{{completeTotalPrice}}</span>
                     </div>
                     <div class="sale_price">
                         <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
@@ -165,8 +165,6 @@ export default {
                 if (value.productShelves === 0) {
                     value.disabled = true
                     value.unablepay = true
-
-                    this.completeTotalPrice()
                     return '商品已失效' // 下架 置灰
                 }
                 let batchNum = value.minBatchNum
@@ -189,20 +187,32 @@ export default {
                 if (stockAll === 0 || stockAll < batchNum) {
                     value.disabled = true
                     value.unablepay = true
-                    this.completeTotalPrice()
                     return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
                 }
                 if (!isEnough && stockAll >= batchNum) {
                     value.unablepay = true
-                    this.completeTotalPrice()
                     return '不足起订量，需调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
                 }
-                this.completeTotalPrice()
                 if (isChanged && isEnough) {
                     return '部分商品规格变更' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
                 }
                 return ''
             }
+        },
+        completeTotalPrice() {
+            let totalPrice = 0
+            this.groupGoodsRecords.forEach((product, index) => {
+                if (!product.unablepay) {
+                    product.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
+                            totalPrice += skuItem.defaultSkuPrice * skuItem.num
+                        })
+                    })
+                }
+            })
+            // this.totalPrice = cash.changeFormat(totalPrice)
+            // groupDetail.totalPrice
+            return cash.changeFormat(totalPrice)
         }
     },
     methods: {
@@ -237,21 +247,6 @@ export default {
                 productCode: product.productCode
             }
             utils.postMessage('', params)
-        },
-        completeTotalPrice() {
-            let totalPrice = 0
-            this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.unablepay) {
-                    product.colorSkuList.forEach((item) => {
-                        item.skuList.forEach((skuItem) => {
-                            totalPrice += skuItem.defaultSkuPrice * skuItem.num
-                        })
-                    })
-                }
-            })
-            this.totalPrice = cash.changeFormat(totalPrice)
-            // groupDetail.totalPrice
-            // return cash.changeFormat(totalPrice)
         },
         openSku(item, index) {
             window.sa.track('IPX_WEB', {
@@ -289,7 +284,7 @@ export default {
         resetData() { // 重置页面
             Toast.clear()
             // this.isAllSelected = false
-            // this.showSkuDialog = false
+            this.showSkuDialog = false
             // this.selectedNum = 0
             if (this.groupGoodsRecords && this.groupGoodsRecords instanceof Array && this.groupGoodsRecords.length > 0) {
                 this.groupGoodsRecords.forEach(item => {
@@ -325,7 +320,7 @@ export default {
                     // groupProducts.push(sku)
                 })
             })
-            this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
+            this.groupGoodsRecords[this.seletedItemIndex] = this.seletedDetailsItem
             this.completeTotalPrice()
             this.showSkuDialog = false
             // params.groupGoodsRecords = groupProducts
