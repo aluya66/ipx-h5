@@ -192,30 +192,30 @@ export default {
             this.isAnimate = false
             this.isAnimateEnd = false
         },
-        scrollTop() {
-            let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
-            if (!isIos) {
-                window.onresize = () => {
-                    window.setTimeout(function() {
-                        if ('scrollIntoView' in document.activeElement) {
-                            window.scroll(0, 0)
-                            document.getElementById('footview').scrollIntoView(false)
-                        } else {
-                            document.activeElement.scrollIntoViewIfNeeded()
-                        }
-                    }, 100)
-                }
-            }
-        },
+        // scrollTop() {
+        //     let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        //     if (!isIos) {
+        //         window.onresize = () => {
+        //             window.setTimeout(function() {
+        //                 if ('scrollIntoView' in document.activeElement) {
+        //                     window.scroll(0, 0)
+        //                     document.getElementById('footview').scrollIntoView(false)
+        //                 } else {
+        //                     document.activeElement.scrollIntoViewIfNeeded()
+        //                 }
+        //             }, 100)
+        //         }
+        //     }
+        // },
         handleVerifyPhone () {
-            window.scroll(0, 0)
+            // window.scroll(0, 0)
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
                 this.showPhoneError = true
             }
         },
         handleVerifyUserName () {
-            window.scroll(0, 0)
+            // window.scroll(0, 0)
         },
         changeBuyNumber() {
             this.$router.push({
@@ -429,6 +429,25 @@ export default {
                 this.showCompanyNameError = false
             }
         }
+    },
+    destroyed() {
+        window.onresize = null
+    },
+    mounted() {
+        let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
+        if (!isIos) {
+            window.onresize = () => {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            document.activeElement.scrollIntoView()
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 0)
+                }
+            }
+        }
     }
 }
 </script>
@@ -438,7 +457,7 @@ export default {
     .van-field__control {
         &::-webkit-input-placeholder {
             font-size:14px;
-            font-weight:500;
+            font-weight:bold;
             color:@color-c4;
         }
     }
