@@ -189,16 +189,15 @@ export default {
                 if (stockAll === 0 || stockAll < batchNum) {
                     value.disabled = true
                     value.unablepay = true
-
                     this.completeTotalPrice()
                     return '库存不足，暂不可购买' // 已选商品总库存不足起订量、已选商品已选商品总库存为0 置灰
                 }
                 if (!isEnough && stockAll >= batchNum) {
                     value.unablepay = true
-
                     this.completeTotalPrice()
                     return '不足起订量，需调整' // 已选商品sku部分库存为0，不满足起批量，但总库存满足起订量
                 }
+                this.completeTotalPrice()
                 if (isChanged && isEnough) {
                     return '部分商品规格变更' // 已选商品sku部分库存为0，但剩余已选的sku满足起批量
                 }
