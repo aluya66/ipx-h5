@@ -597,13 +597,13 @@ export default {
     text-align: center;
     .loadding_window {
         display: inline-block;
-        margin-top: calc(60vh - 200px);
-        width: calc(100vw - 105px);
+        margin-top: calc(50vh - 160px);
+        width: 270px;
         background:rgba(255,255,255,0.8);
         border-radius:14px;
 
         .loadding_animate {
-            width: calc(100vw - 94px);
+            // width: calc(100vw - 94px);
             height: 176px;
         }
         > p {
