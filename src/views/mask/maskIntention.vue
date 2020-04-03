@@ -430,7 +430,7 @@ export default {
             }
         }
     },
-    destroyed() {
+    deactivated() {
         window.onresize = null
     },
     mounted() {

@@ -287,7 +287,7 @@ export default {
         this.phone = baseParams.phoneNumber
         this.handleRequest()
     },
-    deactivated() {
+    destroyed() {
         window.onresize = null
     },
     mounted() {
