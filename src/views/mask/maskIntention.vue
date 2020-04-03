@@ -117,7 +117,7 @@
         </template>
     </fixed-view> -->
 
-    <div class="footview" id="footview" :style="setposition">
+    <div class="footview" id="footview" >
         <button @click="commitForm">确定</button>
     </div>
 
@@ -178,7 +178,6 @@ export default {
             sHeight:{
                minHeight:window.screen.height + "px"
             },  //设置当前最小高度为屏幕高度
-            setposition: 'position: fixed'
         }
     },
     created() {
@@ -195,7 +194,6 @@ export default {
             return utils.bottomOffset(offset)
         },
         handlePosition() {
-            this.setposition = 'position: absolute'
         },
         resetData() {
             utils.setStore('purchaseNumber', '')
@@ -228,7 +226,7 @@ export default {
         },
         handleVerifyPhone () {
             window.scroll(0, 0)
-            this.setposition = 'position: fixed'
+            // this.setposition = 'position: fixed'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
                 this.showPhoneError = true
@@ -236,7 +234,7 @@ export default {
         },
         handleVerifyUserName () {
             window.scroll(0, 0)
-            this.setposition = 'position: fixed'
+            // this.setposition = 'position: fixed'
         },
         changeBuyNumber() {
             this.$router.push({
