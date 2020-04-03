@@ -185,16 +185,22 @@
           </div>
         </template>
       </manage-view>
+      <div class="loading_contain" >
+        <div class="loadding_anim" ref="loadding_anim"></div>
+        <p>加载中...</p>
+      </div>
     </div>
   </layout-view>
 </template>
 
 <script>
-import { Search, Toast } from 'vant'
+import { Search } from 'vant'
 import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 import utils from 'utils'
+import lottie from 'lottie-web'
+import favAnmData from '@/utils/IPX_loading.json'
 // import EmptyView from '../../error/emptyView.vue'
 // import Clist from 'components/c-list/list.vue'
 export default {
@@ -411,10 +417,11 @@ export default {
                 event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
             })
             this.showList = false
-            Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-            })
+            // Toast.loading({
+            //     message: '加载中...',
+            //     forbidClick: true
+            // })
+            lottie.play()
             this.menuIndex = 1
             this.handleResetOffset()
         },
@@ -424,6 +431,8 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'hallGroupList' // 按钮唯一标识，取个语义化且不重名的名字
             })
+            this.showList = false
+            lottie.play()
             this.menuIndex = 0
             this.handleResetOffset()
         },
@@ -472,12 +481,14 @@ export default {
             this.loading = false
         },
         setSuccessStatus() {
-            Toast.clear()
+            // Toast.clear()
+            lottie.stop()
             this.showList = true
             this.loading = false
         },
         setFailureStatus() {
-            Toast.clear()
+            // Toast.clear()
+            lottie.stop()
             this.showList = true
             this.pageNo -= 1
             this.finished = true
@@ -649,12 +660,20 @@ export default {
     },
     created() {
         this.showList = false
-        Toast.loading({
-          message: '加载中...',
-          forbidClick: true
+        // Toast.loading({
+        //     message: '加载中...',
+        //     forbidClick: true
+        // })
+    },
+    mounted() {
+        lottie.loadAnimation({
+            container: this.$refs.loadding_anim, // 包含动画的dom元素
+            renderer: 'svg', // 渲染出来的是什么格式
+            loop: true, // 循环播放
+            autoplay: true, // 自动播放
+            animationData: favAnmData, // 动画json的路径
         })
     },
-    mounted() {},
     deactivated() {
         window.removeEventListener('scroll', () => {}, true) // 离开当前组件别忘记移除事件监听哦
     }
@@ -953,6 +972,24 @@ export default {
       font-weight: bold;
       line-height: 40px;
       text-align: center;
+    }
+  }
+
+  .loading_contain {
+    width: 55px;
+    height: 70px;
+    margin-top: 30%;
+    margin-left: 40%;
+    .loadding_anim {
+      width: 50px;
+      height: 40px;
+      margin-top: 0;
+    }
+    > p {
+      font-size: 14px;
+      line-height: 20px;
+      color: @color-c3;
+      margin-top: 10px;
     }
   }
 }

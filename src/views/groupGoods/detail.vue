@@ -159,8 +159,8 @@
         </div>
       </div>
       <div class="group_tool_btn">
-        <button class="poster" @click="handleStore">极速上店</button>
-        <button class="hall" @click="addHall">加入展厅</button>
+        <button class="poster" @click="addHall">收藏到展厅</button>
+        <button class="hall" @click="handlePurchase">立即购买</button>
       </div>
     </div>
     <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster">
@@ -307,9 +307,10 @@ export default {
             }
             return `bottom:${btm / 100}rem`
         },
-        handleStore() {
+        handlePurchase() {
             this.$router.push({
-                path: '/deposit'
+                path: '/group/skuPurchase',
+                query: { groupDetail: this.groupDetail }
             })
         },
         cashFormat(price) {
@@ -847,17 +848,18 @@ export default {
     display: flex;
     margin-bottom: 5px;
      .poster {
-      width: 96px;
+      width: 88px;
       height: 40px;
-      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);border-radius:20px;
+      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);
+      border-radius:20px;
       font-size:14px;
       font-weight:bold;
       color:rgba(60,92,246,1);
-      // margin-right: 20px;
+      padding: 0;
       align-self: center;
     }
     .hall {
-      width: 96px;
+      width: 88px;
       height: 40px;
       background: linear-gradient(
         135deg,

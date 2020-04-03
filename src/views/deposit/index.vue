@@ -135,8 +135,8 @@ export default {
     },
     created() {
         Toast.loading({
-          message: '加载中...',
-          forbidClick: true
+            message: '加载中...',
+            forbidClick: true
         })
     },
     activated() {

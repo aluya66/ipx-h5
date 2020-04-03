@@ -1,48 +1,21 @@
 <template>
     <layout-view>
-        <c-header
-            class="my-header"
-            slot="header"
-            :left-arrow="true"
-            :pageOutStatus="isNative"
-        >
-            <div class="title-header" slot="title">
-                组货方案
-            </div>
-            <div class="title-right" slot="right" @click="back2Detail()">
-                原始方案
-            </div>
+        <c-header slot="header" :left-arrow="true" :pageOutStatus="isNative" :showBorderBottom='true'>
+            <div slot="title">选择要购买的商品</div>
         </c-header>
-        <!-- <div class="line" :style="marginTop"></div> -->
         <div class="panel" :style="getBottomOffset(69)">
-            <div class="top-content">
-                <span>组货名称</span>
-                <div class="group-name">
-                    <p>{{ groupName }}</p>
-                    <div class="change_name" @click="changeGroupName">
-                        <p>更改</p>
-                        <img :src="changeName_img" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="list-title">
-                <div class="dot"></div>
-                <p>样衣列表</p>
-                <div class="list-manage" @click.stop="manageProduct()">{{ isManage ? '完成' : '管理'}}</div>
-            </div>
             <div class="list-content">
                 <div
                     class="product-cell"
                     v-for="(item, index) in groupGoodsRecords"
-                    :class="{ 'move-right' : isManage}"
                     :key="item.productCode"
                 >
-                    <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
+                    <img class="product-item-check" :src="item.disabled ? select_disable : item.isSelected ? select_sel : select_def" @click.stop="selectItem(item)"/>
                     <div class="photo_state">
                         <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
                         <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
                     </div>
-                    <div class="product-info" :class="{'product-info-move' : isManage}">
+                    <div class="product-info" >
                         <p
                             :class="[item.disabled ? 'disableTitle' : '']"
                             @click="jumpToProduct(item)"
@@ -74,7 +47,7 @@
                 </div>
             </div>
             <div class="footer-content" :style="getBottomOffset(0)">
-                <div class=" total-price" v-show="!isManage">
+                <div class=" total-price" >
                     <div class="group_price">
                         ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
                     </div>
@@ -83,19 +56,10 @@
                         <span class="tip_title">建议零售价</span>
                     </div>
                 </div>
-                <div class="group_tool_btn" v-show="!isManage">
-                    <button class="poster" @click="handleStore">极速上店</button>
+                <div class="group_tool_btn" >
                     <button class="pay" @click="goPay">立即采购</button>
                 </div>
-                <div class="product-manage" v-show="isManage">
-                    <div class="manage-left">
-                        <img :src="isAllSelected ? select_sel: select_def" @click="selectAll()"/>
-                        全选
-                    </div>
-                    <div class="manage-right" @click="clearSelectedProduct()">移除({{selectedNum}})</div>
-                </div>
             </div>
-            <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage">
         </div>
         <!-- sku选择 -->
         <sku-select
@@ -109,10 +73,10 @@
 
 <script>
 import skuSelect from '@/views/common/skuSelect.vue'
-import order from './groupCreateOrder'
-import cash from './cashFormat.js'
+import order from '@/views/user/hall/groupCreateOrder.js'
+import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
-import { Dialog, Toast } from 'vant'
+import { Toast } from 'vant'
 
 export default {
     components: {
@@ -121,31 +85,28 @@ export default {
     data() {
         return {
             showSkuDialog: false, // 是否弹出sku选择框
-            groupName: ' ', // 组货名称
+            // groupName: ' ', // 组货名称
             groupGoodsId: '', // 组货id
             goodsId: '',
             colorSkuAction: '',
             groupDetail: {}, // 组货基本信息
             groupGoodsRecords: [], // 商品列表数据源
-            isDialog: false,
+            selecteProducts: [],
+            // isDialog: false,
             seletedDetailsItem: {}, // sku数据源
             seletedItemIndex: '', // 选择调整商品下标
-            isOrderSuply: false,
             isNative: false,
-            isManage: false,
-            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
+            // isManage: false,
+            // postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
             select_def: require('@/themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
+            select_disable: require('@/themes/images/groupGoods/checkbox_disabled@3x.png'),
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
-            selectedNum: 0,
-            isAllSelected: false
+            selectedNum: 0
+            // isAllSelected: false
         }
     },
     mounted() {
-        if (this.$route.query.orderId !== undefined) {
-            this.isOrderSuply = true
-            this.suplyGoods()
-        }
     },
     created() {
         Toast.loading({
@@ -154,26 +115,24 @@ export default {
         })
     },
     activated() {
-        // 上报页面事件
-        window.sa.track('IPX_WEB', {
-            page: 'groupListDetail',
-            type: 'pageView',
-            event: 'pageView'
-        })
         this.resetData()
         this.isNative = false
-        this.isDialog = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
-        if (this.$route.query.orderId === undefined) {
-            this.groupDetail = {}
-            this.groupGoodsRecords = []
-            this.isOrderSuply = false
-            this.getGroupDetail()
-        }
-        if (this.$route.query.groupName !== undefined) {
-            this.groupName = this.$route.query.groupName
+        this.groupDetail = {}
+        this.groupGoodsRecords = []
+        if (this.$route.query.groupDetail !== undefined) {
+            this.groupDetail = this.$route.query.groupDetail
+            this.groupGoodsRecords = this.groupDetail.groupGoodsSpus
+            this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
+                return {
+                    ...item,
+                    disabled: false,
+                    unablepay: true,
+                    isSelected: false
+                }
+            })
         }
         utils.postMessage('changeStatus', 'default')
     },
@@ -182,7 +141,6 @@ export default {
             let str = val.attrColorValue + '：'
             let arr = []
             val.skuList.forEach(item => {
-                // arr.push(item.attrSpecValue)
                 arr.push(item.attrSpecValue + 'x' + item.num)
             })
             return str + arr.join('，')
@@ -242,59 +200,18 @@ export default {
         }
     },
     methods: {
-        back2Detail() {
-            this.$router.push({
-                path: '/groupDetail',
-                query: {
-                    groupCode: this.groupDetail.groupCode
+        selectItem(product) {
+            if (product.disabled) {
+                return 
+            }
+            product.isSelected = !product.isSelected
+            if (product.isSelected) {
+                this.selecteProducts = this.selecteProducts.concat(product)
+            } else {
+                let index = this.selecteProducts.indexOf(product)
+                if (index > -1) {
+                    this.selecteProducts.splice(index,1)
                 }
-            })
-        },
-        handlePosterIconBottom() {
-            let baseparams = utils.getStore('baseParams')
-            let btm = 57
-            if (baseparams.isIphoneX) {
-                btm = 91
-            }
-            return `bottom:${btm / 100}rem`
-        },
-        handleStore() {
-            this.$router.push({
-                path: '/deposit'
-            })
-        },
-        selectItem(index) {
-            this.showSkuDialog = false
-            this.groupGoodsRecords[index].isSelected = !this.groupGoodsRecords[index].isSelected
-            if (this.groupGoodsRecords[index].isSelected) {
-                this.selectedNum++
-            } else {
-                this.selectedNum--
-            }
-            if (!this.groupGoodsRecords[index].isSelected) {
-                this.isAllSelected = false
-            } else {
-                let selectedNum = 0
-                for (let i = 0; i < this.groupGoodsRecords.length; i++) {
-                    if (!this.groupGoodsRecords[i].isSelected) {
-                        this.isAllSelected = false
-                        break
-                    } else {
-                        selectedNum++
-                    }
-                }
-                this.isAllSelected = selectedNum === this.groupGoodsRecords.length
-            }
-        },
-        selectAll() {
-            this.isAllSelected = !this.isAllSelected
-            this.groupGoodsRecords.forEach((item) => {
-                item.isSelected = this.isAllSelected
-            })
-            if (this.isAllSelected) {
-                this.selectedNum = this.groupGoodsRecords.length
-            } else {
-                this.selectedNum = 0
             }
         },
         cashFormat(price) {
@@ -302,44 +219,6 @@ export default {
         },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
-        },
-        manageProduct() {
-            this.showSkuDialog = false
-            console.log(this.showSkuDialog)
-            this.isManage = !this.isManage
-            this.selectedNum = 0
-            this.isAllSelected = false
-            this.groupGoodsRecords.forEach(item => {
-                if (item) {
-                    item.isSelected = false
-                }
-            })
-        },
-        clearSelectedProduct() {
-            if (this.isAllSelected) {
-                Dialog.alert({
-                    title: '提示',
-                    message: '至少保留一个商品',
-                    cancelButtonText: '确认',
-                    cancelButtonColor: '#007AFF',
-                    confirmButtonText: '确认',
-                    confirmButtonColor: '#007AFF'
-                })
-                return
-            }
-            this.dialogAlert()
-        },
-        dialogAlert() {
-            Dialog.confirm({
-                title: '确定移除？',
-                message: '商品移除后将不再显示在方案内',
-                cancelButtonText: '取消',
-                cancelButtonColor: '#007AFF',
-                confirmButtonText: '确定',
-                confirmButtonColor: '#007AFF'
-            }).then(() => {
-                this.skuCommit()
-            })
         },
         jumpToProduct(product) {
             window.sa.track('IPX_WEB', {
@@ -354,9 +233,6 @@ export default {
             utils.postMessage('', params)
         },
         openSku(item, index) {
-            if (this.isManage) {
-                return
-            }
             window.sa.track('IPX_WEB', {
                 page: 'groupListDetail', // 页面名字
                 type: 'click', // 固定参数，表明是点击事件
@@ -389,38 +265,11 @@ export default {
             })
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
         },
-        suplyGoods() {
-            const params = {
-                orderCode: this.$route.query.orderId
-            }
-            this.$api.groupGoods
-                .suplyGoods(params)
-                .then(res => {
-                    const { groupGoodsRecords } = res
-
-                    this.groupDetail = res
-                    this.groupGoodsRecords = groupGoodsRecords
-                    this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
-                        return {
-                            ...item,
-                            disabled: false,
-                            unablepay: false,
-                            isSelected: false
-                        }
-                    })
-                    this.groupName = this.groupDetail.name
-                    Toast.clear()
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
         resetData() { // 重置页面
             Toast.clear()
-            this.isManage = false
-            this.isAllSelected = false
-            this.showSkuDialog = false
-            this.selectedNum = 0
+            // this.isAllSelected = false
+            // this.showSkuDialog = false
+            // this.selectedNum = 0
             if (this.groupGoodsRecords && this.groupGoodsRecords instanceof Array && this.groupGoodsRecords.length > 0) {
                 this.groupGoodsRecords.forEach(item => {
                     if (item) {
@@ -432,11 +281,10 @@ export default {
         getGroupDetail() {
             // 获取组货详情列表
             const params = {
-                groupGoodsId: this.$route.query.groupId
+                groupGoodsId: this.groupDetail.groupGoodsId
             }
             this.$api.groupGoods.getGroupListDetail(params)
                 .then(res => {
-                    this.resetData()
                     if (res.code === 0) {
                         const { data } = res
                         const { groupGoodsRecords } = data
@@ -450,11 +298,8 @@ export default {
                                 isSelected: false
                             }
                         })
-                        this.groupName = this.groupDetail.name
-                        this.resetData()
                     }
                 }).catch(err => {
-                    this.resetData()
                     console.log(err)
                 })
         },
@@ -465,114 +310,48 @@ export default {
                 this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
             }
             let totalPrice = 0
-            let groupProducts = []
-            const params = {
-                groupGoodsId: this.groupDetail.groupGoodsId,
-                name: this.groupDetail.name
-            }
-            if (!this.isManage) {
-                this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
-                    item.skuList.forEach((skuItem, skuIndex) => {
-                        skuItem.num = skuItem.skuValue
-                        let sku = {
-                            groupGoodsRecordId: skuItem.groupGoodsRecordId,
-                            num: skuItem.skuValue,
-                            productAtrNumber: this.seletedDetailsItem.productAtrNumber,
-                            productCode: this.seletedDetailsItem.productCode,
-                            productSkuCode: skuItem.productSkuCode,
-                            starasSkuCode: skuItem.starasSkuCode
-                        }
-                        groupProducts.push(sku)
-                    })
+            // let groupProducts = []
+            // const params = {
+            //     groupGoodsId: this.groupDetail.groupGoodsId,
+            //     name: this.groupDetail.name
+            // }
+            this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
+                item.skuList.forEach((skuItem, skuIndex) => {
+                    skuItem.num = skuItem.skuValue
+                    // let sku = {
+                    //     groupGoodsRecordId: skuItem.groupGoodsRecordId,
+                    //     num: skuItem.skuValue,
+                    //     productAtrNumber: this.seletedDetailsItem.productAtrNumber,
+                    //     productCode: this.seletedDetailsItem.productCode,
+                    //     productSkuCode: skuItem.productSkuCode,
+                    //     starasSkuCode: skuItem.starasSkuCode
+                    // }
+                    // groupProducts.push(sku)
                 })
-            } else {
-                this.groupGoodsRecords.forEach(group => {
-                    group.colorSkuList.forEach((item) => {
-                        item.skuList.forEach((skuItem) => {
-                            skuItem.num = skuItem.skuValue
-                            let sku = {
-                                groupGoodsRecordId: skuItem.groupGoodsRecordId,
-                                num: skuItem.skuValue,
-                                productAtrNumber: group.productAtrNumber,
-                                productCode: group.productCode,
-                                productSkuCode: skuItem.productSkuCode,
-                                starasSkuCode: skuItem.starasSkuCode,
-                                delFlag: group.isSelected ? 1 : 2
-                            }
-                            groupProducts.push(sku)
-                        })
-                    })
-                })
-            }
-            params.groupGoodsRecords = groupProducts
-            if (this.isOrderSuply) {
-                this.groupGoodsRecords.forEach((product) => {
-                    let unablepay = product.unablepay
-                    product.colorSkuList.forEach((item) => {
-                        item.skuList.forEach((skuItem) => {
-                            if (!unablepay) {
-                                totalPrice += skuItem.tshPrice * skuItem.num
-                            }
-                        })
-                    })
-                })
-                this.groupDetail.totalPrice = totalPrice
-                this.$toast.success('已修改')
-                this.resetData()
-                return
-            }
-            this.$api.groupGoods
-                .updateGroupListDetail(params)
-                .then(res => {
-                    this.resetData()
-                    if (res.code === 0) {
-                        this.getGroupDetail()
-                        if (!this.isManage) {
-                            this.$toast.success('已修改')
-                        } else {
-                            this.isManage = false
-                            this.isAllSelected = false
-                            this.selectedNum = 0
-                            this.$toast.success('已移除')
-                        }
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            this.resetData()
-        },
-        changeGroupName() {
-            this.$router.push({
-                path: '/group/changeGroupName',
-                query: {
-                    isSuply: this.isOrderSuply,
-                    name: this.groupName,
-                    groupGoodsId: this.groupDetail.groupGoodsId
-                }
             })
-        },
-        addPoster() {
-            let products = this.groupGoodsRecords.filter(item => item.productShelves !== 0)
-            if (products.length === 0) {
-                this.$toast('该组货所有商品已失效，无法生成海报')
-                return
-            }
-            this.$router.push({
-                path: '/poster/eidtGroupProducts',
-                query: { groupCode: this.groupDetail.groupCode }
-            })
+            this.showSkuDialog = false
+            // params.groupGoodsRecords = groupProducts
+            // this.$api.groupGoods
+            //     .updateGroupListDetail(params)
+            //     .then(res => {
+            //         if (res.code === 0) {
+            //             this.getGroupDetail()
+            //             this.$toast.success('已修改')
+            //         }
+            //     })
+            //     .catch(err => {
+            //         console.log(err)
+            //     })
         },
         goPay() {
-            window.sa.track('IPX_WEB', {
-                page: 'groupListDetail', // 页面名字
-                type: 'click', // 固定参数，表明是点击事件
-                event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
-            })
+            if (this.selecteProducts.length == 0) {
+                this.$toast('请选择需要购买的商品')
+                return 
+            }
             order.createOrder(
-                this.groupName,
-                this.groupGoodsRecords,
-                this.groupDetail.groupGoodsId,
+                this.groupDetail.groupTitle,
+                this.selecteProducts,
+                '',
                 true
             )
         }
@@ -581,46 +360,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-    .poster-icon {
-        display: block;
-        width: 80px;
-        height: 80px;
-        position: fixed;
-        right: 8px;
-    }
-
-    .my-header {
-        position: relative;
-
-        &:after {
-            content: "";
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: @color-c7;
-        }
-
-        .title-header {
-            font-weight: bold;
-        }
-
-        .title-right {
-            font-size: 14px;
-            font-family: PingFangSC-Medium,PingFang SC;
-            font-weight: bold;
-            color: @color-ec;
-        }
-    }
-
-    .line {
-        position: fixed;
-        width: 100%;
-        background-color: @color-c7;
-        height: 1px;
-        z-index: 100;
-    }
-
     .panel {
         background-color: white;
         height: calc(100vh - 65px);
@@ -628,81 +367,6 @@ export default {
         overflow-x: hidden;
         padding: 16px;
         margin-top: -1px;
-    }
-
-    .top-content {
-        padding: 16px 0 16px 12px;
-        background: white;
-        box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
-        border-radius: 8px;
-
-        .group-name {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-
-            > p {
-                font-size: 16px;
-                font-weight: bold;
-                color: @color-c1;
-                .ellipsis();
-            }
-
-            .change_name {
-                font-size: 14px;
-                font-weight: bold;
-                color: @color-c2;
-                width: 20%;
-                background: none;
-                display: flex;
-                > img {
-                    width: 16px;
-                    height: 16px;
-                }
-            }
-        }
-
-        > span {
-            font-size: 14px;
-            font-weight: 400;
-            color: @color-c3;
-        }
-    }
-
-    .list-title {
-        margin-top: 32px;
-        position: relative;
-        height: 28px;
-
-        > p {
-            position: absolute;
-            font-size: 20px;
-            font-weight: bold;
-            color: @color-ec;
-            line-height: 28px;
-        }
-
-        .dot {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #fad961;
-            border-radius: 6px;
-            top: 0;
-            left: 73px;
-            z-index: 0;
-        }
-
-        .list-manage {
-            width: 52px;
-            height: 28px;
-            border-radius: 16px;
-            border: 1px solid rgba(213, 214, 222, 1);
-            position: absolute;
-            right: 0px;
-            line-height: 28px;
-            text-align: center;
-        }
     }
 
     .list-content {
@@ -918,35 +582,6 @@ export default {
         border-radius: 12px 12px 0px 0px;
         padding: 5px 16px 5px;
 
-        .product-manage {
-            display: flex;
-            flex-direction: row;
-            width: calc(100vw - 32px);
-            height: 44px;
-            margin-bottom: 5px;
-            justify-content: space-between;
-            .manage-left {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                img {
-                    width: 20px;
-                    height: 20px;
-                    margin-right: 8px;
-                }
-            }
-            .manage-right {
-                height:40px;
-                padding-left: 16px;
-                color: white;
-                font-size: 14px;
-                line-height: 40px;
-                padding-right: 16px;
-                background:rgba(245,48,48,1);
-                border-radius:20px;
-            }
-        }
-
         .group_price {
             font-size: 12px;
             font-weight: 400;
@@ -997,21 +632,8 @@ export default {
         .group_tool_btn {
             display: flex;
             margin-bottom: 5px;
-
-            .poster {
-                width: 96px;
-                height: 40px;
-                background: linear-gradient(322deg, rgba(238, 236, 255, 1) 0%, rgba(216, 212, 255, 1) 100%);
-                border-radius: 20px;
-                font-size: 14px;
-                font-weight: bold;
-                color: rgba(60, 92, 246, 1);
-                // margin-right: 20px;
-                align-self: center;
-            }
-
             .pay {
-                width: 96px;
+                width: 88px;
                 height: 40px;
                 background: linear-gradient(135deg,
                 rgba(85, 122, 244, 1) 0%,
@@ -1021,7 +643,6 @@ export default {
                 font-weight: bold;
                 color: white;
                 align-self: center;
-                margin-left: 12px;
             }
         }
 
