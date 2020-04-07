@@ -181,11 +181,11 @@
             <div class="manage" @click="handleManage">
                 {{ isManageState ? '完成' : '管理' }}
             </div>
-            <section class="deleteBtn" @click="handleDeletes">
+            <!--<section class="deleteBtn" @click="handleDeletes">
               删除{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
-            </section>
+            </section>-->
           </div>
-      <div class="loading_contain" >
+      <div class="loading_contain" v-if="loading" >
         <div class="loadding_anim" ref="loadding_anim"></div>
         <p>加载中...</p>
       </div>

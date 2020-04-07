@@ -26,7 +26,7 @@
             </div>
             <div class="image-footer-right">
                 <button type="button" class="image-download" @click="downloadPicture" v-show="!this.fromChange">下载图片</button>
-                <button type="button"  class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</button>
+                <button type="button" class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</button>
             </div>
         </div>
         <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart" @touchend="touchEnd">
