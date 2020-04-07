@@ -142,7 +142,9 @@ export default {
             let str = val.attrColorValue + '：'
             let arr = []
             val.skuList.forEach(item => {
-                arr.push(item.attrSpecValue + 'x' + item.num)
+                if (item.entityStock > 0 & item.num > 0) {
+                    arr.push(item.attrSpecValue + 'x' + item.num)
+                }
             })
             return str + arr.join('，')
         }

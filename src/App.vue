@@ -50,7 +50,8 @@ export default {
                 'lng': '100.156161',
                 'statusBarHeight': 20,
                 'isIphoneX': false,
-                'phoneNumber': '13888888888'
+                'phoneNumber': '13888888888',
+                'isHide': 0
             }
 
             let results = {}

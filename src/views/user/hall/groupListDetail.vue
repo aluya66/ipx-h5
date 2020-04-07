@@ -570,7 +570,23 @@ export default {
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
             })
-
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === '0') {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
             this.$api.groupGoods.oauthPurchase().then(res => {
                 if (res.isRecharge === 0 && res.isDeposit === 0) {
                     Dialog.confirm({

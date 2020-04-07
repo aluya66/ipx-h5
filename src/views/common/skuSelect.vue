@@ -55,6 +55,7 @@
                     <van-stepper
                       :min="0"
                       :max="skuItem.entityStock"
+                      :disable-minus="isAlowDelete"
                       v-model="skuItem.skuValue"
                       @change="changSelectedNum(colorSkusIndex, skuIndex)"
                     />
@@ -142,7 +143,8 @@ export default {
             sku: {
                 tree: [],
                 list: []
-            }
+            },
+            isAlowDelete: false,
         }
     },
     computed: {
@@ -174,6 +176,11 @@ export default {
           Number(item.seletedColorSkuNum) + Number(seletedColorSkuSumNum)
             })
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
+            if (this.seletedDetailsItem.seletedColorSkuSumNum === 1) {
+              this.isAlowDelete = true
+            } else {
+              this.isAlowDelete = false
+            }
         },
         onPointClicked() {
             this.$emit('pointClick', this.seletedDetailsItem)
