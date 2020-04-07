@@ -182,8 +182,9 @@ export default {
             let str = val.attrColorValue + '：'
             let arr = []
             val.skuList.forEach(item => {
-                // arr.push(item.attrSpecValue)
-                arr.push(item.attrSpecValue + 'x' + item.num)
+                if (item.entityStock > 0 & item.num > 0) {
+                    arr.push(item.attrSpecValue + 'x' + item.num)
+                }
             })
             return str + arr.join('，')
         }
@@ -571,26 +572,26 @@ export default {
             })
 
             this.$api.groupGoods.oauthPurchase().then(res => {
-              if (res.isRecharge === 0 && res.isDeposit === 0) {
-                Dialog.confirm({
-                  message: '您要先充值或支付押金才可以购买商品哦～',
-                  cancelButtonText: '暂不购买',
-                  cancelButtonColor: '#007AFF',
-                  confirmButtonText: '立即充值',
-                  confirmButtonColor: '#007AFF'
-                }).then(() => {
-                  this.$router.push({
-                      path: '/recharge'
-                  })
-                })
-              } else {
-                order.createOrder(
-                    this.groupName,
-                    this.groupGoodsRecords,
-                    this.groupDetail.groupGoodsId,
-                    true
-                )
-              }
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                } else {
+                    order.createOrder(
+                        this.groupName,
+                        this.groupGoodsRecords,
+                        this.groupDetail.groupGoodsId,
+                        true
+                    )
+                }
             }).catch(() => {})
         }
     }

@@ -52,7 +52,7 @@
                         ¥<span>{{completeTotalPrice}}</span>
                     </div>
                     <div class="sale_price">
-                        <span class="price">¥<span>{{totalRetailPrice}}</span></span>
+                        <span class="price">¥<span>{{completeTotalRetailPrice}}</span></span>
                         <span class="tip_title">建议零售价</span>
                     </div>
                 </div>
@@ -102,9 +102,9 @@ export default {
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
             select_disable: require('@/themes/images/groupGoods/checkbox_disabled@3x.png'),
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
-            selectedNum: 0,
+            selectedNum: 0
             // isAllSelected: false
-            totalRetailPrice: 0
+            // totalRetailPrice: 0
         }
     },
     mounted() {
@@ -201,23 +201,33 @@ export default {
         },
         completeTotalPrice() {
             let totalPrice = 0
-            let totalRetailPrice = 0
             this.groupGoodsRecords.forEach((product, index) => {
                 if (!product.disabled) {
                     product.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
                             if (skuItem.entityStock > 0) {
                                 totalPrice += skuItem.defaultSkuPrice * skuItem.num
-                                totalRetailPrice += skuItem.skuRetailPrice * skuItem.num
                             }
                         })
                     })
                 }
             })
-            this.totalRetailPrice = cash.changeFormat(totalRetailPrice)
-            // this.totalPrice = cash.changeFormat(totalPrice)
-            // groupDetail.totalPrice
             return cash.changeFormat(totalPrice)
+        },
+        completeTotalRetailPrice() {
+            let retailPrice = 0
+            this.groupGoodsRecords.forEach((product, index) => {
+                if (!product.disabled) {
+                    product.colorSkuList.forEach((item) => {
+                        item.skuList.forEach((skuItem) => {
+                            if (skuItem.entityStock > 0) {
+                                retailPrice += skuItem.skuRetailPrice * skuItem.num
+                            }
+                        })
+                    })
+                }
+            })
+            return cash.changeFormat(retailPrice)
         }
     },
     methods: {

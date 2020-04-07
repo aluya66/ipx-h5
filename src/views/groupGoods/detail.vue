@@ -309,24 +309,24 @@ export default {
         },
         handlePurchase() {
             this.$api.groupGoods.oauthPurchase().then(res => {
-              if (res.isRecharge === 0 && res.isDeposit === 0) {
-                Dialog.confirm({
-                  message: '您要先充值或支付押金才可以购买商品哦～',
-                  cancelButtonText: '暂不购买',
-                  cancelButtonColor: '#007AFF',
-                  confirmButtonText: '立即充值',
-                  confirmButtonColor: '#007AFF'
-                }).then(() => {
-                  this.$router.push({
-                      path: '/recharge'
-                  })
-                })
-              } else {
-                this.$router.push({
-                    path: '/group/skuPurchase',
-                    query: { groupDetail: this.groupDetail }
-                })
-              }
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                } else {
+                    this.$router.push({
+                        path: '/group/skuPurchase',
+                        query: { groupDetail: this.groupDetail }
+                    })
+                }
             }).catch(() => {})
         },
         cashFormat(price) {
@@ -457,7 +457,7 @@ export default {
                 .groupGoods(params)
                 .then(res => {
                     if (res.code === 0) {
-                        let groupGoodsId = res.data.groupGoodsId
+                        // let groupGoodsId = res.data.groupGoodsId
                         this.$toast(' \n 收藏成功，\n 可在“我的展厅”查看 \n ')
                         window.sa.track('IPX_WEB', {
                             page: 'groupDetail', // 页面名字
