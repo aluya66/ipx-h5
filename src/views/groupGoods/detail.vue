@@ -308,10 +308,26 @@ export default {
             return `bottom:${btm / 100}rem`
         },
         handlePurchase() {
-            this.$router.push({
-                path: '/group/skuPurchase',
-                query: { groupDetail: this.groupDetail }
-            })
+            this.$api.groupGoods.oauthPurchase().then(res => {
+              if (res.isRecharge === 0 && res.isDeposit === 0) {
+                Dialog.confirm({
+                  message: '您要先充值或支付押金才可以购买商品哦～',
+                  cancelButtonText: '暂不购买',
+                  cancelButtonColor: '#007AFF',
+                  confirmButtonText: '立即充值',
+                  confirmButtonColor: '#007AFF'
+                }).then(() => {
+                  this.$router.push({
+                      path: '/recharge'
+                  })
+                })
+              } else {
+                this.$router.push({
+                    path: '/group/skuPurchase',
+                    query: { groupDetail: this.groupDetail }
+                })
+              }
+            }).catch(() => {})
         },
         cashFormat(price) {
             return cash.changeFormat(price)
@@ -442,27 +458,16 @@ export default {
                 .then(res => {
                     if (res.code === 0) {
                         let groupGoodsId = res.data.groupGoodsId
-                        Dialog.confirm({
-                            title: '添加成功',
-                            message: '该组货方案已添加至我的展厅',
-                            confirmButtonText: '编辑组货方案',
-                            cancelButtonText: '继续逛逛',
-                            confirmButtonColor: '#007AFF'
+                        this.$toast(' \n 收藏成功，\n 可在“我的展厅”查看 \n ')
+                        window.sa.track('IPX_WEB', {
+                            page: 'groupDetail', // 页面名字
+                            type: 'click', // 固定参数，表明是点击事件
+                            event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
                         })
-                            .then(() => {
-                                window.sa.track('IPX_WEB', {
-                                    page: 'groupDetail', // 页面名字
-                                    type: 'click', // 固定参数，表明是点击事件
-                                    event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
-                                })
-                                this.$router.push({
-                                    path: '/hall/groupListDetail',
-                                    query: { groupId: groupGoodsId }
-                                })
-                            })
-                            .catch(() => {
-                                // on cancel
-                            })
+                        // this.$router.push({
+                        //     path: '/hall/groupListDetail',
+                        //     query: { groupId: groupGoodsId }
+                        // })
                     }
                 })
                 .catch(err => {
