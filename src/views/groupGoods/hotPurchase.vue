@@ -28,15 +28,18 @@
                      :class="[index % 2 === 1 ? 'vertical-divider': '', index > 1 ? 'horizontal-divider' : '']"
                      :style="getItemWidth()"
                      v-for="(item, index) in hotProducts" :key="index" @click="gotoDetail(item, index)">
-                    <img class="product-image" :style="getImageRect()" :src="item.mainPic"/>
+                    <div class="product-image-con" :style="getImageRect()">
+                        <img class="product-image" :style="getImageRect()" :src="item.mainPic"/>
+                        <img class="product-collect" :src="parseInt(item.isCollect) === 1 ? selectIcon : unselectIcon" @click.stop="doCollect(index, item)"/>
+                    </div>
                     <span class="product-title">{{item.productName}}</span>
                     <div class="product-retail-price">
-                        <span class="price-flag">¥</span><span class="price-number">{{parseFloat(item.retailPrice).toFixed(2)}}</span><span
-                        class="tip_title">建议零售价</span>
+                        <span class="price-flag">¥</span><span class="price-number">{{parseFloat(item.retailPrice).toFixed(2)}}</span>
+                        <span class="tip_title">建议零售价</span>
                     </div>
                     <div class="product-special-price">
-                        <span class="special-flag">¥</span><span class="special-number">{{parseFloat(item.tshPrice).toFixed(2)}}</span><img
-                        :src="parseInt(item.isCollect) === 1 ? selectIcon : unselectIcon" @click.stop="doCollect(index, item)"/>
+                        <span class="special-flag">¥</span><span class="special-number">{{getHidePrice(item.tshPrice)}}</span>
+                        <span class="label" v-if="isHide === 0">入驻可得拿货价</span>
                     </div>
                 </div>
             </div>
@@ -64,7 +67,8 @@ export default {
             immediateCheck: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
-            error: false // 加载错误标识
+            error: false, // 加载错误标识
+            isHide: utils.getStore('baseParams').isHide
         }
     },
     methods: {
@@ -75,6 +79,10 @@ export default {
         getImageRect() {
             let width = parseInt((this.screenWidth - 42 * window.devicePixelRatio) / 2)
             return `width:${width}px;height:${width}px`
+        },
+        getHidePrice(price) {
+            let isHide = utils.getStore('baseParams').isHide
+            return utils.hidePrice(price, isHide)
         },
         gotoDetail(product, index) {
             this.selectIndex = index
@@ -209,9 +217,22 @@ export default {
                 display: flex;
                 flex-direction: column;
 
-                .product-image {
-                    border-radius: 8px 8px 0 0;
-                    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(249, 250, 252, 1) 100%);
+                .product-image-con {
+                    position: relative;
+                    .product-image {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        border-radius: 8px 8px 0 0;
+                        background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(249, 250, 252, 1) 100%);
+                    }
+                    .product-collect {
+                        width: 16px;
+                        height: 16px;
+                        position: absolute;
+                        top: 12px;
+                        right: 12px;
+                    }
                 }
 
                 .product-title {
@@ -256,7 +277,7 @@ export default {
                     flex-direction: row;
 
                     .special-flag {
-                        font-size: 14px;
+                        font-size: 12px;
                         color: @color-rc;
                         margin-top: 4px;
                     }
@@ -265,14 +286,20 @@ export default {
                         font-weight: bold;
                         font-size: 16px;
                         line-height: 20px;
-                        flex-grow: 1;
                         font-family: alibabaBold;
                         color: @color-rc;
                     }
 
-                    > img {
-                        width: 16px;
-                        height: 16px;
+                    .label {
+                        padding: 1px 2px;
+                        height:14px;
+                        background:rgba(255,235,237,1);
+                        border-radius: 0 4px 4px 4px;
+                        font-size: 10px;
+                        font-weight: bold;
+                        line-height: 14px;
+                        margin-left: 8px;
+                        color: @color-rc;
                     }
                 }
             }

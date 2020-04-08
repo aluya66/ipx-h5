@@ -2,8 +2,7 @@
     <layout-view class="latest-container">
         <c-header slot="header" :left-arrow="true" :showBorderBottom="false" :pageOutStatus="isNative" >
             <template slot="right">
-                <img class="header-right" slot="right"
-                     src="../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png" @click="rightClick()"/>
+                <div class="header-right" slot="right" @click="rightClick()"/>
             </template>
         </c-header>
         <div class="latest-content">
@@ -15,15 +14,15 @@
                         <div class="label"><img src="../../themes/images/groupGoods/label_vip_push@2x.png"></div>
                     </swiper-slide>
                 </swiper>
+                <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
                 <div class="patch-price">
                     <span class="patch-flag">¥</span><span
-                    class="patch-price-number">{{parseFloat(selectGroupDetail.totalPrice).toFixed(2)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
+                    class="patch-price-number">{{getHidePrice(selectGroupDetail.totalPrice)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
                 </div>
                 <div class="total-price">
                     <span class="total-flag">¥</span><span
                     class="total-price-number">{{parseFloat(selectGroupDetail.totalRetailPrice).toFixed(2)}}</span><span class="total-label">建议零售价</span>
                 </div>
-                <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
                 <!--UI确认，去掉标签，标签没有运营-->
                 <!--<div class="group-labels-container">
                     <div class="group-labels">
@@ -188,6 +187,10 @@ export default {
                     console.log(err)
                 })
         },
+        getHidePrice(price) {
+            let isHide = utils.getStore('baseParams').isHide
+            return utils.hidePrice(price, isHide)
+        },
         addHall() {
             window.sa.track('IPX_WEB', {
                 page: 'groupDetail', // 页面名字
@@ -277,12 +280,17 @@ export default {
     .latest-container {
         height: 100%;
     }
-
     .header-right {
         display: inline-block;
         vertical-align: middle;
         width: 26px;
         height: 26px;
+        background: url("../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png") no-repeat;
+        background-size: 100%;
+    }
+    .header-right:active {
+        background: url("../../themes/images/groupGoods/icon_nav_exhibition26_gray_press.png") no-repeat;
+        background-size: 100%;
     }
     .empty {
         margin-top: 24px;
@@ -383,7 +391,7 @@ export default {
                 align-items: flex-end;
 
                 .total-flag {
-                    font-size: 12px;
+                    font-size: 10px;
                     font-family: "alibabaRegular";
                     font-weight: 400;
                     padding-bottom: 1px;
@@ -414,7 +422,7 @@ export default {
                 font-size: 18px;
                 font-weight: bold;
                 color: rgba(42, 43, 51, 1);
-                margin-top: 12px;
+                margin-top: 14px;
                 line-height:26px;
             }
 
@@ -464,5 +472,8 @@ export default {
         position: fixed;
         bottom: 36px;
         left: 20px;
+    }
+    .add-store:active {
+        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
     }
 </style>
