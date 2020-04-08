@@ -137,7 +137,8 @@
                 <span class="tip_title">建议零售价</span>
               </div>
               <div class="price">
-                ¥ <span>{{ cashFormat(item.spuTshPrice) }}</span>
+                <span class="price_value">¥ <span>{{ isShowPrice ? cashFormat(item.spuTshPrice) : '???'}}</span></span>
+                <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
               </div>
             </div>
           </div>
@@ -151,7 +152,8 @@
       price"
       >
         <div class="group_price">
-          ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+          <span class="price">¥<span>{{ isShowPrice ? cashFormat(groupDetail.totalPrice) : '???' }}</span></span>
+          <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
         </div>
         <div class="sale_price">
           <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
@@ -196,6 +198,7 @@ export default {
             showList: false,
             isVoted: false,
             isNative: false,
+            isShowPrice: false,
             cricleLists: [
                 {
                     actualPercent: '',
@@ -237,6 +240,12 @@ export default {
         this.isNative = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
+        }
+        let basepara = utils.getStore('baseParams')
+        if (basepara.isHide === '1') {
+          this.isShowPrice = true
+        } else {
+          this.isShowPrice = false
         }
         this.getGroupDetail()
         this.getWeekData()
@@ -308,43 +317,49 @@ export default {
             return `bottom:${btm / 100}rem`
         },
         handlePurchase() {
-            let baseParams = utils.getStore('baseParams')
-            if (baseParams.isHide === '0') {
-                Dialog.confirm({
-                    title: '填写邀请码可用',
-                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
-                    cancelButtonText: '暂不需要',
-                    cancelButtonColor: '#007AFF',
-                    confirmButtonText: '获取邀请码',
-                    confirmButtonColor: '#007AFF'
-                }).then(() => {
-                    const params = {
-                        jumpUrl: 'toBandSale://'
-                    }
-                    utils.postMessage('', params)
-                })
-                return
-            }
-            this.$api.groupGoods.oauthPurchase().then(res => {
-                if (res.isRecharge === 0 && res.isDeposit === 0) {
-                    Dialog.confirm({
-                        message: '您要先充值或支付押金才可以购买商品哦～',
-                        cancelButtonText: '暂不购买',
-                        cancelButtonColor: '#007AFF',
-                        confirmButtonText: '立即充值',
-                        confirmButtonColor: '#007AFF'
-                    }).then(() => {
-                        this.$router.push({
-                            path: '/recharge'
-                        })
-                    })
-                } else {
-                    this.$router.push({
-                        path: '/group/skuPurchase',
-                        query: { groupDetail: this.groupDetail }
-                    })
-                }
-            }).catch(() => {})
+          let token = utils.getStore('token')
+          if (token === 'undefined' || token === '') {
+              window.globalVue.$utils.postMessage('user_authentication', '')
+              return
+          }
+          let baseParams = utils.getStore('baseParams')
+          if (baseParams.isHide === '0') {
+              this.isShowPrice = false
+              Dialog.confirm({
+                  title: '填写邀请码可用',
+                  message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                  cancelButtonText: '暂不需要',
+                  cancelButtonColor: '#007AFF',
+                  confirmButtonText: '获取邀请码',
+                  confirmButtonColor: '#007AFF'
+              }).then(() => {
+                  const params = {
+                      jumpUrl: 'toBandSale://'
+                  }
+                  utils.postMessage('', params)
+              })
+              return
+          }
+          this.$api.groupGoods.oauthPurchase().then(res => {
+              if (res.isRecharge === 0 && res.isDeposit === 0) {
+                  Dialog.confirm({
+                      message: '您要先充值或支付押金才可以购买商品哦～',
+                      cancelButtonText: '暂不购买',
+                      cancelButtonColor: '#007AFF',
+                      confirmButtonText: '立即充值',
+                      confirmButtonColor: '#007AFF'
+                  }).then(() => {
+                      this.$router.push({
+                          path: '/recharge'
+                      })
+                  })
+              } else {
+                  this.$router.push({
+                      path: '/group/skuPurchase',
+                      query: { groupDetail: this.groupDetail }
+                  })
+              }
+          }).catch(() => {})
         },
         cashFormat(price) {
             return cash.changeFormat(price)
@@ -426,6 +441,7 @@ export default {
             }
             let baseParams = utils.getStore('baseParams')
             if (baseParams.isHide === '0') {
+                this.isShowPrice = false
                 Dialog.confirm({
                     title: '填写邀请码可用',
                     message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
@@ -814,16 +830,28 @@ export default {
             }
           }
           .price {
-            font-size: 12px;
-            font-weight: 400;
-            color: @color-rc;
-            margin-bottom: 0;
-            font-family: "alibabaRegular";
-            > span {
-              font-size: 22px;
-              font-weight: bold;
+            .price_value {
+              font-size: 12px;
+              font-weight: 400;
               color: @color-rc;
-              font-family: "alibabaBold";
+              margin-bottom: 0;
+              font-family: "alibabaRegular";
+              > span {
+                font-size: 22px;
+                font-weight: bold;
+                color: @color-rc;
+                font-family: "alibabaBold";
+              }
+            }
+            .tip_group_price {
+              font-size:10px;
+              font-weight:bold;
+              color: @color-rc;
+              line-height:14px;
+              background:rgba(255,235,237,1);
+              margin-left: 10px;
+              padding: 2px;
+              border-radius:0px 4px 4px 4px;
             }
           }
         }
@@ -843,17 +871,29 @@ export default {
   border-radius: 12px 12px 0px 0px;
   padding: 5px 16px 5px;
   .group_price {
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(245, 48, 48, 1);
-    line-height: 24px;
-    font-family: "alibabaRegular";
-    > span {
-      font-size: 20px;
-      font-weight: bold;
+    .price {
+      font-size: 12px;
+      font-weight: 400;
       color: rgba(245, 48, 48, 1);
       line-height: 24px;
-      font-family: "alibabaBold";
+      font-family: "alibabaRegular";
+      > span {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgba(245, 48, 48, 1);
+        line-height: 24px;
+        font-family: "alibabaBold";
+      }
+    }
+    .tip_group_price {
+      font-size:10px;
+      font-weight:bold;
+      color: @color-rc;
+      line-height:14px;
+      background:rgba(255,235,237,1);
+      margin-left: 10px;
+      padding: 2px;
+      border-radius:0px 4px 4px 4px;
     }
   }
   .sale_price {

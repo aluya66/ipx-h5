@@ -19,6 +19,7 @@ export default {
             baseParams.isHide = isHide
             utils.setStore('baseParams', JSON.stringify(baseParams))
             utils.setStore('token', baseParams.token)
+            utils.setStore('isHide', baseParams.isHide)
             let routePath = window.globalVue.$route.path
             window.globalVue.$bus.$emit('tokenCallBack', routePath)
         }
@@ -67,6 +68,7 @@ export default {
             this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20 && isIos
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
+            utils.setStore('isHide', this.baseParams.isHide)
         }
     }
 }
