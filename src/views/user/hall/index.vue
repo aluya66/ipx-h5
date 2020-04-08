@@ -106,7 +106,8 @@
                     </div>
                     <div class="tsh-price margin-l-r-12 margin-top-4">
                         <span class="flag">¥</span>
-                        <span class="number">{{ cashFormat(item.tshPrice) }}</span>
+                        <span class="number">{{ getHidePrice(item.tshPrice) }}</span>
+                        <span class="label" v-if="this.isHide === 0">入驻可得拿货价</span>
                     </div>
                     <div class="button margin-l-r-12 margin-top-8" @click="handleSelectProduct(item)">立即购买</div>
                 </div>
@@ -238,7 +239,8 @@ export default {
             testImage: require('@/themes/images/app/icon_exhibition_survey.png'),
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
-            select_sel: require('../../../themes/images/groupGoods/selected_icon.png')
+            select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
+            isHide: 0
         }
     },
     watch: {
@@ -328,6 +330,9 @@ export default {
         },
         cashFormat(price) {
             return cash.changeFormat(price)
+        },
+        getHidePrice(price) {
+            return utils.hidePrice(price, this.isHide)
         },
         handleSearchClear() {
             this.searchKey = ''
@@ -698,6 +703,7 @@ export default {
         this.isInSearch = false
         this.searchKey = ''
         utils.postMessage('changeStatus', 'light')
+        this.isHide = utils.getStore('baseParams').isHide
         this.isFromWeb = this.$route.query.isFromWeb || false
         this.handleRefresh()
         this.handleScroll()
@@ -910,6 +916,10 @@ export default {
         font-size: 12px;
     }
 
+    .button:active {
+        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+    }
+
     .exhibit-contain {
         /*position: relative; // background: #fff;*/
         height: 100%; //calc(100vh - 124px)  ;
@@ -1061,6 +1071,16 @@ export default {
                         font-size: @f16;
                         font-weight: bold;
                         font-family: "alibabaBold";
+                    }
+
+                    .label {
+                        padding: 1px 2px;
+                        height:14px;
+                        background:rgba(255,235,237,1);
+                        border-radius: 0 4px 4px 4px;
+                        font-size: 10px;
+                        font-weight: bold;
+                        margin-left: 8px;
                     }
                 }
             }

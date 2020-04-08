@@ -17,7 +17,7 @@
                 <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
                 <div class="patch-price">
                     <span class="patch-flag">¥</span><span
-                    class="patch-price-number">{{parseFloat(selectGroupDetail.totalPrice).toFixed(2)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
+                    class="patch-price-number">{{getHidePrice(selectGroupDetail.totalPrice)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
                 </div>
                 <div class="total-price">
                     <span class="total-flag">¥</span><span
@@ -186,6 +186,10 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        getHidePrice(price) {
+            let isHide = utils.getStore('baseParams').isHide
+            return utils.hidePrice(price, isHide)
         },
         addHall() {
             window.sa.track('IPX_WEB', {
@@ -387,7 +391,7 @@ export default {
                 align-items: flex-end;
 
                 .total-flag {
-                    font-size: 12px;
+                    font-size: 10px;
                     font-family: "alibabaRegular";
                     font-weight: 400;
                     padding-bottom: 1px;

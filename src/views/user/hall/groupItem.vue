@@ -16,10 +16,13 @@
                 </div>
             </div>
             <section class="footer">
-                <p>¥<span>{{cashFormat(groupGood.totalPrice)}}</span></p>
+                <div>
+                    <p class="total-price">¥<span>{{getHidePrice(groupGood.totalPrice)}}</span><span class="label" v-if="isHide === 0">入驻可得拿货价</span></p>
+                    <p class="retail-price">¥<span>{{cashFormat(groupGood.totalPrice)}}</span><span class="label">建议零售价</span></p>
+                </div>
                 <div class="action">
-                    <section class="default" @click.stop="handleStore">极速上店</section>
-                    <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">一键采购</section>
+                    <!--<section class="default" @click.stop="handleStore">极速上店</section>-->
+                    <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">立即购买</section>
                 </div>
             </section>
         </div>
@@ -47,7 +50,8 @@ export default {
     },
     data() {
         return {
-            colorList: []
+            colorList: [],
+            isHide: utils.getStore('baseParams').isHide
         }
     },
     computed: {
@@ -66,6 +70,10 @@ export default {
     methods: {
         cashFormat(price) {
             return cash.changeFormat(price)
+        },
+        getHidePrice(price) {
+            let isHide = utils.getStore('baseParams').isHide
+            return utils.hidePrice(price, isHide)
         },
         handleSelectImg(product) {
             window.sa.track('IPX_WEB', {
@@ -244,20 +252,56 @@ export default {
                 justify-content: space-between;
                 align-items: center;
                 padding: 0 12px;
-                color: @color-rc;
-                height: 60px;
+                height: 67px;
 
-                p {
-                    font-size: 14px; // font-family:ALIBABAFont-Regular,ALIBABAFont;
+                .total-price {
+                    font-size: 14px;
                     font-weight: 400;
+                    color: @color-rc;
                     line-height: 24px;
                     font-family: 'alibabaRegular';
 
                     span {
                         font-family: 'alibabaBold';
                         font-size: 20px;
-                        // font-weight: 700;
+                        font-weight: bold;
                         line-height: 24px;
+                    }
+
+                    .label {
+                        padding: 1px 2px;
+                        height:14px;
+                        background:rgba(255,235,237,1);
+                        border-radius: 0 4px 4px 4px;
+                        font-size: 10px;
+                        font-weight: bold;
+                        margin-left: 8px;
+                    }
+                }
+
+                .retail-price {
+                    font-size: 12px; // font-family:ALIBABAFont-Regular,ALIBABAFont;
+                    font-weight: 400;
+                    color: @color-c1;
+                    line-height: 17px;
+                    font-family: 'alibabaRegular';
+
+                    span {
+                        font-family: 'alibabaBold';
+                        font-size: 14px;
+                        font-weight: bold;
+                        line-height: 24px;
+                    }
+
+                    .label {
+                        padding: 1px 2px;
+                        height:14px;
+                        background: rgba(244,245,247,1);
+                        border-radius: 0 4px 4px 4px;
+                        color: @color-c3;
+                        font-size: 10px;
+                        font-weight: bold;
+                        margin-left: 8px;
                     }
                 }
 
@@ -275,6 +319,10 @@ export default {
                     .select {
                         font-weight: bold;
                         .btn-select(96px, 36px, true)
+                    }
+
+                    .select:active {
+                        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
                     }
 
                     .inManage {
