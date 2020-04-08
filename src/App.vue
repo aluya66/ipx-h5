@@ -16,7 +16,7 @@ export default {
         window.getNativeToken = (token, isHide) => {
             let baseParams = utils.getStore('baseParams')
             baseParams.token = token
-            baseParams.isHide = isHide
+            baseParams.isHide = isHide | 0
             utils.setStore('baseParams', JSON.stringify(baseParams))
             utils.setStore('token', baseParams.token)
             let routePath = window.globalVue.$route.path
