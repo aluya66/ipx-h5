@@ -137,7 +137,7 @@
                 <span class="tip_title">建议零售价</span>
               </div>
               <div class="price">
-                <span class="price_value">¥ <span>{{ isShowPrice ? cashFormat(item.spuTshPrice) : '???'}}</span></span>
+                <span class="price_value" :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">¥ <span>{{ isShowPrice ? cashFormat(item.spuTshPrice) : '???'}}</span></span>
                 <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
               </div>
             </div>
@@ -152,7 +152,7 @@
       price"
       >
         <div class="group_price">
-          <span class="price">¥<span>{{ isShowPrice ? cashFormat(groupDetail.totalPrice) : '???' }}</span></span>
+          <span class="price" :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">¥<span>{{ isShowPrice ? cashFormat(groupDetail.totalPrice) : '???' }}</span></span>
           <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
         </div>
         <div class="sale_price">
@@ -243,9 +243,9 @@ export default {
         }
         let basepara = utils.getStore('baseParams')
         if (basepara.isHide === '1') {
-          this.isShowPrice = true
+            this.isShowPrice = true
         } else {
-          this.isShowPrice = false
+            this.isShowPrice = false
         }
         this.getGroupDetail()
         this.getWeekData()
@@ -317,49 +317,49 @@ export default {
             return `bottom:${btm / 100}rem`
         },
         handlePurchase() {
-          let token = utils.getStore('token')
-          if (token === 'undefined' || token === '') {
-              window.globalVue.$utils.postMessage('user_authentication', '')
-              return
-          }
-          let baseParams = utils.getStore('baseParams')
-          if (baseParams.isHide === '0') {
-              this.isShowPrice = false
-              Dialog.confirm({
-                  title: '填写邀请码可用',
-                  message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
-                  cancelButtonText: '暂不需要',
-                  cancelButtonColor: '#007AFF',
-                  confirmButtonText: '获取邀请码',
-                  confirmButtonColor: '#007AFF'
-              }).then(() => {
-                  const params = {
-                      jumpUrl: 'toBandSale://'
-                  }
-                  utils.postMessage('', params)
-              })
-              return
-          }
-          this.$api.groupGoods.oauthPurchase().then(res => {
-              if (res.isRecharge === 0 && res.isDeposit === 0) {
-                  Dialog.confirm({
-                      message: '您要先充值或支付押金才可以购买商品哦～',
-                      cancelButtonText: '暂不购买',
-                      cancelButtonColor: '#007AFF',
-                      confirmButtonText: '立即充值',
-                      confirmButtonColor: '#007AFF'
-                  }).then(() => {
-                      this.$router.push({
-                          path: '/recharge'
-                      })
-                  })
-              } else {
-                  this.$router.push({
-                      path: '/group/skuPurchase',
-                      query: { groupDetail: this.groupDetail }
-                  })
-              }
-          }).catch(() => {})
+            let token = utils.getStore('token')
+            if (token === 'undefined' || token === '') {
+                window.globalVue.$utils.postMessage('user_authentication', '')
+                return
+            }
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === '0') {
+                this.isShowPrice = false
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
+            this.$api.groupGoods.oauthPurchase().then(res => {
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                } else {
+                    this.$router.push({
+                        path: '/group/skuPurchase',
+                        query: { groupDetail: this.groupDetail }
+                    })
+                }
+            }).catch(() => {})
         },
         cashFormat(price) {
             return cash.changeFormat(price)

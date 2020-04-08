@@ -59,7 +59,8 @@
                 v-for="item in productDatas"
                 :key="item.productCode"
             >
-                <img :src="item.mainPic" alt="" @click="productDetail(item)"/>
+                <img class="product_img" :src="item.mainPic" alt="" @click="productDetail(item)"/>
+                <img class="collect_img" :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click="collectProduct(item)"/>
                 <div class="product_info">
                     <p class="product_title">{{ item.productName }}</p>
                     <div class="product_retail_price">
@@ -67,8 +68,8 @@
                         <span>建议零售价</span>
                     </div>
                     <div class="product_price">
-                        <p>{{parseFloat(item.tshPrice).toFixed(2)}}</p>
-                        <img :src="item.isCollect === 1 ? selectIcon : unselectIcon" @click="collectProduct(item)"/>
+                        <p :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">{{isShowPrice ? parseFloat(item.tshPrice).toFixed(2) : '???'}}</p>
+                        <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
                     </div>
                 </div>
             </div>
@@ -109,7 +110,10 @@
                         <p>{{parseFloat(item.totalRetailPrice).toFixed(2)}}</p>
                         <span>建议零售价</span>
                     </div>
-                    <p>{{parseFloat(item.totalPrice).toFixed(2)}}</p>
+                    <div class="group_price">
+                        <p :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">{{isShowPrice ? parseFloat(item.totalPrice).toFixed(2) : '???'}}</p>
+                        <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
+                    </div>
                 </div>
             </div>
             </div>
@@ -144,6 +148,7 @@ export default {
                     title: '组货'
                 }
             ],
+            isShowPrice: false,
             isShow: false,
             isNative: false,
             menuIndex: 0,
@@ -167,6 +172,12 @@ export default {
     activated() {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
+        }
+        let basepara = utils.getStore('baseParams')
+        if (basepara.isHide === '1') {
+            this.isShowPrice = true
+        } else {
+            this.isShowPrice = false
         }
         this.handleRefresh()
         // this.handleScroll()
@@ -416,12 +427,19 @@ export default {
             width: calc(50vw - 21px);
             margin: 4px 5px;
             position: relative;
-            > img {
+            .product_img {
                 object-fit: cover;
                 width: 100%;//calc(50vw - 21px);
                 border-radius: 12px;
                 // background:linear-gradient(180deg,rgba(255,255,255,1) 0%,rgba(249,250,252,1) 100%);
                 height: calc(50vw - 20.5px);
+            }
+            .collect_img {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                width: 16px;
+                height: 16px;
             }
             .product_info {
                 padding: 12px;
@@ -460,7 +478,7 @@ export default {
                 }
                 .product_price {
                     display: flex;
-                    justify-content:space-between;
+                    // justify-content:space-between;
                     margin-top: 6px;
                     > p {
                         font-size:16px;
@@ -476,10 +494,17 @@ export default {
                             font-size: 12px;
                         }
                     }
-                    > img {
-                        width: 16px;
-                        height: 16px;
+                    .tip_group_price {
+                        font-size:10px;
+                        font-weight:bold;
+                        color: @color-rc;
+                        line-height:14px;
+                        background:rgba(255,235,237,1);
+                        margin-left: 10px;
+                        padding: 2px;
+                        border-radius:0px 4px 4px 4px;
                     }
+
                 }
             }
         }
@@ -573,7 +598,9 @@ export default {
                             border-radius:0px 4px 4px 4px;
                         }
                     }
-                    > p {
+                    .group_price {
+                        display: flex;
+                        > p {
                         font-size:16px;
                         font-weight:bold;
                         color:@color-rc;
@@ -586,7 +613,19 @@ export default {
                             line-height: 20px;
                             font-size: 12px;
                         }
+                        }
+                        .tip_group_price {
+                            font-size:10px;
+                            font-weight:bold;
+                            color: @color-rc;
+                            line-height:14px;
+                            background:rgba(255,235,237,1);
+                            margin-left: 10px;
+                            padding: 2px;
+                            border-radius:0px 4px 4px 4px;
+                        }
                     }
+                    
                 }
             }
         }
