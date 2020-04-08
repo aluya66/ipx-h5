@@ -107,7 +107,7 @@
                     <div class="tsh-price margin-l-r-12 margin-top-4">
                         <span class="flag">¥</span>
                         <span class="number">{{ getHidePrice(item.tshPrice) }}</span>
-                        <span class="label" v-if="this.isHide === 0">入驻可得拿货价</span>
+                        <span class="label" v-if="isHide === 0">入驻可得拿货价</span>
                     </div>
                     <div class="button margin-l-r-12 margin-top-8" @click="handleSelectProduct(item)">立即购买</div>
                 </div>

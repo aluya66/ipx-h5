@@ -13,9 +13,10 @@ export default {
     created () {
         this.getBaseCofing()
         // 接受原生的token回调
-        window.getNativeToken = (token) => {
+        window.getNativeToken = (token, isHide) => {
             let baseParams = utils.getStore('baseParams')
             baseParams.token = token
+            baseParams.isHide = isHide
             utils.setStore('baseParams', JSON.stringify(baseParams))
             utils.setStore('token', baseParams.token)
             let routePath = window.globalVue.$route.path
