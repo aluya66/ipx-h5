@@ -69,6 +69,8 @@
 
 <script>
 import utils from 'utils'
+import { Dialog } from 'vant'
+
 export default {
     components: {},
     data() {
@@ -149,6 +151,23 @@ export default {
                 })
         },
         rechargeMoney(config) {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === '0') {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '充值服务需要业务邀请码才可使用，请确认您的业务邀请码后再进行充值！',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
             const params = {
                 jumpUrl: 'rechargePayWay://',
                 rechargeConfigId: config.rechargeConfigId === undefined ? '' : config.rechargeConfigId + '',

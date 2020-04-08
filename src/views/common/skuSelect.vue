@@ -144,7 +144,7 @@ export default {
                 tree: [],
                 list: []
             },
-            isAlowDelete: false,
+            isAlowDelete: false
         }
     },
     computed: {
@@ -177,9 +177,9 @@ export default {
             })
             this.seletedDetailsItem.seletedColorSkuSumNum = seletedColorSkuSumNum
             if (this.seletedDetailsItem.seletedColorSkuSumNum === 1) {
-              this.isAlowDelete = true
+                this.isAlowDelete = true
             } else {
-              this.isAlowDelete = false
+                this.isAlowDelete = false
             }
         },
         onPointClicked() {

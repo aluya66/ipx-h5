@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="group_tool_btn" v-show="!isManage">
-                    <button class="poster" @click="handleStore">极速上店</button>
+                    <!-- <button class="poster" @click="handleStore">极速上店</button> -->
                     <button class="pay" @click="goPay">立即采购</button>
                 </div>
                 <div class="product-manage" v-show="isManage">
@@ -95,7 +95,7 @@
                     <div class="manage-right" @click="clearSelectedProduct()">移除({{selectedNum}})</div>
                 </div>
             </div>
-            <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage">
+            <!-- <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage"> -->
         </div>
         <!-- sku选择 -->
         <sku-select
@@ -259,11 +259,11 @@ export default {
             }
             return `bottom:${btm / 100}rem`
         },
-        handleStore() {
-            this.$router.push({
-                path: '/deposit'
-            })
-        },
+        // handleStore() {
+        //     this.$router.push({
+        //         path: '/deposit'
+        //     })
+        // },
         selectItem(index) {
             this.showSkuDialog = false
             this.groupGoodsRecords[index].isSelected = !this.groupGoodsRecords[index].isSelected
@@ -553,17 +553,17 @@ export default {
                 }
             })
         },
-        addPoster() {
-            let products = this.groupGoodsRecords.filter(item => item.productShelves !== 0)
-            if (products.length === 0) {
-                this.$toast('该组货所有商品已失效，无法生成海报')
-                return
-            }
-            this.$router.push({
-                path: '/poster/eidtGroupProducts',
-                query: { groupCode: this.groupDetail.groupCode }
-            })
-        },
+        // addPoster() {
+        //     let products = this.groupGoodsRecords.filter(item => item.productShelves !== 0)
+        //     if (products.length === 0) {
+        //         this.$toast('该组货所有商品已失效，无法生成海报')
+        //         return
+        //     }
+        //     this.$router.push({
+        //         path: '/poster/eidtGroupProducts',
+        //         query: { groupCode: this.groupDetail.groupCode }
+        //     })
+        // },
         goPay() {
             window.sa.track('IPX_WEB', {
                 page: 'groupListDetail', // 页面名字
