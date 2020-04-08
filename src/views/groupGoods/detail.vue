@@ -308,6 +308,23 @@ export default {
             return `bottom:${btm / 100}rem`
         },
         handlePurchase() {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === '0') {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
             this.$api.groupGoods.oauthPurchase().then(res => {
                 if (res.isRecharge === 0 && res.isDeposit === 0) {
                     Dialog.confirm({
@@ -405,6 +422,23 @@ export default {
             let token = utils.getStore('token')
             if (token === 'undefined' || token === '') {
                 window.globalVue.$utils.postMessage('user_authentication', '')
+                return
+            }
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === '0') {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
                 return
             }
             let products = this.productList.filter(item => item.productShelves !== 0)
