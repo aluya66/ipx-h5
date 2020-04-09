@@ -186,10 +186,7 @@
               删除{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
             </section>-->
           </div>
-      <div class="loading_contain" v-show="isAnimate">
-        <div class="loadding_anim" ref="loadding_anim"></div>
-        <p>加载中...</p>
-      </div>
+          <LoaddingView class="loadding_content" v-show="!showList"></LoaddingView>
   </layout-view>
 </template>
 
@@ -199,15 +196,15 @@ import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
 import utils from 'utils'
-import lottie from 'lottie-web'
-import favAnmData from '@/utils/IPX_loading.json'
+import LoaddingView from '../../error/loaddingView.vue'
 // import EmptyView from '../../error/emptyView.vue'
 // import Clist from 'components/c-list/list.vue'
 export default {
     components: {
         ManageView,
         groupItem,
-        Search
+        Search,
+        LoaddingView
     },
     props: {},
     data() {
@@ -241,7 +238,6 @@ export default {
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
             isHide: 0,
-            isAnimate: true
         }
     },
     watch: {
@@ -459,8 +455,6 @@ export default {
                 event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
             })
             this.showList = false
-            this.isAnimate = true
-            lottie.play()
             this.menuIndex = 1
             this.handleResetOffset()
             this.handleRefresh()
@@ -473,8 +467,6 @@ export default {
                 event: 'hallGroupList' // 按钮唯一标识，取个语义化且不重名的名字
             })
             this.showList = false
-            this.isAnimate = true
-            lottie.play()
             this.menuIndex = 0
             this.handleResetOffset()
             this.handleRefresh()
@@ -529,14 +521,10 @@ export default {
             this.alpha = 0
         },
         setSuccessStatus() {
-            this.isAnimate = false
-            lottie.stop()
             this.showList = true
             this.loading = false
         },
         setFailureStatus() {
-            this.isAnimate = false
-            lottie.stop()
             this.showList = true
             this.pageNo -= 1
             this.finished = true
@@ -699,7 +687,6 @@ export default {
         // setTimeout(() => {
         //     this.showList = true
         // }, 300)
-        this.isAnimate = true
         this.isStickyTop = false
         this.flag = false
         this.isInSearch = false
@@ -712,15 +699,6 @@ export default {
     },
     created() {
         this.showList = false
-    },
-    mounted() {
-        lottie.loadAnimation({
-            container: this.$refs.loadding_anim, // 包含动画的dom元素
-            renderer: 'svg', // 渲染出来的是什么格式
-            loop: true, // 循环播放
-            autoplay: true, // 自动播放
-            animationData: favAnmData // 动画json的路径
-        })
     },
     deactivated() {
         window.removeEventListener('scroll', () => {
@@ -1177,22 +1155,29 @@ export default {
         }
     }
 
-  .loading_contain {
-    width: 55px;
-    height: 70px;
-    margin-top: 30%;
-    margin-left: 40%;
-    .loadding_anim {
-      width: 50px;
-      height: 40px;
-      margin-top: 0;
-    }
-    > p {
-      font-size: 14px;
-      line-height: 20px;
-      color: @color-c3;
-      margin-top: 10px;
-    }
-  }
+//   .loading_contain {
+//     width: 55px;
+//     height: 70px;
+//     margin-top: 30%;
+//     margin-left: 40%;
+//     .loadding_anim {
+//       width: 50px;
+//       height: 40px;
+//       margin-top: 0;
+//     }
+//     > p {
+//       font-size: 14px;
+//       line-height: 20px;
+//       color: @color-c3;
+//       margin-top: 10px;
+//     }
+//   }
+.loadding_content {
+    position: relative;
+    left: 0;
+    top: 0;
+    height: 60%;
+    width: 100%;
+}
 
 </style>
