@@ -265,7 +265,8 @@ export default {
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
-            isHide: 0
+            isHide: 0,
+            isFromNative: false
         }
     },
     watch: {
@@ -331,7 +332,7 @@ export default {
         },
         goBack() {
             let method = 'page_out'
-            if (this.pageOutStatus) {
+            if (this.isFromNative) {
                 utils.postMessage(method, '')
             } else {
                 this.$router.go(-1)
@@ -542,11 +543,13 @@ export default {
                     //     }
                     // }
                     let element = document.querySelector('.exhibit-contain')
-                    let scrollHeight = element.scrollTop
-                    if (scrollHeight > 200) {
-                        scrollHeight = 200
+                    if (element && element.scrollTop) {
+                        let scrollHeight = element.scrollTop
+                        if (scrollHeight > 200) {
+                            scrollHeight = 200
+                        }
+                        this.alpha = scrollHeight / 200
                     }
-                    this.alpha = scrollHeight / 200
                     // console.log(scrollHeight + ', alpha = ' + this.alpha + ', index = ' + this.menuIndex)
                 }, true)
         },
@@ -735,6 +738,9 @@ export default {
     },
     created() {
         this.showList = false
+        if (this.$route.query.fromNative === '1') {
+            this.isFromNative = true
+        }
     },
     deactivated() {
         window.removeEventListener('scroll', () => {

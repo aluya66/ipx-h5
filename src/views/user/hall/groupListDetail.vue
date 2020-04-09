@@ -10,7 +10,7 @@
                 组货方案
             </div>
             <div class="title-right" slot="right" @click="back2Detail()">
-                原始方案
+                原组货详情
             </div>
         </c-header>
         <!-- <div class="line" :style="marginTop"></div> -->
@@ -34,42 +34,48 @@
                 <div
                     class="product-cell"
                     v-for="(item, index) in groupGoodsRecords"
-                    :class="{ 'move-right' : isManage}"
+                    :class="{'can-scroll' : !isManage}"
                     :key="item.productCode"
+                    @touchstart="touchStart" @touchend="touchEnd"
                 >
-                    <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
-                    <div class="photo_state">
-                        <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
-                        <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
-                    </div>
-                    <div class="product-info" :class="{'product-info-move' : isManage}">
-                        <p
-                            :class="[item.disabled ? 'disableTitle' : '']"
-                            @click="jumpToProduct(item)"
-                        >
-                            {{ item.productName }}
-                        </p>
-                        <div class="sku-list" @click="jumpToProduct(item)">
+                    <div class="cell-content">
+                        <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
+                        <div class="photo_state">
+                            <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
+                            <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
+                        </div>
+                        <div class="product-info" :class="{'product-info-move' : isManage}">
                             <p
-                                v-for="(sku, i) in item.colorSkuList"
-                                :key="i"
-                                :class="[item.disabled ? 'disableSku' : '']"
+                                :class="[item.disabled ? 'disableTitle' : '']"
+                                @click="jumpToProduct(item)"
                             >
-                                {{ sku | selectSkuStr }}
+                                {{ item.productName }}
                             </p>
+                            <div class="sku-list" @click="jumpToProduct(item)">
+                                <p
+                                    v-for="(sku, i) in item.colorSkuList"
+                                    :key="i"
+                                    :class="[item.disabled ? 'disableSku' : '']"
+                                >
+                                    {{ sku | selectSkuStr }}
+                                </p>
+                            </div>
+                            <div class="sale_price">
+                                <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                                <span class="tip_title">建议零售价</span>
+                            </div>
+                            <div class="footer-btn">
+                                <p :class="[item.disabled ? 'disablePrice' : 'price']">
+                                    ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
+                                </p>
+                                <button @click="openSku(item, index)" :disabled="item.disabled">
+                                    调整规格
+                                </button>
+                            </div>
                         </div>
-                        <div class="sale_price">
-                            <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
-                            <span class="tip_title">建议零售价</span>
-                        </div>
-                        <div class="footer-btn">
-                            <p :class="[item.disabled ? 'disablePrice' : 'price']">
-                                ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
-                            </p>
-                            <button @click="openSku(item, index)" :disabled="item.disabled">
-                                调整规格
-                            </button>
-                        </div>
+                    </div>
+                    <div class="cell-delete" @click.stop="deleteItem(index)" v-if="!isManage">
+                        删除
                     </div>
                 </div>
             </div>
@@ -138,7 +144,11 @@ export default {
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
             selectedNum: 0,
-            isAllSelected: false
+            isAllSelected: false,
+            touchX: 0,
+            touchY: 0,
+            moveX: 0,
+            moveY: 0
         }
     },
     mounted() {
@@ -176,6 +186,9 @@ export default {
             this.groupName = this.$route.query.groupName
         }
         utils.postMessage('changeStatus', 'default')
+        // this.handleItemScroll()
+        window.removeEventListener('scroll', () => {
+        }, true) // 离开当前组件别忘记移除事件监听哦
     },
     filters: {
         selectSkuStr(val) {
@@ -251,6 +264,46 @@ export default {
                 }
             })
         },
+        touchStart(e) {
+            let cells = document.getElementsByClassName('product-cell')
+            cells.forEach((cell) => {
+                cell.scrollTo(0, window.devicePixelRatio)
+            })
+            if (e && e.targetTouches) {
+                this.touchX = e.targetTouches[0].clientX
+                this.touchY = e.targetTouches[0].clientY
+                console.log('开始：' + this.touchX + ', ' + this.touchY)
+            }
+        },
+        touchEnd(e) {
+            if (e && e.changedTouches) {
+                this.moveX = e.changedTouches[0].clientX
+                this.moveY = e.changedTouches[0].clientY
+                console.log('结束：' + this.moveX + ', ' + this.moveY)
+                if (Math.abs(Number(this.moveY) - Number(this.touchY)) < 100) {
+                    if (this.moveX < this.touchX) {
+                        console.log('向左滑')
+                        e.currentTarget.scrollTo(88 * window.devicePixelRatio, window.devicePixelRatio)
+                    } else {
+                        console.log('向右滑')
+                        e.currentTarget.scrollTo(0, window.devicePixelRatio)
+                    }
+                }
+            }
+        },
+        handleItemScroll() {
+            window.addEventListener('scroll', (event) => {
+                // let element = document.querySelector('.cell-content')
+                // if (element && element.scrollTop) {
+                //     let scrollHeight = element.scrollTop
+                //     if (scrollHeight > 200) {
+                //         scrollHeight = 200
+                //     }
+                //     this.alpha = scrollHeight / 200
+                // }
+                console.log(event)
+            }, true)
+        },
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
             let btm = 57
@@ -303,6 +356,12 @@ export default {
         },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        deleteItem(index) {
+            this.seletedItemIndex = index
+            this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
+            this.selectItem(index)
+            this.dialogAlert()
         },
         manageProduct() {
             this.showSkuDialog = false
@@ -743,199 +802,222 @@ export default {
         margin-top: 16px;
         padding-bottom: 60px;
 
+        .can-scroll {
+            overflow: scroll;
+        }
+
         .product-cell {
             background: white;
-            height: 106px;
+            height: 110px;
             margin-bottom: 32px;
             display: flex;
-            position: relative;
+            flex-direction: row;
             align-items: center;
 
-            .product-item-check {
-                width: 20px;
-                height: 20px;
-                margin-right: 16px;
-            }
-
-            .photo_state {
-                position: relative;
-
-                > img {
-                    flex: none;
-                    width: 106px;
-                    height: 106px;
-                    border-radius: 4px;
-                    object-fit: cover;
-                    border: 1px solid @color-c7;
+            .cell-content {
+                flex-shrink: 0;
+                height: 106px;
+                display: flex;
+                align-items: center;
+                .product-item-check {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 16px;
                 }
 
-                .state_text {
-                    position: absolute;
-                    width: 106px;
-                    height: 18px;
-                    background: rgba(0, 0, 0, 0.5);
-                    border-radius: 0px 0px 4px 4px;
-                    font-size: 10px;
-                    font-weight: 400;
-                    color: rgba(255, 255, 255, 1);
-                    text-align: center;
-                    line-height: 18px;
-                    top: 88px;
-                }
-            }
+                .photo_state {
+                    position: relative;
 
-            .product-info-move {
-                margin-right: -36px;
-            }
+                    > img {
+                        flex: none;
+                        width: 106px;
+                        height: 106px;
+                        border-radius: 4px;
+                        object-fit: cover;
+                        border: 1px solid @color-c7;
+                    }
 
-            .product-info {
-                margin-left: 12px;
-                width: calc(100vw - 152px);
-                > p {
-                    font-size: 16px;
-                    font-weight: bold;
-                    line-height: 22px;
-                    color: @color-c1;
-                    .ellipsis();
+                    .state_text {
+                        position: absolute;
+                        width: 106px;
+                        height: 18px;
+                        background: rgba(0, 0, 0, 0.5);
+                        border-radius: 0px 0px 4px 4px;
+                        font-size: 10px;
+                        font-weight: 400;
+                        color: rgba(255, 255, 255, 1);
+                        text-align: center;
+                        line-height: 18px;
+                        top: 88px;
+                    }
                 }
 
-                .disableTitle {
-                    font-size: 16px;
-                    font-weight: bold;
-                    line-height: 22px;
-                    color: @color-c4;
-                    .ellipsis();
+                .product-info-move {
+                    margin-right: -36px;
                 }
 
-                .sku-list {
-                    // margin-top: 8px;
-                    overflow: hidden;
-
+                .product-info {
+                    margin-left: 12px;
+                    width: calc(100vw - 152px);
                     > p {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c3;
-                        line-height: 16px;
-                        margin: 8px 0;
-                    }
-
-                    .disableSku {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c4;
-                        line-height: 16px;
-                        margin: 8px 0;
-                    }
-
-                    // .tips {
-                    //   font-size: 12px;
-                    //   font-weight: 400;
-                    //   color: @color-rc;
-                    //   height: 15px;
-                    // }
-                }
-
-                .sale_price {
-                    margin-top: 8px;
-                    // margin-bottom: 4px;
-                    .price {
-                        font-size: 12px;
-                        font-weight: 400;
+                        font-size: 16px;
+                        font-weight: bold;
+                        line-height: 22px;
                         color: @color-c1;
-                        line-height: 14px;
-                        font-family: "alibabaRegular";
+                        .ellipsis();
+                    }
 
-                        > span {
-                            font-size: 14px;
-                            font-weight: bold;
+                    .disableTitle {
+                        font-size: 16px;
+                        font-weight: bold;
+                        line-height: 22px;
+                        color: @color-c4;
+                        .ellipsis();
+                    }
+
+                    .sku-list {
+                        // margin-top: 8px;
+                        overflow: hidden;
+
+                        > p {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: @color-c3;
+                            line-height: 16px;
+                            margin: 8px 0;
+                        }
+
+                        .disableSku {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: @color-c4;
+                            line-height: 16px;
+                            margin: 8px 0;
+                        }
+
+                        // .tips {
+                        //   font-size: 12px;
+                        //   font-weight: 400;
+                        //   color: @color-rc;
+                        //   height: 15px;
+                        // }
+                    }
+
+                    .sale_price {
+                        margin-top: 8px;
+                        // margin-bottom: 4px;
+                        .price {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-c1;
                             line-height: 14px;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+
+                            > span {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: @color-c1;
+                                line-height: 14px;
+                                font-family: "alibabaBold";
+                            }
                         }
-                    }
 
-                    .disablePrice {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c4;
-                        font-family: "alibabaRegular";
-
-                        > span {
-                            font-size: 14px;
-                            font-weight: bold;
+                        .disablePrice {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-c4;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+
+                            > span {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: @color-c4;
+                                font-family: "alibabaBold";
+                            }
+                        }
+
+                        .tip_title {
+                            font-size: 10px;
+                            font-weight: bold;
+                            color: @color-c3;
+                            line-height: 12px;
+                            background: rgba(244, 245, 247, 1);
+                            margin-left: 10px;
+                            padding: 2px;
+                            border-radius: 0px 4px 4px 4px;
                         }
                     }
 
-                    .tip_title {
-                        font-size: 10px;
-                        font-weight: bold;
-                        color: @color-c3;
-                        line-height: 12px;
-                        background: rgba(244, 245, 247, 1);
-                        margin-left: 10px;
-                        padding: 2px;
-                        border-radius: 0px 4px 4px 4px;
-                    }
-                }
+                    .footer-btn {
+                        display: flex;
+                        justify-content: space-between;
 
-                .footer-btn {
-                    display: flex;
-                    justify-content: space-between;
-
-                    .price {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-rc;
-                        font-family: "alibabaRegular";
-                        margin-top: 8px;
-
-                        > span {
-                            font-size: 18px;
-                            font-weight: bold;
+                        .price {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-rc;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+                            margin-top: 8px;
+
+                            > span {
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: @color-rc;
+                                font-family: "alibabaBold";
+                            }
                         }
-                    }
 
-                    .disablePrice {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c4;
-                        font-family: "alibabaRegular";
-                        margin-top: 8px;
-
-                        > span {
-                            font-size: 18px;
-                            font-weight: bold;
+                        .disablePrice {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-c4;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+                            margin-top: 8px;
+
+                            > span {
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: @color-c4;
+                                font-family: "alibabaBold";
+                            }
                         }
-                    }
 
-                    .yen {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-rc;
-                        font-family: "alibabaRegular";
-                    }
+                        .yen {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: @color-rc;
+                            font-family: "alibabaRegular";
+                        }
 
-                    > button {
-                        width: 80px;
-                        height: 28px;
-                        background: @color-ec1;
-                        border-radius: 18px;
-                        font-size: 12px;
-                        font-weight: bold;
-                        color: @color-ec;
-                    }
+                        > button {
+                            width: 80px;
+                            height: 28px;
+                            background: @color-ec1;
+                            border-radius: 18px;
+                            font-size: 12px;
+                            font-weight: bold;
+                            color: @color-ec;
+                        }
 
-                    > button:disabled {
-                        background: rgba(249, 250, 252, 1);
-                        color: @color-c4;
+                        > button:disabled {
+                            background: rgba(249, 250, 252, 1);
+                            color: @color-c4;
+                        }
                     }
                 }
+            }
+
+            .cell-delete {
+                flex-shrink: 0;
+                width: 72px;
+                height: 106px;
+                background: @color-rc;
+                color: white;
+                font-size: 14px;
+                line-height: 106px;
+                margin: 0 16px;
+                text-align: center;
+                border-radius: 8px;
             }
         }
     }
