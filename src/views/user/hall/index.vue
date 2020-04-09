@@ -186,7 +186,7 @@
               删除{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
             </section>-->
           </div>
-      <div class="loading_contain" v-if="loading" >
+      <div class="loading_contain" v-show="isAnimate">
         <div class="loadding_anim" ref="loadding_anim"></div>
         <p>加载中...</p>
       </div>
@@ -240,7 +240,8 @@ export default {
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
-            isHide: 0
+            isHide: 0,
+            isAnimate: true
         }
     },
     watch: {
@@ -458,13 +459,11 @@ export default {
                 event: 'hallCollectList' // 按钮唯一标识，取个语义化且不重名的名字
             })
             this.showList = false
-            // Toast.loading({
-            //     message: '加载中...',
-            //     forbidClick: true
-            // })
+            this.isAnimate = true
             lottie.play()
             this.menuIndex = 1
             this.handleResetOffset()
+            this.handleRefresh()
         },
         handleGroupList() {
             this.resetParams()
@@ -474,9 +473,11 @@ export default {
                 event: 'hallGroupList' // 按钮唯一标识，取个语义化且不重名的名字
             })
             this.showList = false
+            this.isAnimate = true
             lottie.play()
             this.menuIndex = 0
             this.handleResetOffset()
+            this.handleRefresh()
         },
         handleResetOffset() {
             this.$nextTick(() => {
@@ -528,13 +529,13 @@ export default {
             this.alpha = 0
         },
         setSuccessStatus() {
-            // Toast.clear()
+            this.isAnimate = false
             lottie.stop()
             this.showList = true
             this.loading = false
         },
         setFailureStatus() {
-            // Toast.clear()
+            this.isAnimate = false
             lottie.stop()
             this.showList = true
             this.pageNo -= 1
@@ -698,6 +699,7 @@ export default {
         // setTimeout(() => {
         //     this.showList = true
         // }, 300)
+        this.isAnimate = true
         this.isStickyTop = false
         this.flag = false
         this.isInSearch = false
@@ -710,10 +712,6 @@ export default {
     },
     created() {
         this.showList = false
-        // Toast.loading({
-        //     message: '加载中...',
-        //     forbidClick: true
-        // })
     },
     mounted() {
         lottie.loadAnimation({

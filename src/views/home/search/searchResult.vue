@@ -118,23 +118,25 @@
             </div>
             </div>
             </c-list>
-
+            <LoaddingView class="loadding_content"></LoaddingView>
    </div>
 
    </layout-view>
 </template>
 
 <script>
-import { Search, Toast } from 'vant'
+import { Search } from 'vant'
 import utils from 'utils'
 import CList from 'components/c-list'
+import LoaddingView from '../../error/loaddingView.vue'
 import components from 'components'
 const { CTabs } = components
 export default {
     components: {
         Search,
         CTabs,
-        CList
+        CList,
+        LoaddingView
     },
     data () {
         return {
@@ -207,12 +209,12 @@ export default {
         },
         setSuccessStatus() {
             this.isShow = true
-            Toast.clear()
+            // Toast.clear()
             this.loading = false
         },
         setFailureStatus() {
             this.isShow = true
-            Toast.clear()
+            // Toast.clear()
             this.pageNo -= 1
             this.finished = true
             this.loading = false
@@ -220,10 +222,10 @@ export default {
         // 刷新
         handleRefresh() {
             this.isShow = false
-            Toast.loading({
-                message: '加载中...',
-                forbidClick: true
-            })
+            // Toast.loading({
+            //     message: '加载中...',
+            //     forbidClick: true
+            // })
             this.resetParams()
             if (this.menuIndex === 0) {
                 this.handleRequestProduct()
@@ -625,11 +627,19 @@ export default {
                             border-radius:0px 4px 4px 4px;
                         }
                     }
-                    
+
                 }
             }
         }
     }
 
+}
+.loadding_content {
+    position: relative;
+    left: 0;
+    top: 0;
+    padding-top: 45%;
+    height: 100%;
+    width: 100%;
 }
 </style>
