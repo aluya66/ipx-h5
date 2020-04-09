@@ -176,7 +176,6 @@ export default {
             message: '加载中...',
             forbidClick: true
         })
-        console.log('screenWidth = ' + this.screenWidth)
         this.getHotSale()
     }
 }
