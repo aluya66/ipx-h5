@@ -16,6 +16,10 @@
                 <template slot="content">
                     <div class="product-list"
                     >
+                        <div class="choose_skuImg" @click="changeSkuImage">
+                            <img :src="choose_skuImg" alt="">
+                            <p>选择图片</p>
+                        </div>
                         <img v-for="(sku,index) in posterData.colorTypeList" :key="index" class="image-item" :src="sku.image">
                     </div>
                 </template>
@@ -121,7 +125,8 @@ export default {
     data() {
         return {
             deleteIcon: require('@/themes/images/app/control_delete@3x.png'),
-            choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
+            choose_qrcode: require('@/themes/images/groupGoods/icon_choose_camera@3x.png'),
+            choose_skuImg: require('@/themes/images/app/icon_posterImg_add@3x.png'),
             albumImg_url: '',
             purchasePrice: '100.00',
             poseterPrice: '200.00',
@@ -136,7 +141,8 @@ export default {
             isSave: false,
             posterData: {},
             addPrice: '0',
-            isNative: false
+            isNative: false,
+            chooseSkuImgs: []
         }
     },
     watch: {
@@ -163,6 +169,15 @@ export default {
         handleChoosePriceTitle(title) {
             this.selectPriceTitle = title
         },
+        changeSkuImage() {
+            this.$router.push({
+                path: '/picture/imageList',
+                query: {
+                    productCode: this.$route.query.productCode,
+                    fromPath: 'product'
+                }
+            })
+        },
         chooseQRCodeImg() {
             const params = {
                 jumpUrl: 'choosePhoto://'
@@ -179,6 +194,8 @@ export default {
                 this.$toast('请输入商品名称')
             } else if (this.posterData.productName.split(' ').join('').length === 0) {
                 this.$toast('请重新输入商品名称')
+            } else if (this.posterData.colorTypeList === undefined || this.posterData.colorTypeList.length <= 0) {
+                this.$toast('请选择商品图片')
             } else {
                 if (this.selectPriceTitle === '建议零售价') {
                     this.posterData.showPrice = this.posterData.retailPrice
@@ -197,17 +214,20 @@ export default {
             this.isSave = false
         },
         handleRequest() {
-            let skuLsit = this.$route.query.skuCodeList
-            if (skuLsit[0].skuCodes === undefined) {
-                return
-            }
+            let skuLsit = this.chooseSkuImgs // this.$route.query.skuCodeList
             let skuCodes = []
-            skuLsit.forEach(item => {
-                skuCodes = skuCodes.concat(item.skuCodes)
-            })
+            if (skuLsit.length > 0) {
+                skuLsit.forEach(item => {
+                    if (item.skuCodes !== undefined) {
+                        skuCodes = skuCodes.concat(item.skuCodes)
+                    }
+                })
+            }
             const params = {
-                productCode: this.$route.query.productCode,
-                skuCodes: skuCodes
+                productCode: this.$route.query.productCode
+            }
+            if (skuCodes.length > 0) {
+                params.skuCodes = skuCodes
             }
             this.$api.poster.getProductPosterInfo(params).then(res => {
                 let baseParams = utils.getStore('baseParams')
@@ -228,12 +248,17 @@ export default {
             })
         }
     },
+    created() {
+        utils.setStore('productSkuImgs', '')
+    },
     activated() {
         this.isPreview = false
         this.isSave = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
+        this.chooseSkuImgs = utils.getStore('productSkuImgs')
+        // alert(this.chooseSkuImgs.length)
         this.handleRequest()
     }
     // destroyed() {
@@ -337,13 +362,36 @@ export default {
     .product-list {
         display: flex;
         flex-direction: row;
+        flex-wrap: nowrap;
         justify-content: flex-start;
         padding: 16px 16px 16px 4px;
         margin: 12px 16px 0;
         background:@color-c8;
         border-radius:12px;
         overflow: scroll;
+        .choose_skuImg {
+            flex-shrink: 0;
+            text-align: center;
+            background: white;
+            width: 74px;
+            height: 74px;
+            margin-left: 16px;
+            border-radius:4px;
+            > img {
+                height: 26px;
+                width: 26px;
+                margin-top: 16px;
+            }
+            > p {
+                margin-top: 6px;
+                font-size:10px;
+                font-weight:400;
+                color:rgba(138,140,153,1);
+                line-height:14px;
+            }
+        }
         .image-item {
+            flex-shrink: 0;
             display: block;
             background:rgba(255,255,255,1);
             width: 74px; //calc(28.57vw - 19.43px);

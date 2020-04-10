@@ -237,7 +237,7 @@ export default {
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
-            isHide: 0,
+            isHide: 0
         }
     },
     watch: {

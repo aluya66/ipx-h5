@@ -13,7 +13,6 @@
                 原始方案
             </div>
         </c-header>
-        <!-- <div class="line" :style="marginTop"></div> -->
         <div class="panel" :style="getBottomOffset(69)">
             <div class="top-content">
                 <span>组货名称</span>
@@ -108,11 +107,12 @@
 </template>
 
 <script>
+// import LoaddingView from '../../error/loaddingView.vue'
 import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
 import cash from './cashFormat.js'
 import utils from 'utils'
-import { Dialog, Toast } from 'vant'
+import { Dialog } from 'vant'
 
 export default {
     components: {
@@ -127,7 +127,7 @@ export default {
             colorSkuAction: '',
             groupDetail: {}, // 组货基本信息
             groupGoodsRecords: [], // 商品列表数据源
-            isDialog: false,
+            // isDialog: true,
             seletedDetailsItem: {}, // sku数据源
             seletedItemIndex: '', // 选择调整商品下标
             isOrderSuply: false,
@@ -147,12 +147,6 @@ export default {
             this.suplyGoods()
         }
     },
-    created() {
-        Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-        })
-    },
     activated() {
         // 上报页面事件
         window.sa.track('IPX_WEB', {
@@ -162,7 +156,7 @@ export default {
         })
         this.resetData()
         this.isNative = false
-        this.isDialog = false
+        // this.isDialog = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
@@ -410,14 +404,14 @@ export default {
                         }
                     })
                     this.groupName = this.groupDetail.name
-                    Toast.clear()
+                    // Toast.clear()
                 })
                 .catch(err => {
                     console.log(err)
                 })
         },
         resetData() { // 重置页面
-            Toast.clear()
+            // Toast.clear()
             this.isManage = false
             this.isAllSelected = false
             this.showSkuDialog = false
@@ -645,14 +639,6 @@ export default {
             font-weight: bold;
             color: @color-ec;
         }
-    }
-
-    .line {
-        position: fixed;
-        width: 100%;
-        background-color: @color-c7;
-        height: 1px;
-        z-index: 100;
     }
 
     .panel {
@@ -1060,4 +1046,5 @@ export default {
         }
 
     }
+
 </style>

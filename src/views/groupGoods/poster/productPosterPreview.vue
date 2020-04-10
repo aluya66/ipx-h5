@@ -95,14 +95,14 @@ export default {
         // this.productData = this.$route.query.productData
     },
     deactivated() {
-        utils.setStore('productSkuList', '')
+        utils.setStore('productSkuImg', '')
         Toast.clear()
     },
     activated() {
         if (this.$route.query.productData.productCode !== undefined) {
             this.productData = this.$route.query.productData
         }
-        this.changedSku = utils.getStore('productSkuList')[0]
+        this.changedSku = utils.getStore('productSkuImg')[0]
         if (this.changedSku !== undefined) {
             this.handleRequest()
         }
@@ -179,6 +179,9 @@ export default {
                     let file = _this.dataURLtoBlob(_this.photoUrl)
                     utils.upload([file]).then(result => {
                         _this.isHiddenChange = false
+                        _this.$router.push({
+                            path: '/poster/savePoster'
+                        })
                         utils.postMessage('download_pictures', result)
                         Toast.clear()
                     }).catch(() => {
