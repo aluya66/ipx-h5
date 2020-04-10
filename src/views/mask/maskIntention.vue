@@ -5,110 +5,134 @@
    </c-header>
 
     <div class="content" :style="sHeight">
-        <p>请填写相关采购信息，确认提交后我们会尽快联系您</p>
 
-        <div class="info-input">
-            <span>联系人</span>
-            <field
-            class="input"
-            v-model="userName"
-            :border="false"
-            placeholder="请输入您的姓名"
-            maxlength="20"
-            :error="showUserNameError"
-            @blur="handleVerifyUserName"
-            @focus="handlePosition"
-            :clearable="true"
-            :adjust-position='true'
-            />
-        </div>
-        <div class="info-input">
-            <span>联系电话</span>
-            <field
+        <div class="step_one" v-if="stepNumber === 1">
+            <div class="info-input">
+                <span>公司名称</span>
+                <field
                 class="input"
-                v-model="userPhone"
-                type="number"
-                maxlength="11"
+                v-model="companyName"
                 :border="false"
-                placeholder="请输入您的电话"
-                :error="showPhoneError"
-                @blur="handleVerifyPhone"
+                placeholder="请输入公司名称"
+                maxlength="50"
+                :error="showCompanyNameError"
+                @blur="handleVerifyUserName"
+                @focus="handlePosition"
+                :adjust-position='true'
+                :clearable="true"
+                />
+            </div>
+            <div class="info-input">
+                <span>联系人</span>
+                <field
+                class="input"
+                v-model="userName"
+                :border="false"
+                placeholder="请输入公司联系人名字"
+                maxlength="20"
+                :error="showUserNameError"
+                @blur="handleVerifyUserName"
                 @focus="handlePosition"
                 :clearable="true"
                 :adjust-position='true'
-            />
-        </div>
-        <div class="info-input">
-            <span>采购数量</span>
-            <div class="input" @click="changeBuyNumber">
-                <span class="placeholder" v-if="purchaseNum === ''">请选择采购数量</span>
-                <span class="showText" v-else>{{purchaseNum}}</span>
-                <img src="../../themes/images/app/icon_next_gray@3x.png">
+                />
+            </div>
+            <div class="info-input">
+                <span>联系电话</span>
+                <field
+                    class="input"
+                    v-model="userPhone"
+                    type="number"
+                    maxlength="11"
+                    :border="false"
+                    placeholder="请输入公司联系人电话"
+                    :error="showPhoneError"
+                    @blur="handleVerifyPhone"
+                    @focus="handlePosition"
+                    :clearable="true"
+                    :adjust-position='true'
+                />
+            </div>
+            <div class="info-input">
+                <span>职位名称</span>
+                <field
+                class="input"
+                v-model="postName"
+                :border="false"
+                placeholder="请输入公司联系人的职位名称"
+                maxlength="20"
+                :error="showPostNameError"
+                @blur="handleVerifyUserName"
+                @focus="handlePosition"
+                :clearable="true"
+                :adjust-position='true'
+                />
             </div>
         </div>
 
-        <div class="info-input">
-            <span>岗位名称</span>
-            <field
-            class="input"
-            v-model="postName"
-            :border="false"
-            placeholder="请输入您的岗位名称"
-            maxlength="20"
-            :error="showPostNameError"
-            @blur="handleVerifyUserName"
-            @focus="handlePosition"
-            :clearable="true"
-            :adjust-position='true'
-            />
+        <div class="step_second" v-else-if="stepNumber == 2">
+
+            <title-content title="版型" titleFont="14">
+                <template slot="content">
+                    <van-grid class="stereotype" :border="false" :column-num="2"  >
+                        <van-grid-item v-for="(item,index) in stereotypeData" :key="index" >
+                            <div :class="['stereo_item_content', item.isSelect ? 'select_item' : '']" @click="stereotypeClick(item)">
+                                <img class="photo_item" :src="item.icon" alt="">
+                                <p :class="['title_item', item.isSelect ? 'select_color' : '']">{{item.title}}</p>
+                                <p :class="['subtitle_item', item.isSelect ? 'select_color' : '']" >{{item.subTitle}}</p>
+                            </div>
+                        </van-grid-item>
+                    </van-grid>
+                </template>
+            </title-content>
+
         </div>
 
-        <div class="info-input">
-            <span>公司名称</span>
-            <field
-            class="input"
-            v-model="companyName"
-            :border="false"
-            placeholder="请输入您的公司名称"
-            maxlength="50"
-            :error="showCompanyNameError"
-            @blur="handleVerifyUserName"
-            @focus="handlePosition"
-            :adjust-position='true'
-            :clearable="true"
-            />
-        </div>
+        <div class="step_three" v-else>
 
-        <div class="info-input">
-            <span>采购用途</span>
-            <div class="input" @click="changeBuyUse">
-                <span class="placeholder" v-if="purchaseUse === ''">请选择采购用途</span>
-                <span class="showText" v-else>{{purchaseUse}}</span>
-                <img src="../../themes/images/app/icon_next_gray@3x.png">
-            </div>
-        </div>
-
-        <div class="choose_photo">
-            <p>设计图上传<span>(选填)</span></p>
-
-            <van-grid class="pictures" :border="false" :column-num="3" :gutter="8" style="padding-left: 0;">
-                <van-grid-item v-for="(img,index) in designPictures" :key="index" v-show="designPictures.length != 0" style="padding-bottom: 8px;">
-                    <img class="photo_item" :src="img" alt="">
-                    <img class="photo_delete" :src="deletePic" alt="" @click="deletePhoto(img)">
-                </van-grid-item>
-                <van-grid-item style="padding-bottom: 8px;">
-                    <div class="choose_content">
-                        <div class="photo-choose"  >
-                            <img :src="choose_picture" alt="">
-                        </div>
-                        <input ref="inputer" type="file" @change="choosePhoto" accept="image/jpg,image/png,image/jpeg" name="imgUrls" multiple>
+            <title-content title="预定数量" titleFont="14">
+                <template slot="content">
+                    <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeBuyNumber">
+                        <span class="placeholder" v-if="purchaseNum === ''">请选择预定的口罩数量</span>
+                        <span class="showText" v-else>{{purchaseNum}}</span>
+                        <img :src="arrowIcon">
                     </div>
-                </van-grid-item>
-            </van-grid>
+                </template>
+            </title-content>
 
+            <title-content title="预期交付时间" titleFont="14">
+                <template slot="content">
+                    <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeDeliverTime">
+                        <span class="placeholder" v-if="deliverTime === ''">请选择预期交付的时间</span>
+                        <span class="showText" v-else>{{deliverTime}}</span>
+                        <img :src="arrowIcon">
+                    </div>
+                </template>
+            </title-content>
+
+            <div class="choose_photo">
+                <p>设计图上传<span>(选填)</span></p>
+
+                <van-grid class="pictures" :border="false" :column-num="3" :gutter="8" style="padding-left: 0;">
+                    <van-grid-item v-for="(img,index) in designPictures" :key="index" v-show="designPictures.length != 0" style="padding-bottom: 8px;">
+                        <img class="photo_item" :src="img" alt="">
+                        <img class="photo_delete" :src="deletePic" alt="" @click="deletePhoto(img)">
+                    </van-grid-item>
+                    <van-grid-item style="padding-bottom: 8px;">
+                        <div class="choose_content">
+                            <div class="photo-choose"  >
+                                <img :src="choose_picture" alt="">
+                            </div>
+                            <input ref="inputer" type="file" @change="choosePhoto" accept="image/jpg,image/png,image/jpeg" name="imgUrls" multiple>
+                        </div>
+                    </van-grid-item>
+                </van-grid>
+
+            </div>
         </div>
 
     </div>
+
     <!-- <fixed-view class="footer-shadow" id="footview" :style="getBottomOffset(60)">
         <template slot="footerContain">
             <div class="footer-view">
@@ -138,6 +162,7 @@
 <script>
 import { Field, Grid, GridItem } from 'vant'
 // import FixedView from '../common/bottomFixedView.vue'
+import TitleContent from '../common/titleContent.vue'
 import utils from 'utils'
 import lottie from 'lottie-web'
 import matchingJson from '@/utils/matching.json'
@@ -145,6 +170,7 @@ import matchedJson from '@/utils/matched.json'
 export default {
     components: {
         Field,
+        TitleContent,
         // FixedView,
         [Grid.name]: Grid,
         [GridItem.name]: GridItem
@@ -153,10 +179,12 @@ export default {
         return {
             choose_picture: require('../../themes/images/groupGoods/icon_choose_camera@3x.png'),
             deletePic: require('../../themes/images/app/control_delete_blue@3x.png'),
+            arrowIcon: require('@/themes/images/app/icon_next_gray@3x.png'),
             userName: '',
             userPhone: '',
             purchaseNum: '',
             purchaseUse: '',
+            deliverTime: '',
             postName: '',
             companyName: '',
             designPictures: [],
@@ -177,7 +205,34 @@ export default {
             animateTips: '',
             sHeight: {
                 minHeight: window.screen.height + 'px'
-            } // 设置当前最小高度为屏幕高度
+            }, // 设置当前最小高度为屏幕高度
+            stepNumber: 2,
+            stereotypeData: [
+                {
+                    icon: require('@/themes/images/mask/version_a@3x.png'),
+                    title: '版型A',
+                    subTitle: '单层3D明星款立体口罩',
+                    isSelect: false
+                },
+                {
+                    icon: require('@/themes/images/mask/version_b@3x.png'),
+                    title: '版型B',
+                    subTitle: '双层两用3D口罩',
+                    isSelect: false
+                },
+                {
+                    icon: require('@/themes/images/mask/version_c@3x.png'),
+                    title: '版型C',
+                    subTitle: '杯型3D口罩',
+                    isSelect: false
+                },
+                {
+                    icon: require('@/themes/images/mask/version_d@3x.png'),
+                    title: '版型D',
+                    subTitle: '弧型3D口罩',
+                    isSelect: false
+                }
+            ]
         }
     },
     created() {
@@ -187,7 +242,7 @@ export default {
     },
     activated() {
         this.purchaseNum = utils.getStore('purchaseNumber')
-        this.purchaseUse = utils.getStore('purchaseUse')
+        // this.purchaseUse = utils.getStore('purchaseUse')
     },
     methods: {
         getBottomOffset(offset) {
@@ -197,11 +252,11 @@ export default {
         },
         resetData() {
             utils.setStore('purchaseNumber', '')
-            utils.setStore('purchaseUse', '')
+            // utils.setStore('purchaseUse', '')
             this.userName = ''
             this.userPhone = ''
             this.purchaseNum = ''
-            this.purchaseUse = ''
+            // this.purchaseUse = ''
             this.postName = ''
             this.companyName = ''
             this.designPictures = []
@@ -241,11 +296,20 @@ export default {
                 path: '/mask/purchaseNum'
             })
         },
-        changeBuyUse() {
-            this.$router.push({
-                path: '/mask/purchaseUse'
-            })
+        changeDeliverTime() {
+
         },
+        stereotypeClick(item) {
+            this.stereotypeData.forEach(obj => {
+                obj.isSelect = false
+            })
+            item.isSelect = true
+        },
+        // changeBuyUse() {
+        //     this.$router.push({
+        //         path: '/mask/purchaseUse'
+        //     })
+        // },
         imgPreview (file) {
             // 创建一个reader
             let reader = new FileReader()
@@ -496,60 +560,102 @@ export default {
     // overflow-x:hidden;
     height: 89%;
     margin: 16px 0;
-    > p {
-        margin: 0 16px 4px;
-        font-size:13px;
-        font-weight:400;
-        color: @color-c2;
-        line-height:18px;
+    // > p {
+    //     margin: 0 16px 4px;
+    //     font-size:13px;
+    //     font-weight:400;
+    //     color: @color-c2;
+    //     line-height:18px;
+    // }
+    .step_one {
+        margin-top: 16px;
+        .info-input {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 16px;
+            > span {
+                height:44px;
+                font-size:14px;
+                font-weight:bold;
+                color: @color-c2;
+                line-height:44px;
+                margin-top: 16px;
+                align-self: center;
+            }
+        }
     }
-    .info-input {
-        display: flex;
-        justify-content: space-between;
-        margin: 0 16px;
-        > span {
-            height:44px;
+    .step_second {
+        .stereotype {
+            padding: 12px 5px;
+            .stereo_item_content {
+                width: calc(50vw - 16.5px);
+                padding-bottom: 12px;
+                margin-bottom: 12px;
+                border-radius:8px;
+                border:1px solid rgba(225,226,230,1);
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                .photo_item {
+                    width: 100%;
+                    height: 103px;
+                }
+                .title_item {
+                    margin-top: 12px;
+                    font-size:14px;
+                    font-weight:400;
+                    color: @color-c1;
+                    line-height:20px;
+                }
+                .subtitle_item {
+                    margin-top: 4px;
+                    font-size:12px;
+                    font-weight:400;
+                    color:@color-c3;
+                    line-height:16px;
+                }
+                .select_color {
+                    color: @color-ec;
+                }
+            }
+            .select_item {
+                border:1px solid rgba(60,92,246,1);
+            }
+        }
+    }
+
+    .input {
+        position: relative;
+        width: calc(100vw - 104px);
+        height: 44px;
+        border-radius: 8px;
+        background-color: @color-c8;
+        margin-top: 16px;
+        font-size: 14px;
+        align-items: center;
+        font-weight:bold;
+        color:@color-c1;
+        .placeholder {
             font-size:14px;
             font-weight:bold;
-            color: @color-c2;
+            color:@color-c4;
             line-height:44px;
-            margin-top: 16px;
-            align-self: center;
+            margin-left: 20px;
         }
-        .input {
-            position: relative;
-            width: calc(100vw - 104px);
-            height: 44px;
-            border-radius: 8px;
-            background-color: @color-c8;
-            margin-top: 16px;
-            font-size: 14px;
-            align-items: center;
+        .showText {
+            font-size:14px;
             font-weight:bold;
             color:@color-c1;
-            .placeholder {
-                font-size:14px;
-                font-weight:bold;
-                color:@color-c4;
-                line-height:44px;
-                margin-left: 20px;
-            }
-            .showText {
-                font-size:14px;
-                font-weight:bold;
-                color:@color-c1;
-                line-height:44px;
-                margin-left: 20px;
-            }
-            > img {
-                position: absolute;
-                right: 16px;
-                width: 20px;
-                height: 20px;
-                margin-top: 12px;
-            }
+            line-height:44px;
+            margin-left: 20px;
         }
-
+        > img {
+            position: absolute;
+            right: 16px;
+            width: 20px;
+            height: 20px;
+            margin-top: 12px;
+        }
     }
 
     .choose_photo {
