@@ -1,54 +1,5 @@
 <template>
     <layout-view class="hall-bg">
-        <div
-            style="z-index:2"
-            :style="getTitlePadding()+getBackgroundColor()"
-            slot="header">
-            <c-header
-                class="hall-header"
-                :isLight="false"
-                :left-arrow="true"
-                :showBorderBottom="false"
-                :pageOutStatus="!isFromWeb"
-            >
-                <div v-show="!isInSearch" slot="title" :class="{'color-black':alpha>=1}">我的展厅</div>
-                <template slot="left" tag="div">
-                    <img class="header-img" :src="alpha<1?backImageWhite:backImageBlack"/>
-                </template>
-                <template slot="right" tag="div">
-                    <div class="searchContain" v-show="isInSearch">
-                        <form action="/">
-                            <search
-                                v-model="searchKey"
-                                :placeholder="menuIndex === 1 ? '搜索收藏样衣' : '搜索组货清单'"
-                                show-action
-                                shape="round"
-                                :left-icon="headerSearchImg_gray"
-                                :clearable="false"
-                                @cancel="handleCancel"
-                                @input="handleRefresh"
-                            >
-                                <template slot="right-icon">
-                                    <img
-                                        :src="clearIcon"
-                                        style="width:0.2rem;height:0.2rem;object-fit:cover"
-                                        v-show="searchKey.length > 0"
-                                        alt=""
-                                        @click="handleSearchClear"
-                                    />
-                                </template>
-                            </search>
-                        </form>
-                    </div>
-                    <!-- <img
-                      class="header-img"
-                      v-show="!isInSearch"
-                      :src="headerSearchImg"
-                      @click="handleClickSearchIcon"
-                    /> -->
-                </template>
-            </c-header>
-        </div>
 
         <div class="exhibit-contain">
             <!--<div class="test-agcency-contain">
@@ -69,6 +20,83 @@
             </div>-->
 
             <img src="../../../themes/images/app/bg_exhibition_top.png"/>
+            <div
+                class="hall-header-con"
+                style="z-index:2"
+                :style="getTitlePadding()+getBackgroundColor()">
+                <div class="hall-header">
+                    <div class="hall-title-icon" @click="goBack()"><img class="header-img" :src="alpha<1?backImageWhite:backImageBlack" alt="返回"/></div>
+                    <div class="hall-title" :class="{'color-black':alpha>=1}">我的展厅</div>
+                    <div class="hall-title-icon"><!--<img class="header-img" :src="alpha<1?headerSearchImg:headerSearchImg_gray" alt="搜索"/>--></div>
+                </div>
+                <div class="searchContain" v-show="isInSearch">
+                    <form action="/">
+                        <search
+                            v-model="searchKey"
+                            :placeholder="menuIndex === 1 ? '搜索收藏样衣' : '搜索组货清单'"
+                            show-action
+                            shape="round"
+                            :left-icon="headerSearchImg_gray"
+                            :clearable="false"
+                            @cancel="handleCancel"
+                            @input="handleRefresh"
+                        >
+                            <template slot="right-icon">
+                                <img
+                                    :src="clearIcon"
+                                    style="width:0.2rem;height:0.2rem;object-fit:cover"
+                                    v-show="searchKey.length > 0"
+                                    alt=""
+                                    @click="handleSearchClear"
+                                />
+                            </template>
+                        </search>
+                    </form>
+                </div>
+                <!--<c-header
+                    class="hall-header"
+                    :isLight="false"
+                    :left-arrow="true"
+                    :showBorderBottom="false"
+                    :pageOutStatus="!isFromWeb"
+                >
+                    <template slot="left" tag="div">
+
+                    </template>
+                    <template slot="right" tag="div">
+                        <div class="searchContain" v-show="isInSearch">
+                            <form action="/">
+                                <search
+                                    v-model="searchKey"
+                                    :placeholder="menuIndex === 1 ? '搜索收藏样衣' : '搜索组货清单'"
+                                    show-action
+                                    shape="round"
+                                    :left-icon="headerSearchImg_gray"
+                                    :clearable="false"
+                                    @cancel="handleCancel"
+                                    @input="handleRefresh"
+                                >
+                                    <template slot="right-icon">
+                                        <img
+                                            :src="clearIcon"
+                                            style="width:0.2rem;height:0.2rem;object-fit:cover"
+                                            v-show="searchKey.length > 0"
+                                            alt=""
+                                            @click="handleSearchClear"
+                                        />
+                                    </template>
+                                </search>
+                            </form>
+                        </div>
+                        &lt;!&ndash; <img
+                          class="header-img"
+                          v-show="!isInSearch"
+                          :src="headerSearchImg"
+                          @click="handleClickSearchIcon"
+                        /> &ndash;&gt;
+                    </template>
+                </c-header>-->
+            </div>
 
             <c-list
                 ref="productlist"
@@ -85,32 +113,32 @@
             >
                 <div class="productList">
                     <div
-                    class="item"
-                    v-for="(item, index) in datas"
-                    :key="item.productCode"
-                    :class="[index % 2 === 0 ? 'margin-left-16' : 'margin-right-16']"
-                    @click.stop="handleSelectProduct(item)"
-                >
-                    <img
-                        class="itemSelIcon"
-                        v-show="isManageState"
-                        :src="isManageState ? getSelectStatus(item) ? select_sel : select_def : ''"
-                        alt=""
-                    />
-                    <img class="item-main-pic" :src="item.mainPic" alt=""/>
-                    <p class="margin-l-r-12 margin-top-12">{{ item.productName }}</p>
-                    <div class="retail-price margin-l-r-12 margin-top-8">
-                        <span class="flag">¥</span>
-                        <span class="number">{{ cashFormat(item.retailPrice) }}</span>
-                        <span class="label">建议零售价</span>
+                        class="item"
+                        v-for="(item, index) in datas"
+                        :key="item.productCode"
+                        :class="[index % 2 === 0 ? 'margin-left-16' : 'margin-right-16']"
+                        @click.stop="handleSelectProduct(item)"
+                    >
+                        <img
+                            class="itemSelIcon"
+                            v-show="isManageState"
+                            :src="isManageState ? getSelectStatus(item) ? select_sel : select_def : ''"
+                            alt=""
+                        />
+                        <img class="item-main-pic" :src="item.mainPic" alt=""/>
+                        <p class="margin-l-r-12 margin-top-12">{{ item.productName }}</p>
+                        <div class="retail-price margin-l-r-12 margin-top-8">
+                            <span class="flag">¥</span>
+                            <span class="number">{{ cashFormat(item.retailPrice) }}</span>
+                            <span class="label">建议零售价</span>
+                        </div>
+                        <div class="tsh-price margin-l-r-12 margin-top-4">
+                            <span class="flag">¥</span>
+                            <span class="number">{{ getHidePrice(item.tshPrice) }}</span>
+                            <span class="label" v-if="isHide === 0">入驻可得拿货价</span>
+                        </div>
+                        <div class="button margin-l-r-12 margin-top-8" @click="handleSelectProduct(item)">立即购买</div>
                     </div>
-                    <div class="tsh-price margin-l-r-12 margin-top-4">
-                        <span class="flag">¥</span>
-                        <span class="number">{{ getHidePrice(item.tshPrice) }}</span>
-                        <span class="label" v-if="isHide === 0">入驻可得拿货价</span>
-                    </div>
-                    <div class="button margin-l-r-12 margin-top-8" @click="handleSelectProduct(item)">立即购买</div>
-                </div>
                 </div>
             </c-list>
             <c-list
@@ -128,22 +156,22 @@
             >
                 <div class="groupList">
                     <div
-                    class="groupItemContain"
-                    :class="{ 'groupItemContain-manage': isManageState }"
-                    v-for="item in groupDatas"
-                    :key="item.groupGoodsId"
-                    @click="handleSelectProduct(item)"
-                >
-                    <section class="groupIconContain">
-                        <img
-                            class="groupSelIcon"
-                            v-show="isManageState"
-                            :src="isManageState ? getSelectStatus(item) ? select_sel : select_def : ''"
-                            alt=""
-                        />
-                    </section>
-                    <group-item :groupGood="item"/>
-                </div>
+                        class="groupItemContain"
+                        :class="{ 'groupItemContain-manage': isManageState }"
+                        v-for="item in groupDatas"
+                        :key="item.groupGoodsId"
+                        @click="handleSelectProduct(item)"
+                    >
+                        <section class="groupIconContain">
+                            <img
+                                class="groupSelIcon"
+                                v-show="isManageState"
+                                :src="isManageState ? getSelectStatus(item) ? select_sel : select_def : ''"
+                                alt=""
+                            />
+                        </section>
+                        <group-item :groupGood="item"/>
+                    </div>
                 </div>
             </c-list>
             <manage-view ref="manageView">
@@ -185,9 +213,9 @@
             <!--<section class="deleteBtn" @click="handleDeletes">
               删除{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
             </section>-->
-          </div>
-          <LoaddingView class="loadding_content" v-show="!showList"></LoaddingView>
-  </layout-view>
+        </div>
+        <LoaddingView class="loadding_content" v-show="!showList"/>
+    </layout-view>
 </template>
 
 <script>
@@ -229,7 +257,7 @@ export default {
             flag: false,
             alpha: 0,
             headerSearchImg: require('@/themes/images/app/icon_nav_search_white@3x.png'),
-            headerSearchImg_gray: require('@/themes/images/app/icon_search_gray.png'),
+            headerSearchImg_gray: require('@/themes/images/groupGoods/header_search.png'),
             clearIcon: require('@/themes/images/app/control_delete.png'),
             backImageWhite: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             backImageBlack: require('@/themes/images/app/icon_nav_back1_def@3x.png'),
@@ -237,7 +265,8 @@ export default {
             agencyImage: require('@/themes/images/app/icon_exhibition_agent.png'),
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
-            isHide: 0
+            isHide: 0,
+            isFromNative: false
         }
     },
     watch: {
@@ -300,6 +329,14 @@ export default {
                 paddingTop = statusBarHeight + 'rem'
             }
             return `padding-top:${paddingTop};`
+        },
+        goBack() {
+            let method = 'page_out'
+            if (this.isFromNative) {
+                utils.postMessage(method, '')
+            } else {
+                this.$router.go(-1)
+            }
         },
         getBackgroundColor() {
             return `background:rgba(255,255,255,${this.alpha});`
@@ -506,11 +543,13 @@ export default {
                     //     }
                     // }
                     let element = document.querySelector('.exhibit-contain')
-                    let scrollHeight = element.scrollTop
-                    if (scrollHeight > 200) {
-                        scrollHeight = 200
+                    if (element && element.scrollTop) {
+                        let scrollHeight = element.scrollTop
+                        if (scrollHeight > 200) {
+                            scrollHeight = 200
+                        }
+                        this.alpha = scrollHeight / 200
                     }
-                    this.alpha = scrollHeight / 200
                     // console.log(scrollHeight + ', alpha = ' + this.alpha + ', index = ' + this.menuIndex)
                 }, true)
         },
@@ -699,6 +738,9 @@ export default {
     },
     created() {
         this.showList = false
+        if (this.$route.query.fromNative === '1') {
+            this.isFromNative = true
+        }
     },
     deactivated() {
         window.removeEventListener('scroll', () => {
@@ -707,7 +749,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<!--<style lang="less">
     .searchContain {
         .van-search {
             height: 46px;
@@ -746,23 +788,23 @@ export default {
         width: 100%;
     }
 
-    .waterFall {
-        background: transparent !important;
-    }
+    /*.waterFall {*/
+    /*    background: transparent !important;*/
+    /*}*/
 
     .van-list__loading {
         width: 100%;
         height: 44px;
     }
 
-    .van-loading__spinner--circular {
+    .van-loading__spinner&#45;&#45;circular {
         width: 16px !important;
         height: 16px !important;
     }
-</style>
+
+</style>-->
 
 <style lang="less" scoped>
-
     .margin-left-16 {
         margin-left: 16px;
     }
@@ -779,19 +821,40 @@ export default {
     }
 
     .hall-bg {
-        padding-top: 0!important;
+        padding-top: 0 !important;
     }
 
     .color-black {
         color: @color-c1 !important;
     }
 
-    .hall-header {
-        background: rgba(0, 0, 0, 0);
+    .hall-header-con {
+        position: fixed;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        left: 0;
+        top: 0;
+        .hall-header {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0);
+            color: white;
+            font-size: @f18;
+            font-weight: bold;
+            .hall-title-icon {
+                width: @f26;
+                height: @f26;
+                margin-left: @f16;
+                margin-right: @f16;
+            }
+        }
     }
 
     .c-header {
-        margin-bottom: 0!important;
+        margin-bottom: 0 !important;
     }
 
     .test-agcency-contain {
@@ -914,7 +977,7 @@ export default {
             margin-top: -60px;
         }
 
-        >img {
+        > img {
             width: 100%;
             height: 185px;
         }
@@ -1051,8 +1114,8 @@ export default {
 
                     .label {
                         padding: 1px 2px;
-                        height:14px;
-                        background:rgba(255,235,237,1);
+                        height: 14px;
+                        background: rgba(255, 235, 237, 1);
                         border-radius: 0 4px 4px 4px;
                         font-size: 10px;
                         font-weight: bold;
@@ -1155,29 +1218,29 @@ export default {
         }
     }
 
-//   .loading_contain {
-//     width: 55px;
-//     height: 70px;
-//     margin-top: 30%;
-//     margin-left: 40%;
-//     .loadding_anim {
-//       width: 50px;
-//       height: 40px;
-//       margin-top: 0;
-//     }
-//     > p {
-//       font-size: 14px;
-//       line-height: 20px;
-//       color: @color-c3;
-//       margin-top: 10px;
-//     }
-//   }
-.loadding_content {
-    position: relative;
-    left: 0;
-    top: 0;
-    height: 60%;
-    width: 100%;
-}
+    //   .loading_contain {
+    //     width: 55px;
+    //     height: 70px;
+    //     margin-top: 30%;
+    //     margin-left: 40%;
+    //     .loadding_anim {
+    //       width: 50px;
+    //       height: 40px;
+    //       margin-top: 0;
+    //     }
+    //     > p {
+    //       font-size: 14px;
+    //       line-height: 20px;
+    //       color: @color-c3;
+    //       margin-top: 10px;
+    //     }
+    //   }
+    .loadding_content {
+        position: relative;
+        left: 0;
+        top: 0;
+        height: 60%;
+        width: 100%;
+    }
 
 </style>
