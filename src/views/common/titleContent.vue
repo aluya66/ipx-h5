@@ -1,6 +1,6 @@
 <template>
     <div class="contain-view">
-        <p :style="titleTop" class="title">{{title}}<span class="subTitle">{{subTitle}}</span></p>
+        <p :style="titleTop" class="title">{{title}}<span class="subTitle" :style="subTitleStyle">{{subTitle}}</span></p>
         <slot name="content"></slot>
     </div>
 </template>
@@ -22,12 +22,29 @@ export default {
         titleOffsetTop: {
             type: String,
             default: ''
+        },
+        titleFont: {
+            type: String,
+            default: ''
+        },
+        subTitleColor: {
+            type: String,
+            default: ''
         }
     },
     computed: {
         titleTop() {
-            if (this.titleOffsetTop.length >= 0) {
+            if (this.titleOffsetTop.length > 0) {
                 return 'margin-top:' + parseFloat(this.titleOffsetTop) / 100 + 'rem;'
+            }
+            if (this.titleFont.length > 0) {
+                return 'font-size:' + parseFloat(this.titleFont) / 100 + 'rem;color:rgba(88,91,102,1);'
+            }
+            return ''
+        },
+        subTitleStyle() {
+            if (this.subTitleColor.length > 0) {
+                return 'color:' + this.subTitleColor
             }
             return ''
         }

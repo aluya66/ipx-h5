@@ -62,7 +62,7 @@
                                             <!-- <field class="price-input" type="number" error :adjust-position='true' v-model="goodsInfo.retailPrice"/> -->
 
                                         </div>
-                                    </section>
+                                    </section> 
                                 </div>
                             </div>
                         </div>
