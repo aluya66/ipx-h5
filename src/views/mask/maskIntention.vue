@@ -71,7 +71,7 @@
         </div>
 
         <div class="step_second" v-else-if="stepNumber == 2">
-            
+
             <title-content title="版型" titleFont="14">
                 <template slot="content">
                     <van-grid class="stereotype" :border="false" :column-num="2"  >
@@ -86,12 +86,10 @@
                 </template>
             </title-content>
 
-
-
         </div>
 
         <div class="step_three" v-else>
-            
+
             <title-content title="预定数量" titleFont="14">
                 <template slot="content">
                     <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeBuyNumber">
@@ -205,35 +203,35 @@ export default {
             isAnimate: false,
             isAnimateEnd: false,
             animateTips: '',
-            sHeight:{
-               minHeight:window.screen.height + "px"
-            },  //设置当前最小高度为屏幕高度
+            sHeight: {
+                minHeight: window.screen.height + 'px'
+            }, // 设置当前最小高度为屏幕高度
             stepNumber: 2,
             stereotypeData: [
                 {
                     icon: require('@/themes/images/mask/version_a@3x.png'),
-                    title:'版型A',
+                    title: '版型A',
                     subTitle: '单层3D明星款立体口罩',
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/version_b@3x.png'),
-                    title:'版型B',
+                    title: '版型B',
                     subTitle: '双层两用3D口罩',
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/version_c@3x.png'),
-                    title:'版型C',
+                    title: '版型C',
                     subTitle: '杯型3D口罩',
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/version_d@3x.png'),
-                    title:'版型D',
+                    title: '版型D',
                     subTitle: '弧型3D口罩',
                     isSelect: false
-                },
+                }
             ]
         }
     },
@@ -625,7 +623,6 @@ export default {
             }
         }
     }
-
 
     .input {
         position: relative;
