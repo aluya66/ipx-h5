@@ -1,10 +1,17 @@
 <template>
-   <layout-view>
-   <c-header class="my-header" slot="header" :left-arrow="true">
-       <div slot="title">填写定制信息</div>
-   </c-header>
+   <layout-view class="header-bg">
+   <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
+        <div class="title" slot="title">
+            填写定制信息
+        </div>
+        <template slot="left" tag="div">
+            <img class="header-img" :src="backImage"/>
+        </template>
+    </c-header>
 
     <div class="content" :style="sHeight">
+
+        <TabView class="tab_content"></TabView>
 
         <div class="step_one" v-if="stepNumber === 1">
             <div class="info-input">
@@ -142,7 +149,7 @@
     </fixed-view> -->
 
     <div class="footview" id="footview" :style="getBottomOffset(0)">
-        <button @click="commitForm">确定</button>
+        <button @click="commitForm">下一步</button>
     </div>
 
     <div class="animate_content" v-show="isAnimate">
@@ -163,6 +170,7 @@
 import { Field, Grid, GridItem } from 'vant'
 // import FixedView from '../common/bottomFixedView.vue'
 import TitleContent from '../common/titleContent.vue'
+import TabView from './maskInfoTab.vue'
 import utils from 'utils'
 import lottie from 'lottie-web'
 import matchingJson from '@/utils/matching.json'
@@ -171,6 +179,7 @@ export default {
     components: {
         Field,
         TitleContent,
+        TabView,
         // FixedView,
         [Grid.name]: Grid,
         [GridItem.name]: GridItem
@@ -180,6 +189,7 @@ export default {
             choose_picture: require('../../themes/images/groupGoods/icon_choose_camera@3x.png'),
             deletePic: require('../../themes/images/app/control_delete_blue@3x.png'),
             arrowIcon: require('@/themes/images/app/icon_next_gray@3x.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             userName: '',
             userPhone: '',
             purchaseNum: '',
@@ -544,29 +554,32 @@ export default {
 </style>
 
 <style lang='less' scoped>
-.my-header {
-  position: relative;
-  &:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: @color-c7;
-  }
+.header-img {
+    display: inline-block;
+    vertical-align: middle;
+    width: 26px;
+    height: 26px;
+}
+
+.header-bg {
+    background-image: url('../../themes/images/mask/bg_master_fill_information_top@3x.png');
+    background-repeat: no-repeat;
+    background-size: 100% 161px;
+}
+.header {
+    background: rgba(0, 0, 0, 0);
+    .title {
+        height: 40px;
+    }
 }
 .content {
     overflow-y: scroll;
     // overflow-x:hidden;
     height: 89%;
     margin: 16px 0;
-    // > p {
-    //     margin: 0 16px 4px;
-    //     font-size:13px;
-    //     font-weight:400;
-    //     color: @color-c2;
-    //     line-height:18px;
-    // }
+    .tab_content {
+        margin-top: 16px;
+    }
     .step_one {
         margin-top: 16px;
         .info-input {
