@@ -67,11 +67,12 @@ export default {
             border-radius: 12px 12px 0 0;
             display: flex;
             flex-direction: column;
+            padding-bottom: 20px;
             transition: all 0.3s ease;
             transform: translateY(100%);
 
             .dialog-count-title {
-                border-bottom: solid #E1E2E6 1px;
+                border-bottom: solid #E1E2E6 0.002rem;
                 height: 58px;
                 line-height: 58px;
                 align-items: center;
@@ -98,7 +99,7 @@ export default {
         .count-item {
             height: 50px;
             margin-left: 16px;
-            border-bottom: solid #E1E2E6 1px;
+            border-bottom: solid #E1E2E6 0.002rem;
             color: @color-c1;
             font-size: @f16;
             line-height: 50px;
