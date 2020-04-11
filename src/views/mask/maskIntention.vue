@@ -398,10 +398,10 @@ export default {
     },
     created() {
         this.resetData()
-
         // this.scrollTop()
     },
     activated() {
+        utils.postMessage('changeStatus', 'light')
         // this.purchaseNum = utils.getStore('purchaseNumber')
         // this.purchaseUse = utils.getStore('purchaseUse')
     },
@@ -852,9 +852,9 @@ export default {
 }
 .header {
     background: rgba(0, 0, 0, 0);
-    .title {
-        height: 40px;
-    }
+    // .title {
+    //     height: 40px;
+    // }
 }
 .content {
     overflow-y: scroll;

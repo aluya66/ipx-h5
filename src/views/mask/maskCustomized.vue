@@ -254,6 +254,7 @@ export default {
         }
     },
     activated() {
+        utils.postMessage('changeStatus', 'default')
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
