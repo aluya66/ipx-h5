@@ -69,7 +69,8 @@ export default {
             monthIndex: 2,
             dateIndex: 2,
             showMonths: [],
-            showDates: []
+            showDates: [],
+            scrollTimer: 0
         }
     },
     methods: {
@@ -88,7 +89,6 @@ export default {
             let date = this.showDates[this.dateIndex].split('日')[0]
             let selectDate = year + '-' + month + '-' + date
             this.$emit('onConfirmDate', selectDate)
-            console.log(selectDate)
             this.close()
         },
         touchStart() {
@@ -96,6 +96,17 @@ export default {
         },
         touchEnd() {
             this.isScrollFinish = true
+            console.log('事件结束')
+            this.handler()
+        },
+        handler() {
+            if (this.isScrollFinish) {
+                this.targetElement.scrollTo({
+                    top: this.scrollTop,
+                    behavior: 'smooth'
+                })
+                console.log('滚动到固定位置')
+            }
         },
         getMonthsByYear() {
             let year = this.years[this.yearIndex].substring(0, 4)
@@ -112,7 +123,6 @@ export default {
                 }
             })
             this.showMonths = months
-            // this.monthIndex = 2
             this.getDatesByMonth()
         },
         getDatesByMonth() {
@@ -121,7 +131,6 @@ export default {
             let month = parseInt(this.showMonths[this.monthIndex].replace('月', ''))
             let currentDate = this.currentDate.getDate()
             let start = currentYear < year || month > this.currentDate.getMonth() + 1 ? 1 : currentDate
-            console.log('year = ' + year + ', start = ' + start + ', month = ' + month)
             this.showDates = ['', '']
             for (let i = start; i <= this.getDaysByMonth(month); i++) {
                 this.showDates.push(i + '日 ' + this.getWeekday(year, month - 1, i))
@@ -172,6 +181,7 @@ export default {
             }
         },
         onScrollListener(event) {
+            clearTimeout(this.scrollTimer)
             let element = event.target
             this.targetElement = element
             if (element && element.scrollTop) {
@@ -191,7 +201,9 @@ export default {
                 })
                 let index = Number(scrollTop) / itemHeight + 2
                 this.scrollTop = scrollTop
-                children[index].classList.add('li-select')
+                if (children[index].classList) {
+                    children[index].classList.add('li-select')
+                }
                 if (element.id === 'time-year') {
                     this.yearIndex = index
                     this.getMonthsByYear()
@@ -201,21 +213,12 @@ export default {
                 } else {
                     this.dateIndex = index
                 }
-                if (this.isScrollFinish) {
-                    setTimeout(() => {
-                        this.targetElement.scrollTo({
-                            top: this.scrollTop,
-                            behavior: 'smooth'
-                        })
-                        console.log('滚动到固定位置')
-                    }, 500)
-                }
             }
+            this.scrollTimer = setTimeout(this.handler, 400)
         }
     },
     created() {
         this.getMonthsByYear()
-        this.getDatesByMonth()
     },
     activated() {
         window.addEventListener('scroll', this.onScrollListener, true)
