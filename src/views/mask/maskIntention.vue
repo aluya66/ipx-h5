@@ -93,8 +93,8 @@
                 </template>
             </title-content>
 
-            <selectBox class="color_type" title="颜色" columnNum="4" :resourceData="colorData" @onSelectItem="colorClick"></selectBox>
-            <selectBox class="flow_type" title="印花工艺" columnNum="2" gutter="18" :resourceData="flowerData" @onSelectItem="flowerClick"></selectBox>
+            <selectBox class="color_type" title="颜色" :columnNum="4" :resourceData="colorData" @onSelectItem="colorClick"></selectBox>
+            <selectBox class="flow_type" title="印花工艺" :columnNum="2" :gutter="18" :resourceData="flowerData" @onSelectItem="flowerClick"></selectBox>
 
             <title-content style="padding: 0;border-radius:0;" title="功能" titleFont="14">
                 <template slot="content">
@@ -112,12 +112,12 @@
 
         <div class="step_three" v-else>
 
-            <selectBox class="filter_type" title="滤芯" columnNum="3" :resourceData="filterData" @onSelectItem="filterClick"></selectBox>
-            <selectBox class="pakage_type" title="包装" columnNum="2" gutter="18" :resourceData="pakageData" @onSelectItem="pakageClick"></selectBox>
+            <selectBox class="filter_type" title="滤芯" :columnNum="3" :resourceData="filterData" @onSelectItem="filterClick"></selectBox>
+            <selectBox class="pakage_type" title="包装" :columnNum="2" :gutter="18" :resourceData="pakageData" @onSelectItem="pakageClick"></selectBox>
 
             <title-content style="padding: 0;" title="预定数量" titleFont="14">
                 <template slot="content">
-                    <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeBuyNumber">
+                    <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeBuyNumber(true)">
                         <span class="placeholder" v-if="purchaseNum === ''">请选择预定的口罩数量</span>
                         <span class="showText" v-else>{{purchaseNum}}</span>
                         <img :src="arrowIcon">
@@ -157,14 +157,23 @@
         </div>
 
     </div>
-    <selectBuyNumber v-show="showNumDialog" :showDialog="showNumDialog" @onClose="closeBuyNumber" @onSelectedCount="selectedBuyNumber"></selectBuyNumber>
-    <van-datetime-picker
-    v-show="showTimeDialog"
-    v-model="currentDate"
-    type="date"
-    :min-date="minDate"
-    :max-date="maxDate"
-    />
+    <selectBuyNumber v-show="showNumDialog" :showDialog="showNumDialog" @onClose="changeBuyNumber(false)" @onSelectedCount="selectedBuyNumber"></selectBuyNumber>
+    <popup v-model="showTimeDialog" position="bottom">
+      <datetime-picker
+        class="date_dialog"
+        v-model="currentDate"
+        type="date"
+        title="选择时间"
+        :loading="isLoadingShow"
+        :min-date="minDate"
+        :max-date="maxDate"
+        :item-height="140"
+        :formatter="formatter"
+        @cancel="showTimeDialog = false"
+        @confirm="confirmTime"
+      />
+    </popup>
+
     <!-- <fixed-view class="footer-shadow" id="footview" :style="getBottomOffset(60)">
         <template slot="footerContain">
             <div class="footer-view">
@@ -192,7 +201,7 @@
 </template>
 
 <script>
-import { Field, Grid, GridItem, DatetimePicker } from 'vant'
+import { Field, Grid, GridItem, DatetimePicker,Popup } from 'vant'
 // import FixedView from '../common/bottomFixedView.vue'
 import TitleContent from '../common/titleContent.vue'
 import TabView from './maskInfoTab.vue'
@@ -212,7 +221,8 @@ export default {
         // FixedView,
         [Grid.name]: Grid,
         [GridItem.name]: GridItem,
-        DatetimePicker
+        DatetimePicker,
+        Popup
     },
     data () {
         return {
@@ -222,18 +232,28 @@ export default {
             backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             userName: '',
             userPhone: '',
-            purchaseNum: '',
-            showNumDialog: false,
-            purchaseUse: '',
-            deliverTime: '',
-            showTimeDialog: false,
             postName: '',
             companyName: '',
+
+            stereotypeName: '',
+            colorName: '',
+            flowerName: '',
+            funcName: '',
+
+            filterName: '',
+            pakageName: '',
+            purchaseNum: '',
+            deliverTime: '',
+
             designPictures: [],
             pictureUrls: [],
 
+            showNumDialog: false,
+            showTimeDialog: false,
+            isLoadingShow: true,
+
             minDate: new Date(),
-            maxDate: new Date(2025, 10, 1),
+            maxDate: new Date(2030, 12, 1),
             currentDate: new Date(),
 
             phoneFormartResult: false,
@@ -399,14 +419,39 @@ export default {
         },
         resetData() {
             utils.setStore('purchaseNumber', '')
-            // utils.setStore('purchaseUse', '')
+            this.stepNumber = 0
             this.userName = ''
             this.userPhone = ''
-            this.purchaseNum = ''
-            this.deliverTime = ''
-            // this.purchaseUse = ''
             this.postName = ''
             this.companyName = ''
+
+            this.stereotypeName = ''
+            this.colorName = ''
+            this.flowerName = ''
+            this.funcName = ''
+
+            this.filterName = ''
+            this.pakageName = ''
+            this.purchaseNum = ''
+            this.deliverTime = ''
+            this.stereotypeData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.colorData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.flowerData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.functionData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.filterData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.pakageData.forEach(obj => {
+                obj.isSelect = false
+            })
             this.designPictures = []
             this.pictureUrls = []
             this.isAnimate = false
@@ -428,7 +473,7 @@ export default {
             }
         },
         handleVerifyPhone () {
-            window.scroll(0, 0)
+            // window.scroll(0, 0)
             // this.setposition = 'position: fixed'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
@@ -436,60 +481,98 @@ export default {
             }
         },
         handleVerifyUserName () {
-            window.scroll(0, 0)
+            // window.scroll(0, 0)
             // this.setposition = 'position: fixed'
         },
-        changeBuyNumber() {
-            this.showNumDialog = true
+        ///切换步骤
+        tabChanged(index) {
+            if (this.stepNumber === 0 & this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '') {
+                this.stepNumber = index
+            }
+            if (this.stepNumber === 1 ) {
+                if (index < this.stepNumber) { this.stepNumber = index } 
+                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & this.funcName !== '') {
+                    this.stepNumber = index
+                }
+            }
+            if (this.stepNumber === 2) {
+                this.stepNumber = index
+            }
         },
-        selectedBuyNumber(item) {
-            this.purchaseNum = item
-        },
-        closeBuyNumber() {
-            this.showNumDialog = false
+        changeBuyNumber(isShow) {
+            this.showNumDialog = isShow
         },
         changeDeliverTime() {
             this.showTimeDialog = true
-            // this.deliverTime = ''
+            this.isLoadingShow = true
+            setTimeout(() => {
+                this.isLoadingShow = false
+            }, 500)
         },
         stereotypeClick(item) {
             this.stereotypeData.forEach(obj => {
                 obj.isSelect = false
             })
             item.isSelect = true
+            this.stereotypeName = item.title
         },
         colorClick(item) {
             this.colorData.forEach(obj => {
                 obj.isSelect = false
             })
             item.isSelect = true
+            this.colorName = item.title
         },
         flowerClick(item) {
             this.flowerData.forEach(obj => {
                 obj.isSelect = false
             })
             item.isSelect = true
+            this.flowerName = item.title
         },
         functypeClick(item) {
             this.functionData.forEach(obj => {
                 obj.isSelect = false
             })
             item.isSelect = true
+            this.funcName = item.title
         },
         filterClick(item) {
             this.filterData.forEach(obj => {
                 obj.isSelect = false
             })
             item.isSelect = true
+            this.filterName = item.title
         },
         pakageClick(item) {
             this.pakageData.forEach(obj => {
                 obj.isSelect = false
             })
             item.isSelect = true
+            this.pakageName = item.title
         },
-        tabChanged(index) {
-            this.stepNumber = index
+        selectedBuyNumber(item) {
+            this.purchaseNum = item
+        },
+        confirmTime(val) {
+            this.showTimeDialog = false
+            let year = val.getFullYear()
+            let month = val.getMonth() + 1
+            let day = val.getDate()
+            if (month >= 1 && month <= 9) { month = `0${month}` }
+            if (day >= 1 && day <= 9) { day = `0${day}` }
+            this.deliverTime = `${year}-${month}-${day}`
+        },
+        // 选项格式化函数
+        formatter (type, value) {
+            if (type === 'year') {
+                return `${value}年`
+            } else if (type === 'month') {
+                return `${value}月`
+            } else if (type === 'day') {
+                return `${value}日`
+            }
+            return value
         },
         // changeBuyUse() {
         //     this.$router.push({
@@ -590,20 +673,36 @@ export default {
                     this.$toast('请填写完整信息！')
                 }
             }
+
+            if (this.stepNumber === 1) {
+                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & this.funcName !== '') {
+                    this.stepNumber = 2
+                    return
+                } else {
+                    this.$toast('请填写完整信息！')
+                }
+            }
+
             if (this.stepNumber === 2) {
-                if (this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '' & this.purchaseUse !== '' & this.purchaseNum !== '') {
+                if (this.filterName !== '' & this.pakageName !== '' & this.purchaseNum !== '' & this.deliverTime !== '') {
                     const params = {
-                        mobile: this.userPhone,
                         realName: this.userName,
+                        mobile: this.userPhone,
                         count: this.purchaseNum,
                         jobName: this.postName,
                         companyName: this.companyName,
-                        used: this.purchaseUse
+                        used: this.funcName,
+                        shapeName: this.stereotypeName,
+                        colorName: this.colorName,
+                        craftsName: this.flowerName,
+                        functionName: this.funcName,
+                        filterName: this.filterName,
+                        packName: this.pakageName,
+                        deliverTime: this.deliverTime
                     }
                     if (this.pictureUrls.length > 0) {
                         params.imgUrl = this.pictureUrls.join(',')
                     }
-
                     this.$api.deposit.createMaskIntention(params).then(res => {
                         this.isAnimate = true
                         lottie.play()
@@ -949,6 +1048,7 @@ export default {
     }
 
 }
+
 .footer-shadow {
     border-radius:12px 12px 0px 0px;
 }
