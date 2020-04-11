@@ -93,16 +93,16 @@
                 </template>
             </title-content>
 
-            <selectBox class="color_type" title="颜色" :columnNum="4" :resourceData="colorData" @onSelectItem="colorClick"></selectBox>
+            <selectBox class="color_type" title="颜色" :columnNum="3" :resourceData="colorData" @onSelectItem="colorClick"></selectBox>
             <selectBox class="flow_type" title="印花工艺" :columnNum="2" :gutter="18" :resourceData="flowerData" @onSelectItem="flowerClick"></selectBox>
 
             <title-content style="padding: 0;border-radius:0;" title="功能" titleFont="14">
                 <template slot="content">
-                    <van-grid class="function_type" :border="false" :column-num="4"  >
+                    <van-grid class="function_type" :border="false" :column-num="5"  >
                         <van-grid-item v-for="(funcItem,index) in functionData" :key="index" >
                             <div class="function_item_content" @click="functypeClick(funcItem)">
-                                <img class="icon_item" :src="funcItem.isSelect ? funcItem.selectIcon : funcItem.icon" alt="">
-                                <p :class="['title_item', funcItem.isSelect ? 'select_color' : '']">{{funcItem.title}}</p>
+                                <img class="icon_item" :src="funcItem.enabled ? (funcItem.isSelect ? funcItem.selectIcon : funcItem.icon) : funcItem.unableIcon" alt="">
+                                <p :class="['title_item', funcItem.isSelect ? 'select_color' : '', funcItem.enabled ? '': 'unable_color']">{{funcItem.title}}</p>
                             </div>
                         </van-grid-item>
                     </van-grid>
@@ -112,7 +112,7 @@
 
         <div class="step_three" v-else>
 
-            <selectBox class="filter_type" title="滤芯" :columnNum="3" :resourceData="filterData" @onSelectItem="filterClick"></selectBox>
+            <selectBox class="filter_type" title="滤芯" :columnNum="3" :gutter="18" :resourceData="filterData" @onSelectItem="filterClick"></selectBox>
             <selectBox class="pakage_type" title="包装" :columnNum="2" :gutter="18" :resourceData="pakageData" @onSelectItem="pakageClick"></selectBox>
 
             <title-content style="padding: 0;" title="预定数量" titleFont="14">
@@ -278,26 +278,30 @@ export default {
                     icon: require('@/themes/images/mask/version_a@3x.png'),
                     title: '版型A',
                     subTitle: '单层3D明星款立体口罩',
+                    subFunc: ['玻尿酸','冰感'],
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/version_b@3x.png'),
                     title: '版型B',
                     subTitle: '双层两用3D口罩',
+                    subFunc: [],
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/version_c@3x.png'),
                     title: '版型C',
                     subTitle: '杯型3D口罩',
+                    subFunc: ['玻尿酸','抗病毒','香型','冰感'],
                     isSelect: false
                 },
-                {
-                    icon: require('@/themes/images/mask/version_d@3x.png'),
-                    title: '版型D',
-                    subTitle: '弧型3D口罩',
-                    isSelect: false
-                }
+                // {
+                //     icon: require('@/themes/images/mask/version_d@3x.png'),
+                //     title: '版型D',
+                //     subTitle: '弧型3D口罩',
+                //     subFunc: ['抗菌','玻尿酸','抗病毒','香型','冰感'],
+                //     isSelect: false
+                // }
             ],
             colorData: [
                 {
@@ -313,23 +317,15 @@ export default {
                     isSelect: false
                 },
                 {
-                    title: '蓝色',
-                    isSelect: false
-                },
-                {
-                    title: '粉色',
-                    isSelect: false
-                },
-                {
                     title: '红色',
                     isSelect: false
                 },
                 {
-                    title: '大地色',
+                    title: '绿色',
                     isSelect: false
                 },
                 {
-                    title: '花色',
+                    title: '黄色',
                     isSelect: false
                 }
             ],
@@ -369,27 +365,43 @@ export default {
             ],
             functionData: [
                 {
+                    icon: require('@/themes/images/mask/icon_antibacterial_def@3x.png'),
+                    selectIcon: require('@/themes/images/mask/icon_antibacterial_sel@3x.png'),
+                    unableIcon: require('@/themes/images/mask/icon_antibacterial_unuse@3x.png'),
+                    title: '抗菌',
+                    enabled: true,
+                    isSelect: false
+                },
+                {
                     icon: require('@/themes/images/mask/icon_antiviral_def@3x.png'),
                     selectIcon: require('@/themes/images/mask/icon_antiviral_sel@3x.png'),
+                    unableIcon: require('@/themes/images/mask/icon_antiviral_unuse@3x.png'),
                     title: '抗病毒',
+                    enabled: true,
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/icon_hyaluronic_acid_def@3x.png'),
                     selectIcon: require('@/themes/images/mask/icon_hyaluronic_acid_sel@3x.png'),
+                    unableIcon: require('@/themes/images/mask/icon_hyaluronic_acid_unuse@3x.png'),
                     title: '玻尿酸',
+                    enabled: true,
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/icon_ice_def@3x.png'),
                     selectIcon: require('@/themes/images/mask/icon_ice_sel@3x.png'),
+                    unableIcon: require('@/themes/images/mask/icon_ice_unuse@3x.png'),
                     title: '冰感',
+                    enabled: true,
                     isSelect: false
                 },
                 {
                     icon: require('@/themes/images/mask/icon_aroma_def@3x.png'),
                     selectIcon: require('@/themes/images/mask/icon_aroma_sel@3x.png'),
+                    unableIcon: require('@/themes/images/mask/icon_aroma_type_unuse@3x.png'),
                     title: '香型',
+                    enabled: true,
                     isSelect: false
                 }
             ]
@@ -486,12 +498,12 @@ export default {
         },
         /// 切换步骤
         tabChanged(index) {
-            if (this.stepNumber === 0 & this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '') {
+            if (this.stepNumber === 0 & index < 2 & this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '') {
                 this.stepNumber = index
             }
             if (this.stepNumber === 1) {
                 if (index < this.stepNumber) { this.stepNumber = index }
-                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & this.funcName !== '') {
+                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & (this.funcName !== '' || this.stereotypeName === '版型B')) {
                     this.stepNumber = index
                 }
             }
@@ -515,6 +527,17 @@ export default {
             })
             item.isSelect = true
             this.stereotypeName = item.title
+            
+            this.functionData.forEach(func => {
+                let index = item.subFunc.indexOf(func.title)
+                if (index < 0) {
+                    func.enabled = false
+                    func.isSelect = false
+                    this.funcName = ''
+                } else {
+                    func.enabled = true
+                }
+            })
         },
         colorClick(item) {
             this.colorData.forEach(obj => {
@@ -531,6 +554,9 @@ export default {
             this.flowerName = item.title
         },
         functypeClick(item) {
+            if (!item.enabled) {
+                return
+            }
             this.functionData.forEach(obj => {
                 obj.isSelect = false
             })
@@ -675,7 +701,7 @@ export default {
             }
 
             if (this.stepNumber === 1) {
-                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & this.funcName !== '') {
+                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & (this.funcName !== '' || this.stereotypeName === '版型B')) {
                     this.stepNumber = 2
                     return
                 } else {
@@ -691,11 +717,11 @@ export default {
                         count: this.purchaseNum,
                         jobName: this.postName,
                         companyName: this.companyName,
-                        used: this.funcName,
+                        // used: this.funcName,
                         shapeName: this.stereotypeName,
                         colorName: this.colorName,
                         craftsName: this.flowerName,
-                        functionName: this.funcName,
+                        functionName: this.stereotypeName === '版型B' ? ' ' : this.funcName,
                         filterName: this.filterName,
                         packName: this.pakageName,
                         deliverTime: this.deliverTime
@@ -865,7 +891,9 @@ export default {
         margin-top: 16px;
     }
     .step_one {
-        margin-top: 16px;
+        background: white;
+        padding-bottom: 80px;
+        padding-top: 16px;
         .info-input {
             display: flex;
             justify-content: space-between;
@@ -883,6 +911,7 @@ export default {
     }
     .step_second {
         background: white;
+        padding: 1px 0;
         // padding-top: 16px;
         .stereotype {
             padding: 12px 5px 0;
@@ -946,12 +975,16 @@ export default {
                 .select_color {
                     color: @color-ec;
                 }
+                .unable_color {
+                    color: @color-c4;
+                }
             }
         }
     }
 
     .step_three {
         background: white;
+        padding: 1px 0;
     }
 
     .input {
@@ -1068,7 +1101,7 @@ export default {
     // position: absolute;
     // margin: 0 16px 5px;
     bottom: 0;
-    position: absolute;
+    position: fixed;
     left: 16px;
     margin-bottom: 5px;
     > button {
