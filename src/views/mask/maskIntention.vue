@@ -1,12 +1,19 @@
 <template>
-   <layout-view>
-   <c-header class="my-header" slot="header" :left-arrow="true">
-       <div slot="title">填写定制信息</div>
-   </c-header>
+   <layout-view class="header-bg" :style="handleAdjustHeaderBg()">
+   <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
+        <div class="title" slot="title">
+            填写定制信息
+        </div>
+        <template slot="left" tag="div">
+            <img class="header-img" :src="backImage"/>
+        </template>
+    </c-header>
 
     <div class="content" :style="sHeight">
 
-        <div class="step_one" v-if="stepNumber === 1">
+        <TabView class="tab_content" :selectedIndex="stepNumber" @onSwitchTab="tabChanged"></TabView>
+
+        <div class="step_one" v-if="stepNumber === 0">
             <div class="info-input">
                 <span>公司名称</span>
                 <field
@@ -70,9 +77,9 @@
             </div>
         </div>
 
-        <div class="step_second" v-else-if="stepNumber == 2">
+        <div class="step_second" v-else-if="stepNumber == 1">
 
-            <title-content title="版型" titleFont="14">
+            <title-content style="padding: 0;border-radius:0;" title="版型" titleFont="14">
                 <template slot="content">
                     <van-grid class="stereotype" :border="false" :column-num="2"  >
                         <van-grid-item v-for="(item,index) in stereotypeData" :key="index" >
@@ -86,13 +93,31 @@
                 </template>
             </title-content>
 
+            <selectBox class="color_type" title="颜色" :columnNum="4" :resourceData="colorData" @onSelectItem="colorClick"></selectBox>
+            <selectBox class="flow_type" title="印花工艺" :columnNum="2" :gutter="18" :resourceData="flowerData" @onSelectItem="flowerClick"></selectBox>
+
+            <title-content style="padding: 0;border-radius:0;" title="功能" titleFont="14">
+                <template slot="content">
+                    <van-grid class="function_type" :border="false" :column-num="4"  >
+                        <van-grid-item v-for="(funcItem,index) in functionData" :key="index" >
+                            <div class="function_item_content" @click="functypeClick(funcItem)">
+                                <img class="icon_item" :src="funcItem.isSelect ? funcItem.selectIcon : funcItem.icon" alt="">
+                                <p :class="['title_item', funcItem.isSelect ? 'select_color' : '']">{{funcItem.title}}</p>
+                            </div>
+                        </van-grid-item>
+                    </van-grid>
+                </template>
+            </title-content>
         </div>
 
         <div class="step_three" v-else>
 
-            <title-content title="预定数量" titleFont="14">
+            <selectBox class="filter_type" title="滤芯" :columnNum="3" :resourceData="filterData" @onSelectItem="filterClick"></selectBox>
+            <selectBox class="pakage_type" title="包装" :columnNum="2" :gutter="18" :resourceData="pakageData" @onSelectItem="pakageClick"></selectBox>
+
+            <title-content style="padding: 0;" title="预定数量" titleFont="14">
                 <template slot="content">
-                    <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeBuyNumber">
+                    <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeBuyNumber(true)">
                         <span class="placeholder" v-if="purchaseNum === ''">请选择预定的口罩数量</span>
                         <span class="showText" v-else>{{purchaseNum}}</span>
                         <img :src="arrowIcon">
@@ -100,7 +125,7 @@
                 </template>
             </title-content>
 
-            <title-content title="预期交付时间" titleFont="14">
+            <title-content style="padding: 0.12rem 0;" title="预期交付时间" titleFont="14">
                 <template slot="content">
                     <div style="margin-left: 0.16rem;width: calc(100vw - 0.32rem);" class="input" @click="changeDeliverTime">
                         <span class="placeholder" v-if="deliverTime === ''">请选择预期交付的时间</span>
@@ -132,6 +157,22 @@
         </div>
 
     </div>
+    <selectBuyNumber v-show="showNumDialog" :showDialog="showNumDialog" @onClose="changeBuyNumber(false)" @onSelectedCount="selectedBuyNumber"></selectBuyNumber>
+    <popup v-model="showTimeDialog" position="bottom">
+      <datetime-picker
+        class="date_dialog"
+        v-model="currentDate"
+        type="date"
+        title="选择时间"
+        :loading="isLoadingShow"
+        :min-date="minDate"
+        :max-date="maxDate"
+        :item-height="140"
+        :formatter="formatter"
+        @cancel="showTimeDialog = false"
+        @confirm="confirmTime"
+      />
+    </popup>
 
     <!-- <fixed-view class="footer-shadow" id="footview" :style="getBottomOffset(60)">
         <template slot="footerContain">
@@ -142,7 +183,7 @@
     </fixed-view> -->
 
     <div class="footview" id="footview" :style="getBottomOffset(0)">
-        <button @click="commitForm">确定</button>
+        <button @click="commitForm">{{stepNumber === 2 ? '提交定制需求':'下一步'}}</button>
     </div>
 
     <div class="animate_content" v-show="isAnimate">
@@ -160,9 +201,12 @@
 </template>
 
 <script>
-import { Field, Grid, GridItem } from 'vant'
+import { Field, Grid, GridItem, DatetimePicker, Popup } from 'vant'
 // import FixedView from '../common/bottomFixedView.vue'
 import TitleContent from '../common/titleContent.vue'
+import TabView from './maskInfoTab.vue'
+import selectBox from './maskTextSelectBox.vue'
+import selectBuyNumber from './dialogReserveCount.vue'
 import utils from 'utils'
 import lottie from 'lottie-web'
 import matchingJson from '@/utils/matching.json'
@@ -171,24 +215,46 @@ export default {
     components: {
         Field,
         TitleContent,
+        TabView,
+        selectBox,
+        selectBuyNumber,
         // FixedView,
         [Grid.name]: Grid,
-        [GridItem.name]: GridItem
+        [GridItem.name]: GridItem,
+        DatetimePicker,
+        Popup
     },
     data () {
         return {
             choose_picture: require('../../themes/images/groupGoods/icon_choose_camera@3x.png'),
             deletePic: require('../../themes/images/app/control_delete_blue@3x.png'),
             arrowIcon: require('@/themes/images/app/icon_next_gray@3x.png'),
+            backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             userName: '',
             userPhone: '',
-            purchaseNum: '',
-            purchaseUse: '',
-            deliverTime: '',
             postName: '',
             companyName: '',
+
+            stereotypeName: '',
+            colorName: '',
+            flowerName: '',
+            funcName: '',
+
+            filterName: '',
+            pakageName: '',
+            purchaseNum: '',
+            deliverTime: '',
+
             designPictures: [],
             pictureUrls: [],
+
+            showNumDialog: false,
+            showTimeDialog: false,
+            isLoadingShow: true,
+
+            minDate: new Date(),
+            maxDate: new Date(2030, 12, 1),
+            currentDate: new Date(),
 
             phoneFormartResult: false,
             userNameFormartResult: false,
@@ -206,7 +272,7 @@ export default {
             sHeight: {
                 minHeight: window.screen.height + 'px'
             }, // 设置当前最小高度为屏幕高度
-            stepNumber: 2,
+            stepNumber: 0,
             stereotypeData: [
                 {
                     icon: require('@/themes/images/mask/version_a@3x.png'),
@@ -232,7 +298,102 @@ export default {
                     subTitle: '弧型3D口罩',
                     isSelect: false
                 }
+            ],
+            colorData: [
+                {
+                    title: '黑色',
+                    isSelect: false
+                },
+                {
+                    title: '白色',
+                    isSelect: false
+                },
+                {
+                    title: '灰色',
+                    isSelect: false
+                },
+                {
+                    title: '蓝色',
+                    isSelect: false
+                },
+                {
+                    title: '粉色',
+                    isSelect: false
+                },
+                {
+                    title: '红色',
+                    isSelect: false
+                },
+                {
+                    title: '大地色',
+                    isSelect: false
+                },
+                {
+                    title: '花色',
+                    isSelect: false
+                }
+            ],
+            flowerData: [
+                {
+                    title: '企业logo',
+                    isSelect: false
+                },
+                {
+                    title: '满底印花',
+                    isSelect: false
+                }
+            ],
+            filterData: [
+                {
+                    title: '不需要',
+                    isSelect: false
+                },
+                {
+                    title: '1片',
+                    isSelect: false
+                },
+                {
+                    title: '5片',
+                    isSelect: false
+                }
+            ],
+            pakageData: [
+                {
+                    title: '标准包装设计',
+                    isSelect: false
+                },
+                {
+                    title: '自定义设计',
+                    isSelect: false
+                }
+            ],
+            functionData: [
+                {
+                    icon: require('@/themes/images/mask/icon_antiviral_def@3x.png'),
+                    selectIcon: require('@/themes/images/mask/icon_antiviral_sel@3x.png'),
+                    title: '抗病毒',
+                    isSelect: false
+                },
+                {
+                    icon: require('@/themes/images/mask/icon_hyaluronic_acid_def@3x.png'),
+                    selectIcon: require('@/themes/images/mask/icon_hyaluronic_acid_sel@3x.png'),
+                    title: '玻尿酸',
+                    isSelect: false
+                },
+                {
+                    icon: require('@/themes/images/mask/icon_ice_def@3x.png'),
+                    selectIcon: require('@/themes/images/mask/icon_ice_sel@3x.png'),
+                    title: '冰感',
+                    isSelect: false
+                },
+                {
+                    icon: require('@/themes/images/mask/icon_aroma_def@3x.png'),
+                    selectIcon: require('@/themes/images/mask/icon_aroma_sel@3x.png'),
+                    title: '香型',
+                    isSelect: false
+                }
             ]
+
         }
     },
     created() {
@@ -241,24 +402,56 @@ export default {
         // this.scrollTop()
     },
     activated() {
-        this.purchaseNum = utils.getStore('purchaseNumber')
+        // this.purchaseNum = utils.getStore('purchaseNumber')
         // this.purchaseUse = utils.getStore('purchaseUse')
     },
     methods: {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
+        handleAdjustHeaderBg() {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isIphoneX) {
+                return 'background-size:100% 1.85rem'
+            }
+        },
         handlePosition() {
         },
         resetData() {
             utils.setStore('purchaseNumber', '')
-            // utils.setStore('purchaseUse', '')
+            this.stepNumber = 0
             this.userName = ''
             this.userPhone = ''
-            this.purchaseNum = ''
-            // this.purchaseUse = ''
             this.postName = ''
             this.companyName = ''
+
+            this.stereotypeName = ''
+            this.colorName = ''
+            this.flowerName = ''
+            this.funcName = ''
+
+            this.filterName = ''
+            this.pakageName = ''
+            this.purchaseNum = ''
+            this.deliverTime = ''
+            this.stereotypeData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.colorData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.flowerData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.functionData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.filterData.forEach(obj => {
+                obj.isSelect = false
+            })
+            this.pakageData.forEach(obj => {
+                obj.isSelect = false
+            })
             this.designPictures = []
             this.pictureUrls = []
             this.isAnimate = false
@@ -280,7 +473,7 @@ export default {
             }
         },
         handleVerifyPhone () {
-            window.scroll(0, 0)
+            // window.scroll(0, 0)
             // this.setposition = 'position: fixed'
             if (this.userPhone.length < 11) {
                 this.$toast('手机格式有误')
@@ -288,22 +481,98 @@ export default {
             }
         },
         handleVerifyUserName () {
-            window.scroll(0, 0)
+            // window.scroll(0, 0)
             // this.setposition = 'position: fixed'
         },
-        changeBuyNumber() {
-            this.$router.push({
-                path: '/mask/purchaseNum'
-            })
+        /// 切换步骤
+        tabChanged(index) {
+            if (this.stepNumber === 0 & this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '') {
+                this.stepNumber = index
+            }
+            if (this.stepNumber === 1) {
+                if (index < this.stepNumber) { this.stepNumber = index }
+                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & this.funcName !== '') {
+                    this.stepNumber = index
+                }
+            }
+            if (this.stepNumber === 2) {
+                this.stepNumber = index
+            }
+        },
+        changeBuyNumber(isShow) {
+            this.showNumDialog = isShow
         },
         changeDeliverTime() {
-
+            this.showTimeDialog = true
+            this.isLoadingShow = true
+            setTimeout(() => {
+                this.isLoadingShow = false
+            }, 500)
         },
         stereotypeClick(item) {
             this.stereotypeData.forEach(obj => {
                 obj.isSelect = false
             })
             item.isSelect = true
+            this.stereotypeName = item.title
+        },
+        colorClick(item) {
+            this.colorData.forEach(obj => {
+                obj.isSelect = false
+            })
+            item.isSelect = true
+            this.colorName = item.title
+        },
+        flowerClick(item) {
+            this.flowerData.forEach(obj => {
+                obj.isSelect = false
+            })
+            item.isSelect = true
+            this.flowerName = item.title
+        },
+        functypeClick(item) {
+            this.functionData.forEach(obj => {
+                obj.isSelect = false
+            })
+            item.isSelect = true
+            this.funcName = item.title
+        },
+        filterClick(item) {
+            this.filterData.forEach(obj => {
+                obj.isSelect = false
+            })
+            item.isSelect = true
+            this.filterName = item.title
+        },
+        pakageClick(item) {
+            this.pakageData.forEach(obj => {
+                obj.isSelect = false
+            })
+            item.isSelect = true
+            this.pakageName = item.title
+        },
+        selectedBuyNumber(item) {
+            this.purchaseNum = item
+        },
+        confirmTime(val) {
+            this.showTimeDialog = false
+            let year = val.getFullYear()
+            let month = val.getMonth() + 1
+            let day = val.getDate()
+            if (month >= 1 && month <= 9) { month = `0${month}` }
+            if (day >= 1 && day <= 9) { day = `0${day}` }
+            this.deliverTime = `${year}-${month}-${day}`
+        },
+        // 选项格式化函数
+        formatter (type, value) {
+            if (type === 'year') {
+                return `${value}年`
+            } else if (type === 'month') {
+                return `${value}月`
+            } else if (type === 'day') {
+                return `${value}日`
+            }
+            return value
         },
         // changeBuyUse() {
         //     this.$router.push({
@@ -380,49 +649,74 @@ export default {
         },
         // 确定提交
         commitForm() {
-            if (this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '' & this.purchaseUse !== '' & this.purchaseNum !== '') {
-                debugger
-                if (!this.phoneFormartResult) {
-                    this.$toast('手机号码填写有误')
+            if (this.stepNumber === 0) {
+                if (this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '') {
+                    if (!this.phoneFormartResult) {
+                        this.$toast('手机号码填写有误')
+                        return
+                    }
+                    if (!this.userNameFormartResult) {
+                        this.$toast('联系人填写有误')
+                        return
+                    }
+                    if (!this.postFormartResult) {
+                        this.$toast('岗位名称填写有误')
+                        return
+                    }
+                    if (!this.companyFormartResult) {
+                        this.$toast('公司名称填写有误')
+                        return
+                    }
+                    this.stepNumber = 1
                     return
+                } else {
+                    this.$toast('请填写完整信息！')
                 }
-                if (!this.userNameFormartResult) {
-                    this.$toast('联系人填写有误')
-                    return
-                }
-                if (!this.postFormartResult) {
-                    this.$toast('岗位名称填写有误')
-                    return
-                }
-                if (!this.companyFormartResult) {
-                    this.$toast('公司名称填写有误')
-                    return
-                }
-                const params = {
-                    mobile: this.userPhone,
-                    realName: this.userName,
-                    count: this.purchaseNum,
-                    jobName: this.postName,
-                    companyName: this.companyName,
-                    used: this.purchaseUse
-                }
-                if (this.pictureUrls.length > 0) {
-                    params.imgUrl = this.pictureUrls.join(',')
-                }
+            }
 
-                this.$api.deposit.createMaskIntention(params).then(res => {
-                    this.isAnimate = true
-                    lottie.play()
-                    this.resetLott(false)
-                    setTimeout(() => {
-                        this.isAnimateEnd = true
-                        this.resetLott(true)
-                    }, 3000)
-                }).catch(err => {
-                    console.log(err)
-                })
-            } else {
-                this.$toast('请填写完整信息后再提交！')
+            if (this.stepNumber === 1) {
+                if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & this.funcName !== '') {
+                    this.stepNumber = 2
+                    return
+                } else {
+                    this.$toast('请填写完整信息！')
+                }
+            }
+
+            if (this.stepNumber === 2) {
+                if (this.filterName !== '' & this.pakageName !== '' & this.purchaseNum !== '' & this.deliverTime !== '') {
+                    const params = {
+                        realName: this.userName,
+                        mobile: this.userPhone,
+                        count: this.purchaseNum,
+                        jobName: this.postName,
+                        companyName: this.companyName,
+                        used: this.funcName,
+                        shapeName: this.stereotypeName,
+                        colorName: this.colorName,
+                        craftsName: this.flowerName,
+                        functionName: this.funcName,
+                        filterName: this.filterName,
+                        packName: this.pakageName,
+                        deliverTime: this.deliverTime
+                    }
+                    if (this.pictureUrls.length > 0) {
+                        params.imgUrl = this.pictureUrls.join(',')
+                    }
+                    this.$api.deposit.createMaskIntention(params).then(res => {
+                        this.isAnimate = true
+                        lottie.play()
+                        this.resetLott(false)
+                        setTimeout(() => {
+                            this.isAnimateEnd = true
+                            this.resetLott(true)
+                        }, 3000)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                } else {
+                    this.$toast('请填写完整信息后再提交！')
+                }
             }
         }
 
@@ -544,29 +838,32 @@ export default {
 </style>
 
 <style lang='less' scoped>
-.my-header {
-  position: relative;
-  &:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: @color-c7;
-  }
+.header-img {
+    display: inline-block;
+    vertical-align: middle;
+    width: 26px;
+    height: 26px;
+}
+
+.header-bg {
+    background-image: url('../../themes/images/mask/bg_master_fill_information_top@3x.png');
+    background-repeat: no-repeat;
+    background-size: 100% 161px;
+}
+.header {
+    background: rgba(0, 0, 0, 0);
+    .title {
+        height: 40px;
+    }
 }
 .content {
     overflow-y: scroll;
     // overflow-x:hidden;
     height: 89%;
     margin: 16px 0;
-    // > p {
-    //     margin: 0 16px 4px;
-    //     font-size:13px;
-    //     font-weight:400;
-    //     color: @color-c2;
-    //     line-height:18px;
-    // }
+    .tab_content {
+        margin-top: 16px;
+    }
     .step_one {
         margin-top: 16px;
         .info-input {
@@ -585,8 +882,10 @@ export default {
         }
     }
     .step_second {
+        background: white;
+        // padding-top: 16px;
         .stereotype {
-            padding: 12px 5px;
+            padding: 12px 5px 0;
             .stereo_item_content {
                 width: calc(50vw - 16.5px);
                 padding-bottom: 12px;
@@ -622,6 +921,37 @@ export default {
                 border:1px solid rgba(60,92,246,1);
             }
         }
+        .color_type {
+            margin-top: -12px;
+        }
+        .flow_type {
+            margin-top: -12px;
+        }
+        .function_type {
+            margin-top: 18px;
+            margin-bottom: 40px;
+            .function_item_content {
+                .icon_item {
+                    width: 40px;
+                    height: 40px;
+                }
+                .title_item {
+                    text-align: center;
+                    font-size:12px;
+                    font-weight:400;
+                    color: @color-c1;
+                    line-height:16px;
+                    margin-top: 2px;
+                }
+                .select_color {
+                    color: @color-ec;
+                }
+            }
+        }
+    }
+
+    .step_three {
+        background: white;
     }
 
     .input {
@@ -718,6 +1048,7 @@ export default {
     }
 
 }
+
 .footer-shadow {
     border-radius:12px 12px 0px 0px;
 }

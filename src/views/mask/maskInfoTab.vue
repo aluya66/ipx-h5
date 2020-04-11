@@ -35,9 +35,9 @@ export default {
          * @param index
          */
         switchTab(index) {
-            if (Number(index) < this.selectedIndex) {
-                this.$emit('onSwitchTab', Number(index))
-            }
+            // if (Number(index) < this.selectedIndex) {
+            this.$emit('onSwitchTab', Number(index))
+            // }
         }
     }
 }
