@@ -201,7 +201,7 @@
 </template>
 
 <script>
-import { Field, Grid, GridItem, DatetimePicker,Popup } from 'vant'
+import { Field, Grid, GridItem, DatetimePicker, Popup } from 'vant'
 // import FixedView from '../common/bottomFixedView.vue'
 import TitleContent from '../common/titleContent.vue'
 import TabView from './maskInfoTab.vue'
@@ -392,7 +392,7 @@ export default {
                     title: '香型',
                     isSelect: false
                 }
-            ],
+            ]
 
         }
     },
@@ -484,13 +484,13 @@ export default {
             // window.scroll(0, 0)
             // this.setposition = 'position: fixed'
         },
-        ///切换步骤
+        /// 切换步骤
         tabChanged(index) {
             if (this.stepNumber === 0 & this.userPhone !== '' & this.userName !== '' & this.postName !== '' & this.companyName !== '') {
                 this.stepNumber = index
             }
-            if (this.stepNumber === 1 ) {
-                if (index < this.stepNumber) { this.stepNumber = index } 
+            if (this.stepNumber === 1) {
+                if (index < this.stepNumber) { this.stepNumber = index }
                 if (this.stereotypeName !== '' & this.colorName !== '' & this.flowerName !== '' & this.funcName !== '') {
                     this.stepNumber = index
                 }
