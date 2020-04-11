@@ -175,15 +175,15 @@ export default {
             isAnimate: false,
             isAnimateEnd: false,
             animateTips: '',
-            sHeight:{
-               minHeight:window.screen.height + "px"
-            },  //设置当前最小高度为屏幕高度
+            sHeight: {
+                minHeight: window.screen.height + 'px'
+            } // 设置当前最小高度为屏幕高度
         }
     },
     created() {
         this.resetData()
-        
-        //this.scrollTop()
+
+        // this.scrollTop()
     },
     activated() {
         this.purchaseNum = utils.getStore('purchaseNumber')
@@ -442,17 +442,17 @@ export default {
     mounted() {
         let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
         if (!isIos) {
-        window.onresize = () => {
-            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                window.setTimeout(function() {
-                    if ('scrollIntoView' in document.activeElement) {
-                        document.activeElement.scrollIntoView()
-                    } else {
-                        document.activeElement.scrollIntoViewIfNeeded()
-                    }
-                }, 0)
+            window.onresize = () => {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                    window.setTimeout(function() {
+                        if ('scrollIntoView' in document.activeElement) {
+                            document.activeElement.scrollIntoView()
+                        } else {
+                            document.activeElement.scrollIntoViewIfNeeded()
+                        }
+                    }, 0)
+                }
             }
-        }
         }
     }
 }
