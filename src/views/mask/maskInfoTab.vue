@@ -1,4 +1,5 @@
 <template>
+<div class="panel">
     <div class="info-tab-container">
         <div class="info-tab-item" :class="{'info-tab-item-selected' : selectedIndex===0}" @click="switchTab(0)">
             <p>1</p>
@@ -15,6 +16,8 @@
             <span>其他信息</span>
         </div>
     </div>
+    <div class="bag_view"></div>
+</div>
 </template>
 
 <script>
@@ -44,7 +47,21 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.panel {
+    position: relative;
+    padding-bottom: 16px;
+    .bag_view {
+        position: absolute;
+        height: 55px;
+        width: 100%;
+        bottom: 0;
+        background: white;
+        z-index: 100;
+    }
+}
     .info-tab-container {
+        position: relative;
+        z-index: 1000;
         width: calc(100vw - 32px);
         height: 96px;
         background: rgba(255, 255, 255, 1);
