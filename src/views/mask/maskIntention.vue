@@ -9,7 +9,7 @@
             </template>
         </c-header>
 
-        <div class="content" :style="sHeight">
+        <div class="content">
 
             <TabView class="tab_content" :selectedIndex="stepNumber" @onSwitchTab="tabChanged"/>
 
@@ -897,9 +897,9 @@ export default {
     }
 
     .header-bg {
-        background-image: url('../../themes/images/mask/bg_master_fill_information_top_fixed.png');
+        background-image: url('../../themes/images/mask/bg_master_fill_information_top@3x.png');
         background-repeat: no-repeat;
-        background-size: 100% 88px;
+        background-size: 100% 161px;
     }
 
     .header {
