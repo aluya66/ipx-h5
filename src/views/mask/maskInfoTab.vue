@@ -5,18 +5,17 @@
             <p>1</p>
             <span>基本信息</span>
         </div>
-        <i class="info-line" :class="{'info-line-selected': selectedIndex >= 1}"/>
+        <i class="info-line" :class="{'info-line-selected': selectedIndex === 1}"/>
         <div class="info-tab-item" :class="[{'info-tab-item-selected' : selectedIndex===1}, {'info-tab-container-disable' : selectedIndex<1}]" @click="switchTab(1)">
             <p>2</p>
             <span>口罩信息</span>
         </div>
-        <i class="info-line" :class="{'info-line-selected': selectedIndex > 1}"/>
+        <i class="info-line" :class="{'info-line-selected': selectedIndex === 2}"/>
         <div class="info-tab-item" :class="[{'info-tab-item-selected' : selectedIndex===2}, {'info-tab-container-disable' : selectedIndex<2}]" @click="switchTab(2)">
             <p>3</p>
             <span>其他信息</span>
         </div>
     </div>
-    <div class="bag_view"></div>
 </div>
 </template>
 
@@ -61,7 +60,6 @@ export default {
 }
     .info-tab-container {
         position: relative;
-        z-index: 1000;
         width: calc(100vw - 32px);
         height: 96px;
         background: rgba(255, 255, 255, 1);
@@ -116,6 +114,7 @@ export default {
 
             > span {
                 color: #3C5CF6;
+                font-weight: bold;
             }
         }
 

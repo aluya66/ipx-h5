@@ -69,7 +69,7 @@ export default {
         line-height:22px;
         vertical-align: middle;
         margin-left: 16px;
-        margin-top: 16px;
+        margin-top: 32px;
     }
     .subTitle {
         font-size:12px;
