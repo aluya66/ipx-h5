@@ -1,27 +1,27 @@
 <template>
       <div style="padding-top:0" class="retail">
-     
+
             <!--数据统计部分 start-->
             <div class="retail-top">
                 <div class="t-title">
                     <img class="title_bg" src="@/themes/images/app/retail_title.png" />
-                    <p>深圳市云尚星科技有限公司</p>  
+                    <p>{{detail.companyName || ''}}</p>
                 </div>
                 <ul class="retail-ul">
                     <li>
-                        <div class="li-title">员工注册总数(人)<p>{{cashFormat(200)}}</p></div>
+                        <div class="li-title">员工注册总数(人)<p>{{caseNumerFormat(detail.registerTotal || 0)}}</p></div>
                     </li>
                     <li>
-                        <div class="li-title">邀请注册总数(人)<p>{{cashFormat(20000)}}</p></div>
+                        <div class="li-title">邀请注册总数(人)<p>{{caseNumerFormat(detail.inviteRegisterTotal || 0)}}</p></div>
                     </li>
                     <li>
-                        <div class="li-title">总销售额(元)<p>{{cashFormat(20000)}}</p></div>
+                        <div class="li-title">总销售额(元)<p>{{cashFormat(detail.sellPriceTotal || 0)}}</p></div>
                     </li>
                     <li>
-                        <div class="li-title">总收益(元)<p>{{cashFormat(20000)}}</p></div>
+                        <div class="li-title">总收益(元)<p>{{cashFormat(detail.earningsPriceTotal || 0)}}</p></div>
                     </li>
                 </ul>
-                
+
             </div>
             <!--数据统计部分 end-->
             <!--分销排行榜 start-->
@@ -43,97 +43,16 @@
                              <div class="h-th w30">今日销售总额</div>
                         </div>
                         <ul class="rank-ul">
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
+                            <li v-for="(item,index) in detail.todayTopList" :key="index">
+                                 <div class="ul-number w10 text-center">{{index >= 9 ? index + 1 : `0${index + 1}`}}</div>
                                   <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字米八个字</span>
+                                    <img :src="item.avater" />
+                                      <span>{{item.memberName}}</span>
                                   </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
+                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal}}人</div>
+                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.sellPriceTotal)}}</span></div>
                             </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                             <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                             <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                             <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            
+                            <div class="nodata" v-if="!noTodaydata">暂无数据</div>
                         </ul>
                     </div>
                     <div class="list-item">
@@ -144,70 +63,16 @@
                              <div class="h-th w30">销售总额</div>
                         </div>
                         <ul class="rank-ul">
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
+                           <li v-for="(item,index) in detail.totalTopList" :key="index">
+                                 <div class="ul-number w10 text-center">{{index >=9  ? index + 1 : `0${index + 1}`}}</div>
                                   <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
+                                      <img :src="item.avater" />
+                                      <span>{{item.memberName}}</span>
                                   </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
+                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal}}人</div>
+                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.sellPriceTotal)}}</span></div>
                             </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            <li>
-                                 <div class="ul-number w10 text-center">01</div>
-                                  <div class="header-img w35">
-                                    <img src="@/themes/images/app/retail_title.png" />
-                                      <span>米八个字</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">12人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(20000)}}</span></div>
-                            </li>
-                            
+                             <div class="nodata" v-if="!noTotaldata">暂无数据</div>
                         </ul>
                     </div>
                 </div>
@@ -219,45 +84,49 @@
 
 <script>
 import cash from '@/views/user/hall/cashFormat.js'
-import Http from '@/utils/request'
 export default {
-    data(){
+    data() {
         return {
-            left:0,
-            tabIndex:0
+            left: 0,
+            tabIndex: 0,
+            noTodaydata:false,
+            noTotaldata:false,
+            detail:{}
         }
     },
     mounted () {
-        document.title = '分销数据';
-        //根据不同的来源获取不同的数据
-        console.info(this.$route.query)
+        document.title = '分销数据'
+        // 根据不同的来源获取不同的数据
         let params = {
-            companyName:this.$route.query.source
+            companyName: this.$route.query.source || ''
         }
-        Http.fetch(`http://fashion.yosar.develop/v1/statistics/toplist`, params, {
-            method: 'get'
-        }).then(res => {
-           
-        }).catch(err => {
-           
-        })
-        // this.$api.retail.getsttToplist().then(
-        //     res=>{
-        //         console.info(res)
-        //     }
-        // )
+  
+        this.$api.retail.getRetailTopList(params).then(
+            res => {
+                let data = res || {}
+                this.detail = data;
+                this.noTodaydata = data && data.todayTopList && data.todayTopList.length > 0 ? true :false;
+                if(!this.noTodaydata){
+                    this.tabAct(1);
+                }
+                this.noTotaldata = data && data.totalTopList && data.totalTopList.length > 0 ? true :false
+            }
+        )
     },
-    methods:{
+    methods: {
         cashFormat(price) {
             return cash.changeFormat(price)
         },
-        //切换tab
-        tabAct(index){
-            this.tabIndex = index;
-            this.left = this.getLeft();
+        caseNumerFormat(num){
+            return cash.changeNumberFormat(num)
         },
-        getLeft(){
-            return -(this.tabIndex * 100) +"%"
+        // 切换tab
+        tabAct(index) {
+            this.tabIndex = index
+            this.left = this.getLeft()
+        },
+        getLeft() {
+            return -(this.tabIndex * 100) + '%'
         }
     }
 
@@ -301,7 +170,6 @@ export default {
             right: 52px;
         }
 
-
         .t-title{
             width: 100%;
             position: relative;
@@ -332,7 +200,7 @@ export default {
                     font-weight: 400;
                     font-size:12px;
                     font-family:PingFangSC-Regular,PingFang SC;
-                    
+
                     p{
                         color:@color-c1 ;
                         margin-top: 2px;
@@ -356,7 +224,7 @@ export default {
 
             }
         }
-        
+
     }
     .rank{
         background: #FFFFFF;
@@ -416,7 +284,7 @@ export default {
                 width: 10%;
             }
             .w25{
-                width: 30%; 
+                width: 30%;
             }
             .w30{
                 width: 30%;
@@ -429,8 +297,7 @@ export default {
             }
             .list-item{
                 width: 100%;
-              
-              
+                min-height: 496px;
                 .t-header{
                     height: 48px;
                     padding: 0 16px;
@@ -441,11 +308,16 @@ export default {
                      color: #585B66;
                     display: -webkit-box;
                     background:linear-gradient(180deg,rgba(249,250,252,1) 0%,rgba(255,255,255,1) 100%);
-                    
+
                 }
                 .rank-ul{
                     background: #fff !important;
                     padding: 0 16px;
+                    .nodata{
+                        color: #585B66;
+                        margin-top: 100px;
+                        text-align: center;
+                    }
                     li{
                         display: flex;
                         margin-bottom: 24px;
@@ -466,15 +338,15 @@ export default {
                                 background: url(../../themes/images/app/rank-1.png) no-repeat center center;
                                 background-size: contain;
                                 color:#fff;
-                            }  
+                            }
                         }
                         &:nth-child(2){
                              .ul-number{
                                 background: url(../../themes/images/app/rank-2.png) no-repeat;
                                 background-size: contain;
                                 color:#fff;
-                              
-                            }  
+
+                            }
                         }
                         &:nth-child(3){
                              .ul-number{
@@ -482,7 +354,7 @@ export default {
                                 background-size: contain;
                                 color:#fff;
                                   font-family: "alibabaRegular";
-                            }  
+                            }
                         }
                         .header-img{
                             display: flex;
@@ -494,13 +366,16 @@ export default {
                                 height: 40px;
                                 border-radius: 50%;
                                 border:1px solid #f0f0f0;
+                                flex: 1;
                             }
                             span{
                                 color: @color-c1;
-                                font-weight: 500 ;
+                                font-weight: 500;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
                                 white-space: nowrap;
+                                display: block;
+                                width: 70px;
                             }
                         }
                         .r-price{

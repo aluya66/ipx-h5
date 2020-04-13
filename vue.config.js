@@ -22,6 +22,8 @@ const env = {
 
 console.log('======debug======', env.isDebug, '======themes======', env.themes, process.env.VUE_CMS_serverPath)
 
+console.log('process.env.VUE_APP_PILLAR_ServerPath', process.env.VUE_APP_PILLAR_serverPath, process.env.VUE_APP_serverPath)
+
 module.exports = {
     publicPath: !env.isDebug ? process.env.VUE_APP_BASEURLPATH : '/',
     outputDir: `dist${process.env.VUE_APP_BASEURLPATH}`,
@@ -184,6 +186,13 @@ module.exports = {
                 ws: false,
                 pathRewrite: {
                     '^/api-cms-ipx': '/'
+                }
+            },
+            [process.env.VUE_APP_PILLAR_serverPath]: {
+                target: process.env.VUE_APP_PILLAR_serverUrl,
+                ws: false,
+                pathRewrite: {
+                    '^/api-pillar': '/'
                 }
             }
         },
