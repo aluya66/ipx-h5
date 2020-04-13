@@ -219,6 +219,7 @@
 
 <script>
 import cash from '@/views/user/hall/cashFormat.js'
+import Http from '@/utils/request'
 export default {
     data(){
         return {
@@ -230,6 +231,21 @@ export default {
         document.title = '分销数据';
         //根据不同的来源获取不同的数据
         console.info(this.$route.query)
+        let params = {
+            companyName:this.$route.query.source
+        }
+        Http.fetch(`http://fashion.yosar.develop/v1/statistics/toplist`, params, {
+            method: 'get'
+        }).then(res => {
+           
+        }).catch(err => {
+           
+        })
+        // this.$api.retail.getsttToplist().then(
+        //     res=>{
+        //         console.info(res)
+        //     }
+        // )
     },
     methods:{
         cashFormat(price) {
