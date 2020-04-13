@@ -278,7 +278,7 @@ export default {
                     icon: require('@/themes/images/mask/version_a@3x.png'),
                     title: '版型A',
                     subTitle: '单层3D明星款立体口罩',
-                    subFunc: ['玻尿酸','冰感'],
+                    subFunc: ['玻尿酸', '冰感'],
                     isSelect: false
                 },
                 {
@@ -292,9 +292,9 @@ export default {
                     icon: require('@/themes/images/mask/version_c@3x.png'),
                     title: '版型C',
                     subTitle: '杯型3D口罩',
-                    subFunc: ['玻尿酸','抗病毒','香型','冰感'],
+                    subFunc: ['玻尿酸', '抗病毒', '香型', '冰感'],
                     isSelect: false
-                },
+                }
                 // {
                 //     icon: require('@/themes/images/mask/version_d@3x.png'),
                 //     title: '版型D',
@@ -527,7 +527,7 @@ export default {
             })
             item.isSelect = true
             this.stereotypeName = item.title
-            
+
             this.functionData.forEach(func => {
                 let index = item.subFunc.indexOf(func.title)
                 if (index < 0) {
