@@ -89,9 +89,9 @@ export default {
         return {
             left: 0,
             tabIndex: 0,
-            noTodaydata:false,
-            noTotaldata:false,
-            detail:{}
+            noTodaydata: false,
+            noTotaldata: false,
+            detail: {}
         }
     },
     mounted () {
@@ -100,16 +100,16 @@ export default {
         let params = {
             companyName: this.$route.query.source || ''
         }
-  
+
         this.$api.retail.getRetailTopList(params).then(
             res => {
                 let data = res || {}
-                this.detail = data;
-                this.noTodaydata = data && data.todayTopList && data.todayTopList.length > 0 ? true :false;
-                if(!this.noTodaydata){
-                    this.tabAct(1);
+                this.detail = data
+                this.noTodaydata = !!(data && data.todayTopList && data.todayTopList.length > 0)
+                if (!this.noTodaydata) {
+                    this.tabAct(1)
                 }
-                this.noTotaldata = data && data.totalTopList && data.totalTopList.length > 0 ? true :false
+                this.noTotaldata = !!(data && data.totalTopList && data.totalTopList.length > 0)
             }
         )
     },
@@ -117,7 +117,7 @@ export default {
         cashFormat(price) {
             return cash.changeFormat(price)
         },
-        caseNumerFormat(num){
+        caseNumerFormat(num) {
             return cash.changeNumberFormat(num)
         },
         // 切换tab

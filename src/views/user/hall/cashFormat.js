@@ -7,11 +7,10 @@ export default {
         var ret = intSum + dot
         return ret
     },
-    //数字格式化
-    changeNumberFormat(num){
+    // 数字格式化
+    changeNumberFormat(num) {
         let str = num.toString()
         var intSum = str.substring(0, str.length).replace(/\B(?=(?:\d{3})+$)/g, ',')
-        return  intSum
-        
+        return intSum
     }
 }
