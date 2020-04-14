@@ -190,6 +190,9 @@ export default {
                     let file = _this.dataURLtoBlob(_this.photoUrl)
                     utils.upload([file]).then(result => {
                         _this.isHiddenChange = false
+                        _this.$router.push({
+                            path: '/poster/savePoster'
+                        })
                         utils.postMessage('download_pictures', result)
                         Toast.clear()
                     }).catch(() => {

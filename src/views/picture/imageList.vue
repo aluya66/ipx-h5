@@ -172,17 +172,20 @@ export default {
             }
             if (this.fromPath === 'product') { // 单品
                 if (this.fromChange) {
-                    utils.setStore('productSkuList', skuList)
-                    this.$router.go(-1)
+                    utils.setStore('productSkuImg', skuList)
                 } else {
-                    this.$router.push({
-                        path: '/poster/editProductPoster',
-                        query: {
-                            productCode: this.productCode,
-                            skuCodeList: skuList
-                        }
-                    })
+                    utils.setStore('productSkuImgs', skuList)
                 }
+                this.$router.go(-1)
+                // } else {
+                //     this.$router.push({
+                //         path: '/poster/editProductPoster',
+                //         query: {
+                //             productCode: this.productCode,
+                //             skuCodeList: skuList
+                //         }
+                //     })
+                // }
             } else { // 组货
                 utils.setStore('productSkuList', skuList)
                 this.$router.go(-1)
