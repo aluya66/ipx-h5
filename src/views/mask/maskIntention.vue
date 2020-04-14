@@ -1,6 +1,6 @@
 <template>
     <layout-view class="header-bg" :style="handleAdjustHeaderBg()">
-        <c-header class="header" slot="header" :left-arrow="true" :isLight='false'>
+        <c-header class="header" slot="header" :left-arrow="true" :isLight='false' :showBorderBottom="false">
             <div class="title" slot="title">
                 填写定制信息
             </div>
@@ -11,7 +11,7 @@
 
         <div class="content">
 
-            <TabView class="tab_content" :selectedIndex="stepNumber" @onSwitchTab="tabChanged"/>
+            <TabView class="tab_content" :style="getScrollBgTop()" :selectedIndex="stepNumber" @onSwitchTab="tabChanged"/>
 
             <div class="step_one" v-if="stepNumber === 0">
                 <div class="info-input">
@@ -102,7 +102,7 @@
 
                 <title-content style="padding: 0;border-radius:0;" title="功能" titleFont="14">
                     <template slot="content">
-                        <van-grid class="function_type" :border="false" :column-num="5">
+                        <van-grid class="function_type" :style="getBottomOffset(40)" :border="false" :column-num="5">
                             <van-grid-item v-for="(funcItem,index) in functionData" :key="index">
                                 <div class="function_item_content" @click="functypeClick(funcItem)">
                                     <img class="icon_item"
@@ -120,9 +120,9 @@
             <div class="step_three" v-else>
 
                 <selectBox class="filter_type" title="滤芯" :columnNum="3" :gutter="18" :resourceData="filterData"
-                           @onSelectItem="filterClick"></selectBox>
+                           @onSelectItem="filterClick"/>
                 <selectBox class="pakage_type" title="包装" :columnNum="2" :gutter="18" :resourceData="pakageData"
-                           @onSelectItem="pakageClick"></selectBox>
+                           @onSelectItem="pakageClick"/>
 
                 <title-content style="padding: 0;" title="预定数量" titleFont="14">
                     <template slot="content">
@@ -146,7 +146,7 @@
                     </template>
                 </title-content>
 
-                <div class="choose_photo">
+                <div class="choose_photo" :style="getBottomOffset(40)">
                     <p>设计图上传<span>(选填)</span></p>
 
                     <van-grid class="pictures" :border="false" :column-num="3" :gutter="8" style="padding-left: 0;">
@@ -437,11 +437,18 @@ export default {
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
         },
-        handleAdjustHeaderBg() {
+        getScrollBgTop() {
             let baseParams = utils.getStore('baseParams')
-            if (baseParams.isIphoneX) {
-                return 'background-size:100% 1.85rem'
-            }
+            console.log('statusBarHeight = ' + baseParams.statusBarHeight)
+            let top = (Number(baseParams.statusBarHeight) + 44) * window.devicePixelRatio
+            console.log('top =  ' + top)
+            return `background-position-y: -${top}px !important;background-attachment: scroll;`
+        },
+        handleAdjustHeaderBg() {
+            // let baseParams = utils.getStore('baseParams')
+            // if (baseParams.isIphoneX) {
+            //     return 'background-size:100% 1.85rem'
+            // }
         },
         handlePosition() {
         },
@@ -899,6 +906,7 @@ export default {
     .header-bg {
         background-image: url('../../themes/images/mask/bg_master_fill_information_top@3x.png');
         background-repeat: no-repeat;
+        background-position-y: top;
         background-size: 100% 161px;
     }
 
@@ -913,21 +921,20 @@ export default {
         overflow-y: scroll;
         // overflow-x:hidden;
         height: 89%;
-        margin: 16px 0;
 
         .tab_content {
-            /*margin-top: 16px;*/
-            background-image: url('../../themes/images/mask/bg_master_fill_information_top_scroll.png');
+            padding-top: 16px;
+            background-image: url('../../themes/images/mask/bg_master_fill_information_top@3x.png');
             background-repeat: no-repeat;
-            background-size: 100% 73px;
-            background-attachment: scroll;
+            background-size: 100% 161px;
+            background-attachment: fixed;
+            background-position-y: -88px;
 
         }
 
         .step_one {
             background: white;
             padding-bottom: 80px;
-            padding-top: 16px;
 
             .info-input {
                 display: flex;
@@ -1008,7 +1015,6 @@ export default {
 
             .function_type {
                 margin-top: 18px;
-                margin-bottom: 40px;
 
                 .function_item_content {
                     .icon_item {
@@ -1079,7 +1085,7 @@ export default {
         }
 
         .choose_photo {
-            margin: 28px 16px 40px;
+            margin: 16px 16px 0;
 
             > p {
                 font-size: 14px;

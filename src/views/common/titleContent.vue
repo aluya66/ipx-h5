@@ -61,7 +61,6 @@ export default {
     // box-shadow:0px 2px 10px 0px rgba(33,44,98,0.06);
     border-radius:12px;
     padding: 16px 0 0;
-    margin: 0px 0;
     .title {
         font-size:16px;
         font-weight:bold;
@@ -69,7 +68,7 @@ export default {
         line-height:22px;
         vertical-align: middle;
         margin-left: 16px;
-        margin-top: 32px;
+        margin-top: 16px;
     }
     .subTitle {
         font-size:12px;

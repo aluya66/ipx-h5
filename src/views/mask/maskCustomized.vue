@@ -236,7 +236,7 @@ export default {
             })
         },
         getRoundRect() {
-            let width = parseInt((this.screenWidth - 73 * window.devicePixelRatio) / 2)
+            let width = parseInt((this.screenWidth - 73 * window.devicePixelRatio) / 2 - 1)
             return `width:${width}px;height:${width}px`
         },
         getDetailItemRect() {

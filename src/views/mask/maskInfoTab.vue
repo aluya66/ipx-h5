@@ -74,12 +74,12 @@ export default {
         .info-line {
             height: 1px;
             width: 58px;
-            background-color: #F4F5F7;
+            background-color: @color-c7;
             margin-top: 36px;
         }
 
         .info-line-selected {
-            background-color: #3C5CF6;
+            background-color: @color-ec;
         }
 
         .info-tab-item {
@@ -93,14 +93,15 @@ export default {
                 height: 24px;
                 text-align: center;
                 line-height: 24px;
-                background-color: #585B66;
+                background-color: @color-c2;
                 border-radius: 12px;
                 font-size: 10px;
+                font-weight: bold;
                 color: white;
             }
 
             > span {
-                color: #585B66;
+                color: @color-c2;
                 line-height: 20px;
                 font-size: 14px;
                 margin-top: 8px;
@@ -109,23 +110,23 @@ export default {
 
         .info-tab-item-selected {
             > p {
-                background-color: #3C5CF6;
+                background-color: @color-ec;
             }
 
             > span {
-                color: #3C5CF6;
+                color: @color-ec;
                 font-weight: bold;
             }
         }
 
         .info-tab-container-disable {
             > p {
-                color: #8A8C99;
-                background-color: #F4F5F7;
+                color: @color-c3;
+                background-color: @color-c7;
             }
 
             > span {
-                color: #585B66;
+                color: @color-c2;
             }
         }
     }
