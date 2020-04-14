@@ -962,6 +962,7 @@ export default {
 
                 .stereo_item_content {
                     width: calc(50vw - 21.5px);
+                    height: calc(50vw - 21.5px);
                     padding-bottom: 11px;
                     margin-bottom: 11px;
                     border-radius: 8px;
