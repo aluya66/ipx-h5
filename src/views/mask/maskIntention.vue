@@ -958,12 +958,12 @@ export default {
             padding: 1px 0;
             // padding-top: 16px;
             .stereotype {
-                padding: 12px 5px 0;
+                padding: 12px 11px 0;
 
                 .stereo_item_content {
-                    width: calc(50vw - 16.5px);
-                    padding-bottom: 12px;
-                    margin-bottom: 12px;
+                    width: calc(50vw - 21.5px);
+                    padding-bottom: 11px;
+                    margin-bottom: 11px;
                     border-radius: 8px;
                     border: 1px solid rgba(225, 226, 230, 1);
                     display: flex;
@@ -976,7 +976,7 @@ export default {
                     }
 
                     .title_item {
-                        margin-top: 12px;
+                        margin-top: 8px;
                         font-size: 14px;
                         font-weight: 400;
                         color: @color-c1;
