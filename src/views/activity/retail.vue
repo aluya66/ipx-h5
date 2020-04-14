@@ -50,7 +50,7 @@
                                       <span>{{item.memberName}}</span>
                                   </div>
                                   <div class="r-people w25 text-center ">{{item.inviteRegisterTotal}}人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.sellPriceTotal)}}</span></div>
+                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.todaysellPrice)}}</span></div>
                             </li>
                             <div class="nodata" v-if="!noTodaydata">暂无数据</div>
                         </ul>
