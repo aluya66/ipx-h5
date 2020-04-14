@@ -1,8 +1,8 @@
 <template>
-    <div class="dialog-count-container">
-        <div class="dialog-count-content" :class="{'dialog-count-content-hide': showDialog}">
+    <div class="dialog-count-container" @click="close">
+        <div class="dialog-count-content" :class="{'dialog-count-content-hide': showDialog}" @click.stop="">
             <div class="dialog-count-title">
-                <img src="../../themes/images/app/icon_close24_gray_def@3x.png" @click="close"/>
+                <img src="../../themes/images/app/icon_close24_gray_def@3x.png" @click.stop="close"/>
                 <span class="title">选择预定数量</span>
             </div>
             <div class="count-item" v-for="(item, index) in numberList" :key="index" @click="itemClick(item)">
@@ -23,12 +23,10 @@ export default {
     data() {
         return {
             numberList: [
-                '1万以下',
-                '1～5万件',
-                '5～10万件',
-                '10～50万件',
-                '50～100万件',
-                '100万件以上'
+                '3000',
+                '5000',
+                '10000',
+                '10000以上'
             ]
         }
     },

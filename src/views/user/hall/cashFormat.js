@@ -6,5 +6,11 @@ export default {
         var dot = str.substring(str.length, str.indexOf('.')) // 取到小数部分搜索
         var ret = intSum + dot
         return ret
+    },
+    // 数字格式化
+    changeNumberFormat(num) {
+        let str = num.toString()
+        var intSum = str.substring(0, str.length).replace(/\B(?=(?:\d{3})+$)/g, ',')
+        return intSum
     }
 }
