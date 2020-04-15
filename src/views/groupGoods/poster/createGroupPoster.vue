@@ -32,6 +32,10 @@
                 <template slot="content">
                     <div class="product-list"
                     >
+                        <div class="choose_skuImg" @click="changeSkuImage">
+                            <img :src="choose_skuImg" alt="">
+                            <p>选择组货商品</p>
+                        </div>
                         <img v-for="imageUrl in posterData.theGroupImgs" :key="imageUrl" class="image-item" :src="imageUrl">
                     </div>
                 </template>
@@ -155,6 +159,7 @@ export default {
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
             choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
+            choose_skuImg: require('@/themes/images/app/icon_posterImg_add@3x.png'),
             albumImg_url: '',
             groupTitle: '',
             groupDesc: '',
@@ -211,6 +216,15 @@ export default {
                 this.customPricePercent = '0'
             }
         },
+        changeSkuImage() {
+            this.$router.push({
+                path: '/poster/eidtGroupProducts',
+                query: {
+                    groupCode: this.posterData.groupCode,
+                    productList: this.posterData.products
+                }
+            })
+        },
         chooseQRCodeImg() {
             const params = {
                 jumpUrl: 'choosePhoto://'
@@ -249,8 +263,11 @@ export default {
         handleRequest() {
             let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
             const params = {
-                groupCode: this.$route.query.groupCode,
-                productCodes: productCodes
+                groupCode: this.$route.query.groupCode
+            }
+            // alert(productC odes)
+            if (productCodes !== undefined) {
+                params.productCodes = productCodes
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
                 if (res instanceof Object) {
@@ -435,6 +452,27 @@ export default {
         border-radius:12px;
         overflow: scroll;
         // width: 100%;
+        .choose_skuImg {
+            flex-shrink: 0;
+            text-align: center;
+            background: white;
+            width: 74px;
+            height: 74px;
+            margin-left: 16px;
+            border-radius:4px;
+            > img {
+                height: 26px;
+                width: 26px;
+                margin-top: 16px;
+            }
+            > p {
+                margin-top: 6px;
+                font-size:10px;
+                font-weight:400;
+                color:rgba(138,140,153,1);
+                line-height:14px;
+            }
+        }
         .image-item {
             flex-shrink: 0;
             display: block;

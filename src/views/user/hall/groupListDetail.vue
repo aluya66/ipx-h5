@@ -10,10 +10,9 @@
                 组货方案
             </div>
             <div class="title-right" slot="right" @click="back2Detail()">
-                原始方案
+                原组货详情
             </div>
         </c-header>
-        <!-- <div class="line" :style="marginTop"></div> -->
         <div class="panel" :style="getBottomOffset(69)">
             <div class="top-content">
                 <span>组货名称</span>
@@ -34,42 +33,48 @@
                 <div
                     class="product-cell"
                     v-for="(item, index) in groupGoodsRecords"
-                    :class="{ 'move-right' : isManage}"
+                    :class="{'can-scroll' : !isManage}"
                     :key="item.productCode"
+                    @touchstart="touchStart" @touchend="touchEnd"
                 >
-                    <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
-                    <div class="photo_state">
-                        <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
-                        <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
-                    </div>
-                    <div class="product-info" :class="{'product-info-move' : isManage}">
-                        <p
-                            :class="[item.disabled ? 'disableTitle' : '']"
-                            @click="jumpToProduct(item)"
-                        >
-                            {{ item.productName }}
-                        </p>
-                        <div class="sku-list" @click="jumpToProduct(item)">
+                    <div class="cell-content">
+                        <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
+                        <div class="photo_state">
+                            <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
+                            <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
+                        </div>
+                        <div class="product-info" :class="{'product-info-move' : isManage}">
                             <p
-                                v-for="(sku, i) in item.colorSkuList"
-                                :key="i"
-                                :class="[item.disabled ? 'disableSku' : '']"
+                                :class="[item.disabled ? 'disableTitle' : '']"
+                                @click="jumpToProduct(item)"
                             >
-                                {{ sku | selectSkuStr }}
+                                {{ item.productName }}
                             </p>
+                            <div class="sku-list" @click="jumpToProduct(item)">
+                                <p
+                                    v-for="(sku, i) in item.colorSkuList"
+                                    :key="i"
+                                    :class="[item.disabled ? 'disableSku' : '']"
+                                >
+                                    {{ sku | selectSkuStr }}
+                                </p>
+                            </div>
+                            <div class="sale_price">
+                                <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                                <span class="tip_title">建议零售价</span>
+                            </div>
+                            <div class="footer-btn">
+                                <p :class="[item.disabled ? 'disablePrice' : 'price']">
+                                    ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
+                                </p>
+                                <button @click="openSku(item, index)" :disabled="item.disabled">
+                                    调整规格
+                                </button>
+                            </div>
                         </div>
-                        <div class="sale_price">
-                            <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
-                            <span class="tip_title">建议零售价</span>
-                        </div>
-                        <div class="footer-btn">
-                            <p :class="[item.disabled ? 'disablePrice' : 'price']">
-                                ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
-                            </p>
-                            <button @click="openSku(item, index)" :disabled="item.disabled">
-                                调整规格
-                            </button>
-                        </div>
+                    </div>
+                    <div class="cell-delete" @click.stop="deleteItem(index)" v-if="!isManage">
+                        删除
                     </div>
                 </div>
             </div>
@@ -84,7 +89,7 @@
                     </div>
                 </div>
                 <div class="group_tool_btn" v-show="!isManage">
-                    <button class="poster" @click="handleStore">极速上店</button>
+                    <!-- <button class="poster" @click="handleStore">极速上店</button> -->
                     <button class="pay" @click="goPay">立即采购</button>
                 </div>
                 <div class="product-manage" v-show="isManage">
@@ -95,7 +100,7 @@
                     <div class="manage-right" @click="clearSelectedProduct()">移除({{selectedNum}})</div>
                 </div>
             </div>
-            <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage">
+            <!-- <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage"> -->
         </div>
         <!-- sku选择 -->
         <sku-select
@@ -108,11 +113,12 @@
 </template>
 
 <script>
+// import LoaddingView from '../../error/loaddingView.vue'
 import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
 import cash from './cashFormat.js'
 import utils from 'utils'
-import { Dialog, Toast } from 'vant'
+import { Dialog } from 'vant'
 
 export default {
     components: {
@@ -127,7 +133,7 @@ export default {
             colorSkuAction: '',
             groupDetail: {}, // 组货基本信息
             groupGoodsRecords: [], // 商品列表数据源
-            isDialog: false,
+            // isDialog: true,
             seletedDetailsItem: {}, // sku数据源
             seletedItemIndex: '', // 选择调整商品下标
             isOrderSuply: false,
@@ -138,7 +144,11 @@ export default {
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
             selectedNum: 0,
-            isAllSelected: false
+            isAllSelected: false,
+            startX: 0,
+            startY: 0,
+            endX: 0,
+            endY: 0
         }
     },
     mounted() {
@@ -146,12 +156,6 @@ export default {
             this.isOrderSuply = true
             this.suplyGoods()
         }
-    },
-    created() {
-        Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-        })
     },
     activated() {
         // 上报页面事件
@@ -161,11 +165,8 @@ export default {
             event: 'pageView'
         })
         this.resetData()
-        this.isNative = false
-        this.isDialog = false
-        if (this.$route.query.fromNative === '1') {
-            this.isNative = true
-        }
+
+        this.isNative = this.$route.query.fromNative === '1'
         if (this.$route.query.orderId === undefined) {
             this.groupDetail = {}
             this.groupGoodsRecords = []
@@ -176,13 +177,20 @@ export default {
             this.groupName = this.$route.query.groupName
         }
         utils.postMessage('changeStatus', 'default')
+        // this.handleItemScroll()
+    },
+    deactivated() {
+        window.removeEventListener('scroll', () => {
+        }, true) // 离开当前组件别忘记移除事件监听哦
     },
     filters: {
         selectSkuStr(val) {
             let str = val.attrColorValue + '：'
             let arr = []
             val.skuList.forEach(item => {
-                arr.push(item.attrSpecValue)
+                if (item.entityStock > 0 & item.num > 0) {
+                    arr.push(item.attrSpecValue + 'x' + item.num)
+                }
             })
             return str + arr.join('，')
         }
@@ -249,6 +257,47 @@ export default {
                 }
             })
         },
+        touchStart(e) {
+            this.closeDeleteMenu()
+            if (e && e.targetTouches) {
+                this.startX = e.targetTouches[0].clientX
+                this.startY = e.targetTouches[0].clientY
+                console.log('开始：' + this.startX + ', ' + this.startY)
+            }
+        },
+        closeDeleteMenu() {
+            let cells = document.getElementsByClassName('product-cell')
+            cells.forEach((cell) => {
+                cell.scrollTo({
+                    top: window.devicePixelRatio,
+                    left: 0,
+                    behavior: 'smooth'
+                })
+            })
+        },
+        touchEnd(e) {
+            if (e && e.changedTouches) {
+                this.endX = e.changedTouches[0].clientX
+                this.endY = e.changedTouches[0].clientY
+                if (Math.abs(this.endX - this.startX) > 30 && Math.abs(this.endY - this.startY) < 10) {
+                    if (Math.abs(Number(this.endY) - Number(this.startY)) < 100) {
+                        if (this.endX < this.startX) {
+                            e.currentTarget.scrollTo({
+                                top: window.devicePixelRatio,
+                                left: 88 * window.devicePixelRatio,
+                                behavior: 'smooth'
+                            })
+                        } else {
+                            e.currentTarget.scrollTo({
+                                top: window.devicePixelRatio,
+                                left: 0,
+                                behavior: 'smooth'
+                            })
+                        }
+                    }
+                }
+            }
+        },
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
             let btm = 57
@@ -256,11 +305,6 @@ export default {
                 btm = 91
             }
             return `bottom:${btm / 100}rem`
-        },
-        handleStore() {
-            this.$router.push({
-                path: '/deposit'
-            })
         },
         selectItem(index) {
             this.showSkuDialog = false
@@ -301,6 +345,13 @@ export default {
         },
         getBottomOffset(offset) {
             return utils.bottomOffset(offset)
+        },
+        deleteItem(index) {
+            this.seletedItemIndex = index
+            this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
+            this.selectItem(index)
+            this.dialogAlert()
+            this.closeDeleteMenu()
         },
         manageProduct() {
             this.showSkuDialog = false
@@ -408,14 +459,14 @@ export default {
                         }
                     })
                     this.groupName = this.groupDetail.name
-                    Toast.clear()
+                    // Toast.clear()
                 })
                 .catch(err => {
                     console.log(err)
                 })
         },
         resetData() { // 重置页面
-            Toast.clear()
+            // Toast.clear()
             this.isManage = false
             this.isAllSelected = false
             this.showSkuDialog = false
@@ -551,29 +602,62 @@ export default {
                 }
             })
         },
-        addPoster() {
-            let products = this.groupGoodsRecords.filter(item => item.productShelves !== 0)
-            if (products.length === 0) {
-                this.$toast('该组货所有商品已失效，无法生成海报')
-                return
-            }
-            this.$router.push({
-                path: '/poster/eidtGroupProducts',
-                query: { groupCode: this.groupDetail.groupCode }
-            })
-        },
+        // addPoster() {
+        //     let products = this.groupGoodsRecords.filter(item => item.productShelves !== 0)
+        //     if (products.length === 0) {
+        //         this.$toast('该组货所有商品已失效，无法生成海报')
+        //         return
+        //     }
+        //     this.$router.push({
+        //         path: '/poster/eidtGroupProducts',
+        //         query: { groupCode: this.groupDetail.groupCode }
+        //     })
+        // },
         goPay() {
             window.sa.track('IPX_WEB', {
                 page: 'groupListDetail', // 页面名字
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'editPurchaseNow' // 按钮唯一标识，取个语义化且不重名的名字
             })
-            order.createOrder(
-                this.groupName,
-                this.groupGoodsRecords,
-                this.groupDetail.groupGoodsId,
-                true
-            )
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === '0') {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
+            this.$api.groupGoods.oauthPurchase().then(res => {
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                } else {
+                    order.createOrder(
+                        this.groupName,
+                        this.groupGoodsRecords,
+                        this.groupDetail.groupGoodsId,
+                        true
+                    )
+                }
+            }).catch(() => {})
         }
     }
 }
@@ -612,17 +696,9 @@ export default {
         }
     }
 
-    .line {
-        position: fixed;
-        width: 100%;
-        background-color: @color-c7;
-        height: 1px;
-        z-index: 100;
-    }
-
     .panel {
         background-color: white;
-        height: calc(100vh - 65px);
+        height: 100%;//alc(100vh - 65px);
         overflow-y: scroll;
         overflow-x: hidden;
         padding: 16px;
@@ -698,7 +774,7 @@ export default {
             border-radius: 16px;
             border: 1px solid rgba(213, 214, 222, 1);
             position: absolute;
-            right: 0px;
+            right: 0;
             line-height: 28px;
             text-align: center;
         }
@@ -708,199 +784,222 @@ export default {
         margin-top: 16px;
         padding-bottom: 60px;
 
+        .can-scroll {
+            overflow: scroll;
+        }
+
         .product-cell {
             background: white;
-            height: 106px;
+            height: 110px;
             margin-bottom: 32px;
             display: flex;
-            position: relative;
+            flex-direction: row;
             align-items: center;
 
-            .product-item-check {
-                width: 20px;
-                height: 20px;
-                margin-right: 16px;
-            }
-
-            .photo_state {
-                position: relative;
-
-                > img {
-                    flex: none;
-                    width: 106px;
-                    height: 106px;
-                    border-radius: 4px;
-                    object-fit: cover;
-                    border: 1px solid @color-c7;
+            .cell-content {
+                flex-shrink: 0;
+                height: 106px;
+                display: flex;
+                align-items: center;
+                .product-item-check {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 16px;
                 }
 
-                .state_text {
-                    position: absolute;
-                    width: 106px;
-                    height: 18px;
-                    background: rgba(0, 0, 0, 0.5);
-                    border-radius: 0px 0px 4px 4px;
-                    font-size: 10px;
-                    font-weight: 400;
-                    color: rgba(255, 255, 255, 1);
-                    text-align: center;
-                    line-height: 18px;
-                    top: 88px;
-                }
-            }
+                .photo_state {
+                    position: relative;
 
-            .product-info-move {
-                margin-right: -36px;
-            }
+                    > img {
+                        flex: none;
+                        width: 106px;
+                        height: 106px;
+                        border-radius: 4px;
+                        object-fit: cover;
+                        border: 1px solid @color-c7;
+                    }
 
-            .product-info {
-                margin-left: 12px;
-                width: calc(100vw - 152px);
-                > p {
-                    font-size: 16px;
-                    font-weight: bold;
-                    line-height: 22px;
-                    color: @color-c1;
-                    .ellipsis();
+                    .state_text {
+                        position: absolute;
+                        width: 106px;
+                        height: 18px;
+                        background: rgba(0, 0, 0, 0.5);
+                        border-radius: 0px 0px 4px 4px;
+                        font-size: 10px;
+                        font-weight: 400;
+                        color: rgba(255, 255, 255, 1);
+                        text-align: center;
+                        line-height: 18px;
+                        top: 88px;
+                    }
                 }
 
-                .disableTitle {
-                    font-size: 16px;
-                    font-weight: bold;
-                    line-height: 22px;
-                    color: @color-c4;
-                    .ellipsis();
+                .product-info-move {
+                    margin-right: -36px;
                 }
 
-                .sku-list {
-                    // margin-top: 8px;
-                    overflow: hidden;
-
+                .product-info {
+                    margin-left: 12px;
+                    width: calc(100vw - 152px);
                     > p {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c3;
-                        line-height: 16px;
-                        margin: 8px 0;
-                    }
-
-                    .disableSku {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c4;
-                        line-height: 16px;
-                        margin: 8px 0;
-                    }
-
-                    // .tips {
-                    //   font-size: 12px;
-                    //   font-weight: 400;
-                    //   color: @color-rc;
-                    //   height: 15px;
-                    // }
-                }
-
-                .sale_price {
-                    margin-top: 8px;
-                    // margin-bottom: 4px;
-                    .price {
-                        font-size: 12px;
-                        font-weight: 400;
+                        font-size: 16px;
+                        font-weight: bold;
+                        line-height: 22px;
                         color: @color-c1;
-                        line-height: 14px;
-                        font-family: "alibabaRegular";
+                        .ellipsis();
+                    }
 
-                        > span {
-                            font-size: 14px;
-                            font-weight: bold;
+                    .disableTitle {
+                        font-size: 16px;
+                        font-weight: bold;
+                        line-height: 22px;
+                        color: @color-c4;
+                        .ellipsis();
+                    }
+
+                    .sku-list {
+                        // margin-top: 8px;
+                        overflow: hidden;
+
+                        > p {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: @color-c3;
+                            line-height: 16px;
+                            margin: 8px 0;
+                        }
+
+                        .disableSku {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: @color-c4;
+                            line-height: 16px;
+                            margin: 8px 0;
+                        }
+
+                        // .tips {
+                        //   font-size: 12px;
+                        //   font-weight: 400;
+                        //   color: @color-rc;
+                        //   height: 15px;
+                        // }
+                    }
+
+                    .sale_price {
+                        margin-top: 8px;
+                        // margin-bottom: 4px;
+                        .price {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-c1;
                             line-height: 14px;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+
+                            > span {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: @color-c1;
+                                line-height: 14px;
+                                font-family: "alibabaBold";
+                            }
                         }
-                    }
 
-                    .disablePrice {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c4;
-                        font-family: "alibabaRegular";
-
-                        > span {
-                            font-size: 14px;
-                            font-weight: bold;
+                        .disablePrice {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-c4;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+
+                            > span {
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: @color-c4;
+                                font-family: "alibabaBold";
+                            }
+                        }
+
+                        .tip_title {
+                            font-size: 10px;
+                            font-weight: bold;
+                            color: @color-c3;
+                            line-height: 12px;
+                            background: rgba(244, 245, 247, 1);
+                            margin-left: 10px;
+                            padding: 2px;
+                            border-radius: 0px 4px 4px 4px;
                         }
                     }
 
-                    .tip_title {
-                        font-size: 10px;
-                        font-weight: bold;
-                        color: @color-c3;
-                        line-height: 12px;
-                        background: rgba(244, 245, 247, 1);
-                        margin-left: 10px;
-                        padding: 2px;
-                        border-radius: 0px 4px 4px 4px;
-                    }
-                }
+                    .footer-btn {
+                        display: flex;
+                        justify-content: space-between;
 
-                .footer-btn {
-                    display: flex;
-                    justify-content: space-between;
-
-                    .price {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-rc;
-                        font-family: "alibabaRegular";
-                        margin-top: 8px;
-
-                        > span {
-                            font-size: 18px;
-                            font-weight: bold;
+                        .price {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-rc;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+                            margin-top: 8px;
+
+                            > span {
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: @color-rc;
+                                font-family: "alibabaBold";
+                            }
                         }
-                    }
 
-                    .disablePrice {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-c4;
-                        font-family: "alibabaRegular";
-                        margin-top: 8px;
-
-                        > span {
-                            font-size: 18px;
-                            font-weight: bold;
+                        .disablePrice {
+                            font-size: 12px;
+                            font-weight: 400;
                             color: @color-c4;
-                            font-family: "alibabaBold";
+                            font-family: "alibabaRegular";
+                            margin-top: 8px;
+
+                            > span {
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: @color-c4;
+                                font-family: "alibabaBold";
+                            }
                         }
-                    }
 
-                    .yen {
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: @color-rc;
-                        font-family: "alibabaRegular";
-                    }
+                        .yen {
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: @color-rc;
+                            font-family: "alibabaRegular";
+                        }
 
-                    > button {
-                        width: 80px;
-                        height: 28px;
-                        background: @color-ec1;
-                        border-radius: 18px;
-                        font-size: 12px;
-                        font-weight: bold;
-                        color: @color-ec;
-                    }
+                        > button {
+                            width: 80px;
+                            height: 28px;
+                            background: @color-ec1;
+                            border-radius: 18px;
+                            font-size: 12px;
+                            font-weight: bold;
+                            color: @color-ec;
+                        }
 
-                    > button:disabled {
-                        background: rgba(249, 250, 252, 1);
-                        color: @color-c4;
+                        > button:disabled {
+                            background: rgba(249, 250, 252, 1);
+                            color: @color-c4;
+                        }
                     }
                 }
+            }
+
+            .cell-delete {
+                flex-shrink: 0;
+                width: 72px;
+                height: 106px;
+                background: @color-rc;
+                color: white;
+                font-size: 14px;
+                line-height: 106px;
+                margin: 0 16px;
+                text-align: center;
+                border-radius: 8px;
             }
         }
     }
@@ -1025,4 +1124,5 @@ export default {
         }
 
     }
+
 </style>

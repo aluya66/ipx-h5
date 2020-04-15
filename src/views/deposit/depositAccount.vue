@@ -17,6 +17,10 @@
             <p class="account-title">授信余额(元)</p>
             <p class="account-money">{{handlePriceFormat(userData.availableAmount)}}</p>
             <p class="account-status" v-show="userData.status === 2 || userData.status === 3 ">{{userData.status | handleStatus}}</p>
+            <div class="open_account" v-show="userData.status !== 2 & userData.status !== 3 " @click="openAccount">
+                <p>开通押金服务</p>
+                <img :src="arrowImage" alt="">
+            </div>
             <div class="account-desc">
                 <section class="account-time">
                     <p>剩余有效期(天)</p>
@@ -34,11 +38,13 @@
 
 <script>
 import utils from 'utils'
+import { Dialog } from 'vant'
 export default {
     data() {
         return {
             isNative: false,
             backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
+            arrowImage: require('@/themes/images/app/icon_next_blue@3x.png'),
             userData: {}
         }
     },
@@ -84,6 +90,28 @@ export default {
                 }
             }).catch(() => {
 
+            })
+        },
+        openAccount() {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === '0') {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
+            this.$router.push({
+                path: '/deposit'
             })
         }
     },
@@ -159,6 +187,27 @@ export default {
         transform: translateX(-50%);
         align-self: center;
     }
+    .open_account {
+        width:116px;
+        height:28px;
+        background:rgba(235,238,255,1);
+        border-radius:14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 8px auto;
+        > p {
+            font-size:14px;
+            font-weight:400;
+            color:rgba(60,92,246,1);
+            line-height:28px;
+        }
+        > img {
+            width: 16px;
+            height: 16px;
+            align-self: center;
+        }
+    }
     .account-desc {
         display: flex;
         flex-direction: row;
@@ -198,7 +247,7 @@ export default {
         margin: 40px 20px 0;
         font-size:18px;
         font-family:PingFangSC-Medium,PingFang SC;
-        font-weight:500;
+        font-weight:bold;
         color:rgba(255,255,255,1);
         line-height:50px;
         text-align: center;
