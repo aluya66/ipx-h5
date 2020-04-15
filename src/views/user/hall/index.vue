@@ -549,6 +549,12 @@ export default {
                             scrollHeight = 200
                         }
                         this.alpha = scrollHeight / 200
+                        if (scrollHeight < 10) {
+                            this.scrollHeight = 0
+                            this.alpha = 0
+                        }
+                    } else {
+                        this.alpha = 0
                     }
                     // console.log(scrollHeight + ', alpha = ' + this.alpha + ', index = ' + this.menuIndex)
                 }, true)
