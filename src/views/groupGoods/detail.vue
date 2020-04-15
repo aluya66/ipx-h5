@@ -242,7 +242,6 @@ export default {
             this.isNative = true
         }
         utils.setStore('isFromGroupDetail', false)
-        alert('detail: ' + utils.getStore('isFromGroupDetail'))
         let basepara = utils.getStore('baseParams')
         if (basepara.isHide === '1') {
             this.isShowPrice = true
@@ -466,7 +465,6 @@ export default {
             }
 
             utils.setStore('isFromGroupDetail', true)
-            alert('detail, addposter: ' + utils.getStore('isFromGroupDetail'))
             this.$router.push({
                 path: '/poster/editGroupPoster', /// poster/eidtGroupProducts
                 query: { groupCode: this.groupDetail.groupCode }
