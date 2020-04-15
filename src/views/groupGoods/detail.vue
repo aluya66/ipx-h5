@@ -241,6 +241,8 @@ export default {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
+        utils.setStore('isFromGroupDetail', false)
+        alert('detail: ' + utils.getStore('isFromGroupDetail'))
         let basepara = utils.getStore('baseParams')
         if (basepara.isHide === '1') {
             this.isShowPrice = true
@@ -462,8 +464,11 @@ export default {
                 this.$toast('该组货所有商品已失效，无法生成海报')
                 return
             }
+
+            utils.setStore('isFromGroupDetail', true)
+            alert('detail, addposter: ' + utils.getStore('isFromGroupDetail'))
             this.$router.push({
-                path: '/poster/eidtGroupProducts',
+                path: '/poster/editGroupPoster', /// poster/eidtGroupProducts
                 query: { groupCode: this.groupDetail.groupCode }
             })
         },

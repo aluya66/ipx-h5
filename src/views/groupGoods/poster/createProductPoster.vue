@@ -174,6 +174,7 @@ export default {
                 path: '/picture/imageList',
                 query: {
                     productCode: this.$route.query.productCode,
+                    productList: this.posterData.colorTypeList,
                     fromPath: 'product'
                 }
             })

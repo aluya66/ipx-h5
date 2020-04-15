@@ -219,7 +219,10 @@ export default {
         changeSkuImage() {
             this.$router.push({
                 path: '/poster/eidtGroupProducts',
-                query: { groupCode: this.posterData.groupCode }
+                query: { 
+                    groupCode: this.posterData.groupCode,
+                    productList: this.posterData.products
+                }
             })
         },
         chooseQRCodeImg() {
@@ -262,7 +265,7 @@ export default {
             const params = {
                 groupCode: this.$route.query.groupCode
             }
-            alert(productCodes)
+            // alert(productC odes)
             if (productCodes !== undefined) {
                 params.productCodes = productCodes
             }
