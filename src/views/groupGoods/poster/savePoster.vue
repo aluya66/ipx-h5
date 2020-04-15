@@ -29,10 +29,21 @@ export default {
     },
     methods: {
         commit() {
-            const params = {
-                jumpUrl: 'savePostSuccess://'
+            let isFromGroup = utils.getStore('isFromGroupDetail')
+            if (isFromGroup === 'true') {
+                // 跳到组货详情
+                this.$router.push({
+                    path: '/groupDetail',
+                    query: {
+                        groupCode: this.$route.query.groupCode
+                    }
+                })
+            } else {
+                const params = {
+                    jumpUrl: 'savePostSuccess://'
+                }
+                utils.postMessage('', params)
             }
-            utils.postMessage('', params)
         }
     }
 }

@@ -11,7 +11,7 @@
        </template>
    </c-header>
 
-   <div class="panel_content" >
+   <div class="panel_content">
     <div class="poster_img_content" :style="getBottomOffset(0)">
        <div class="content" ref="image" >
            <div class="product_content" :style="isHiddenChange ? 'border-radius: 0' : 'border-radius: 0.12rem'">
@@ -69,19 +69,20 @@
        </div>
     </div>
    </div>
-
+    <LoaddingView class="loadding_content" loaddingDesc="生成海报..." v-show="isLoadding"/>
    </layout-view>
 </template>
 
 <script>
-import { Toast } from 'vant'
+// import { Toast } from 'vant'
 import utils from 'utils'
 import html2canvas from 'html2canvas'
+import LoaddingView from '../../error/loaddingView.vue'
 // import CanvasRenderer from 'CanvasRenderer'
 
 export default {
     components: {
-
+        LoaddingView
     },
     data () {
         return {
@@ -94,7 +95,8 @@ export default {
             groupData: {},
             changedSku: {},
             selectProduct: {},
-            isHiddenChange: false
+            isHiddenChange: false,
+            isLoadding: false
         }
     },
     created() {
@@ -102,7 +104,8 @@ export default {
     },
     deactivated() {
         utils.setStore('productSkuList', '')
-        Toast.clear()
+        // Toast.clear()
+        this.isLoadding = false
     },
     activated() {
         if (this.$route.query.groupData.groupCode !== undefined) {
@@ -172,10 +175,11 @@ export default {
         savePoster() {
             this.isHiddenChange = true
             let _this = this
-            Toast.loading({
-                message: '生成海报...',
-                duration: 0
-            })
+            // Toast.loading({
+            //     message: '生成海报...',
+            //     duration: 0
+            // })
+            _this.isLoadding = true
             setTimeout(() => {
                 let img = _this.$refs['image']
                 let isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi) || false
@@ -191,42 +195,19 @@ export default {
                     utils.upload([file]).then(result => {
                         _this.isHiddenChange = false
                         _this.$router.push({
-                            path: '/poster/savePoster'
+                            path: '/poster/savePoster',
+                            query: { groupCode: _this.groupData.groupCode }
                         })
                         utils.postMessage('download_pictures', result)
-                        Toast.clear()
+                        // Toast.clear()
+                        _this.isLoadding = false
                     }).catch(() => {
                         _this.isHiddenChange = false
+                        _this.isLoadding = false
                         _this.$toast('保存失败请重试')
                     })
                 })
             }, 30)
-        },
-        downloadIamge(imgsrc, name) {
-            var image = new Image()
-            var canvas = document.createElement('canvas')
-            var context = canvas.getContext('2d')
-            // 解决跨域 Canvas 污染问题
-            image.setAttribute('crossOrigin', 'anonymous')
-            image.src = imgsrc
-            image.style.objectFit = 'contain'
-            image.onload = () => {
-                canvas.width = image.width
-                canvas.height = image.height
-                context.drawImage(image, 0, 0, image.width, image.height)
-                // 得到图片的base64编码数据
-                var url = canvas.toDataURL('image/png')
-                let deleteString = 'data:image/png;base64,'
-                var index = url.indexOf(deleteString)
-                if (index === 0) {
-                    let url2 = url.slice(deleteString.length)
-                    utils.postMessage('save_image', url2)
-                    Toast.clear()
-                } else {
-                    this.$toast('保存失败请重试')
-                    Toast.clear()
-                }
-            }
         },
         dataURLtoBlob(data) {
             var arr = data.split(','); var mime = arr[0].match(/:(.*?);/)[1]
@@ -242,9 +223,11 @@ export default {
 
 <style lang='less' scoped>
 .panel_content {
+    position: relative;
     background: @color-c7;
     height: 100%;//calc(100vh - 48px);
     overflow-y: scroll;
+    z-index: 100;
 }
 .poster_img_content {
     background: @color-c7;
@@ -492,6 +475,16 @@ export default {
         }
 
     }
+}
+
+.loadding_content {
+    position: absolute;
+    left: 45%;
+    top: 40%;
+    height: 70px;
+    width: 70px;
+    z-index: 10000;
+    background: none;
 }
 
 </style>

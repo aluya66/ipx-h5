@@ -61,6 +61,7 @@ export default {
             fromPath: 'product', // product单品，group组货
             fromChange: false,
             images: [],
+            productList: [],
             previewImages: [],
             touchStartX: 0,
             touchStartY: 0,
@@ -207,6 +208,13 @@ export default {
                             isSelected: false
                         }
                     })
+                    this.productList = this.$route.query.productList
+                    this.images.forEach(item => {
+                        let index = this.contains(this.productList, item)
+                        if (index) {
+                            item.isSelected = true
+                        }
+                    })
                 }
             })
         },
@@ -258,6 +266,15 @@ export default {
             //     }
             // })
             this.isShowPreview = true
+        },
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].image === obj.image) {
+                    return true
+                }
+            }
+            return false
         }
     },
     activated() {
