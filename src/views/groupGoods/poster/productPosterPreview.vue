@@ -197,32 +197,6 @@ export default {
                 })
             }, 30)
         },
-        downloadIamge(imgsrc, name) {
-            var image = new Image()
-            var canvas = document.createElement('canvas')
-            var context = canvas.getContext('2d')
-            // 解决跨域 Canvas 污染问题
-            image.setAttribute('crossOrigin', 'anonymous')
-            image.src = imgsrc
-            image.style.objectFit = 'contain'
-            image.onload = function() {
-                canvas.width = image.width
-                canvas.height = image.height
-                context.drawImage(image, 0, 0, image.width, image.height)
-                // 得到图片的base64编码数据
-                var url = canvas.toDataURL('image/png')
-                let deleteString = 'data:image/png;base64,'
-                var index = url.indexOf(deleteString)
-                if (index === 0) {
-                    let url2 = url.slice(deleteString.length)
-                    utils.postMessage('save_image', url2)
-                    Toast.clear()
-                } else {
-                    this.$toast('保存失败请重试')
-                }
-            }
-            image.src = imgsrc
-        },
         dataURLtoBlob(data) {
             var arr = data.split(','); var mime = arr[0].match(/:(.*?);/)[1]
             var bstr = atob(arr[1]); var n = bstr.length; var u8arr = new Uint8Array(n)

@@ -219,7 +219,7 @@ export default {
         changeSkuImage() {
             this.$router.push({
                 path: '/poster/eidtGroupProducts',
-                query: { 
+                query: {
                     groupCode: this.posterData.groupCode,
                     productList: this.posterData.products
                 }

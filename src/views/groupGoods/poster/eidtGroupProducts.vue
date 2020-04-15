@@ -164,7 +164,6 @@ export default {
                         }
                     })
                     this.isShowEmpty = this.products.length === 0
-
                 })
                 .catch(err => {
                     console.log(err)

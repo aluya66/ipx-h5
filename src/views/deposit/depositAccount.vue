@@ -38,6 +38,7 @@
 
 <script>
 import utils from 'utils'
+import { Dialog } from 'vant'
 export default {
     data() {
         return {
@@ -110,7 +111,7 @@ export default {
                 return
             }
             this.$router.push({
-                path: '/deposit',
+                path: '/deposit'
             })
         }
     },
