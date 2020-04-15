@@ -17,7 +17,7 @@
             <p class="account-title">授信余额(元)</p>
             <p class="account-money">{{handlePriceFormat(userData.availableAmount)}}</p>
             <p class="account-status" v-show="userData.status === 2 || userData.status === 3 ">{{userData.status | handleStatus}}</p>
-            <div class="open_account" @click="openAccount">
+            <div class="open_account" v-show="userData.status !== 2 & userData.status !== 3 " @click="openAccount">
                 <p>开通押金服务</p>
                 <img :src="arrowImage" alt="">
             </div>

@@ -50,8 +50,8 @@ export default {
     justify-content: center;
     align-items: center;
     .loadding_anim {
-        width: 50px;
-        height: 40px;
+        width: 56px;
+        height: 56px;
         margin-top: 0;
     }
     > p {
