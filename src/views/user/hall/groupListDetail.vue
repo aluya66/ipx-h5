@@ -145,8 +145,8 @@ export default {
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
             selectedNum: 0,
             isAllSelected: false,
-            touchX: 0,
-            touchY: 0,
+            startX: 0,
+            startY: 0,
             endX: 0,
             endY: 0
         }
@@ -165,11 +165,8 @@ export default {
             event: 'pageView'
         })
         this.resetData()
-        this.isNative = false
-        // this.isDialog = false
-        if (this.$route.query.fromNative === '1') {
-            this.isNative = true
-        }
+
+        this.isNative = this.$route.query.fromNative === '1'
         if (this.$route.query.orderId === undefined) {
             this.groupDetail = {}
             this.groupGoodsRecords = []
@@ -181,6 +178,8 @@ export default {
         }
         utils.postMessage('changeStatus', 'default')
         // this.handleItemScroll()
+    },
+    deactivated() {
         window.removeEventListener('scroll', () => {
         }, true) // 离开当前组件别忘记移除事件监听哦
     },
@@ -259,38 +258,36 @@ export default {
             })
         },
         touchStart(e) {
-            // let cells = document.getElementsByClassName('product-cell')
-            // cells.forEach((cell) => {
-            //     cell.scrollTo({
-            //         top: window.devicePixelRatio,
-            //         left: 0,
-            //         behavior: 'smooth'
-            //     })
-            // })
+            this.closeDeleteMenu()
             if (e && e.targetTouches) {
-                this.touchX = e.targetTouches[0].clientX
-                this.touchY = e.targetTouches[0].clientY
-                console.log('开始：' + this.touchX + ', ' + this.touchY)
+                this.startX = e.targetTouches[0].clientX
+                this.startY = e.targetTouches[0].clientY
+                console.log('开始：' + this.startX + ', ' + this.startY)
             }
+        },
+        closeDeleteMenu() {
+            let cells = document.getElementsByClassName('product-cell')
+            cells.forEach((cell) => {
+                cell.scrollTo({
+                    top: window.devicePixelRatio,
+                    left: 0,
+                    behavior: 'smooth'
+                })
+            })
         },
         touchEnd(e) {
             if (e && e.changedTouches) {
                 this.endX = e.changedTouches[0].clientX
                 this.endY = e.changedTouches[0].clientY
                 if (Math.abs(this.endX - this.startX) > 30 && Math.abs(this.endY - this.startY) < 10) {
-                    console.log('结束：' + this.endX + ', ' + this.endY)
-                    if (Math.abs(Number(this.endY) - Number(this.touchY)) < 100) {
-                        if (this.endX < this.touchX) {
-                            console.log('向左滑')
-                            // e.currentTarget.scrollTo(88 * window.devicePixelRatio, window.devicePixelRatio)
+                    if (Math.abs(Number(this.endY) - Number(this.startY)) < 100) {
+                        if (this.endX < this.startX) {
                             e.currentTarget.scrollTo({
                                 top: window.devicePixelRatio,
                                 left: 88 * window.devicePixelRatio,
                                 behavior: 'smooth'
                             })
                         } else {
-                            console.log('向右滑')
-                            // e.currentTarget.scrollTo(0, window.devicePixelRatio)
                             e.currentTarget.scrollTo({
                                 top: window.devicePixelRatio,
                                 left: 0,
@@ -301,19 +298,6 @@ export default {
                 }
             }
         },
-        handleItemScroll() {
-            window.addEventListener('scroll', (event) => {
-                // let element = document.querySelector('.cell-content')
-                // if (element && element.scrollTop) {
-                //     let scrollHeight = element.scrollTop
-                //     if (scrollHeight > 200) {
-                //         scrollHeight = 200
-                //     }
-                //     this.alpha = scrollHeight / 200
-                // }
-                console.log(event)
-            }, true)
-        },
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
             let btm = 57
@@ -322,11 +306,6 @@ export default {
             }
             return `bottom:${btm / 100}rem`
         },
-        // handleStore() {
-        //     this.$router.push({
-        //         path: '/deposit'
-        //     })
-        // },
         selectItem(index) {
             this.showSkuDialog = false
             this.groupGoodsRecords[index].isSelected = !this.groupGoodsRecords[index].isSelected
@@ -372,6 +351,7 @@ export default {
             this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
             this.selectItem(index)
             this.dialogAlert()
+            this.closeDeleteMenu()
         },
         manageProduct() {
             this.showSkuDialog = false
@@ -794,7 +774,7 @@ export default {
             border-radius: 16px;
             border: 1px solid rgba(213, 214, 222, 1);
             position: absolute;
-            right: 0px;
+            right: 0;
             line-height: 28px;
             text-align: center;
         }
