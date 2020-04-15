@@ -44,14 +44,18 @@
                 </div>
             </div>
         </c-list>
+        <LoadingView class="loadding_content" v-show="!showLoading"/>
     </layout-view>
 
 </template>
 
 <script>
 import utils from 'utils'
-import { Toast } from 'vant'
+import LoadingView from '../error/loaddingView'
 export default {
+    components: {
+        LoadingView
+    },
     data() {
         return {
             unselectIcon: require('../../themes/images/designer/icon_collect_def_16_16@2x.png'),
@@ -68,7 +72,8 @@ export default {
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
             error: false, // 加载错误标识
-            isHide: utils.getStore('baseParams').isHide
+            isHide: utils.getStore('baseParams').isHide,
+            showLoading: true
         }
     },
     methods: {
@@ -110,7 +115,6 @@ export default {
             }
             this.loading = true
             this.$api.goods.getHotSale(params).then(res => {
-                Toast.clear(true)
                 this.finished = false
                 if (res && res instanceof Array) {
                     if (this.pageNumber === 1) {
@@ -124,6 +128,7 @@ export default {
                 }
                 this.loading = false
                 this.isShowEmpty = this.hotProducts.length <= 0
+                this.showLoading = false
             }).catch(error => {
                 console.log(error)
                 this.error = true
@@ -172,10 +177,10 @@ export default {
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
         }
-        Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-        })
+        // Toast.loading({
+        //     message: '加载中...',
+        //     forbidClick: true
+        // })
         this.getHotSale()
     }
 }
@@ -303,5 +308,12 @@ export default {
                 }
             }
         }
+    }
+    .loadding_content {
+        position: relative;
+        left: 0;
+        top: 0;
+        height: 60%;
+        width: 100%;
     }
 </style>

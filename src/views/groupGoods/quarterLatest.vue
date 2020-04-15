@@ -33,6 +33,7 @@
             </div>
             <div class="add-store" @click="addHall()">加入我的展厅</div>
         </div>
+        <LoadingView class="loadding_content" v-show="!showLoading"/>
     </layout-view>
 </template>
 
@@ -44,7 +45,7 @@ import {
     swiper,
     swiperSlide
 } from 'vue-awesome-swiper'
-import { Dialog, Toast } from 'vant'
+import { Dialog } from 'vant'
 
 export default {
     components: {
@@ -57,6 +58,7 @@ export default {
             pageSize: 10,
             latestGroups: [],
             showPage: 'latest', // latest:本季上新，feature:精选组货
+            showLoading: true,
             isNative: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
@@ -109,7 +111,7 @@ export default {
             }
             if (this.showPage === 'latest') {
                 this.$api.groupGoods.getQuarterLatest(params).then(res => {
-                    Toast.clear(true)
+                    this.showLoading = false
                     if (res && res instanceof Array) {
                         if (this.pageNumber === 1) {
                             this.latestGroups = res
@@ -128,6 +130,7 @@ export default {
                 })
             } else {
                 this.$api.groupGoods.getSelectedGroup(params).then(res => {
+                    this.showLoading = false
                     if (res && res instanceof Array) {
                         if (this.pageNumber === 1) {
                             this.latestGroups = res
@@ -259,10 +262,6 @@ export default {
         }
     },
     created() {
-        Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-        })
     },
     mounted() {
         if (this.$route.query.fromNative === '1') {
