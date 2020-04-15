@@ -132,6 +132,15 @@ export default {
                 })
             }
         },
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].productCode === obj.productCode) {
+                    return true
+                }
+            }
+            return false
+        },
         getGroupDetail() {
             const params = {
                 groupCode: this.$route.query.groupCode
@@ -146,7 +155,16 @@ export default {
                             select: false
                         }
                     })
+                    let productList = this.$route.query.productList
+                    this.products.forEach(item => {
+                        let index = this.contains(productList, item)
+                        if (index) {
+                            item.select = true
+                            this.selectItems.push(item)
+                        }
+                    })
                     this.isShowEmpty = this.products.length === 0
+
                 })
                 .catch(err => {
                     console.log(err)

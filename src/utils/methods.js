@@ -36,8 +36,16 @@ export const priceFormat = (num) => {
     return str.replace(reg, '$1,')
 }
 
+export const hidePrice = (num, isHide) => {
+    if (isHide === 0) {
+        return '???'
+    }
+    return priceFormat(num)
+}
+
 export default {
     bottomOffset,
     roundFun,
-    priceFormat
+    priceFormat,
+    hidePrice
 }
