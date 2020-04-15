@@ -28,33 +28,15 @@
             <div class="rank">
                 <div class="rank-tab">
                     <div class="r-tab-item" :class="[tabIndex == 0 ?'active' :'']" @click="tabAct(0)">
-                         <p>今日销售额排行</p>
+                         <p class="item_title">销售总额排行</p>
+                         <p class="item_describ">统计截止至每日17:00</p>
                     </div>
                     <div class="r-tab-item" :class="[tabIndex == 1 ?'active' :'']" @click="tabAct(1)">
-                         <p>销售总额排行</p>
+                         <p class="item_title">今日销售额排行</p>
+                         <p class="item_describ">昨日17:00-今日17:00</p>
                     </div>
                 </div>
                 <div class="rank-list" :style="{left:left}">
-                    <div class="list-item">
-                        <div class="t-header">
-                             <div class="h-th w10 text-center">序号</div>
-                             <div class="h-th w35 text-center">分销员</div>
-                             <div class="h-th w25">邀请注册人数</div>
-                             <div class="h-th w30">今日销售总额</div>
-                        </div>
-                        <ul class="rank-ul">
-                            <li v-for="(item,index) in detail.todayTopList" :key="index">
-                                 <div class="ul-number w10 text-center">{{index >= 9 ? index + 1 : `0${index + 1}`}}</div>
-                                  <div class="header-img w35">
-                                    <img :src="item.avater" />
-                                      <span>{{item.memberName}}</span>
-                                  </div>
-                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal}}人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.todaysellPrice)}}</span></div>
-                            </li>
-                            <div class="nodata" v-if="!noTodaydata">暂无数据</div>
-                        </ul>
-                    </div>
                     <div class="list-item">
                         <div class="t-header">
                              <div class="h-th w10 text-center">序号</div>
@@ -73,6 +55,26 @@
                                   <div class="r-price w30 text-center">¥<span>{{cashFormat(item.sellPriceTotal)}}</span></div>
                             </li>
                              <div class="nodata" v-if="!noTotaldata">暂无数据</div>
+                        </ul>
+                    </div>
+                    <div class="list-item">
+                        <div class="t-header">
+                             <div class="h-th w10 text-center">序号</div>
+                             <div class="h-th w35 text-center">分销员</div>
+                             <div class="h-th w25">邀请注册人数</div>
+                             <div class="h-th w30">今日销售总额</div>
+                        </div>
+                        <ul class="rank-ul">
+                            <li v-for="(item,index) in detail.todayTopList" :key="index">
+                                 <div class="ul-number w10 text-center">{{index >= 9 ? index + 1 : `0${index + 1}`}}</div>
+                                  <div class="header-img w35">
+                                    <img :src="item.avater" />
+                                      <span>{{item.memberName}}</span>
+                                  </div>
+                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal}}人</div>
+                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.todaysellPrice)}}</span></div>
+                            </li>
+                            <div class="nodata" v-if="!noTodaydata">暂无数据</div>
                         </ul>
                     </div>
                 </div>
@@ -106,9 +108,9 @@ export default {
                 let data = res || {}
                 this.detail = data
                 this.noTodaydata = !!(data && data.todayTopList && data.todayTopList.length > 0)
-                if (!this.noTodaydata) {
-                    this.tabAct(1)
-                }
+                // if (!this.noTodaydata) {
+                //     this.tabAct(1)
+                // }
                 this.noTotaldata = !!(data && data.totalTopList && data.totalTopList.length > 0)
             }
         )
@@ -232,7 +234,7 @@ export default {
         border-radius: 16px;
         overflow: hidden;
         .rank-tab{
-            height: 84px;
+            height: 95px;
             background:linear-gradient(180deg,rgba(250,225,97,1) 0%,rgba(252,245,206,1) 100%);
             box-shadow:0px 2px 10px 0px rgba(33,44,98,0.12);
             display: flex;
@@ -241,23 +243,26 @@ export default {
             .r-tab-item{
                 flex: 1;
                 text-align: center;
-                line-height: 84px;
-                color: #2A2B33;
-                font-weight:400;
-                font-size: 16px;
-                p{
+                .item_title {
+                    margin-top: 29px;
+                    line-height: 22px;
+                    color: #2A2B33;
+                    font-weight:400;
+                    font-size: 16px;
                     position: relative;
                     color:rgba(42,43,51,0.8);
-                    z-index: 999;;
+                    z-index: 999;
                 }
                 &.active{
                     border-radius:16px 16px 0px 0px;
                     background:linear-gradient(180deg,rgba(249,250,252,1) 0%,rgba(255,255,255,1) 100%);
                     position: relative;
-                    font-size: 18px;
-                    font-weight:600;
-                    p{
-                         color:rgba(42,43,51,1);
+                    .item_title{
+                        margin-top: 28px;
+                        color:rgba(42,43,51,1);
+                        font-size: 18px;
+                        font-weight:bold;
+                        line-height: 24px;
                     }
                     &::after{
                         content: '';
@@ -265,11 +270,19 @@ export default {
                         background:#FCF2CE;
                         width: 126px;
                         height: 10px;
-                        top:47px;
+                        top:43px;
                         left: 50%;
                         margin-left: -63px;
                     }
                 }
+                .item_describ {
+                    margin-top: 4px;
+                    font-size:10px;
+                    font-weight:400;
+                    color:rgba(138,140,153,1);
+                    line-height:14px;
+                }
+
             }
         }
         .rank-list{
