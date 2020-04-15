@@ -147,8 +147,8 @@ export default {
             isAllSelected: false,
             touchX: 0,
             touchY: 0,
-            moveX: 0,
-            moveY: 0
+            endX: 0,
+            endY: 0
         }
     },
     mounted() {
@@ -259,10 +259,14 @@ export default {
             })
         },
         touchStart(e) {
-            let cells = document.getElementsByClassName('product-cell')
-            cells.forEach((cell) => {
-                cell.scrollTo(0, window.devicePixelRatio)
-            })
+            // let cells = document.getElementsByClassName('product-cell')
+            // cells.forEach((cell) => {
+            //     cell.scrollTo({
+            //         top: window.devicePixelRatio,
+            //         left: 0,
+            //         behavior: 'smooth'
+            //     })
+            // })
             if (e && e.targetTouches) {
                 this.touchX = e.targetTouches[0].clientX
                 this.touchY = e.targetTouches[0].clientY
@@ -271,16 +275,28 @@ export default {
         },
         touchEnd(e) {
             if (e && e.changedTouches) {
-                this.moveX = e.changedTouches[0].clientX
-                this.moveY = e.changedTouches[0].clientY
-                console.log('结束：' + this.moveX + ', ' + this.moveY)
-                if (Math.abs(Number(this.moveY) - Number(this.touchY)) < 100) {
-                    if (this.moveX < this.touchX) {
-                        console.log('向左滑')
-                        e.currentTarget.scrollTo(88 * window.devicePixelRatio, window.devicePixelRatio)
-                    } else {
-                        console.log('向右滑')
-                        e.currentTarget.scrollTo(0, window.devicePixelRatio)
+                this.endX = e.changedTouches[0].clientX
+                this.endY = e.changedTouches[0].clientY
+                if (Math.abs(this.endX - this.startX) > 30 && Math.abs(this.endY - this.startY) < 10) {
+                    console.log('结束：' + this.endX + ', ' + this.endY)
+                    if (Math.abs(Number(this.endY) - Number(this.touchY)) < 100) {
+                        if (this.endX < this.touchX) {
+                            console.log('向左滑')
+                            // e.currentTarget.scrollTo(88 * window.devicePixelRatio, window.devicePixelRatio)
+                            e.currentTarget.scrollTo({
+                                top: window.devicePixelRatio,
+                                left: 88 * window.devicePixelRatio,
+                                behavior: 'smooth'
+                            })
+                        } else {
+                            console.log('向右滑')
+                            // e.currentTarget.scrollTo(0, window.devicePixelRatio)
+                            e.currentTarget.scrollTo({
+                                top: window.devicePixelRatio,
+                                left: 0,
+                                behavior: 'smooth'
+                            })
+                        }
                     }
                 }
             }
