@@ -8,10 +8,10 @@
                 <img class="mode-logo" src="../../themes/images/mask/alienmade_logo@2x.png"/>
                 <img class="mode-title" :style="getModeTitleRect()" src="../../themes/images/mask/title_customized@2x.png"/>
                 <div class="mode-samples">
-                    <img :style="getRoundRect()" src="../../themes/images/mask/img_word_white@2x.png"/>
-                    <img :style="getRoundRect()" class="img-margin-left" src="../../themes/images/mask/img_word_black@2x.png"/>
-                    <img :style="getRoundRect()" class="img-margin-top" src="../../themes/images/mask/img_tiger.png"/>
-                    <img :style="getRoundRect()" class="img-margin-top img-margin-left" src="../../themes/images/mask/img_marmot.png"/>
+                    <img src="../../themes/images/mask/img_word_white@2x.png"/>
+                    <img class="img-margin-left" src="../../themes/images/mask/img_word_black@2x.png"/>
+                    <img class="img-margin-top" src="../../themes/images/mask/img_tiger.png"/>
+                    <img class="img-margin-top img-margin-left" src="../../themes/images/mask/img_marmot.png"/>
                 </div>
                 <img src="../../themes/images/mask/pic_model@2x.png" :style="getModeShowRect()"/>
             </div>
@@ -65,10 +65,10 @@
                     <span class="data">300W+</span>
                 </div>
                 <div class="mode-samples">
-                    <img :style="getRoundRect()" src="../../themes/images/mask/img_supply_chain1.png"/>
-                    <img :style="getRoundRect()" class="img-margin-left" src="../../themes/images/mask/img_supply_chain2.png"/>
-                    <img :style="getRoundRect()" class="img-margin-top" src="../../themes/images/mask/img_supply_chain3.png"/>
-                    <img :style="getRoundRect()" class="img-margin-top img-margin-left" src="../../themes/images/mask/img_supply_chain4.png"/>
+                    <img src="../../themes/images/mask/img_supply_chain1.png"/>
+                    <img class="img-margin-left" src="../../themes/images/mask/img_supply_chain2.png"/>
+                    <img class="img-margin-top" src="../../themes/images/mask/img_supply_chain3.png"/>
+                    <img class="img-margin-top img-margin-left" src="../../themes/images/mask/img_supply_chain4.png"/>
                 </div>
             </div>
             <div class="mask-process flex-column flex-center">
@@ -236,7 +236,7 @@ export default {
             })
         },
         getRoundRect() {
-            let width = parseInt((this.screenWidth - 73 * window.devicePixelRatio) / 2 - 1)
+            let width = parseInt((this.screenWidth - 73 * window.devicePixelRatio) / 2 - 2)
             return `width:${width}px;height:${width}px`
         },
         getDetailItemRect() {
@@ -348,8 +348,13 @@ export default {
         justify-content: space-between;
         margin: 40px 28px 56px 28px;
 
+        >img {
+            width: calc(50vw - 36px);
+            height: calc(50vw - 36px);
+        }
+
         .img-margin-left {
-            margin-left: 17px;
+            margin-left: 16px;
         }
 
         .img-margin-top {
