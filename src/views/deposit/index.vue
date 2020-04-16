@@ -52,7 +52,7 @@
 import PlanView from './depositPlanView.vue'
 import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
-import { Toast } from 'vant'
+import { Toast, Dialog } from 'vant'
 
 export default {
     components: {
