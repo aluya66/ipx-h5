@@ -94,7 +94,7 @@ export default {
         },
         openAccount() {
             let baseParams = utils.getStore('baseParams')
-            if (baseParams.isHide === '0') {
+            if (baseParams.isHide === 0) {
                 Dialog.confirm({
                     title: '填写邀请码可用',
                     message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',

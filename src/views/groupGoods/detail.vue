@@ -243,7 +243,7 @@ export default {
         }
         utils.setStore('isFromGroupDetail', false)
         let basepara = utils.getStore('baseParams')
-        if (basepara.isHide === '1') {
+        if (basepara.isHide === 1) {
             this.isShowPrice = true
         } else {
             this.isShowPrice = false
@@ -324,7 +324,7 @@ export default {
                 return
             }
             let baseParams = utils.getStore('baseParams')
-            if (baseParams.isHide === '0') {
+            if (baseParams.isHide === 0) {
                 this.isShowPrice = false
                 Dialog.confirm({
                     title: '填写邀请码可用',
@@ -441,7 +441,7 @@ export default {
                 return
             }
             let baseParams = utils.getStore('baseParams')
-            if (baseParams.isHide === '0') {
+            if (baseParams.isHide === 0) {
                 this.isShowPrice = false
                 Dialog.confirm({
                     title: '填写邀请码可用',

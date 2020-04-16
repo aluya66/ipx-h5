@@ -176,7 +176,7 @@ export default {
             this.isNative = true
         }
         let basepara = utils.getStore('baseParams')
-        if (basepara.isHide === '1') {
+        if (basepara.isHide === 1) {
             this.isShowPrice = true
         } else {
             this.isShowPrice = false
