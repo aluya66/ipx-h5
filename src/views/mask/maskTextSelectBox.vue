@@ -68,7 +68,7 @@ export default {
 .panel {
     .component_content {
         margin-top: 12px;
-        padding: 0 10px;
+        padding: 0 10px 4px 10px;
         .component_item {
             height:32px;
             background:@color-c8;
