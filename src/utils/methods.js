@@ -38,7 +38,7 @@ export const priceFormat = (num) => {
 
 export const hidePrice = (num, isHide) => {
     console.log('num = ' + num + ', isHide = ' + isHide)
-    if (isHide === 0 || isHide === '0') {
+    if (isHide !== 1 || isHide !== '1') {
         return '???'
     }
     return priceFormat(num)
