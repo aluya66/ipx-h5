@@ -68,7 +68,7 @@ export default {
             this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20 && isIos
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
-            utils.setStore('isHide', this.baseParams.isHide)
+            utils.setStore('isHide', Number(this.baseParams.isHide))
         }
     }
 }
