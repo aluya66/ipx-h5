@@ -72,7 +72,7 @@ export default {
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
             error: false, // 加载错误标识
-            isHide: utils.getStore('baseParams').isHide,
+            isHide: 0,
             showLoading: true
         }
     },
@@ -86,8 +86,7 @@ export default {
             return `width:${width}px;height:${width}px`
         },
         getHidePrice(price) {
-            let isHide = utils.getStore('baseParams').isHide
-            return utils.hidePrice(price, isHide)
+            return utils.hidePrice(price, this.isHide)
         },
         gotoDetail(product, index) {
             this.selectIndex = index
@@ -181,6 +180,7 @@ export default {
         //     message: '加载中...',
         //     forbidClick: true
         // })
+        this.isHide = utils.getStore('baseParams').isHide
         this.getHotSale()
     }
 }

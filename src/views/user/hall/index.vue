@@ -26,7 +26,7 @@
                 :style="getTitlePadding()+getBackgroundColor()">
                 <div class="hall-header">
                     <div class="hall-title-icon" @click="goBack()"><img class="header-img" :src="alpha<1?backImageWhite:backImageBlack" alt="返回"/></div>
-                    <div class="hall-title" :class="{'color-black':alpha>=1}">我的展厅</div>
+                    <div class="hall-title" :style="getTextColor()">我的展厅</div>
                     <div class="hall-title-icon"><!--<img class="header-img" :src="alpha<1?headerSearchImg:headerSearchImg_gray" alt="搜索"/>--></div>
                 </div>
                 <div class="searchContain" v-show="isInSearch">
@@ -137,7 +137,7 @@
                             <span class="number">{{ getHidePrice(item.tshPrice) }}</span>
                             <span class="label" v-if="isHide === 0">入驻可得拿货价</span>
                         </div>
-                        <div class="button margin-l-r-12 margin-top-8" @click="handleSelectProduct(true, item)">立即购买</div>
+                        <div class="button margin-l-r-12 margin-top-12" @click.stop="handleSelectProduct(true, item)">立即购买</div>
                     </div>
                 </div>
             </c-list>
@@ -191,7 +191,7 @@
             </manage-view>
         </div>
 
-        <div class="sticky-contain" :style="getTabTop()+getBackgroundColor()" :class="{'color-black':alpha>=1}">
+        <div class="sticky-contain" :style="getTabTop()+getBackgroundColor()+getTextColor()">
             <div class="menu">
                 <section
                     :class="['menu-item', menuIndex === 0 ? 'item-select' : 'item-default']"
@@ -340,6 +340,10 @@ export default {
         },
         getBackgroundColor() {
             return `background:rgba(255,255,255,${this.alpha});`
+        },
+        getTextColor() {
+            let color = 255 * (1 - this.alpha)
+            return `color: rgb(${color}, ${color}, ${color});`
         },
         getTabTop() {
             let baseParams = utils.getStore('baseParams')
@@ -1026,7 +1030,7 @@ export default {
         /*background-size: 100%;*/
 
         .list-insert {
-            margin-top: -60px;
+            margin-top: -50px;
         }
 
         > img {
