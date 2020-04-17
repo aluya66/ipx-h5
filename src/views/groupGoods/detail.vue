@@ -311,9 +311,9 @@ export default {
     methods: {
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
-            let btm = 57
+            let btm = 57 + 8
             if (baseparams.isIphoneX) {
-                btm = 91
+                btm = 91 + 8
             }
             return `bottom:${btm / 100}rem`
         },

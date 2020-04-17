@@ -188,7 +188,7 @@ export default {
         align-self: center;
     }
     .open_account {
-        width:116px;
+        width:125px;
         height:28px;
         background:rgba(235,238,255,1);
         border-radius:14px;
@@ -201,11 +201,13 @@ export default {
             font-weight:400;
             color:rgba(60,92,246,1);
             line-height:28px;
+            margin-left: 12px;
         }
         > img {
             width: 16px;
             height: 16px;
             align-self: center;
+            margin-right: 8px;
         }
     }
     .account-desc {
