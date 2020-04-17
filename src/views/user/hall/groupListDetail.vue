@@ -65,7 +65,7 @@
                             </div>
                             <div class="footer-btn">
                                 <p :class="[item.disabled ? 'disablePrice' : 'price']">
-                                    ¥<span>{{ cashFormat(item.spuTshPrice) }}</span>
+                                    ¥<span>{{ getHidePrice(item.spuTshPrice) }}</span>
                                 </p>
                                 <button @click="openSku(item, index)" :disabled="item.disabled">
                                     调整规格
@@ -81,7 +81,7 @@
             <div class="footer-content" :style="getBottomOffset(0)">
                 <div class=" total-price" v-show="!isManage">
                     <div class="group_price">
-                        ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+                        ¥<span>{{ getHidePrice(groupDetail.totalPrice) }}</span>
                     </div>
                     <div class="sale_price">
                         <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
@@ -256,6 +256,10 @@ export default {
                     groupCode: this.groupDetail.groupCode
                 }
             })
+        },
+        getHidePrice(price) {
+            let isHide = utils.getStore('baseParams').isHide
+            return utils.hidePrice(price, isHide)
         },
         touchStart(e) {
             this.closeDeleteMenu()

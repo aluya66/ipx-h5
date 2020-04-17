@@ -44,7 +44,7 @@
                 <p>{{data.refundTimes}}天退货周期</p>
                 <p>{{data.refundRate}}%受理退货</p>
             </div>-->
-            <div class="open-vip" @click.stop="goToBuy(data.depositConfigId)">
+            <div class="open-vip" @click.stop="goPay()">
                 开通享权益
             </div>
         </div>
@@ -58,6 +58,9 @@
 </template>
 
 <script>
+import { Dialog } from 'vant'
+import utils from 'utils'
+
 export default {
     props: {
         data: {
@@ -88,6 +91,33 @@ export default {
                     depositConfigId: depositConfigId
                 }
             })
+        },
+        goPay() {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === 0) {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '充值服务需要业务邀请码才可使用，请确认您的业务邀请码后再进行充值！',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
+            // const item = this.plans[this.selectedIndex]
+            const params = {
+                jumpUrl: 'depositPayWay://',
+                depositConfigId: this.data.depositConfigId === undefined ? '' : this.data.depositConfigId + '', // 押金配置id
+                depositAmount: this.data.depositAmount + '', // 押金总额
+                consumeAmount: this.data.consumeAmount + '' // 消费额度
+            }
+            utils.postMessage('', params)
         }
     }
 }
