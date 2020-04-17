@@ -31,7 +31,14 @@
                     </div>
                 </div>-->
             </div>
-            <div class="add-store" @click="addHall()">加入我的展厅</div>
+            <div class="add-store" @click="addHall()">
+                <p>
+                    加入我的展厅
+                </p>
+                <div class="cover">
+
+                </div>
+            </div>
         </div>
         <LoadingView class="loadding_content" v-show="!showLoading"/>
     </layout-view>
@@ -471,8 +478,27 @@ export default {
         position: fixed;
         bottom: 36px;
         left: 20px;
+        .cover {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+            width: calc(100vw - 40px);
+            height: 50px;
+            background-color: black;
+            border-radius: 12px;
+            opacity: 0;
+        }
+        >p {
+            position: absolute;
+            width: calc(100vw - 40px);
+            text-align: center;
+            left: 0;
+            top: 0;
+            margin: auto;
+        }
     }
-    .add-store:active {
-        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+    .add-store:active .cover {
+        opacity: 0.3;
     }
 </style>

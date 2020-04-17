@@ -789,7 +789,14 @@ export default {
         padding-bottom: 60px;
 
         .can-scroll {
-            overflow: scroll;
+            overflow-y: hidden;
+            overflow-x: scroll;
+            /*解决ios上滑动不流畅*/
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .can-scroll::-webkit-scrollbar {
+            display: none;
         }
 
         .product-cell {
