@@ -210,6 +210,7 @@ export default {
         background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
         border-radius: 25px;
         font-size: 18px;
+        font-weight: bold;
     }
 
     .plan-contain {
@@ -233,7 +234,7 @@ export default {
                     margin-top: -8px;
                     display: inline;
                     text-align: center;
-                    line-height: 46px;
+                    line-height: 40px;
                     font-size: 16px;
                     font-weight: bold;
                     color: rgba(68, 70, 66, 1);

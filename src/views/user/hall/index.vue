@@ -101,7 +101,7 @@
             <c-list
                 ref="productlist"
                 class="list-insert"
-                :style="getBottomOffset(0)"
+                :style="getBgByAlpha()"
                 v-if="menuIndex === 1 && showList"
                 :loading="loading"
                 :finished="finished"
@@ -117,7 +117,7 @@
                         v-for="(item, index) in datas"
                         :key="item.productCode"
                         :class="[index % 2 === 0 ? 'margin-left-16' : 'margin-right-16']"
-                        @click.stop="handleSelectProduct(item)"
+                        @click.stop="handleSelectProduct(false, item)"
                     >
                         <img
                             class="itemSelIcon"
@@ -137,15 +137,15 @@
                             <span class="number">{{ getHidePrice(item.tshPrice) }}</span>
                             <span class="label" v-if="isHide === 0">入驻可得拿货价</span>
                         </div>
-                        <div class="button margin-l-r-12 margin-top-8" @click="handleSelectProduct(item)">立即购买</div>
+                        <div class="button margin-l-r-12 margin-top-8" @click="handleSelectProduct(true, item)">立即购买</div>
                     </div>
                 </div>
             </c-list>
             <c-list
                 ref="grouplist"
                 class="list-insert"
-                :style="getBottomOffset(0)"
-                v-else-if="menuIndex == 0 && showList"
+                :style="getBgByAlpha()"
+                v-else-if="menuIndex === 0 && showList"
                 :loading="loading"
                 :finished="finished"
                 finished-text="已到底，没有更多数据"
@@ -160,7 +160,7 @@
                         :class="{ 'groupItemContain-manage': isManageState }"
                         v-for="item in groupDatas"
                         :key="item.groupGoodsId"
-                        @click="handleSelectProduct(item)"
+                        @click="handleSelectProduct(false, item)"
                     >
                         <section class="groupIconContain">
                             <img
@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import { Search } from 'vant'
+import { Dialog, Search } from 'vant'
 import cash from '@/views/user/hall/cashFormat.js'
 import ManageView from './manageView.vue'
 import groupItem from './groupItem.vue'
@@ -372,8 +372,8 @@ export default {
             this.searchKey = ''
             this.handleRefresh()
         },
-        // 是否iPhoneX底部
-        getBottomOffset(offset) {
+        // 根据透明度设置背景
+        getBgByAlpha() {
             return `background:rgba(255, 255, 255, ${this.alpha})`
         },
         handleClickTest() {
@@ -403,8 +403,53 @@ export default {
         handleCancel() {
             this.isInSearch = false
         },
-        /// 点击商品
-        handleSelectProduct(item) {
+        isValid() {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide !== 1) {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return false
+            }
+            this.$api.groupGoods.oauthPurchase().then(res => {
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                    return false
+                }
+            }).catch(() => {})
+            return true
+        },
+        /**
+         * 跳转到详情页
+         * @param isNeededVerify 点击立即购买需要验证
+         * @param item 选中内容
+         */
+        handleSelectProduct(isNeededVerify, item) {
+            if (isNeededVerify) {
+                if (!this.isValid()) {
+                    return
+                }
+            }
             if (this.isManageState) {
                 this.handleSelectItem(item)
             } else if (this.menuIndex === 1) {
@@ -878,7 +923,8 @@ export default {
         justify-content: space-between;
         color: white;
         align-items: center;
-        height: 60px;
+        padding-top: 16px;
+        padding-bottom: 8px;
         top: 0;
         z-index: 5;
 
@@ -925,7 +971,7 @@ export default {
             width: 52px;
             height: 28px;
             border-radius: 16px;
-            border: 1px solid @color-c5;
+            border: 0.01rem solid @color-c5;
             text-align: center;
             line-height: 26px;
             font-size: 14px;

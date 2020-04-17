@@ -22,7 +22,7 @@
                 </div>
                 <div class="action">
                     <!--<section class="default" @click.stop="handleStore">极速上店</section>-->
-                    <section class="select" v-show="!manageState" @click.stop="handleCheckDetail">立即购买</section>
+                    <section class="select" v-show="!manageState" @click.stop="go2Pay">立即购买</section>
                 </div>
             </section>
         </div>
@@ -33,6 +33,7 @@
 import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
 import order from './groupCreateOrder'
+import { Dialog } from 'vant'
 
 export default {
     components: {},
@@ -75,6 +76,12 @@ export default {
             let isHide = utils.getStore('baseParams').isHide
             return utils.hidePrice(price, isHide)
         },
+        go2Pay() {
+            if (!this.isValid()) {
+                return
+            }
+            this.handleCheckDetail()
+        },
         handleSelectImg(product) {
             window.sa.track('IPX_WEB', {
                 page: 'userHall', // 页面名字
@@ -91,6 +98,42 @@ export default {
             this.$router.push({
                 path: '/deposit'
             })
+        },
+        isValid() {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide !== 1) {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return false
+            }
+            this.$api.groupGoods.oauthPurchase().then(res => {
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                    return false
+                }
+            }).catch(() => {})
+            return true
         },
         handleCheckDetail() {
             window.sa.track('IPX_WEB', {
