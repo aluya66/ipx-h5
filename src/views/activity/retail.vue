@@ -41,7 +41,7 @@
                         <div class="t-header">
                              <div class="h-th w10 text-center">序号</div>
                              <div class="h-th w35 text-center">分销员</div>
-                             <div class="h-th w25">邀请注册人数</div>
+                             <div class="h-th w25">邀请注册总数</div>
                              <div class="h-th w30">销售总额</div>
                         </div>
                         <ul class="rank-ul">
@@ -51,8 +51,8 @@
                                       <img :src="item.avater" />
                                       <span>{{item.memberName}}</span>
                                   </div>
-                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal}}人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.sellPriceTotal)}}</span></div>
+                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal || 0}}人</div>
+                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.sellPriceTotal || 0)}}</span></div>
                             </li>
                              <div class="nodata" v-if="!noTotaldata">暂无数据</div>
                         </ul>
@@ -61,7 +61,7 @@
                         <div class="t-header">
                              <div class="h-th w10 text-center">序号</div>
                              <div class="h-th w35 text-center">分销员</div>
-                             <div class="h-th w25">邀请注册人数</div>
+                             <div class="h-th w25">今日邀请新增</div>
                              <div class="h-th w30">今日销售总额</div>
                         </div>
                         <ul class="rank-ul">
@@ -71,8 +71,8 @@
                                     <img :src="item.avater" />
                                       <span>{{item.memberName}}</span>
                                   </div>
-                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal}}人</div>
-                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.todaysellPrice)}}</span></div>
+                                  <div class="r-people w25 text-center ">{{item.inviteRegisterTotal || 0}}人</div>
+                                  <div class="r-price w30 text-center">¥<span>{{cashFormat(item.todaysellPrice || 0)}}</span></div>
                             </li>
                             <div class="nodata" v-if="!noTodaydata">暂无数据</div>
                         </ul>
