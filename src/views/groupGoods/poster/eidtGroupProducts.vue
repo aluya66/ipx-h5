@@ -35,7 +35,7 @@
                     </p>
                     </div>
                     <section class="nextBtn" @click="handleNext">
-                    下一步{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
+                    确定{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
                     </section>
                 </div>
             </template>
