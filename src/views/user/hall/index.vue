@@ -207,7 +207,7 @@
                     <!--<span v-if="menuIndex === 1"></span>-->
                 </section>
             </div>
-            <div class="manage" @click="handleManage">
+            <div class="manage" :style="getBorder()" @click="handleManage">
                 {{ isManageState ? '完成' : '管理' }}
             </div>
             <!--<section class="deleteBtn" @click="handleDeletes">
@@ -728,11 +728,7 @@ export default {
                             } else {
                                 this.groupDatas = this.groupDatas.concat(res.data)
                             }
-                            if (res.data.length < this.pageSize) {
-                                this.finished = true
-                            } else {
-                                this.finished = false
-                            }
+                            this.finished = res.data.length < this.pageSize
                         } else {
                             if (this.pageNo === 1) {
                                 this.groupDatas = []
@@ -769,6 +765,10 @@ export default {
                     .catch(() => {
                     })
             }
+        },
+        getBorder() {
+            let borderRadius = 1 / window.devicePixelRatio
+            return `border: ${borderRadius}px solid #d5d6de;`
         }
     },
     activated() {
@@ -941,7 +941,6 @@ export default {
 
             .menu-item {
                 font-size: 20px;
-                font-weight: bold;
                 line-height: 28px;
                 position: relative;
 
@@ -975,9 +974,8 @@ export default {
             width: 52px;
             height: 28px;
             border-radius: 16px;
-            border: 0.01rem solid @color-c5;
             text-align: center;
-            line-height: 26px;
+            line-height: 28px;
             font-size: 14px;
             margin-right: 13px;
         }

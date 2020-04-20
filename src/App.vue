@@ -23,6 +23,8 @@ export default {
             let routePath = window.globalVue.$route.path
             window.globalVue.$bus.$emit('tokenCallBack', routePath)
         }
+        // 解决IOS不支持:active的问题
+        document.body.addEventListener('touchstart', function() {})
     },
     methods: {
     // 获取配置参数

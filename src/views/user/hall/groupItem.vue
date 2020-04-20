@@ -18,7 +18,7 @@
             <section class="footer">
                 <div>
                     <p class="total-price">¥<span>{{getHidePrice(groupGood.totalPrice)}}</span><span class="label" v-if="isHide === 0">入驻可得拿货价</span></p>
-                    <p class="retail-price">¥<span>{{cashFormat(groupGood.totalPrice)}}</span><span class="label">建议零售价</span></p>
+                    <p class="retail-price">¥<span>{{cashFormat(groupGood.totalRetailPrice)}}</span><span class="label">建议零售价</span></p>
                 </div>
                 <div class="action">
                     <!--<section class="default" @click.stop="handleStore">极速上店</section>-->
