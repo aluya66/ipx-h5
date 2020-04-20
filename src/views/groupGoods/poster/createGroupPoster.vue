@@ -473,6 +473,10 @@ export default {
                 line-height:14px;
             }
         }
+        .choose_skuImg:active {
+            background: black;
+            opacity: 0.3;
+        }
         .image-item {
             flex-shrink: 0;
             display: block;
@@ -781,6 +785,9 @@ export default {
         // }
         .button-select {
             .btn-select(calc(100vw - 40px),50px,true);
+        }
+        .button-select:active {
+            background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
         }
     }
 </style>

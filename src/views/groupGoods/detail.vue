@@ -591,6 +591,9 @@ export default {
   position: absolute;
   right: 8px;
 }
+.poster-icon:active {
+    opacity: 0.7;
+}
 .panel {
   background-color: white;
   height: 100%;
@@ -707,6 +710,9 @@ export default {
       > button:disabled {
         background: @color-c7;
         color: @color-c2;
+      }
+      > button:active {
+        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
       }
     }
     .buyer {
@@ -940,6 +946,9 @@ export default {
       padding: 0;
       align-self: center;
     }
+    .poster:active {
+        background: linear-gradient(322deg, rgba(238,236,255,1) 0%, rgb(240, 239, 239) 100%);
+    }
     .hall {
       width: 88px;
       height: 40px;
@@ -954,6 +963,9 @@ export default {
       color: white;
       align-self: center;
       margin-left: 12px;
+    }
+    .hall:active {
+        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
     }
   }
 
