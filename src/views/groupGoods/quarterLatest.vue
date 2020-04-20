@@ -14,7 +14,7 @@
                         <div class="label"><img src="../../themes/images/groupGoods/label_vip_push@2x.png"></div>
                     </swiper-slide>
                 </swiper>
-                <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
+                <p class="group-title">{{selectGroupDetail.groupTitle}}</p>
                 <div class="patch-price">
                     <span class="patch-flag">¥</span><span
                     class="patch-price-number">{{getHidePrice(selectGroupDetail.totalPrice)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
@@ -428,11 +428,12 @@ export default {
                 font-size: 18px;
                 font-weight: bold;
                 color: rgba(42, 43, 51, 1);
-                margin-top: 14px;
+                margin: 14px 36px 0 36px;
                 line-height:26px;
                 height: 26px;
+                text-align: center;
                 max-width: 303px;
-                overflow: hidden;
+                .ellipsis()
             }
 
             .group-labels-container {
