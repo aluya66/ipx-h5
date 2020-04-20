@@ -35,47 +35,49 @@
                     v-for="(item, index) in groupGoodsRecords"
                     :class="{'can-scroll' : !isManage}"
                     :key="item.productCode"
-                    @touchstart.stop="touchStart" @touchend.stop="touchEnd"
                 >
-                    <div class="cell-content">
-                        <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
-                        <div class="photo_state">
-                            <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
-                            <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
-                        </div>
-                        <div class="product-info" :class="{'product-info-move' : isManage}">
-                            <p
-                                :class="[item.disabled ? 'disableTitle' : '']"
-                                @click="jumpToProduct(item)"
-                            >
-                                {{ item.productName }}
-                            </p>
-                            <div class="sku-list" @click="jumpToProduct(item)">
+                    <swipe-cell @open="swipeItemListener(true)" @close="swipeItemListener(false)" :disabled="isManage">
+                        <div class="cell-content" @click="jumpToProduct(item)">
+                            <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
+                            <div class="photo_state">
+                                <img :src="goodPicture(item)" alt="" />
+                                <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
+                            </div>
+                            <div class="product-info" :class="{'product-info-move' : isManage}">
                                 <p
-                                    v-for="(sku, i) in item.colorSkuList"
-                                    :key="i"
-                                    :class="[item.disabled ? 'disableSku' : '']"
+                                    :class="[item.disabled ? 'disableTitle' : '']"
                                 >
-                                    {{ sku | selectSkuStr }}
+                                    {{ item.productName }}
                                 </p>
-                            </div>
-                            <div class="sale_price">
-                                <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
-                                <span class="tip_title">建议零售价</span>
-                            </div>
-                            <div class="footer-btn">
-                                <p :class="[item.disabled ? 'disablePrice' : 'price']">
-                                    ¥<span>{{ getHidePrice(item.spuTshPrice) }}</span>
-                                </p>
-                                <button @click="openSku(item, index)" :disabled="item.disabled">
-                                    调整规格
-                                </button>
+                                <div class="sku-list">
+                                    <p
+                                        v-for="(sku, i) in item.colorSkuList"
+                                        :key="i"
+                                        :class="[item.disabled ? 'disableSku' : '']"
+                                    >
+                                        {{ sku | selectSkuStr }}
+                                    </p>
+                                </div>
+                                <div class="sale_price">
+                                    <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                                    <span class="tip_title">建议零售价</span>
+                                </div>
+                                <div class="footer-btn">
+                                    <p :class="[item.disabled ? 'disablePrice' : 'price']">
+                                        ¥<span>{{ getHidePrice(item.spuTshPrice) }}</span>
+                                    </p>
+                                    <button @click="openSku(item, index)" :disabled="item.disabled">
+                                        调整规格
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="cell-delete" @click.stop="deleteItem(index)" v-if="!isManage">
-                        删除
-                    </div>
+                        <template slot="right">
+                            <div class="cell-delete" @click.stop="deleteItem(index)" v-if="!isManage">
+                                删除
+                            </div>
+                        </template>
+                    </swipe-cell>
                 </div>
             </div>
             <div class="footer-content" :style="getBottomOffset(0)">
@@ -118,11 +120,12 @@ import skuSelect from '@/views/common/skuSelect.vue'
 import order from './groupCreateOrder'
 import cash from './cashFormat.js'
 import utils from 'utils'
-import { Dialog } from 'vant'
+import { Dialog, SwipeCell } from 'vant'
 
 export default {
     components: {
-        skuSelect
+        skuSelect,
+        SwipeCell
     },
     data() {
         return {
@@ -148,7 +151,8 @@ export default {
             startX: 0,
             startY: 0,
             endX: 0,
-            endY: 0
+            endY: 0,
+            hasSwipeOutItem: false
         }
     },
     mounted() {
@@ -257,6 +261,9 @@ export default {
                 }
             })
         },
+        swipeItemListener(isOpen) {
+            this.hasSwipeOutItem = isOpen
+        },
         getHidePrice(price) {
             let isHide = utils.getStore('baseParams').isHide
             return utils.hidePrice(price, isHide)
@@ -291,12 +298,14 @@ export default {
                                 left: 88 * window.devicePixelRatio,
                                 behavior: 'smooth'
                             })
+                            this.hasSwipeOutItem = true
                         } else {
                             e.currentTarget.scrollTo({
                                 top: window.devicePixelRatio,
                                 left: 0,
                                 behavior: 'smooth'
                             })
+                            this.hasSwipeOutItem = false
                         }
                     }
                 }
@@ -396,16 +405,18 @@ export default {
             })
         },
         jumpToProduct(product) {
-            window.sa.track('IPX_WEB', {
-                page: 'groupListDetail', // 页面名字
-                type: 'click', // 固定参数，表明是点击事件
-                event: 'editItemClick' // 按钮唯一标识，取个语义化且不重名的名字
-            })
-            const params = {
-                jumpUrl: 'productDetail://',
-                productCode: product.productCode
+            if (!this.isManage && !this.hasSwipeOutItem) {
+                window.sa.track('IPX_WEB', {
+                    page: 'groupListDetail', // 页面名字
+                    type: 'click', // 固定参数，表明是点击事件
+                    event: 'editItemClick' // 按钮唯一标识，取个语义化且不重名的名字
+                })
+                const params = {
+                    jumpUrl: 'productDetail://',
+                    productCode: product.productCode
+                }
+                utils.postMessage('', params)
             }
-            utils.postMessage('', params)
         },
         openSku(item, index) {
             if (this.isManage) {
@@ -705,14 +716,15 @@ export default {
         height: 100%;//alc(100vh - 65px);
         overflow-y: scroll;
         overflow-x: hidden;
-        padding: 16px;
+        padding: 16px 0;
         margin-top: -1px;
     }
 
     .top-content {
         padding: 16px 0 16px 12px;
         background: white;
-        box-shadow: 0px 2px 10px 0px rgba(33, 44, 98, 0.08);
+        margin: 0 16px;
+        box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.08);
         border-radius: 8px;
 
         .group-name {
@@ -749,7 +761,7 @@ export default {
     }
 
     .list-title {
-        margin-top: 32px;
+        margin: 32px 16px 0 16px;
         position: relative;
         height: 28px;
 
@@ -801,16 +813,16 @@ export default {
 
         .product-cell {
             background: white;
-            height: 109px;
+            height: 110px;
             margin-bottom: 32px;
             display: flex;
-            padding: 2px 0;
             flex-direction: row;
             align-items: center;
 
             .cell-content {
                 flex-shrink: 0;
-                height: 106px;
+                height: 108px;
+                margin: 0 16px;
                 display: flex;
                 align-items: center;
                 .product-item-check {
@@ -1009,7 +1021,7 @@ export default {
                 color: white;
                 font-size: 14px;
                 line-height: 106px;
-                margin: 0 16px;
+                margin-right: 16px;
                 text-align: center;
                 border-radius: 8px;
             }
