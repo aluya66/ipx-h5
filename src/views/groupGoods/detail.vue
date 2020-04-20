@@ -711,6 +711,10 @@ export default {
         background: @color-c7;
         color: @color-c2;
       }
+      > button:active:disabled {
+        background: @color-c7;
+        color: @color-c2;
+      }
       > button:active {
         background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
       }
