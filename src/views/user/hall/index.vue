@@ -767,8 +767,7 @@ export default {
             }
         },
         getBorder() {
-            let borderRadius = 1 / window.devicePixelRatio
-            return `border: ${borderRadius}px solid #d5d6de;`
+            return `border: 1px solid #d5d6de;`
         }
     },
     activated() {

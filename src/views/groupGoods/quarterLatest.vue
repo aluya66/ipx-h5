@@ -430,6 +430,7 @@ export default {
                 color: rgba(42, 43, 51, 1);
                 margin-top: 14px;
                 line-height:26px;
+                height: 26px;
                 max-width: 303px;
                 overflow: hidden;
             }
