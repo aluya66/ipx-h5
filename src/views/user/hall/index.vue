@@ -129,7 +129,7 @@
                         <p class="margin-l-r-12 margin-top-12">{{ item.productName }}</p>
                         <div class="retail-price margin-l-r-12 margin-top-8">
                             <span class="flag">¥</span>
-                            <span class="number">{{ cashFormat(item.retailPrice) }}</span>
+                            <span class="number">{{ cashFormat(item.totalRetailPrice) }}</span>
                             <span class="label">建议零售价</span>
                         </div>
                         <div class="tsh-price margin-l-r-12 margin-top-4">
@@ -728,11 +728,7 @@ export default {
                             } else {
                                 this.groupDatas = this.groupDatas.concat(res.data)
                             }
-                            if (res.data.length < this.pageSize) {
-                                this.finished = true
-                            } else {
-                                this.finished = false
-                            }
+                            this.finished = res.data.length < this.pageSize
                         } else {
                             if (this.pageNo === 1) {
                                 this.groupDatas = []

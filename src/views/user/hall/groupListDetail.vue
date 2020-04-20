@@ -35,7 +35,7 @@
                     v-for="(item, index) in groupGoodsRecords"
                     :class="{'can-scroll' : !isManage}"
                     :key="item.productCode"
-                    @touchstart="touchStart" @touchend="touchEnd"
+                    @touchstart.stop="touchStart" @touchend.stop="touchEnd"
                 >
                     <div class="cell-content">
                         <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
@@ -801,9 +801,10 @@ export default {
 
         .product-cell {
             background: white;
-            height: 110px;
+            height: 109px;
             margin-bottom: 32px;
             display: flex;
+            padding: 2px 0;
             flex-direction: row;
             align-items: center;
 
@@ -835,7 +836,7 @@ export default {
                         width: 106px;
                         height: 18px;
                         background: rgba(0, 0, 0, 0.5);
-                        border-radius: 0px 0px 4px 4px;
+                        border-radius: 0 0 4px 4px;
                         font-size: 10px;
                         font-weight: 400;
                         color: rgba(255, 255, 255, 1);
