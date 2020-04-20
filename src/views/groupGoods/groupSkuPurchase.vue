@@ -204,7 +204,7 @@ export default {
         completeTotalPrice() {
             let totalPrice = 0
             this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.disabled) {
+                if (!product.disabled & product.isSelected) {
                     product.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
                             if (skuItem.entityStock > 0) {
@@ -219,7 +219,7 @@ export default {
         completeTotalRetailPrice() {
             let retailPrice = 0
             this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.disabled) {
+                if (!product.disabled & product.isSelected) {
                     product.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
                             if (skuItem.entityStock > 0) {
