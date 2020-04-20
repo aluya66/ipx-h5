@@ -129,7 +129,7 @@
                         <p class="margin-l-r-12 margin-top-12">{{ item.productName }}</p>
                         <div class="retail-price margin-l-r-12 margin-top-8">
                             <span class="flag">¥</span>
-                            <span class="number">{{ cashFormat(item.totalRetailPrice) }}</span>
+                            <span class="number">{{ cashFormat(item.retailPrice) }}</span>
                             <span class="label">建议零售价</span>
                         </div>
                         <div class="tsh-price margin-l-r-12 margin-top-4">
@@ -207,7 +207,7 @@
                     <!--<span v-if="menuIndex === 1"></span>-->
                 </section>
             </div>
-            <div class="manage" @click="handleManage">
+            <div class="manage" :style="getBorder()" @click="handleManage">
                 {{ isManageState ? '完成' : '管理' }}
             </div>
             <!--<section class="deleteBtn" @click="handleDeletes">
@@ -765,6 +765,10 @@ export default {
                     .catch(() => {
                     })
             }
+        },
+        getBorder() {
+            let borderRadius = 1 / window.devicePixelRatio
+            return `border: ${borderRadius}px solid #d5d6de;`
         }
     },
     activated() {
@@ -937,7 +941,6 @@ export default {
 
             .menu-item {
                 font-size: 20px;
-                font-weight: bold;
                 line-height: 28px;
                 position: relative;
 
@@ -971,9 +974,8 @@ export default {
             width: 52px;
             height: 28px;
             border-radius: 16px;
-            border: 0.01rem solid @color-c5;
             text-align: center;
-            line-height: 26px;
+            line-height: 28px;
             font-size: 14px;
             margin-right: 13px;
         }
