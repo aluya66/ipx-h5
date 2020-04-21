@@ -608,6 +608,10 @@ export default {
             justify-content: center;
             align-items: center;
         }
+        .photo-choose:active {
+            background: black;
+            opacity: 0.3;   
+        }
         .Album-selectd {
             margin: 13px 16px 32px;
             height: 250px;
@@ -644,7 +648,8 @@ export default {
             .btn-select(calc(100vw - 40px),50px,true);
         }
         .button-select:active {
-            background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+            color: rgba(255, 255, 255, 0.3);
+            // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
         }
     }
 </style>
