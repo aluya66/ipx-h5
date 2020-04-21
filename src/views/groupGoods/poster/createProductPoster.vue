@@ -610,7 +610,7 @@ export default {
         }
         .photo-choose:active {
             background: black;
-            opacity: 0.3;   
+            opacity: 0.3;
         }
         .Album-selectd {
             margin: 13px 16px 32px;

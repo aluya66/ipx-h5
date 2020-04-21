@@ -231,6 +231,7 @@ export default {
                 path: '/picture/imageList',
                 query: {
                     productCode: goods.productCode,
+                    productList: goods.colorSkuList,
                     fromPath: 'group',
                     fromChange: true
                 }
@@ -768,7 +769,7 @@ export default {
         }
         .photo-choose:active {
             background: black;
-            opacity: 0.3;   
+            opacity: 0.3;
         }
         .Album-selectd {
             margin: 13px 16px 32px;

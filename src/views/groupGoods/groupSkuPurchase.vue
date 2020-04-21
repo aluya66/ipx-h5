@@ -102,9 +102,9 @@ export default {
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
             select_disable: require('@/themes/images/groupGoods/checkbox_disabled@3x.png'),
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
-            selectedNum: 0,
+            selectedNum: 0
             // completeTotalPrice: 0.00,
-            // completeTotalRetailPrice: 0.00 
+            // completeTotalRetailPrice: 0.00
             // isAllSelected: false
             // totalRetailPrice: 0
         }
