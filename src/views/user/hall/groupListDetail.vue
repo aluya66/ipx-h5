@@ -1145,6 +1145,9 @@ export default {
                 align-self: center;
                 margin-left: 12px;
             }
+            .pay:active {
+                color: rgba(255, 255, 255, 0.3);
+            }
         }
 
     }
