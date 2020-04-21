@@ -40,12 +40,13 @@
                 </div>
             </div>
         </div>
-        <LoadingView class="loadding_content" v-show="!showLoading"/>
+        <loading-view class="loading_content" v-show="showLoading"/>
     </layout-view>
 </template>
 
 <script>
 import 'swiper/dist/css/swiper.css'
+import LoadingView from '../error/loaddingView.vue'
 import utils from 'utils'
 
 import {
@@ -57,7 +58,8 @@ import { Dialog } from 'vant'
 export default {
     components: {
         swiper,
-        swiperSlide
+        swiperSlide,
+        LoadingView
     },
     data() {
         return {
@@ -118,7 +120,6 @@ export default {
             }
             if (this.showPage === 'latest') {
                 this.$api.groupGoods.getQuarterLatest(params).then(res => {
-                    this.showLoading = false
                     if (res && res instanceof Array) {
                         if (this.pageNumber === 1) {
                             this.latestGroups = res
@@ -137,7 +138,7 @@ export default {
                 })
             } else {
                 this.$api.groupGoods.getSelectedGroup(params).then(res => {
-                    this.showLoading = false
+                    // this.showLoading = false
                     if (res && res instanceof Array) {
                         if (this.pageNumber === 1) {
                             this.latestGroups = res
@@ -191,6 +192,7 @@ export default {
             this.$api.groupGoods.getGroupDetail(params)
                 .then(res => {
                     this.groupDetail = res
+                    this.showLoading = false
                     // this.findvideocover();
                 })
                 .catch(err => {
@@ -337,7 +339,7 @@ export default {
                         position: absolute;
                         top: 10px;
                         left: 0;
-                        background: rgba(255, 255, 255, 1);
+                        background: @color-c8;
                         box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.08);
                         border-radius: 12px;
                     }
@@ -504,5 +506,13 @@ export default {
     }
     .add-store:active .cover {
         opacity: 0.3;
+    }
+    .loading_content {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        height: 100%;
+        width: 100%;
     }
 </style>
