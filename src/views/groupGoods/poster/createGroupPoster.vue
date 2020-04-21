@@ -32,11 +32,12 @@
                 <template slot="content">
                     <div class="product-list"
                     >
-                        <div class="choose_skuImg" @click="changeSkuImage">
+                        <div class="choose_skuImg" @click="changeProductImage">
                             <img :src="choose_skuImg" alt="">
                             <p>选择组货商品</p>
                         </div>
-                        <img v-for="imageUrl in posterData.theGroupImgs" :key="imageUrl" class="image-item" :src="imageUrl">
+                        <img :src="posterData.groupImg" alt="" class="mainpic">
+                        <img v-for="goods in posterData.products" :key="goods.productCode" class="image-item" :src="goods.mainPic" @click="changeSkuImage(goods)">
                     </div>
                 </template>
             </title-content>
@@ -216,12 +217,22 @@ export default {
                 this.customPricePercent = '0'
             }
         },
-        changeSkuImage() {
+        changeProductImage() {
             this.$router.push({
                 path: '/poster/eidtGroupProducts',
                 query: {
                     groupCode: this.posterData.groupCode,
                     productList: this.posterData.products
+                }
+            })
+        },
+        changeSkuImage(goods) {
+            this.$router.push({
+                path: '/picture/imageList',
+                query: {
+                    productCode: goods.productCode,
+                    fromPath: 'group',
+                    fromChange: true
                 }
             })
         },
@@ -476,6 +487,15 @@ export default {
         .choose_skuImg:active {
             background: black;
             opacity: 0.3;
+        }
+        .mainpic {
+            flex-shrink: 0;
+            display: block;
+            width: 74px;
+            height: 74px;
+            margin-left: 12px;
+            object-fit: cover;
+            border-radius:4px;
         }
         .image-item {
             flex-shrink: 0;
@@ -746,6 +766,10 @@ export default {
             justify-content: center;
             align-items: center;
         }
+        .photo-choose:active {
+            background: black;
+            opacity: 0.3;   
+        }
         .Album-selectd {
             margin: 13px 16px 32px;
             border-radius: 8px;
@@ -787,7 +811,8 @@ export default {
             .btn-select(calc(100vw - 40px),50px,true);
         }
         .button-select:active {
-            background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+            color: rgba(255, 255, 255, 0.3);
+            // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
         }
     }
 </style>

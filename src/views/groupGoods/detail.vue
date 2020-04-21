@@ -592,6 +592,7 @@ export default {
   right: 8px;
 }
 .poster-icon:active {
+    // background: rgba(0, 0, 0, 0.3);
     opacity: 0.7;
 }
 .panel {
@@ -711,8 +712,13 @@ export default {
         background: @color-c7;
         color: @color-c2;
       }
+      > button:active:disabled {
+        background: @color-c7;
+        color: @color-c2;
+      }
       > button:active {
-        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+        color: rgba(255, 255, 255, 0.3);
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
       }
     }
     .buyer {
@@ -947,7 +953,8 @@ export default {
       align-self: center;
     }
     .poster:active {
-        background: linear-gradient(322deg, rgba(238,236,255,1) 0%, rgb(240, 239, 239) 100%);
+      color: rgba(60,92,246, 0.3);
+        // background: linear-gradient(322deg, rgba(238,236,255,1) 0%, rgb(240, 239, 239) 100%);
     }
     .hall {
       width: 88px;
@@ -965,7 +972,8 @@ export default {
       margin-left: 12px;
     }
     .hall:active {
-        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+        color: rgba(255,255,255, 0.3);
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
     }
   }
 

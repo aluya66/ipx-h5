@@ -10,7 +10,7 @@
                     v-for="(item, index) in groupGoodsRecords"
                     :key="item.productCode"
                 >
-                    <img class="product-item-check" :src="item.disabled ? select_disable : item.isSelected ? select_sel : select_def" @click.stop="selectItem(item)"/>
+                    <img class="product-item-check" :src="item.disabled ? select_disable : item.isSelected ? select_sel : select_def" @click.stop="selectItem(item, index)"/>
                     <div class="photo_state">
                         <img :src="goodPicture(item)" alt="" @click="jumpToProduct(item)"/>
                         <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
@@ -102,7 +102,9 @@ export default {
             select_sel: require('@/themes/images/groupGoods/selected_icon.png'),
             select_disable: require('@/themes/images/groupGoods/checkbox_disabled@3x.png'),
             changeName_img: require('@/themes/images/groupGoods/groupName_write_def@3x.png'),
-            selectedNum: 0
+            selectedNum: 0,
+            // completeTotalPrice: 0.00,
+            // completeTotalRetailPrice: 0.00 
             // isAllSelected: false
             // totalRetailPrice: 0
         }
@@ -203,8 +205,9 @@ export default {
         },
         completeTotalPrice() {
             let totalPrice = 0
+            console.log('1111')
             this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.disabled) {
+                if (!product.disabled && product.isSelected) {
                     product.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
                             if (skuItem.entityStock > 0) {
@@ -218,8 +221,9 @@ export default {
         },
         completeTotalRetailPrice() {
             let retailPrice = 0
+            console.log('22222')
             this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.disabled) {
+                if (!product.disabled && product.isSelected) {
                     product.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
                             if (skuItem.entityStock > 0) {
@@ -233,11 +237,12 @@ export default {
         }
     },
     methods: {
-        selectItem(product) {
+        selectItem(product, index) {
             if (product.disabled) {
                 return
             }
             product.isSelected = !product.isSelected
+            // this.groupGoodsRecords[index] = product
             if (product.isSelected) {
                 this.selecteProducts = this.selecteProducts.concat(product)
             } else {
@@ -246,6 +251,23 @@ export default {
                     this.selecteProducts.splice(index, 1)
                 }
             }
+            // let totalPrice = 0.00
+            // let totalRetailPrice = 0.00
+            // this.groupGoodsRecords.forEach((product, index) => {
+            //     if (!product.disabled && product.isSelected) {
+            //         product.colorSkuList.forEach((item) => {
+            //             item.skuList.forEach((skuItem) => {
+            //                 if (skuItem.entityStock > 0) {
+            //                     totalPrice += skuItem.defaultSkuPrice * skuItem.num
+            //                     totalRetailPrice += skuItem.skuRetailPrice * skuItem.num
+            //                 }
+            //             })
+            //         })
+            //     }
+            // })
+            // this.completeTotalPrice = cash.changeFormat(totalPrice)
+            // this.completeTotalRetailPrice = cash.changeFormat(totalRetailPrice)
+            // console.log(this.completeTotalPrice)
         },
         cashFormat(price) {
             return cash.changeFormat(price)
@@ -625,6 +647,9 @@ export default {
                 font-weight: bold;
                 color: white;
                 align-self: center;
+            }
+            .pay:active {
+                color: rgba(255, 255, 255, 0.3);
             }
         }
 
