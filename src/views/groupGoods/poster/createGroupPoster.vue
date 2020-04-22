@@ -37,7 +37,7 @@
                             <p>选择组货商品</p>
                         </div>
                         <img :src="posterData.groupImg" alt="" class="mainpic">
-                        <img v-for="goods in posterData.products" :key="goods.productCode" class="image-item" :src="goods.mainPic" @click="changeSkuImage(goods)">
+                        <img v-for="goods in posterData.products" :key="goods.productCode" class="image-item" :src="goods.colorTypeList[0].image" @click="changeSkuImage(goods)">
                     </div>
                 </template>
             </title-content>
@@ -52,7 +52,7 @@
                         </div>
                         <div v-if="selectPriceTitle==='单品调价'" class="price-suggest">
                             <div class="goodInfo-list" v-for="goodsInfo in posterData.products" :key="goodsInfo.productCode">
-                                <img :src="goodsInfo.mainPic" alt="">
+                                <img :src="goodsInfo.colorTypeList[0].image" alt="">
                                 <div class="good-info">
                                     <p>{{goodsInfo.productName}}</p>
                                     <section :class='["flex-common","purchase-contain","good-totalPrice"]'>
@@ -175,7 +175,9 @@ export default {
             mainImage: '',
             isSave: false,
             isNative: false,
-            isSuggest: false
+            isSuggest: false,
+            changedSku: {},
+            selectProduct: {}
         }
     },
     watch: {
@@ -227,11 +229,12 @@ export default {
             })
         },
         changeSkuImage(goods) {
+            this.selectProduct = goods
             this.$router.push({
                 path: '/picture/imageList',
                 query: {
                     productCode: goods.productCode,
-                    productList: goods.colorSkuList,
+                    productList: goods.colorTypeList,
                     fromPath: 'group',
                     fromChange: true
                 }
@@ -294,17 +297,41 @@ export default {
                     this.posterData.isSuggest = this.isSuggest
                     this.posterData.percent = this.customPricePercent
                     this.posterData.isSinglePrice = false
+        
                     this.posterData.products = this.posterData.products.map(item => {
                         return {
                             ...item,
                             showPrice: parseFloat(item.retailPrice).toFixed(2)
                         }
                     })
+                    this.changedSku = utils.getStore('productSkuList')[0]
+                    if (this.changedSku !== undefined) {
+                        let index = this.contains(this.posterData.products, this.selectProduct)
+                        if (index > -1) {
+                            this.posterData.products[index].colorName = this.changedSku.colorName
+                            this.posterData.products[index].sizeName = this.changedSku.sizeName
+                            this.posterData.products[index].retailPrice = this.changedSku.retailPrice
+                            this.posterData.products[index].colorTypeList[0].image = this.changedSku.image
+                        }
+                    }
                 }
             }).catch(() => {
 
             })
+        },
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].productCode === obj.productCode) {
+                    return i
+                }
+            }
+            return -1
         }
+    },
+    created() {
+        this.selectProduct = {}
+        this.changedSku = {}
     },
     activated() {
         this.isPreview = false
@@ -315,6 +342,9 @@ export default {
         let baseParams = utils.getStore('baseParams')
         this.phone = baseParams.phoneNumber
         this.handleRequest()
+    },
+    deactivated() {
+        utils.setStore('productSkuList', '')
     },
     destroyed() {
         window.onresize = null

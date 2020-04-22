@@ -238,6 +238,7 @@ export default {
     },
     methods: {
         selectItem(product, index) {
+            this.showSkuDialog = false
             if (product.disabled) {
                 return
             }

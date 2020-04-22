@@ -11,6 +11,13 @@
           <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
           </template>
+          <template slot="right"  tag="div">
+              <img
+                  class="header-img"
+                  :src="hallIcon"
+                  @click="handleToHall"
+              />
+          </template>
         </c-header>
         <swiper class="swiper-content" ref="imageSwiper">
           <swiper-slide
@@ -187,6 +194,7 @@ export default {
         return {
             postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
             backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
+            hallIcon: require('@/themes/images/app/circle_nav_exhibition@3x.png'),
             popularNum: '',
             timer: '',
             productList: [],
@@ -375,6 +383,14 @@ export default {
             }
             utils.postMessage('', params)
         },
+        handleToHall() {
+            this.$router.push({
+                path: '/user/hall',
+                query: {
+                    isFromWeb: true
+                }
+            })
+        },
         timeOutRequest() {
             this.timer = setInterval(this.getWeekData, 30000)
         },
@@ -517,10 +533,6 @@ export default {
                             type: 'click', // 固定参数，表明是点击事件
                             event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
                         })
-                        // this.$router.push({
-                        //     path: '/hall/groupListDetail',
-                        //     query: { groupId: groupGoodsId }
-                        // })
                     }
                 })
                 .catch(err => {
@@ -551,11 +563,16 @@ export default {
 .panel {
   .c-header {
     position: fixed;
+    .van-nav-bar__right {
+      right: calc(16px - 100vw);
+    }
     .header-img {
       display: block;
       width: 32px;
       height: 32px;
       object-fit: cover;
+      // display: inline-block;
+      // vertical-align: middle;
     }
   }
 }
