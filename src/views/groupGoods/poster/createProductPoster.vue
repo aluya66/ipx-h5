@@ -20,7 +20,7 @@
                             <img :src="choose_skuImg" alt="">
                             <p>选择图片</p>
                         </div>
-                        <img v-for="(sku,index) in posterData.colorTypeList" :key="index" class="image-item" :src="sku.image">
+                        <img v-for="(sku,index) in posterData.colorTypeList" :key="index" class="image-item" :src="sku.image" @click="changeSkuImage">
                     </div>
                 </template>
             </title-content>

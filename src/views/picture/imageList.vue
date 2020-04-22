@@ -414,14 +414,15 @@ export default {
     }
 
     .image-download:active {
-        width: 88px;
-        height: 40px;
-        background: linear-gradient(322deg, rgba(238, 236, 255, 1) 0%, rgba(216, 212, 255, 1) 50%);
-        border-radius: 20px;
-        color: @color-ec;
-        line-height: 40px;
-        text-align: center;
-        font-weight: bold;
+        color:rgba(60,92,246, 0.3);
+        // width: 88px;
+        // height: 40px;
+        // background: linear-gradient(322deg, rgba(238, 236, 255, 1) 0%, rgba(216, 212, 255, 1) 50%);
+        // border-radius: 20px;
+        // color: @color-ec;
+        // line-height: 40px;
+        // text-align: center;
+        // font-weight: bold;
     }
 
     .create-poster {
@@ -438,15 +439,16 @@ export default {
     }
 
     .create-poster:active {
-        width: 88px;
-        height: 40px;
-        line-height: 40px;
-        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
-        border-radius: 20px;
-        margin-left: 12px;
-        margin-right: 16px;
-        color: white;
-        text-align: center;
-        font-weight: bold;
+        color:rgba(255,255,255, 0.3);
+        // width: 88px;
+        // height: 40px;
+        // line-height: 40px;
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+        // border-radius: 20px;
+        // margin-left: 12px;
+        // margin-right: 16px;
+        // color: white;
+        // text-align: center;
+        // font-weight: bold;
     }
 </style>
