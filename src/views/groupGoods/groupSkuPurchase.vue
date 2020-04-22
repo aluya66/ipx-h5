@@ -237,6 +237,15 @@ export default {
         }
     },
     methods: {
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].productCode === obj.productCode) {
+                    return i
+                }
+            }
+            return -1
+        },
         selectItem(product, index) {
             this.showSkuDialog = false
             if (product.disabled) {
@@ -247,7 +256,8 @@ export default {
             if (product.isSelected) {
                 this.selecteProducts = this.selecteProducts.concat(product)
             } else {
-                let index = this.selecteProducts.indexOf(product)
+                let index = this.contains(this.selecteProducts,product)
+                alert(index)
                 if (index > -1) {
                     this.selecteProducts.splice(index, 1)
                 }
