@@ -131,6 +131,7 @@ export default {
             this.groupGoodsRecords = this.groupGoodsRecords.map(item => {
                 return {
                     ...item,
+                    seletedColorSkuSumNum: 0,
                     disabled: false,
                     unablepay: false,
                     isSelected: false
@@ -205,9 +206,9 @@ export default {
         },
         completeTotalPrice() {
             let totalPrice = 0
-            console.log('1111')
+            // console.log('1111')
             this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.disabled && product.isSelected) {
+                if (!product.disabled & product.isSelected) {
                     product.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
                             if (skuItem.entityStock > 0) {
@@ -221,10 +222,11 @@ export default {
         },
         completeTotalRetailPrice() {
             let retailPrice = 0
-            console.log('22222')
+            // console.log('22222')    
             this.groupGoodsRecords.forEach((product, index) => {
-                if (!product.disabled && product.isSelected) {
+                if (!product.disabled & product.isSelected) {
                     product.colorSkuList.forEach((item) => {
+                        // let numb = item.seletedColorSkuNum
                         item.skuList.forEach((skuItem) => {
                             if (skuItem.entityStock > 0) {
                                 retailPrice += skuItem.skuRetailPrice * skuItem.num
@@ -237,7 +239,17 @@ export default {
         }
     },
     methods: {
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].productCode === obj.productCode) {
+                    return i
+                }
+            }
+            return -1
+        },
         selectItem(product, index) {
+            this.showSkuDialog = false
             if (product.disabled) {
                 return
             }
@@ -246,7 +258,7 @@ export default {
             if (product.isSelected) {
                 this.selecteProducts = this.selecteProducts.concat(product)
             } else {
-                let index = this.selecteProducts.indexOf(product)
+                let index = this.contains(this.selecteProducts,product)
                 if (index > -1) {
                     this.selecteProducts.splice(index, 1)
                 }
@@ -335,10 +347,11 @@ export default {
         },
         skuCommit(seletedDetailsItem) {
             this.showSkuDialog = false
+            console.log(seletedDetailsItem)
             // sku修改 确定
             if (seletedDetailsItem) {
                 this.seletedDetailsItem = seletedDetailsItem
-                this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
+                // this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
             }
             this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
                 item.skuList.forEach((skuItem, skuIndex) => {

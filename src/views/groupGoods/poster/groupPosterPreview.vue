@@ -112,13 +112,14 @@ export default {
             this.groupData = this.$route.query.groupData
         }
         this.changedSku = utils.getStore('productSkuList')[0]
-        // alert(this.changedSku.colorName)
         if (this.changedSku !== undefined) {
             let index = this.groupData.products.indexOf(this.selectProduct)
-            this.groupData.products[index].colorName = this.changedSku.colorName
-            this.groupData.products[index].sizeName = this.changedSku.sizeName
-            this.groupData.products[index].retailPrice = this.changedSku.retailPrice
-            this.groupData.products[index].colorTypeList[0].image = this.changedSku.image
+            if (index > -1) {
+                this.groupData.products[index].colorName = this.changedSku.colorName
+                this.groupData.products[index].sizeName = this.changedSku.sizeName
+                this.groupData.products[index].retailPrice = this.changedSku.retailPrice
+                this.groupData.products[index].colorTypeList[0].image = this.changedSku.image
+            }
         }
     },
     computed: {

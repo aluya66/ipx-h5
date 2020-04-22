@@ -37,19 +37,19 @@
                     :key="item.productCode"
                 >
                     <swipe-cell @open="swipeItemListener(true)" @close="swipeItemListener(false)" :disabled="isManage">
-                        <div class="cell-content" @click="jumpToProduct(item)">
+                        <div class="cell-content" >
                             <img class="product-item-check" v-show="isManage" :src="item.isSelected ? select_sel : select_def" @click.stop="selectItem(index)"/>
-                            <div class="photo_state">
+                            <div class="photo_state" @click="jumpToProduct(item)">
                                 <img :src="goodPicture(item)" alt="" />
                                 <div class="state_text" v-show="tipStr(item) !== ''">{{ tipStr(item) }}</div>
                             </div>
                             <div class="product-info" :class="{'product-info-move' : isManage}">
                                 <p
-                                    :class="[item.disabled ? 'disableTitle' : '']"
+                                    :class="[item.disabled ? 'disableTitle' : '']" @click="jumpToProduct(item)"
                                 >
                                     {{ item.productName }}
                                 </p>
-                                <div class="sku-list">
+                                <div class="sku-list" @click="jumpToProduct(item)">
                                     <p
                                         v-for="(sku, i) in item.colorSkuList"
                                         :key="i"
@@ -58,7 +58,7 @@
                                         {{ sku | selectSkuStr }}
                                     </p>
                                 </div>
-                                <div class="sale_price">
+                                <div class="sale_price" @click="jumpToProduct(item)">
                                     <span :class="[item.disabled ? 'disablePrice' : 'price']">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
                                     <span class="tip_title">建议零售价</span>
                                 </div>
