@@ -404,12 +404,6 @@ export default {
                 confirmButtonColor: '#007AFF'
             }).then(() => {
                 this.skuCommit()
-            }).catch(() => {
-                this.groupGoodsRecords.forEach(item => {
-                    if (item) {
-                        item.isSelected = false
-                    }
-                })
             })
         },
         jumpToProduct(product) {
