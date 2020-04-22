@@ -99,7 +99,7 @@
                         <img :src="isAllSelected ? select_sel: select_def" @click="selectAll()"/>
                         全选
                     </div>
-                    <div class="manage-right" @click="clearSelectedProduct()">移除({{selectedNum}})</div>
+                    <div class="manage-right" @click="clearSelectedProduct(selectedNum === groupGoodsRecords.length)">移除({{selectedNum}})</div>
                 </div>
             </div>
             <!-- <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster" v-show="!isManage"> -->
@@ -152,7 +152,8 @@ export default {
             startY: 0,
             endX: 0,
             endY: 0,
-            hasSwipeOutItem: false
+            hasSwipeOutItem: false,
+            isDeleteProduct: false
         }
     },
     mounted() {
@@ -360,11 +361,11 @@ export default {
             return utils.bottomOffset(offset)
         },
         deleteItem(index) {
+            this.isDeleteProduct = true
             this.seletedItemIndex = index
             this.seletedDetailsItem = this.groupGoodsRecords[this.seletedItemIndex]
-            this.selectItem(index)
-            this.dialogAlert()
-            this.closeDeleteMenu()
+            this.groupGoodsRecords[index].isSelected = true
+            this.clearSelectedProduct(this.groupGoodsRecords.length === 1)
         },
         manageProduct() {
             this.showSkuDialog = false
@@ -372,14 +373,15 @@ export default {
             this.isManage = !this.isManage
             this.selectedNum = 0
             this.isAllSelected = false
+            this.isDeleteProduct = this.isManage
             this.groupGoodsRecords.forEach(item => {
                 if (item) {
                     item.isSelected = false
                 }
             })
         },
-        clearSelectedProduct() {
-            if (this.isAllSelected) {
+        clearSelectedProduct(isDeleteAll) {
+            if (isDeleteAll) {
                 Dialog.alert({
                     title: '提示',
                     message: '至少保留一个商品',
@@ -485,6 +487,7 @@ export default {
             this.isManage = false
             this.isAllSelected = false
             this.showSkuDialog = false
+            this.isDeleteProduct = false
             this.selectedNum = 0
             if (this.groupGoodsRecords && this.groupGoodsRecords instanceof Array && this.groupGoodsRecords.length > 0) {
                 this.groupGoodsRecords.forEach(item => {
@@ -523,11 +526,11 @@ export default {
                     console.log(err)
                 })
         },
-        skuCommit(seletedDetailsItem) {
+        skuCommit(selectedDetailsItem) {
             // sku修改 确定
-            if (seletedDetailsItem) {
-                this.seletedDetailsItem = seletedDetailsItem
-                this.groupGoodsRecords[this.seletedItemIndex] = seletedDetailsItem
+            if (selectedDetailsItem) {
+                this.seletedDetailsItem = selectedDetailsItem
+                this.groupGoodsRecords[this.seletedItemIndex] = selectedDetailsItem
             }
             let totalPrice = 0
             let groupProducts = []
@@ -535,7 +538,8 @@ export default {
                 groupGoodsId: this.groupDetail.groupGoodsId,
                 name: this.groupDetail.name
             }
-            if (!this.isManage) {
+            debugger
+            if (!this.isDeleteProduct) {
                 this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
                     item.skuList.forEach((skuItem, skuIndex) => {
                         skuItem.num = skuItem.skuValue
