@@ -297,7 +297,7 @@ export default {
                     this.posterData.isSuggest = this.isSuggest
                     this.posterData.percent = this.customPricePercent
                     this.posterData.isSinglePrice = false
-        
+
                     this.posterData.products = this.posterData.products.map(item => {
                         return {
                             ...item,

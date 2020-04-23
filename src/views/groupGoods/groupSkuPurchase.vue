@@ -222,7 +222,7 @@ export default {
         },
         completeTotalRetailPrice() {
             let retailPrice = 0
-            // console.log('22222')    
+            // console.log('22222')
             this.groupGoodsRecords.forEach((product, index) => {
                 if (!product.disabled & product.isSelected) {
                     product.colorSkuList.forEach((item) => {
@@ -258,7 +258,7 @@ export default {
             if (product.isSelected) {
                 this.selecteProducts = this.selecteProducts.concat(product)
             } else {
-                let index = this.contains(this.selecteProducts,product)
+                let index = this.contains(this.selecteProducts, product)
                 if (index > -1) {
                     this.selecteProducts.splice(index, 1)
                 }

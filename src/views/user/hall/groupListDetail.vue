@@ -230,7 +230,7 @@ export default {
                         if (skuItem.entityStock === 0 && skuItem.num !== 0) {
                             isChanged = true
                         }
-                        selectAll += skuItem.num
+                        selectAll += skuItem.num | 0
                         stockAll += skuItem.entityStock
                     })
                 })
@@ -404,6 +404,8 @@ export default {
                 confirmButtonColor: '#007AFF'
             }).then(() => {
                 this.skuCommit()
+            }).catch(() => {
+                this.isDeleteProduct = false
             })
         },
         jumpToProduct(product) {
@@ -538,7 +540,6 @@ export default {
                 groupGoodsId: this.groupDetail.groupGoodsId,
                 name: this.groupDetail.name
             }
-            debugger
             if (!this.isDeleteProduct) {
                 this.seletedDetailsItem.colorSkuList.forEach((item, index) => {
                     item.skuList.forEach((skuItem, skuIndex) => {
@@ -558,7 +559,6 @@ export default {
                 this.groupGoodsRecords.forEach(group => {
                     group.colorSkuList.forEach((item) => {
                         item.skuList.forEach((skuItem) => {
-                            skuItem.num = skuItem.skuValue
                             let sku = {
                                 groupGoodsRecordId: skuItem.groupGoodsRecordId,
                                 num: skuItem.skuValue,
