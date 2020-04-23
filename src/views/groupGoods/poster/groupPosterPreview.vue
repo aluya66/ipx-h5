@@ -480,12 +480,13 @@ export default {
 
 .loadding_content {
     position: absolute;
-    left: 45%;
+    left: calc(50vw - 60px); //40%;
     top: 40%;
-    height: 70px;
-    width: 70px;
+    height: 120px;
+    width: 120px;
     z-index: 10000;
-    background: none;
+    background: white;
+    border-radius: 12px;
 }
 
 </style>
