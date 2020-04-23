@@ -206,7 +206,7 @@
                 <p id="tips" :style="isAnimateEnd ? 'margin-bottom: 0.04rem' : 'margin-bottom: 0.38rem'">
                     {{animateTips}}</p>
                 <div class="loadding_end" v-show="isAnimateEnd">
-                    <p>可联系客服了解进度</p>
+                    <p>我们将在24小时内与您联系</p>
                     <section></section>
                     <button @click="dismiss">我知道了</button>
                 </div>
