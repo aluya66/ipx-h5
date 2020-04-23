@@ -94,6 +94,12 @@ export default {
         },
         goPay() {
             let baseParams = utils.getStore('baseParams')
+            this.token = utils.getStore('token') || ''
+            if (this.token === undefined || this.token.length <= 0) {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+                return
+            }
             if (baseParams.isHide === 0) {
                 Dialog.confirm({
                     title: '填写邀请码可用',
