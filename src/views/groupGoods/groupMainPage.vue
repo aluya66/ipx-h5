@@ -402,5 +402,8 @@ export default {
         left:50%;
         transform:translateX(-50%);
     }
+    .bottom-btn:active {
+        color: rgba(255, 255, 255, 0.3);
+    }
 
 </style>

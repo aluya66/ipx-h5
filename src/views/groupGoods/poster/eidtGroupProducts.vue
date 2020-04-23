@@ -35,7 +35,7 @@
                     </p>
                     </div>
                     <section class="nextBtn" @click="handleNext">
-                    下一步{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
+                    确定{{ selectItems.length > 0 ? `(${selectItems.length})` : "" }}
                     </section>
                 </div>
             </template>
@@ -132,6 +132,15 @@ export default {
                 })
             }
         },
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].productCode === obj.productCode) {
+                    return true
+                }
+            }
+            return false
+        },
         getGroupDetail() {
             const params = {
                 groupCode: this.$route.query.groupCode
@@ -144,6 +153,14 @@ export default {
                         return {
                             ...item,
                             select: false
+                        }
+                    })
+                    let productList = this.$route.query.productList
+                    this.products.forEach(item => {
+                        let index = this.contains(productList, item)
+                        if (index) {
+                            item.select = true
+                            this.selectItems.push(item)
                         }
                     })
                     this.isShowEmpty = this.products.length === 0

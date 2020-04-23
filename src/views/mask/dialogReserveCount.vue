@@ -1,6 +1,6 @@
 <template>
     <div class="dialog-count-container" @click="close">
-        <div class="dialog-count-content" :class="{'dialog-count-content-hide': showDialog}" @click.stop="">
+        <div class="dialog-count-content" :class="{'dialog-count-content-hide': showDialog}" :style="getBottomOffset(20)" @click.stop="">
             <div class="dialog-count-title">
                 <img src="../../themes/images/app/icon_close24_gray_def@3x.png" @click.stop="close"/>
                 <span class="title">选择预定数量</span>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import utils from 'utils'
 export default {
     props: {
         showDialog: { // 是否显示对话框，默认不显示
@@ -44,6 +45,9 @@ export default {
             this.$emit('onSelectedCount', item)
             this.close()
             console.log(item)
+        },
+        getBottomOffset(offset) {
+            return utils.bottomOffset(offset)
         }
     }
 }
@@ -70,7 +74,7 @@ export default {
             transform: translateY(100%);
 
             .dialog-count-title {
-                border-bottom: solid #E1E2E6 0.002rem;
+                border-bottom: solid #E1E2E6 0.5px;
                 height: 58px;
                 line-height: 58px;
                 align-items: center;
@@ -97,7 +101,7 @@ export default {
         .count-item {
             height: 50px;
             margin-left: 16px;
-            border-bottom: solid #E1E2E6 0.002rem;
+            border-bottom: solid #E1E2E6 0.5px;
             color: @color-c1;
             font-size: @f16;
             line-height: 50px;

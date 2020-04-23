@@ -32,7 +32,12 @@
                 <template slot="content">
                     <div class="product-list"
                     >
-                        <img v-for="imageUrl in posterData.theGroupImgs" :key="imageUrl" class="image-item" :src="imageUrl">
+                        <div class="choose_skuImg" @click="changeProductImage">
+                            <img :src="choose_skuImg" alt="">
+                            <p>选择组货商品</p>
+                        </div>
+                        <img :src="posterData.groupImg" alt="" class="mainpic">
+                        <img v-for="goods in posterData.products" :key="goods.productCode" class="image-item" :src="goods.colorTypeList[0].image" @click="changeSkuImage(goods)">
                     </div>
                 </template>
             </title-content>
@@ -47,7 +52,7 @@
                         </div>
                         <div v-if="selectPriceTitle==='单品调价'" class="price-suggest">
                             <div class="goodInfo-list" v-for="goodsInfo in posterData.products" :key="goodsInfo.productCode">
-                                <img :src="goodsInfo.mainPic" alt="">
+                                <img :src="goodsInfo.colorTypeList[0].image" alt="">
                                 <div class="good-info">
                                     <p>{{goodsInfo.productName}}</p>
                                     <section :class='["flex-common","purchase-contain","good-totalPrice"]'>
@@ -155,6 +160,7 @@ export default {
             select_def: require('../../../themes/images/groupGoods/checkbox_default.png'),
             select_sel: require('../../../themes/images/groupGoods/selected_icon.png'),
             choose_qrcode: require('../../../themes/images/groupGoods/icon_choose_camera@3x.png'),
+            choose_skuImg: require('@/themes/images/app/icon_posterImg_add@3x.png'),
             albumImg_url: '',
             groupTitle: '',
             groupDesc: '',
@@ -169,7 +175,9 @@ export default {
             mainImage: '',
             isSave: false,
             isNative: false,
-            isSuggest: false
+            isSuggest: false,
+            changedSku: {},
+            selectProduct: {}
         }
     },
     watch: {
@@ -211,6 +219,27 @@ export default {
                 this.customPricePercent = '0'
             }
         },
+        changeProductImage() {
+            this.$router.push({
+                path: '/poster/eidtGroupProducts',
+                query: {
+                    groupCode: this.posterData.groupCode,
+                    productList: this.posterData.products
+                }
+            })
+        },
+        changeSkuImage(goods) {
+            this.selectProduct = goods
+            this.$router.push({
+                path: '/picture/imageList',
+                query: {
+                    productCode: goods.productCode,
+                    productList: goods.colorTypeList,
+                    fromPath: 'group',
+                    fromChange: true
+                }
+            })
+        },
         chooseQRCodeImg() {
             const params = {
                 jumpUrl: 'choosePhoto://'
@@ -249,8 +278,11 @@ export default {
         handleRequest() {
             let productCodes = JSON.parse(utils.getStore('groupProductCodes'))
             const params = {
-                groupCode: this.$route.query.groupCode,
-                productCodes: productCodes
+                groupCode: this.$route.query.groupCode
+            }
+            // alert(productC odes)
+            if (productCodes !== undefined) {
+                params.productCodes = productCodes
             }
             this.$api.poster.getGroupPosterInfo(params).then(res => {
                 if (res instanceof Object) {
@@ -265,17 +297,41 @@ export default {
                     this.posterData.isSuggest = this.isSuggest
                     this.posterData.percent = this.customPricePercent
                     this.posterData.isSinglePrice = false
+        
                     this.posterData.products = this.posterData.products.map(item => {
                         return {
                             ...item,
                             showPrice: parseFloat(item.retailPrice).toFixed(2)
                         }
                     })
+                    this.changedSku = utils.getStore('productSkuList')[0]
+                    if (this.changedSku !== undefined) {
+                        let index = this.contains(this.posterData.products, this.selectProduct)
+                        if (index > -1) {
+                            this.posterData.products[index].colorName = this.changedSku.colorName
+                            this.posterData.products[index].sizeName = this.changedSku.sizeName
+                            this.posterData.products[index].retailPrice = this.changedSku.retailPrice
+                            this.posterData.products[index].colorTypeList[0].image = this.changedSku.image
+                        }
+                    }
                 }
             }).catch(() => {
 
             })
+        },
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].productCode === obj.productCode) {
+                    return i
+                }
+            }
+            return -1
         }
+    },
+    created() {
+        this.selectProduct = {}
+        this.changedSku = {}
     },
     activated() {
         this.isPreview = false
@@ -286,6 +342,9 @@ export default {
         let baseParams = utils.getStore('baseParams')
         this.phone = baseParams.phoneNumber
         this.handleRequest()
+    },
+    deactivated() {
+        utils.setStore('productSkuList', '')
     },
     destroyed() {
         window.onresize = null
@@ -435,6 +494,40 @@ export default {
         border-radius:12px;
         overflow: scroll;
         // width: 100%;
+        .choose_skuImg {
+            flex-shrink: 0;
+            text-align: center;
+            background: white;
+            width: 74px;
+            height: 74px;
+            margin-left: 16px;
+            border-radius:4px;
+            > img {
+                height: 26px;
+                width: 26px;
+                margin-top: 16px;
+            }
+            > p {
+                margin-top: 6px;
+                font-size:10px;
+                font-weight:400;
+                color:rgba(138,140,153,1);
+                line-height:14px;
+            }
+        }
+        .choose_skuImg:active {
+            background: black;
+            opacity: 0.3;
+        }
+        .mainpic {
+            flex-shrink: 0;
+            display: block;
+            width: 74px;
+            height: 74px;
+            margin-left: 12px;
+            object-fit: cover;
+            border-radius:4px;
+        }
         .image-item {
             flex-shrink: 0;
             display: block;
@@ -704,6 +797,10 @@ export default {
             justify-content: center;
             align-items: center;
         }
+        .photo-choose:active {
+            background: black;
+            opacity: 0.3;
+        }
         .Album-selectd {
             margin: 13px 16px 32px;
             border-radius: 8px;
@@ -743,6 +840,10 @@ export default {
         // }
         .button-select {
             .btn-select(calc(100vw - 40px),50px,true);
+        }
+        .button-select:active {
+            color: rgba(255, 255, 255, 0.3);
+            // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
         }
     }
 </style>

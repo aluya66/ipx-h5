@@ -13,7 +13,7 @@
                 <div class="image-item" :class="[index % 4 !== 0 ? 'margin-left' : '', index >= 4 ? 'margin-top' : '']"
                      v-for="(item, index) in images"
                      :key="index" :style="getPictureRect()">
-                    <img :src="item.image" :style="getPictureRect()" alt=""/>
+                    <img :src="item.image" :style="getPictureRect()" alt="" @click="fromChangePreview(index)"/>
                     <img class="select-box" :src="item.isSelected ? imageSelect: imageUnselect" @click="switchSelectState(index)" alt=""/>
                 </div>
             </div>
@@ -25,8 +25,8 @@
                 <span @click="fromChangePreview()">{{this.fromChange ? "预览" : "全选"}}</span>
             </div>
             <div class="image-footer-right">
-                <div class="image-download" @click="downloadPicture" v-show="!this.fromChange">下载图片</div>
-                <div class="create-poster" @click="createPoster" >{{this.fromChange ? "确定" : "生成海报"}}</div>
+                <button type="button" class="image-download" @click="downloadPicture" v-show="!this.fromChange">下载图片</button>
+                <button type="button" class="create-poster" @click="createPoster" >确定</button>
             </div>
         </div>
         <div class="image-preview" v-if="isShowPreview" @touchstart="touchStart" @touchend="touchEnd">
@@ -61,13 +61,15 @@ export default {
             fromPath: 'product', // product单品，group组货
             fromChange: false,
             images: [],
+            productList: [],
             previewImages: [],
             touchStartX: 0,
             touchStartY: 0,
             touchEndX: 0,
             touchEndY: 0,
             imageUnselect: require('../../themes/images/groupGoods/checkbox_default.png'),
-            imageSelect: require('../../themes/images/groupGoods/selected_icon.png')
+            imageSelect: require('../../themes/images/groupGoods/selected_icon.png'),
+            canShowSaveDialog: false // 标识是否弹出保存图片对话框，直接点选单张图片不弹出
         }
     },
     methods: {
@@ -85,10 +87,12 @@ export default {
             }, 1000)
         },
         touchEnd(event) {
-            this.touchEndX = event.changedTouches[0].clientX
-            this.touchEndY = event.changedTouches[0].clientY
-            if (Math.abs(this.touchEndX - this.touchStartX) < 10 && Math.abs(this.touchEndY - this.touchStartY) < 10 && this.isLongClick) {
-                this.dialogAlert()
+            if (this.canShowSaveDialog) {
+                this.touchEndX = event.changedTouches[0].clientX
+                this.touchEndY = event.changedTouches[0].clientY
+                if (Math.abs(this.touchEndX - this.touchStartX) < 10 && Math.abs(this.touchEndY - this.touchStartY) < 10 && this.isLongClick) {
+                    this.dialogAlert()
+                }
             }
         },
         dialogAlert() {
@@ -107,6 +111,7 @@ export default {
         onClose() {
             this.isShowPreview = false
             this.isLongClick = false
+            Dialog.close()
         },
         getPictureRect() {
             // `padding-bottom:${y}px !important`
@@ -168,17 +173,20 @@ export default {
             }
             if (this.fromPath === 'product') { // 单品
                 if (this.fromChange) {
-                    utils.setStore('productSkuList', skuList)
-                    this.$router.go(-1)
+                    utils.setStore('productSkuImg', skuList)
                 } else {
-                    this.$router.push({
-                        path: '/poster/editProductPoster',
-                        query: {
-                            productCode: this.productCode,
-                            skuCodeList: skuList
-                        }
-                    })
+                    utils.setStore('productSkuImgs', skuList)
                 }
+                this.$router.go(-1)
+                // } else {
+                //     this.$router.push({
+                //         path: '/poster/editProductPoster',
+                //         query: {
+                //             productCode: this.productCode,
+                //             skuCodeList: skuList
+                //         }
+                //     })
+                // }
             } else { // 组货
                 utils.setStore('productSkuList', skuList)
                 this.$router.go(-1)
@@ -200,16 +208,25 @@ export default {
                             isSelected: false
                         }
                     })
+                    this.productList = this.$route.query.productList
+                    this.images.forEach(item => {
+                        let index = this.contains(this.productList, item)
+                        if (index) {
+                            item.isSelected = true
+                        }
+                    })
                 }
             })
         },
         fromChangePreview(index) {
             if (index !== undefined) {
+                this.canShowSaveDialog = false
                 let imgs = this.images.filter((item, imgIndex) => {
                     return imgIndex === index
                 })
                 this.previewSlide(imgs, 0)
             } else {
+                this.canShowSaveDialog = true
                 if (!this.fromChange) { // 不是预览图片
                     return
                 }
@@ -249,6 +266,15 @@ export default {
             //     }
             // })
             this.isShowPreview = true
+        },
+        contains(a, obj) {
+            var i = a.length
+            while (i--) {
+                if (a[i].image === obj.image) {
+                    return true
+                }
+            }
+            return false
         }
     },
     activated() {
@@ -384,6 +410,19 @@ export default {
         color: @color-ec;
         line-height: 40px;
         text-align: center;
+        font-weight: bold;
+    }
+
+    .image-download:active {
+        color:rgba(60,92,246, 0.3);
+        // width: 88px;
+        // height: 40px;
+        // background: linear-gradient(322deg, rgba(238, 236, 255, 1) 0%, rgba(216, 212, 255, 1) 50%);
+        // border-radius: 20px;
+        // color: @color-ec;
+        // line-height: 40px;
+        // text-align: center;
+        // font-weight: bold;
     }
 
     .create-poster {
@@ -396,5 +435,20 @@ export default {
         margin-right: 16px;
         color: white;
         text-align: center;
+        font-weight: bold;
+    }
+
+    .create-poster:active {
+        color:rgba(255,255,255, 0.3);
+        // width: 88px;
+        // height: 40px;
+        // line-height: 40px;
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+        // border-radius: 20px;
+        // margin-left: 12px;
+        // margin-right: 16px;
+        // color: white;
+        // text-align: center;
+        // font-weight: bold;
     }
 </style>

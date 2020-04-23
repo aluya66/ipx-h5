@@ -2,8 +2,7 @@
     <layout-view class="latest-container">
         <c-header slot="header" :left-arrow="true" :showBorderBottom="false" :pageOutStatus="isNative" >
             <template slot="right">
-                <img class="header-right" slot="right"
-                     src="../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png" @click="rightClick()"/>
+                <div class="header-right" slot="right" @click="rightClick()"/>
             </template>
         </c-header>
         <div class="latest-content">
@@ -15,15 +14,15 @@
                         <div class="label"><img src="../../themes/images/groupGoods/label_vip_push@2x.png"></div>
                     </swiper-slide>
                 </swiper>
+                <p class="group-title">{{selectGroupDetail.groupTitle}}</p>
                 <div class="patch-price">
                     <span class="patch-flag">¥</span><span
-                    class="patch-price-number">{{parseFloat(selectGroupDetail.totalPrice).toFixed(2)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
+                    class="patch-price-number">{{getHidePrice(selectGroupDetail.totalPrice)}}</span><span class="patch-count">{{selectGroupDetail.addedProdCount}}款</span>
                 </div>
                 <div class="total-price">
                     <span class="total-flag">¥</span><span
                     class="total-price-number">{{parseFloat(selectGroupDetail.totalRetailPrice).toFixed(2)}}</span><span class="total-label">建议零售价</span>
                 </div>
-                <span class="group-title">{{selectGroupDetail.groupTitle}}</span>
                 <!--UI确认，去掉标签，标签没有运营-->
                 <!--<div class="group-labels-container">
                     <div class="group-labels">
@@ -32,25 +31,35 @@
                     </div>
                 </div>-->
             </div>
-            <div class="add-store" @click="addHall()">加入我的展厅</div>
+            <div class="add-store" @click="addHall()">
+                <p>
+                    加入我的展厅
+                </p>
+                <div class="cover">
+
+                </div>
+            </div>
         </div>
+        <loading-view class="loading_content" v-show="showLoading"/>
     </layout-view>
 </template>
 
 <script>
 import 'swiper/dist/css/swiper.css'
+import LoadingView from '../error/loaddingView.vue'
 import utils from 'utils'
 
 import {
     swiper,
     swiperSlide
 } from 'vue-awesome-swiper'
-import { Dialog, Toast } from 'vant'
+import { Dialog } from 'vant'
 
 export default {
     components: {
         swiper,
-        swiperSlide
+        swiperSlide,
+        LoadingView
     },
     data() {
         return {
@@ -58,6 +67,7 @@ export default {
             pageSize: 10,
             latestGroups: [],
             showPage: 'latest', // latest:本季上新，feature:精选组货
+            showLoading: true,
             isNative: false,
             finished: false, // 加载完标识
             loading: false, // 加载更多标识
@@ -110,7 +120,6 @@ export default {
             }
             if (this.showPage === 'latest') {
                 this.$api.groupGoods.getQuarterLatest(params).then(res => {
-                    Toast.clear(true)
                     if (res && res instanceof Array) {
                         if (this.pageNumber === 1) {
                             this.latestGroups = res
@@ -129,6 +138,7 @@ export default {
                 })
             } else {
                 this.$api.groupGoods.getSelectedGroup(params).then(res => {
+                    // this.showLoading = false
                     if (res && res instanceof Array) {
                         if (this.pageNumber === 1) {
                             this.latestGroups = res
@@ -182,11 +192,16 @@ export default {
             this.$api.groupGoods.getGroupDetail(params)
                 .then(res => {
                     this.groupDetail = res
+                    this.showLoading = false
                     // this.findvideocover();
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        getHidePrice(price) {
+            let isHide = utils.getStore('baseParams').isHide
+            return utils.hidePrice(price, isHide)
         },
         addHall() {
             window.sa.track('IPX_WEB', {
@@ -256,10 +271,6 @@ export default {
         }
     },
     created() {
-        Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-        })
     },
     mounted() {
         if (this.$route.query.fromNative === '1') {
@@ -277,12 +288,17 @@ export default {
     .latest-container {
         height: 100%;
     }
-
     .header-right {
         display: inline-block;
         vertical-align: middle;
         width: 26px;
         height: 26px;
+        background: url("../../themes/images/groupGoods/icon_nav_exhibition26_gray1@2x.png") no-repeat;
+        background-size: 100%;
+    }
+    .header-right:active {
+        background: url("../../themes/images/groupGoods/icon_nav_exhibition26_gray_press.png") no-repeat;
+        background-size: 100%;
     }
     .empty {
         margin-top: 24px;
@@ -323,7 +339,7 @@ export default {
                         position: absolute;
                         top: 10px;
                         left: 0;
-                        background: rgba(255, 255, 255, 1);
+                        background: @color-c8;
                         box-shadow: 0 2px 10px 0 rgba(33, 44, 98, 0.08);
                         border-radius: 12px;
                     }
@@ -383,7 +399,7 @@ export default {
                 align-items: flex-end;
 
                 .total-flag {
-                    font-size: 12px;
+                    font-size: 10px;
                     font-family: "alibabaRegular";
                     font-weight: 400;
                     padding-bottom: 1px;
@@ -414,8 +430,12 @@ export default {
                 font-size: 18px;
                 font-weight: bold;
                 color: rgba(42, 43, 51, 1);
-                margin-top: 12px;
+                margin: 14px 36px 0 36px;
                 line-height:26px;
+                height: 26px;
+                text-align: center;
+                max-width: 303px;
+                .ellipsis()
             }
 
             .group-labels-container {
@@ -464,5 +484,35 @@ export default {
         position: fixed;
         bottom: 36px;
         left: 20px;
+        .cover {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 2;
+            width: calc(100vw - 40px);
+            height: 50px;
+            background-color: black;
+            border-radius: 12px;
+            opacity: 0;
+        }
+        >p {
+            position: absolute;
+            width: calc(100vw - 40px);
+            text-align: center;
+            left: 0;
+            top: 0;
+            margin: auto;
+        }
+    }
+    .add-store:active .cover {
+        opacity: 0.3;
+    }
+    .loading_content {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        height: 100%;
+        width: 100%;
     }
 </style>

@@ -13,14 +13,18 @@ export default {
     created () {
         this.getBaseCofing()
         // 接受原生的token回调
-        window.getNativeToken = (token) => {
+        window.getNativeToken = (token, isHide) => {
             let baseParams = utils.getStore('baseParams')
             baseParams.token = token
+            baseParams.isHide = isHide | 0
             utils.setStore('baseParams', JSON.stringify(baseParams))
             utils.setStore('token', baseParams.token)
+            utils.setStore('isHide', baseParams.isHide)
             let routePath = window.globalVue.$route.path
             window.globalVue.$bus.$emit('tokenCallBack', routePath)
         }
+        // 解决IOS不支持:active的问题
+        document.body.addEventListener('touchstart', function() {})
     },
     methods: {
     // 获取配置参数
@@ -40,7 +44,7 @@ export default {
             }
 
             let testData = {
-                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAl4Mm5QBf/2fN1zLbu+OhWd5Z4ipZe8r0+IVaudh6PyYZOcOP7sU5sfVIxOX3jZECK9znhnL4kblv+IueZKTy3raeRPSP1B9lXcRi7r7JCOLkdyp+WIQpNHVKoWRCR5aa06v8z6WJy0zWb0eFelVeidKU79QkJNsKdfqVtLb3iaLib0b+phfeX+if0T/AsN9D9S1CSS3/aFL3bz3JW3XyC72yrCGFdgqZDokPXS1Nfej7I5kYQn3fPrvzr/lwRtUmLXt92aaGKzAT3FJVEHmj02Ji467AUsf8migwtNqwClGOEjS5AV6pz9sVn5vEL9xFvYgH+tV32TqCPdh8akPVw7S2InusmAZK9r4UYtukzSkiz6fxhR1jFyF4cXDY0ZvdmZY60wNx6vRM=',
+                'token': 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAl4Mm5QBf/2fMrLH//nUVcvIe8iEsSYNnfIVaudh6PyYYCGrGXgA+SQ1IxOX3jZECK0mdOauI3Rp3Pv2G4fkBp8TW9zl/UIKDbcRi7r7JCOLlv9o7b5p4TsD7HSZULnEaMm9HhXpVXonSlO/UJCTbCnX6lbS294mi4iLMspi/U7o7A7OmaPDXGJBLJXNOr+1kJie4gSISlCIcaclWol1ysgZopf0aCZ3Y6+tmY0rc8iSN7MfngN8bfloTw2UqEOyydGEIU7gWe7dtnxAmb1ZlfnZr436VSLHGy4Blc0tJ2TEdVABUYTdTmv2wKO4QvO0Ge3a+5qcd/nBDVdNOygLcZbjnguDVBy0HBUpyZ32tfYwkUjXuW1E4HTUuyNiplFt5PZ85XiMNRlo0LZijnZ2IBpIiv1QjqlB2VKKrn+rGmPrAFHB4U9QIHbo3NzyphJq6szh2SZhg99kr5x/KFwiu98fqm/BM3X4vEiufli/Ix6k6MkzZVswSctZsGHe9NMa/YOy+BIDNSuVySHuLXnnX/Rw==',
                 'app_version': '1.2.0',
                 'platform': 'web',
                 'device_id': '12A4C7D7664C4F9370BE1853D0E13CBEE3296EE3',
@@ -50,7 +54,8 @@ export default {
                 'lng': '100.156161',
                 'statusBarHeight': 20,
                 'isIphoneX': false,
-                'phoneNumber': '13888888888'
+                'phoneNumber': '13888888888',
+                'isHide': 0
             }
 
             let results = {}
@@ -65,6 +70,7 @@ export default {
             this.baseParams.isIphoneX = this.baseParams.statusBarHeight > 20 && isIos
             utils.setStore('baseParams', JSON.stringify(this.baseParams))
             utils.setStore('token', this.baseParams.token)
+            utils.setStore('isHide', Number(this.baseParams.isHide))
         }
     }
 }

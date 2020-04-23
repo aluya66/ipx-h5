@@ -10,17 +10,17 @@
             :pageOutStatus="isNative"
             :showBorderBottom="headerAlpha === 1"
         >
-            <div slot="title" style="color:#000" v-show="headerAlpha === 1" >极速上店</div>
+            <div slot="title" style="color:#000" v-show="headerAlpha === 1">极速上店</div>
         </c-header>
         <div class="contain-view" :style="getBottomOffset(49)">
             <div class="radius-header" :style="headerTop">
                 <span></span>
             </div>
             <div class="planList-contain">
-                <plan-view v-for="(item, index) in planItems" :key="index" :data="item" :showConnectIcon="index > 0" ></plan-view>
+                <plan-view v-for="(item, index) in planItems" :key="index" :data="item" :showConnectIcon="index > 0"/>
             </div>
             <div>
-                <p class="pre-view">即将上线  敬请期待</p>
+                <p class="pre-view">即将上线 敬请期待</p>
             </div>
             <div class="enter-view">
                 <section class="enter-item">
@@ -40,8 +40,8 @@
         <fixed-view class="footer-shadow">
             <template slot="footerContain">
                 <div class="footer-view">
-                    <section :class='["section-common","button-default"]' @click="handleMore">了解更多</section>
-                    <section :class='["section-common","button-select"]' @click="handleBuy">立即购买</section>
+                    <section class="section-common button-default" @click="handleMore">提交意向单</section>
+                    <!--<section :class='["section-common","button-select"]' @click="handleBuy">立即购买</section>-->
                 </div>
             </template>
         </fixed-view>
@@ -52,7 +52,7 @@
 import PlanView from './depositPlanView.vue'
 import FixedView from '../common/bottomFixedView.vue'
 import utils from 'utils'
-import { Toast } from 'vant'
+import { Dialog } from 'vant'
 
 export default {
     components: {
@@ -103,6 +103,23 @@ export default {
             })
         },
         handleBuy() {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === 0) {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '充值服务需要业务邀请码才可使用，请确认您的业务邀请码后再进行充值！',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
             this.$router.push({
                 path: '/deposit/purchasePlan'
             })
@@ -126,18 +143,11 @@ export default {
             this.$api.deposit.getDepositConfig().then(res => {
                 if (res instanceof Array) {
                     this.planItems = res
-                    Toast.clear()
                 }
             }).catch(() => {
 
             })
         }
-    },
-    created() {
-        Toast.loading({
-            message: '加载中...',
-            forbidClick: true
-        })
     },
     activated() {
         if (this.$route.query.fromNative === '1') {
@@ -154,137 +164,152 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.header-img {
-  display: inline-block;
-  vertical-align: middle;
-  width: 26px;
-  height: 26px;
-}
+    .header-img {
+        display: inline-block;
+        vertical-align: middle;
+        width: 26px;
+        height: 26px;
+    }
 
-.hall-bg {
-  background-image: url("../../themes/images/app/banner_laying@3x.png");
-  background-repeat: no-repeat;
-  background-size: 100% 212px;
-}
+    .hall-bg {
+        background-image: url("../../themes/images/app/banner_laying@3x.png");
+        background-repeat: no-repeat;
+        background-size: 100% 212px;
+    }
 
-.hall-header {
-  background: rgba(0, 0, 0, 0);
-}
-.contain-view {
-    overflow: scroll;
-    height: 100%;
-}
-.footer-shadow {
-    box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
-    border-radius:12px 12px 0px 0px;
-    z-index: 99999;
-}
-.footer-view {
-    margin: 5px 24px 0;
-    display: flex;
-    width: calc(100vw - 48px);
-    flex-direction: row;
-    justify-content :space-between;
-    .section-common {
-        font-size:14px;
-        font-weight:500;
-        line-height:40px;
-        text-align: center;
+    .hall-header {
+        background: rgba(0, 0, 0, 0);
     }
-    .button-default {
-        height:40px;
-        background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);
-        border-radius:20px;
-        width: calc(50vw - 31.5px);
-        color: @color-ec
+
+    .contain-view {
+        overflow: scroll;
+        height: 100%;
     }
-    .button-select {
-        .btn-select(calc(50vw - 31.5px),40px,true);
+
+    .footer-shadow {
+        /*box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
+        border-radius:12px 12px 0px 0px;*/
+        background: white;
+        z-index: 99999;
     }
-}
-.radius-header {
-    height: 31px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    background: #fff;
-    position: relative;
-    span {
-        display: block;
-        width:30px;
-        height:4px;
-        background:rgba(225,226,230,1);
-        border-radius:5px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-}
-.planList-contain {
-    background: #fff;
-    margin: -1px 0;
-    padding: 22px 20px 0;
-}
-.pre-view {
-    margin-top: 56px;
-    height:20px;
-    font-size:14px;
-    font-family:PingFangSC-Regular,PingFang SC;
-    font-weight:400;
-    color:rgba(43,49,51,1);
-    line-height:20px;
-    text-align: center;
-    position: relative;
-    background: #fff;
-    &::before {
-        content: '';
-        width:24px;
-        height:1px;
-        background:rgba(216,216,216,1);
-        display: block;
-        position: absolute;
-        left: calc(50vw - 101px);
-        top: 10px;
-    }
-    &::after {
-        content: '';
-        width:24px;
-        height:1px;
-        background:rgba(216,216,216,1);
-        display: block;
-        position: absolute;
-        right: calc(50vw - 101px);
-        top: 10px;
-    }
-}
-.enter-view {
-    padding: 0 4px;
-    margin-top: 29px;
-    margin-bottom: 32px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    .enter-item {
+
+    .footer-view {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 0 18px;
-        width: calc(33.33vw);
-        img {
-            display: block;
-            width: 64px; // calc(33.33vw - 58.8px);
-            height: 64px //calc(33.33vw - 58.8px);
-        }
-        p {
-            height:20px;
-            font-size:14px;
-            font-family:PingFangSC-Regular,PingFang SC;
-            font-weight:400;
-            color:rgba(43,49,51,1);
-            line-height:20px;
+        flex-direction: row;
+        justify-content: center;
+
+        .section-common {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 50px;
             text-align: center;
-            margin-top: 8px;
+        }
+
+        .button-default {
+            height: 50px;
+            background: linear-gradient(322deg, rgba(238, 236, 255, 1) 0%, rgba(216, 212, 255, 1) 100%);
+            border-radius: 25px;
+            width: calc(100vw - 40px);
+            font-size: 18px;
+            font-weight: bold;
+            color: @color-ec
+        }
+
+        .button-select {
+            .btn-select(calc(50vw - 31.5px), 40px, true);
         }
     }
-}
+
+    .radius-header {
+        height: 31px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background: #fff;
+        position: relative;
+
+        span {
+            display: block;
+            width: 30px;
+            height: 4px;
+            background: rgba(225, 226, 230, 1);
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .planList-contain {
+        background: #fff;
+        margin: -1px 0;
+        padding: 22px 20px 0;
+    }
+
+    .pre-view {
+        margin-top: 32px;
+        height: 20px;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(43, 49, 51, 1);
+        line-height: 20px;
+        text-align: center;
+        position: relative;
+        background: #fff;
+
+        &::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: rgba(216, 216, 216, 1);
+            display: block;
+            position: absolute;
+            left: calc(50vw - 101px);
+            top: 10px;
+        }
+
+        &::after {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: rgba(216, 216, 216, 1);
+            display: block;
+            position: absolute;
+            right: calc(50vw - 101px);
+            top: 10px;
+        }
+    }
+
+    .enter-view {
+        padding: 0 4px;
+        margin-top: 29px;
+        margin-bottom: 60px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+
+        .enter-item {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+
+            img {
+                display: block;
+                width: 64px; // calc(33.33vw - 58.8px);
+                height: 64px //calc(33.33vw - 58.8px);
+            }
+
+            p {
+                height: 20px;
+                font-size: 14px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: rgba(43, 49, 51, 1);
+                line-height: 20px;
+                text-align: center;
+                margin-top: 8px;
+            }
+        }
+    }
 </style>

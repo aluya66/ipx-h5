@@ -11,6 +11,13 @@
           <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
           </template>
+          <template slot="right"  tag="div">
+              <img
+                  class="header-img"
+                  :src="hallIcon"
+                  @click="handleToHall"
+              />
+          </template>
         </c-header>
         <swiper class="swiper-content" ref="imageSwiper">
           <swiper-slide
@@ -137,7 +144,8 @@
                 <span class="tip_title">建议零售价</span>
               </div>
               <div class="price">
-                ¥ <span>{{ cashFormat(item.spuTshPrice) }}</span>
+                <span class="price_value" :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">¥ <span>{{ isShowPrice ? cashFormat(item.spuTshPrice) : '???'}}</span></span>
+                <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
               </div>
             </div>
           </div>
@@ -151,7 +159,8 @@
       price"
       >
         <div class="group_price">
-          ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+          <span class="price" :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">¥<span>{{ isShowPrice ? cashFormat(groupDetail.totalPrice) : '???' }}</span></span>
+          <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
         </div>
         <div class="sale_price">
           <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
@@ -159,8 +168,8 @@
         </div>
       </div>
       <div class="group_tool_btn">
-        <button class="poster" @click="handleStore">极速上店</button>
-        <button class="hall" @click="addHall">加入展厅</button>
+        <button class="poster" @click="addHall">收藏到展厅</button>
+        <button class="hall" @click="handlePurchase">立即购买</button>
       </div>
     </div>
     <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster">
@@ -185,6 +194,7 @@ export default {
         return {
             postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
             backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
+            hallIcon: require('@/themes/images/app/circle_nav_exhibition@3x.png'),
             popularNum: '',
             timer: '',
             productList: [],
@@ -196,6 +206,7 @@ export default {
             showList: false,
             isVoted: false,
             isNative: false,
+            isShowPrice: false,
             cricleLists: [
                 {
                     actualPercent: '',
@@ -237,6 +248,13 @@ export default {
         this.isNative = false
         if (this.$route.query.fromNative === '1') {
             this.isNative = true
+        }
+        utils.setStore('isFromGroupDetail', false)
+        let basepara = utils.getStore('baseParams')
+        if (basepara.isHide === 1) {
+            this.isShowPrice = true
+        } else {
+            this.isShowPrice = false
         }
         this.getGroupDetail()
         this.getWeekData()
@@ -301,16 +319,56 @@ export default {
     methods: {
         handlePosterIconBottom() {
             let baseparams = utils.getStore('baseParams')
-            let btm = 57
+            let btm = 57 + 8
             if (baseparams.isIphoneX) {
-                btm = 91
+                btm = 91 + 8
             }
             return `bottom:${btm / 100}rem`
         },
-        handleStore() {
-            this.$router.push({
-                path: '/deposit'
-            })
+        handlePurchase() {
+            let token = utils.getStore('token')
+            if (token === 'undefined' || token === '') {
+                window.globalVue.$utils.postMessage('user_authentication', '')
+                return
+            }
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === 0) {
+                this.isShowPrice = false
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
+            this.$api.groupGoods.oauthPurchase().then(res => {
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                } else {
+                    this.$router.push({
+                        path: '/group/skuPurchase',
+                        query: { groupDetail: this.groupDetail }
+                    })
+                }
+            }).catch(() => {})
         },
         cashFormat(price) {
             return cash.changeFormat(price)
@@ -324,6 +382,14 @@ export default {
                 productCode: product.productCode
             }
             utils.postMessage('', params)
+        },
+        handleToHall() {
+            this.$router.push({
+                path: '/user/hall',
+                query: {
+                    isFromWeb: true
+                }
+            })
         },
         timeOutRequest() {
             this.timer = setInterval(this.getWeekData, 30000)
@@ -390,13 +456,33 @@ export default {
                 window.globalVue.$utils.postMessage('user_authentication', '')
                 return
             }
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === 0) {
+                this.isShowPrice = false
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
             let products = this.productList.filter(item => item.productShelves !== 0)
             if (products.length === 0) {
                 this.$toast('该组货所有商品已失效，无法生成海报')
                 return
             }
+
+            utils.setStore('isFromGroupDetail', true)
             this.$router.push({
-                path: '/poster/eidtGroupProducts',
+                path: '/poster/editGroupPoster', /// poster/eidtGroupProducts
                 query: { groupCode: this.groupDetail.groupCode }
             })
         },
@@ -440,28 +526,13 @@ export default {
                 .groupGoods(params)
                 .then(res => {
                     if (res.code === 0) {
-                        let groupGoodsId = res.data.groupGoodsId
-                        Dialog.confirm({
-                            title: '添加成功',
-                            message: '该组货方案已添加至我的展厅',
-                            confirmButtonText: '编辑组货方案',
-                            cancelButtonText: '继续逛逛',
-                            confirmButtonColor: '#007AFF'
+                        // let groupGoodsId = res.data.groupGoodsId
+                        this.$toast(' \n 收藏成功，\n 可在“我的展厅”查看 \n ')
+                        window.sa.track('IPX_WEB', {
+                            page: 'groupDetail', // 页面名字
+                            type: 'click', // 固定参数，表明是点击事件
+                            event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
                         })
-                            .then(() => {
-                                window.sa.track('IPX_WEB', {
-                                    page: 'groupDetail', // 页面名字
-                                    type: 'click', // 固定参数，表明是点击事件
-                                    event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
-                                })
-                                this.$router.push({
-                                    path: '/hall/groupListDetail',
-                                    query: { groupId: groupGoodsId }
-                                })
-                            })
-                            .catch(() => {
-                                // on cancel
-                            })
                     }
                 })
                 .catch(err => {
@@ -492,11 +563,16 @@ export default {
 .panel {
   .c-header {
     position: fixed;
+    .van-nav-bar__right {
+      right: calc(16px - 100vw);
+    }
     .header-img {
       display: block;
       width: 32px;
       height: 32px;
       object-fit: cover;
+      // display: inline-block;
+      // vertical-align: middle;
     }
   }
 }
@@ -531,6 +607,10 @@ export default {
   height: 80px;
   position: absolute;
   right: 8px;
+}
+.poster-icon:active {
+    // background: rgba(0, 0, 0, 0.3);
+    opacity: 0.7;
 }
 .panel {
   background-color: white;
@@ -648,6 +728,14 @@ export default {
       > button:disabled {
         background: @color-c7;
         color: @color-c2;
+      }
+      > button:active:disabled {
+        background: @color-c7;
+        color: @color-c2;
+      }
+      > button:active {
+        color: rgba(255, 255, 255, 0.3);
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
       }
     }
     .buyer {
@@ -774,16 +862,28 @@ export default {
             }
           }
           .price {
-            font-size: 12px;
-            font-weight: 400;
-            color: @color-rc;
-            margin-bottom: 0;
-            font-family: "alibabaRegular";
-            > span {
-              font-size: 22px;
-              font-weight: bold;
+            .price_value {
+              font-size: 12px;
+              font-weight: 400;
               color: @color-rc;
-              font-family: "alibabaBold";
+              margin-bottom: 0;
+              font-family: "alibabaRegular";
+              > span {
+                font-size: 22px;
+                font-weight: bold;
+                color: @color-rc;
+                font-family: "alibabaBold";
+              }
+            }
+            .tip_group_price {
+              font-size:10px;
+              font-weight:bold;
+              color: @color-rc;
+              line-height:14px;
+              background:rgba(255,235,237,1);
+              margin-left: 10px;
+              padding: 2px;
+              border-radius:0px 4px 4px 4px;
             }
           }
         }
@@ -803,17 +903,29 @@ export default {
   border-radius: 12px 12px 0px 0px;
   padding: 5px 16px 5px;
   .group_price {
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(245, 48, 48, 1);
-    line-height: 24px;
-    font-family: "alibabaRegular";
-    > span {
-      font-size: 20px;
-      font-weight: bold;
+    .price {
+      font-size: 12px;
+      font-weight: 400;
       color: rgba(245, 48, 48, 1);
       line-height: 24px;
-      font-family: "alibabaBold";
+      font-family: "alibabaRegular";
+      > span {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgba(245, 48, 48, 1);
+        line-height: 24px;
+        font-family: "alibabaBold";
+      }
+    }
+    .tip_group_price {
+      font-size:10px;
+      font-weight:bold;
+      color: @color-rc;
+      line-height:14px;
+      background:rgba(255,235,237,1);
+      margin-left: 10px;
+      padding: 2px;
+      border-radius:0px 4px 4px 4px;
     }
   }
   .sale_price {
@@ -847,17 +959,22 @@ export default {
     display: flex;
     margin-bottom: 5px;
      .poster {
-      width: 96px;
+      width: 88px;
       height: 40px;
-      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);border-radius:20px;
+      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);
+      border-radius:20px;
       font-size:14px;
       font-weight:bold;
       color:rgba(60,92,246,1);
-      // margin-right: 20px;
+      padding: 0;
       align-self: center;
     }
+    .poster:active {
+      color: rgba(60,92,246, 0.3);
+        // background: linear-gradient(322deg, rgba(238,236,255,1) 0%, rgb(240, 239, 239) 100%);
+    }
     .hall {
-      width: 96px;
+      width: 88px;
       height: 40px;
       background: linear-gradient(
         135deg,
@@ -870,6 +987,10 @@ export default {
       color: white;
       align-self: center;
       margin-left: 12px;
+    }
+    .hall:active {
+        color: rgba(255,255,255, 0.3);
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
     }
   }
 

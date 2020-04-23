@@ -115,3 +115,11 @@ export const searchProductList = params => Http.fetch(`${context}/v1/product/sea
 export const searchGroupList = params => Http.fetch(`${context}/v1/group/search`, params, {
     method: 'get'
 })
+
+/**
+ * 【 get 是否能够购买
+ * @param {*} params
+ */
+export const oauthPurchase = params => Http.fetch(`${context}/v1/member/oauth`, params, {
+    method: 'get'
+})

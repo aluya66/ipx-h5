@@ -5,11 +5,11 @@
       slot="header"
       :left-arrow="true"
       :isLight="false"
-      :pageOutStatus="true"
+      :pageOutStatus="isNative"
     >
       <div slot="title">我的余额</div>
       <template slot="left" tag="div">
-        <img class="header-img" :src="backImage" />
+        <img class="header-img" :src="backImage" @click="cancel"/>
       </template>
       <template slot="right" tag="div" class="right">
         <span
@@ -69,10 +69,13 @@
 
 <script>
 import utils from 'utils'
+import { Dialog } from 'vant'
+
 export default {
     components: {},
     data() {
         return {
+            isNative: false,
             backImage: require('@/themes/images/app/icon_nav_back_white@3x.png'),
             optionInfo: [
                 {
@@ -105,6 +108,10 @@ export default {
             type: 'pageView',
             event: 'pageView'
         })
+        this.isNative = false
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
         this.rechargeConfig = []
         this.banlance = {}
         this.rechargeInfo()
@@ -128,6 +135,14 @@ export default {
                 }
             })
         },
+        cancel() {
+            let method = 'page_out'
+            if (this.isNative) {
+                utils.postMessage(method, '')
+            } else {
+                this.$router.go(-1)
+            }
+        },
         rechargeInfo() {
             this.$api.recharge
                 .getRechargeInfo()
@@ -149,6 +164,23 @@ export default {
                 })
         },
         rechargeMoney(config) {
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === 0) {
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '充值服务需要业务邀请码才可使用，请确认您的业务邀请码后再进行充值！',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
             const params = {
                 jumpUrl: 'rechargePayWay://',
                 rechargeConfigId: config.rechargeConfigId === undefined ? '' : config.rechargeConfigId + '',
