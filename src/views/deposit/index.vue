@@ -190,7 +190,7 @@ export default {
         /*box-shadow:0px -1px 6px 0px rgba(33,44,98,0.06);
         border-radius:12px 12px 0px 0px;*/
         background: white;
-        z-index: 99999;
+        z-index: 1;
     }
 
     .footer-view {
