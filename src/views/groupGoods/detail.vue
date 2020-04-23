@@ -564,7 +564,7 @@ export default {
   .c-header {
     position: fixed;
     .van-nav-bar__right {
-      right: calc(16px - 100vw);
+      right: calc(-100vw + 0px);
     }
     .header-img {
       display: block;
