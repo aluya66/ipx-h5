@@ -4,7 +4,7 @@ import {
 } from 'vant'
 
 export default {
-    createOrder(groupGoods, groupCode, isDetail) {
+    createOrder(groupName, groupGoods, groupCode, isDetail) {
         let shopCarts = []
         let oldGoods = JSON.parse(JSON.stringify(groupGoods))
         let products = []
@@ -39,7 +39,7 @@ export default {
                 let selectSkus = []
                 productItem.colorSkuList.forEach(skuItem => {
                     skuItem.skuList.forEach(sku => {
-                        totalPrice += Number(sku.tshPrice) * Number(sku.num)
+                        totalPrice += Number(sku.defaultSkuPrice) * Number(sku.num)
                         sku.mainPic = sku.skuDefaultImg
                     })
                     let skus = skuItem.skuList.filter(sku => sku.num > 0)
@@ -79,7 +79,8 @@ export default {
             const params = {
                 jumpUrl: 'createOrder://',
                 totalPrice: totalPrice + '',
-                groupCode: groupCode + '',
+                groupName: groupName,
+                // groupCode: groupCode === undefined ? '' : groupCode + '',
                 discount: '1',
                 orderData: shopCarts
             }

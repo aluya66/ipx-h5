@@ -4,5 +4,5 @@ export default {
     meta: {
         keepAlive: true
     },
-    component: () => import('@/views/news/detail/index')
+    component: () => import('@/views/share/news/index.vue')
 }

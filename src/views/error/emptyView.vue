@@ -23,7 +23,10 @@ export default {
     data () {
         return {
             buildImg: require('@/themes/images/app/default_empty.png'),
-            errorImg: require('@/themes/images/app/default_no search copy@2x.png')
+            errorImg: require('@/themes/images/app/default_no search copy@2x.png'),
+            groupImg: require('@/themes/images/empty_Exhibition.png'),
+            hallImg: require('@/themes/images/empty_hall.png'),
+            searchImg: require('@/themes/images/empty_search@3x.png')
         }
     },
     computed: {
@@ -33,6 +36,12 @@ export default {
                 return this.buildImg
             case 'error':
                 return this.errorImg
+            case 'groupEmpty':
+                return this.groupImg
+            case 'hallEmpty':
+                return this.hallImg
+            case 'search':
+                return this.searchImg
             default:
                 break
             }
@@ -49,7 +58,7 @@ export default {
     p {
         font-size:14px;
         font-weight:400;
-        color:rgba(138,140,153,1);
+        color: @color-c3;
         line-height:20px;
         text-align: center;
         margin-top: 12px;

@@ -101,15 +101,33 @@ export default {
     methods: {
     // 查看测款报告
         handleCheckResult () {
-            this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
+            this.token = utils.getStore('token') || ''
+            if (this.token !== 'undefined' && this.token.length > 0) {
+                this.$router.push({ path: '/testStyle/report', query: { participantCode: this.participantCode, bookActivityCode: this.bookActivityCode } })
+            } else {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+            }
         },
         // 查看测款页
         handleTestDetail () {
-            this.$router.push({ path: '/', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+            this.token = utils.getStore('token') || ''
+            if (this.token !== 'undefined' && this.token.length > 0) {
+                this.$router.push({ path: '/', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+            } else {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+            }
         },
         // 分享测款
         handleShareTest () {
-            this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+            this.token = utils.getStore('token') || ''
+            if (this.token !== 'undefined' && this.token.length > 0) {
+                this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
+            } else {
+                let method = 'user_authentication'
+                utils.postMessage(method, '')
+            }
         },
         // 免费测款
         handleCheck (flag) {
@@ -122,7 +140,7 @@ export default {
                 })
             }
             this.token = utils.getStore('token') || ''
-            if (this.token) {
+            if (this.token !== 'undefined' && this.token.length > 0) {
                 this.$router.push({ path: '/testStyle/share', query: { bookActivityCode: this.bookActivityCode, participantCode: this.participantCode } })
             } else {
                 let method = 'user_authentication'
@@ -150,7 +168,8 @@ export default {
                 type: 'click',
                 event: 'enrollInMeeting'
             })
-            if (this.token) {
+            this.token = utils.getStore('token') || ''
+            if (this.token !== 'undefined' && this.token.length > 0) {
                 if (this.enableToTakePart === 0) {
                     this.$toast('已提交过报名信息，请勿重复提交')
                 } else {

@@ -146,7 +146,7 @@ const setParams = (url, params = {}, opt = {}) => {
             url,
             headers: {
                 'Content-Type': contentType,
-                'token': utils.getStore('token') || opt.token || 'wVf38L5wlY02Ab6zQhzuVnIMfjmm3FyaSAmSNKccqCHFlCAGx+S7rLNfKx4rE9FiR2XT9CQwpSa+WcQkSq9b5mlTDZrWIB1M4oYbYXl0BoBtWxcN2UX6+PEctO96HyAlznt23QZHFaNoY5XacUphkz3FugYO/dTVYPg862IwoZnmBMS7110KvrT6gDPS5WEEmdFq3kIlYl0RdGvFcEDCCreTZZjMURQJP8/YY+2ubUv3p8CpzGfI74fq0KS5N6T4DCJ1g7s774oLZijnZ2IBpCdzENZIrBstxcqEOSnsp7wFHB4U9QIHbhCAEovCfaGjwXnRgN7XA+VRYwbv0TqIxEe30WxzUDSb3VUQ8ubLbrxC0sOhvl0kA/aIYUbiVBFWz2E63myZ+RDOPKOXNS8Ao6/rV1o7BxnP',
+                'token': utils.getStore('token') || opt.token,
                 'channel': baseParams.channel || opt.channel || 'WEB',
                 'app_id': baseParams.app_id || opt.app_id || '2B14A4DB674013075FCBE4D1AF1F607B7E215C04A9984CC84B0792D6F1E6F6D4',
                 'app_version': baseParams.app_version || opt.app_version || '1.2.0',
@@ -202,8 +202,10 @@ export default {
                         if (res.code === 11) {
                             let baseParams = utils.getStore('baseParams')
                             baseParams.token = ''
-                            utils.setStore('baseParams', JSON.stringify(this.baseParams))
+                            utils.setStore('baseParams', JSON.stringify(baseParams))
                             utils.setStore('token', '')
+                            // 退出H5
+                            // window.globalVue.$utils.postMessage('skip_web', '')
                         }
                         if (opt.hasErrMsg) {
                             resolve(res)

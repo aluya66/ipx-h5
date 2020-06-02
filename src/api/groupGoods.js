@@ -72,3 +72,54 @@ export const postCall = params => Http.fetch(`${context}/v1/group/goods/populari
 export const suplyGoods = params => Http.fetch(`${context}/v1/group/goods/replent`, params, {
     method: 'get'
 })
+
+/**
+ * 门店热门组货
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const getHotGroup = params => Http.fetch(`${context}/v1/home/examplelist`, params, {
+    method: 'get'
+})
+
+/**
+ * 本季上新
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const getQuarterLatest = params => Http.fetch(`${context}/v1/home/latestlist`, params, {
+    method: 'get'
+})
+
+/**
+ * 精选热门组货
+ * @param params
+ * @returns {prmoise对象}
+ */
+export const getSelectedGroup = params => Http.fetch(`${context}/v1/home/featuredgrouplist`, params, {
+    method: 'get'
+})
+
+/**
+ * 【 get 】样衣搜索
+ * @param {*} params
+ */
+export const searchProductList = params => Http.fetch(`${context}/v1/product/search`, params, {
+    method: 'get'
+})
+
+/**
+ * 【 get 】组货搜索
+ * @param {*} params
+ */
+export const searchGroupList = params => Http.fetch(`${context}/v1/group/search`, params, {
+    method: 'get'
+})
+
+/**
+ * 【 get 是否能够购买
+ * @param {*} params
+ */
+export const oauthPurchase = params => Http.fetch(`${context}/v1/member/oauth`, params, {
+    method: 'get'
+})

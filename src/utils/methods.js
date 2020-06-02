@@ -29,7 +29,23 @@ export const roundFun = (numberRound, roundDigit) => {
     }
 }
 
+export const priceFormat = (num) => {
+    let price = parseFloat(num).toFixed(2)
+    var str = price.toString()
+    var reg = str.indexOf('.') > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
+    return str.replace(reg, '$1,')
+}
+
+export const hidePrice = (num, isHide) => {
+    if (isHide !== 1) {
+        return '???'
+    }
+    return priceFormat(num)
+}
+
 export default {
     bottomOffset,
-    roundFun
+    roundFun,
+    priceFormat,
+    hidePrice
 }

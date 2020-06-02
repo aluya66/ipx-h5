@@ -2,13 +2,29 @@
   <layout-view style="padding-top:0">
     <div class="panel" :style="getBottomOffset(49)">
       <div class="header-top">
-        <c-header slot="header" :left-arrow="true" :style="marginTop">
+        <c-header
+          slot="header"
+          :left-arrow="true"
+          :style="marginTop"
+          :pageOutStatus="isNative"
+        >
           <template slot="left" tag="div">
             <img class="header-img" :src="backImage" />
           </template>
+          <template slot="right"  tag="div">
+              <img
+                  class="header-img"
+                  :src="hallIcon"
+                  @click="handleToHall"
+              />
+          </template>
         </c-header>
         <swiper class="swiper-content" ref="imageSwiper">
-          <swiper-slide class="swiper-slide" v-for="img in slidImages" :key="img">
+          <swiper-slide
+            class="swiper-slide"
+            v-for="(img, index) in slidImages"
+            :key="img"
+          >
             <video
               id="upvideo"
               controls="controls"
@@ -20,7 +36,7 @@
             >
               暂时不支持播放该视频
             </video>
-            <img :src="img" v-else />
+            <img :src="img" v-else @click="previewSlide(slidImages, index)" />
           </swiper-slide>
         </swiper>
       </div>
@@ -41,10 +57,15 @@
       <!--  人气排行-->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.popularity }">本周累计人气</span>
+          <img :src="bgUrlList.popularity" alt="" />
+          <span>本周累计人气</span>
         </div>
         <div class="number-scroll">
-          <div class="number" v-for="(item, index) in popularArray" :key="index">
+          <div
+            class="number"
+            v-for="(item, index) in popularArray"
+            :key="index"
+          >
             <p>{{ item }}</p>
           </div>
         </div>
@@ -58,7 +79,8 @@
       <!-- 买手 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.koc }">买手</span>
+          <img :src="bgUrlList.koc" alt="" />
+          <span>买手</span>
         </div>
         <div class="buyer">
           <img :src="groupGoodsKoc.headPic" alt="" />
@@ -70,7 +92,8 @@
       <!-- 搭配解析 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.analysis }">搭配解析</span>
+          <img :src="bgUrlList.analysis" alt="" />
+          <span>搭配解析</span>
         </div>
         <div class="group-analys">
           <img :src="groupDetail.analysisImg" alt="" />
@@ -80,10 +103,15 @@
       <!-- 要点总结 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.important }">要点总结</span>
+          <img :src="bgUrlList.important" alt="" />
+          <span>要点总结</span>
         </div>
         <div class="group-important">
-          <div class="paragraph" v-for="(str, strIndex) in importList" :key="strIndex">
+          <div
+            class="paragraph"
+            v-for="(str, strIndex) in importList"
+            :key="strIndex"
+          >
             <div class="circle"></div>
             <p>{{ str | trim }}</p>
           </div>
@@ -93,7 +121,8 @@
       <!-- 搭配清单 -->
       <div class="popular-content">
         <div class="title-content">
-          <span :style="{ backgroundImage: bgUrlList.collocation }">搭配清单</span>
+          <img :src="bgUrlList.collocation" alt="" />
+          <span>搭配清单</span>
         </div>
         <div class="collocation-list">
           <div
@@ -110,8 +139,13 @@
                   {{ sku | selectSkuStr }}
                 </p>
               </div>
+              <div class="sale_price">
+                <span class="price">¥<span>{{ cashFormat(item.spuRetailPrice) }}</span></span>
+                <span class="tip_title">建议零售价</span>
+              </div>
               <div class="price">
-                ¥ <span>{{ cashFormat(item.spuTshPrice) }}</span>
+                <span class="price_value" :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">¥ <span>{{ isShowPrice ? cashFormat(item.spuTshPrice) : '???'}}</span></span>
+                <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
               </div>
             </div>
           </div>
@@ -124,17 +158,28 @@
         class="
       price"
       >
-        ¥<span>{{ cashFormat(groupDetail.totalPrice) }}</span>
+        <div class="group_price">
+          <span class="price" :style="isShowPrice ? '' : 'font-family: PingFangSC-Semibold,PingFang SC'">¥<span>{{ isShowPrice ? cashFormat(groupDetail.totalPrice) : '???' }}</span></span>
+          <span class="tip_group_price" v-show="!isShowPrice">入驻可得拿货价</span>
+        </div>
+        <div class="sale_price">
+          <span class="price">¥<span>{{ cashFormat(groupDetail.totalRetailPrice) }}</span></span>
+          <span class="tip_title">建议零售价</span>
+        </div>
       </div>
-      <button @click="addHall">添加至展厅</button>
+      <div class="group_tool_btn">
+        <button class="poster" @click="addHall">收藏到展厅</button>
+        <button class="hall" @click="handlePurchase">立即购买</button>
+      </div>
     </div>
+    <img class="poster-icon" :style="handlePosterIconBottom()" :src="postIcon" alt="" @click="addPoster">
   </layout-view>
 </template>
 
 <script>
 import cash from '@/views/user/hall/cashFormat.js'
 import utils from 'utils'
-import { Dialog } from 'vant'
+import { Dialog, ImagePreview } from 'vant'
 import progressCricle from '@/views/common/cricleProgress.vue'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 require('swiper/dist/css/swiper.css')
@@ -147,7 +192,9 @@ export default {
     },
     data() {
         return {
+            postIcon: require('@/themes/images/app/btn_create_poster_def@3x.png'),
             backImage: require('@/themes/images/app/circle_nav_back@3x.png'),
+            hallIcon: require('@/themes/images/app/circle_nav_exhibition@3x.png'),
             popularNum: '',
             timer: '',
             productList: [],
@@ -158,6 +205,8 @@ export default {
             slidImages: [],
             showList: false,
             isVoted: false,
+            isNative: false,
+            isShowPrice: false,
             cricleLists: [
                 {
                     actualPercent: '',
@@ -176,11 +225,11 @@ export default {
                 }
             ],
             bgUrlList: {
-                popularity: 'url(' + require('../../themes/images/app/popularity@2x.png') + ')',
-                koc: 'url(' + require('../../themes/images/app/koc@2x.png') + ')',
-                analysis: 'url(' + require('../../themes/images/app/analysis@2x.png') + ')',
-                important: 'url(' + require('../../themes/images/app/essentials@2x.png') + ')',
-                collocation: 'url(' + require('../../themes/images/app/collocation@2x.png') + ')'
+                popularity: require('../../themes/images/app/popularity@2x.png'),
+                koc: require('../../themes/images/app/koc@2x.png'),
+                analysis: require('../../themes/images/app/analysis@2x.png'),
+                important: require('../../themes/images/app/essentials@2x.png'),
+                collocation: require('../../themes/images/app/collocation@2x.png')
             }
         }
     },
@@ -196,11 +245,23 @@ export default {
         this.importList = []
         this.slidImages = []
         this.isVoted = false
+        this.isNative = false
+        if (this.$route.query.fromNative === '1') {
+            this.isNative = true
+        }
+        utils.setStore('isFromGroupDetail', false)
+        let basepara = utils.getStore('baseParams')
+        if (basepara.isHide === 1) {
+            this.isShowPrice = true
+        } else {
+            this.isShowPrice = false
+        }
         this.getGroupDetail()
         this.getWeekData()
         this.timeOutRequest()
         let swiper = this.$refs.imageSwiper.swiper
         swiper.slideTo(0, 0, false)
+        utils.postMessage('changeStatus', 'default')
     },
     mounted() {
         this.showList = false
@@ -256,6 +317,59 @@ export default {
         }
     },
     methods: {
+        handlePosterIconBottom() {
+            let baseparams = utils.getStore('baseParams')
+            let btm = 57 + 8
+            if (baseparams.isIphoneX) {
+                btm = 91 + 8
+            }
+            return `bottom:${btm / 100}rem`
+        },
+        handlePurchase() {
+            let token = utils.getStore('token')
+            if (token === 'undefined' || token === '') {
+                window.globalVue.$utils.postMessage('user_authentication', '')
+                return
+            }
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === 0) {
+                this.isShowPrice = false
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
+            this.$api.groupGoods.oauthPurchase().then(res => {
+                if (res.isRecharge === 0 && res.isDeposit === 0) {
+                    Dialog.confirm({
+                        message: '您要先充值或支付押金才可以购买商品哦～',
+                        cancelButtonText: '暂不购买',
+                        cancelButtonColor: '#007AFF',
+                        confirmButtonText: '立即充值',
+                        confirmButtonColor: '#007AFF'
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/recharge'
+                        })
+                    })
+                } else {
+                    this.$router.push({
+                        path: '/group/skuPurchase',
+                        query: { groupDetail: this.groupDetail }
+                    })
+                }
+            }).catch(() => {})
+        },
         cashFormat(price) {
             return cash.changeFormat(price)
         },
@@ -268,6 +382,14 @@ export default {
                 productCode: product.productCode
             }
             utils.postMessage('', params)
+        },
+        handleToHall() {
+            this.$router.push({
+                path: '/user/hall',
+                query: {
+                    isFromWeb: true
+                }
+            })
         },
         timeOutRequest() {
             this.timer = setInterval(this.getWeekData, 30000)
@@ -314,9 +436,12 @@ export default {
                     this.productList = res.groupGoodsSpus
                     this.groupGoodsKoc = res.groupGoodsKoc
                     this.slidImages = res.detailImgs
-                    this.cricleLists[0].actualPercent = Number(this.groupDetail.fashionIndexNum) + ''
-                    this.cricleLists[1].actualPercent = Number(this.groupDetail.adviceIndexNum) + ''
-                    this.cricleLists[2].actualPercent = Number(this.groupDetail.hotIndexNum) + ''
+                    this.cricleLists[0].actualPercent =
+            Number(this.groupDetail.fashionIndexNum) + ''
+                    this.cricleLists[1].actualPercent =
+            Number(this.groupDetail.adviceIndexNum) + ''
+                    this.cricleLists[2].actualPercent =
+            Number(this.groupDetail.hotIndexNum) + ''
                     this.importList = this.groupDetail.groupDesc.trim().split('\n')
                     this.isVoted = this.groupDetail.ishaveVoted === 1
                     // this.findvideocover();
@@ -325,12 +450,53 @@ export default {
                     console.log(err)
                 })
         },
+        addPoster() {
+            let token = utils.getStore('token')
+            if (token === 'undefined' || token === '') {
+                window.globalVue.$utils.postMessage('user_authentication', '')
+                return
+            }
+            let baseParams = utils.getStore('baseParams')
+            if (baseParams.isHide === 0) {
+                this.isShowPrice = false
+                Dialog.confirm({
+                    title: '填写邀请码可用',
+                    message: '该功能仅对定制化用户开放！请填写业务邀请码获得专属服务',
+                    cancelButtonText: '暂不需要',
+                    cancelButtonColor: '#007AFF',
+                    confirmButtonText: '获取邀请码',
+                    confirmButtonColor: '#007AFF'
+                }).then(() => {
+                    const params = {
+                        jumpUrl: 'toBandSale://'
+                    }
+                    utils.postMessage('', params)
+                })
+                return
+            }
+            let products = this.productList.filter(item => item.productShelves !== 0)
+            if (products.length === 0) {
+                this.$toast('该组货所有商品已失效，无法生成海报')
+                return
+            }
+
+            utils.setStore('isFromGroupDetail', true)
+            this.$router.push({
+                path: '/poster/editGroupPoster', /// poster/eidtGroupProducts
+                query: { groupCode: this.groupDetail.groupCode }
+            })
+        },
         addHall() {
             window.sa.track('IPX_WEB', {
                 page: 'groupDetail', // 页面名字
                 type: 'click', // 固定参数，表明是点击事件
                 event: 'addTohall' // 按钮唯一标识，取个语义化且不重名的名字
             })
+            let token = utils.getStore('token')
+            if (token === 'undefined' || token === '') {
+                window.globalVue.$utils.postMessage('user_authentication', '')
+                return
+            }
             let params = {}
             let groupInfos = []
             let groupProductInfo = {
@@ -360,33 +526,31 @@ export default {
                 .groupGoods(params)
                 .then(res => {
                     if (res.code === 0) {
-                        let groupGoodsId = res.data.groupGoodsId
-                        Dialog.confirm({
-                            title: '添加成功',
-                            message: '该组货方案已添加至我的展厅',
-                            confirmButtonText: '编辑组货方案',
-                            cancelButtonText: '继续逛逛',
-                            confirmButtonColor: '#007AFF'
+                        // let groupGoodsId = res.data.groupGoodsId
+                        this.$toast(' \n 收藏成功，\n 可在“我的展厅”查看 \n ')
+                        window.sa.track('IPX_WEB', {
+                            page: 'groupDetail', // 页面名字
+                            type: 'click', // 固定参数，表明是点击事件
+                            event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
                         })
-                            .then(() => {
-                                window.sa.track('IPX_WEB', {
-                                    page: 'groupDetail', // 页面名字
-                                    type: 'click', // 固定参数，表明是点击事件
-                                    event: 'editGroupPlan' // 按钮唯一标识，取个语义化且不重名的名字
-                                })
-                                this.$router.push({
-                                    path: '/hall/groupListDetail',
-                                    query: { groupId: groupGoodsId }
-                                })
-                            })
-                            .catch(() => {
-                                // on cancel
-                            })
                     }
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        previewSlide(slidImages, index) {
+            let imgs = slidImages.filter((item) => {
+                return !item.endsWith('.mp4')
+            })
+            ImagePreview({
+                images: imgs,
+                startPosition: index,
+                loop: false,
+                onClose() {
+                    // do something
+                }
+            })
         }
     },
     deactivated() {
@@ -399,17 +563,55 @@ export default {
 .panel {
   .c-header {
     position: fixed;
+    .van-nav-bar__right {
+      right: calc(-100vw + 0px);
+    }
     .header-img {
       display: block;
       width: 32px;
       height: 32px;
       object-fit: cover;
+      // display: inline-block;
+      // vertical-align: middle;
     }
   }
 }
+.van-image__img {
+  width: 100%;
+  height: auto !important;
+  object-fit: cover !important;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%)
+}
+.van-image-preview__image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+// .van-image-preview__overlay {
+//     background-color: black !important;
+// }
+// .van-overlay {
+//   background-color:black !important;
+// }
 </style>
 
 <style lang="less" scoped>
+.poster-icon {
+  display: block;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  right: 8px;
+}
+.poster-icon:active {
+    // background: rgba(0, 0, 0, 0.3);
+    opacity: 0.7;
+}
 .panel {
   background-color: white;
   height: 100%;
@@ -447,7 +649,7 @@ export default {
     margin: 16px 16px 0;
     > p {
       font-size: 18px;
-      font-weight: 500;
+      font-weight: bold;
       color: rgba(42, 43, 51, 1);
       line-height: 26px;
       // .ellipsis();
@@ -462,18 +664,25 @@ export default {
     }
   }
   .popular-content {
-    //   margin-top: 25px;
     margin-bottom: 56px;
     .title-content {
+      position: relative;
       text-align: center;
       height: 40px;
       padding-top: 10px;
+      width: 100%;
+      > img {
+        position: absolute;
+        object-fit: cover;
+        height: 24px;
+        width: auto;
+        transform: translate(-50%, -4px);
+      }
       > span {
-        padding: 0 15px;
+        position: absolute;
         font-size: 20px;
-        font-weight: 600;
-        background-repeat: no-repeat;
-        background-size: 100% 90%;
+        font-weight: bold;
+        transform: translateX(-50%);
         color: @color-c1;
         line-height: 28px;
       }
@@ -506,15 +715,27 @@ export default {
       > button {
         width: 187px;
         height: 50px;
-        background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
+        background: linear-gradient(
+          135deg,
+          rgba(85, 122, 244, 1) 0%,
+          rgba(114, 79, 255, 1) 100%
+        );
         border-radius: 25px;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: bold;
         color: white;
       }
       > button:disabled {
         background: @color-c7;
         color: @color-c2;
+      }
+      > button:active:disabled {
+        background: @color-c7;
+        color: @color-c2;
+      }
+      > button:active {
+        color: rgba(255, 255, 255, 0.3);
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
       }
     }
     .buyer {
@@ -587,6 +808,7 @@ export default {
           border-radius: 4px;
           object-fit: cover;
           border: 1px solid @color-c7;
+          background-color: @color-c8;
         }
         .product-info {
           margin-left: 12px;
@@ -594,16 +816,16 @@ export default {
           > p {
             line-height: 22px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: bold;
             color: @color-c1;
             .ellipsis();
           }
           .sku-list {
             margin-top: 8px;
             margin-bottom: 16px;
-            height: 38px;
-            overflow: hidden;
-            overflow-y: auto;
+            // height: 38px;
+            // overflow: hidden;
+            // overflow-y: auto;
             > p {
               font-size: 12px;
               font-weight: 400;
@@ -612,17 +834,56 @@ export default {
               margin: 8px 0;
             }
           }
+          .sale_price {
+            margin-bottom: 4px;
+            .price {
+              font-size: 12px;
+              font-weight: 400;
+              color: @color-c1;
+              line-height: 14px;
+              font-family: "alibabaRegular";
+              > span {
+                font-size: 14px;
+                font-weight: bold;
+                color: @color-c1;
+                line-height: 14px;
+                font-family: "alibabaBold";
+              }
+            }
+            .tip_title {
+              font-size:10px;
+              font-weight:bold;
+              color: @color-c3;
+              line-height:12px;
+              background:rgba(244,245,247,1);
+              margin-left: 10px;
+              padding: 2px;
+              border-radius:0px 4px 4px 4px;
+            }
+          }
           .price {
-            font-size: 12px;
-            font-weight: 400;
-            color: @color-rc;
-            margin-bottom: 0;
-            font-family: "alibabaRegular";
-            > span {
-              font-size: 22px;
-              font-weight: bold;
+            .price_value {
+              font-size: 12px;
+              font-weight: 400;
               color: @color-rc;
-              font-family: "alibabaBold";
+              margin-bottom: 0;
+              font-family: "alibabaRegular";
+              > span {
+                font-size: 22px;
+                font-weight: bold;
+                color: @color-rc;
+                font-family: "alibabaBold";
+              }
+            }
+            .tip_group_price {
+              font-size:10px;
+              font-weight:bold;
+              color: @color-rc;
+              line-height:14px;
+              background:rgba(255,235,237,1);
+              margin-left: 10px;
+              padding: 2px;
+              border-radius:0px 4px 4px 4px;
             }
           }
         }
@@ -640,30 +901,98 @@ export default {
   background: white;
   box-shadow: 0px -1px 6px 0px rgba(33, 44, 98, 0.06);
   border-radius: 12px 12px 0px 0px;
-  padding: 0 16px;
-  .price {
-    font-size: 12px;
-    font-weight: 400;
-    color: rgba(245, 48, 48, 1);
-    line-height: 49px;
-    font-family: "alibabaRegular";
-    > span {
-      font-size: 20px;
-      font-weight: bold;
+  padding: 5px 16px 5px;
+  .group_price {
+    .price {
+      font-size: 12px;
+      font-weight: 400;
       color: rgba(245, 48, 48, 1);
-      line-height: 49px;
-      font-family: "alibabaBold";
+      line-height: 24px;
+      font-family: "alibabaRegular";
+      > span {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgba(245, 48, 48, 1);
+        line-height: 24px;
+        font-family: "alibabaBold";
+      }
+    }
+    .tip_group_price {
+      font-size:10px;
+      font-weight:bold;
+      color: @color-rc;
+      line-height:14px;
+      background:rgba(255,235,237,1);
+      margin-left: 10px;
+      padding: 2px;
+      border-radius:0px 4px 4px 4px;
     }
   }
-  > button {
-    width: 110px;
-    height: 40px;
-    background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(114, 79, 255, 1) 100%);
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    align-self: center;
+  .sale_price {
+    margin-bottom: 5px;
+    .price {
+      font-size: 12px;
+      font-weight: 400;
+      color: @color-c1;
+      line-height: 14px;
+      font-family: "alibabaRegular";
+      > span {
+        font-size: 14px;
+        font-weight: bold;
+        color: @color-c1;
+        line-height: 14px;
+        font-family: "alibabaBold";
+      }
+    }
+    .tip_title {
+      font-size:10px;
+      font-weight:bold;
+      color: @color-c3;
+      line-height:12px;
+      background:rgba(244,245,247,1);
+      margin-left: 4px;
+      padding: 2px;
+      border-radius:0px 4px 4px 4px;
+    }
   }
+  .group_tool_btn {
+    display: flex;
+    margin-bottom: 5px;
+     .poster {
+      width: 88px;
+      height: 40px;
+      background:linear-gradient(322deg,rgba(238,236,255,1) 0%,rgba(216,212,255,1) 100%);
+      border-radius:20px;
+      font-size:14px;
+      font-weight:bold;
+      color:rgba(60,92,246,1);
+      padding: 0;
+      align-self: center;
+    }
+    .poster:active {
+      color: rgba(60,92,246, 0.3);
+        // background: linear-gradient(322deg, rgba(238,236,255,1) 0%, rgb(240, 239, 239) 100%);
+    }
+    .hall {
+      width: 88px;
+      height: 40px;
+      background: linear-gradient(
+        135deg,
+        rgba(85, 122, 244, 1) 0%,
+        rgba(114, 79, 255, 1) 100%
+      );
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      align-self: center;
+      margin-left: 12px;
+    }
+    .hall:active {
+        color: rgba(255,255,255, 0.3);
+        // background: linear-gradient(135deg, rgba(85, 122, 244, 1) 0%, rgba(91, 64, 204, 1) 100%);
+    }
+  }
+
 }
 </style>

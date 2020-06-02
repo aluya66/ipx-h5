@@ -1,17 +1,19 @@
 <template>
-  <layout-view>
-    <c-header slot="header" :left-arrow="true">
-      <div slot="title">编辑组货名称</div>
-    </c-header>
-    <div class="panel">
-      <van-field v-model="groupName" clearable placeholder="请输入组货名称" maxlength="20" />
-      <button @click="commit">完成</button>
-    </div>
-  </layout-view>
+<layout-view>
+  <c-header slot="header" :left-arrow="true">
+    <div slot="title">编辑组货名称</div>
+  </c-header>
+  <div class="panel">
+    <van-field v-model="groupName" clearable placeholder="请输入组货名称" maxlength="20" />
+    <button @click="commit">完成</button>
+  </div>
+</layout-view>
 </template>
 
 <script>
-import { Field } from 'vant'
+import {
+    Field
+} from 'vant'
 // import utils from 'utils'
 export default {
     components: {
@@ -19,16 +21,27 @@ export default {
     },
     data() {
         return {
-            groupName: ''
+            groupName: '',
+            isSuply: false
         }
     },
     activated() {
         this.groupName = this.$route.query.name
+        this.isSuply = this.$route.query.isSuply
+    },
+    beforeRouteLeave(to, from, next) {
+        to.query.groupName = this.groupName
+        next()
     },
     methods: {
         commit() {
             if (this.groupName === '') {
                 this.$toast('请输入组货名称')
+                return
+            }
+            if (this.isSuply) {
+                this.$toast.success('已修改')
+                this.$router.go(-1)
                 return
             }
             const params = {
@@ -56,7 +69,7 @@ export default {
   height: calc(100vh - 55px);
   background-color: white;
   padding: 8px 10px 0 0;
-  > button {
+  >button {
     margin: 32px 16px;
     height: 50px;
     width: calc(100vw - 32px);

@@ -1,6 +1,6 @@
 <template>
 <layout-view>
-    <c-header slot="header" :left-arrow="true" :pageOutStatus='true'>
+    <c-header slot="header" :left-arrow="!isMainPage" :pageOutStatus='true'>
         <div slot="title">智能组货</div>
     </c-header>
     <c-tabs class="goods-group-tab" :tabs="tabs" :line-width="'0.08rem'" :line-height="'0.05rem'" :title-active-color="'#3C5CF6'" :title-inactive-color="'#2A2B33'" :border="true" @change="onChangeTab"></c-tabs>
@@ -12,7 +12,7 @@
                 <img class="image-img" :src="slotProps.item.imageUrl">
                 <p class="image-info">{{slotProps.item.labelName}}</p>
                 <img v-if="slotProps.item.isSelected" class="check-box" src="~images/groupGoods/selected_icon.png"/>
-</template>
+            </template>
         </select-box>
 
     </div>
@@ -49,6 +49,7 @@ export default {
     },
     data() {
         return {
+            isMainPage: false,
             minPrice: '',
             maxPrice: '',
             categoryList: [], // 品类列表
@@ -124,6 +125,7 @@ export default {
         }
     },
     created() {
+        this.isMainPage = this.$route.query.isMainPage === '1'
         this.getSearchLists()
     },
     activated() {
@@ -169,9 +171,16 @@ export default {
                     // pageSize: 100
                 }
                 utils.setStore('searchParams', params)
-                this.$router.push({
-                    path: '/groupGoods/aiGroup'
-                })
+                if (this.isMainPage) {
+                    let href = window.location.href
+                    let addresses = href.split('groupGoods')
+                    utils.postMessage('page_in', { 'jumpUrl': addresses[0] + 'groupGoods/aiGroup' })
+                } else {
+                    this.$router.push({
+                        path: '/groupGoods/aiGroup',
+                        query: { 'isFromWeb': true }
+                    })
+                }
             } else {
                 this.$toast('至少选择一个标签进行组货')
             }
